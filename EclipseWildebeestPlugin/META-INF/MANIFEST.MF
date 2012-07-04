@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Kizoom Wildebeest Plug-in
+Bundle-SymbolicName: com.kizoom.plugin.wildebeest;singleton:=true
+Bundle-Version: 1.0.8
+Bundle-Activator: com.kizoom.plugin.wildebeest.WildebeestPlugin
+Bundle-Vendor: Kizoom Ltd.
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide;bundle-version="3.4.0",
+ org.eclipse.jdt.core;bundle-version="3.4.0",
+ org.eclipse.jface.text;bundle-version="3.4.0",
+ org.eclipse.ui.editors;bundle-version="3.4.0",
+ org.eclipse.ui.navigator;bundle-version="3.3.100",
+ org.eclipse.core.resources;bundle-version="3.4.0",
+ com.kizoom.plugin;bundle-version="1.0.4",
+ org.eclipse.jdt.ui;bundle-version="3.4.0",
+ org.eclipse.core.expressions;bundle-version="3.4.0",
+ org.apache.ant;bundle-version="1.7.0",
+ org.eclipse.search;bundle-version="3.4.0",
+ org.eclipse.jdt.launching;bundle-version="3.4.1",
+ org.eclipse.team.cvs.ui;bundle-version="3.3.100",
+ org.eclipse.team.cvs.core;bundle-version="3.3.101",
+ org.eclipse.team.core;bundle-version="3.4.1",
+ org.eclipse.team.ui;bundle-version="3.4.1",
+ org.apache.commons.lang;bundle-version="2.4.0",
+ org.jdom;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/jbossall-client.jar,
+ .

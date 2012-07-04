@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="com.kizoom.plugin.wildebeest"
+      label="Kizoom Wildebeest Plugin"
+      version="1.0.8"
+      provider-name="Kizoom Ltd.">
+
+   <description url="http://www.example.com/description">
+      Kizoom Wildebeest Plugin
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.ide" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface.text" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.editors" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.navigator" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="com.kizoom.plugin" version="1.0.4" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.ant" version="1.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.search" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.team.cvs.ui" version="3.3.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.team.cvs.core" version="3.3.101" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.team.core" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.team.ui" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.lang" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="org.jdom" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="com.kizoom.plugin.wildebeest"
+         download-size="0"
+         install-size="0"
+         version="1.0.8"
+         unpack="false"/>
+
+</feature>

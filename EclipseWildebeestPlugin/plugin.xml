@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="com.kizoom.plugin.wizard"
+            class="com.kizoom.plugin.wildebeest.wizard.NewEarWizard"
+            hasPages="true"
+            icon="icons/full/etool16/newear_wiz.png"
+            id="com.kizoom.plugin.wildebeest.wizard.NewEarWizard"
+            name="Kizoom Ear"
+            project="true">
+         <description>
+            Create Wildebeest Ear project
+         </description>
+      </wizard>
+      <wizard
+            category="com.kizoom.plugin.wizard"
+            class="com.kizoom.plugin.wildebeest.wizard.NewWebappWizard"
+            icon="icons/full/etool16/newwapp_wiz.png"
+            id="com.kizoom.plugin.wildebeest.wizard.NewWebappWizard"
+            name="Kizoom Webapp Project"
+            project="true">
+         <description>
+            Create Kizoom Webapp project
+         </description>
+      </wizard>
+   </extension>
+    <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            icon="icons/full/obj16/importear_obj.gif"
+            name="Ear project from CVS"
+            class="com.kizoom.plugin.wildebeest.wizard.EarImportWizard"
+            category="com.kizoom.plugin.importWizard"
+            id="com.kizoom.plugin.wildebeest.earImport">
+            <description> 
+              Checkout Ear project from a CVS Repository.
+          </description>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="com.kizoom.plugin.ear.navigator.view">
+      </viewer>
+      <viewerContentBinding
+            viewerId="com.kizoom.plugin.ear.navigator.view">
+         <includes>
+            <contentExtension
+                  pattern="com.kizoom.plugin.ear.content">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            contentProvider="com.kizoom.plugin.wildebeest.ear.navigator.EarContentProvider"
+            id="com.kizoom.plugin.ear.content"
+            labelProvider="com.kizoom.plugin.wildebeest.ear.navigator.EarLabelProvider"
+            name="Ear">
+         <triggerPoints>
+            <instanceof
+                  value="com.kizoom.plugin.wildebeest.ear.navigator.IEarRoot">
+            </instanceof>
+         </triggerPoints>
+      </navigatorContent>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.ear.builder"
+         name="Ear Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="true">
+         <run
+               class="com.kizoom.plugin.wildebeest.ear.EarBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.ear.nature"
+         name="Ear Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.kizoom.plugin.wildebeest.ear.Ear">
+         </run>
+      </runtime>
+      <builder
+            id="com.kizoom.plugin.ear.builder">
+      </builder>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.wildebeest.webapp.nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.kizoom.plugin.wildebeest.webapp.WebappNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.ear.problem"
+         name="Ear Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+ <decorator
+       adaptable="true"
+       class="com.kizoom.plugin.wildebeest.ear.EarDecorator"
+       icon="icons/full/dec8/earprj_dec.png"
+       id="com.kizoom.plugin.wildebeest.ear.EarDecorator"
+       label="Ear Decorator"
+       lightweight="true"
+       location="TOP_RIGHT"
+       state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IProject">
+               </objectClass>
+               <objectState
+                     name="nature"
+                     value="com.kizoom.plugin.ear.nature">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
+      <decorator
+            adaptable="true"
+            class="com.kizoom.plugin.wildebeest.ear.EarMemberDecorator"
+            icon="icons/full/ovr16/ear_member.gif"
+            id="com.kizoom.plugin.wildebeest.ear.EarMemberDecorator"
+            label="Ear Member Decorator"
+            lightweight="true"
+            location="UNDERLAY"
+            state="true">
+         <enablement>
+            <objectClass
+                  name="org.eclipse.core.resources.IProject">
+            </objectClass>
+         </enablement>
+      </decorator>
+      <decorator
+            adaptable="true"
+            class="com.kizoom.plugin.wildebeest.webapp.WebappDecorator"
+            icon="icons/full/dec8/wapp_dec.png"
+            id="com.kizoom.plugin.wildebeest.webapp.WebappDecorator"
+            label="Webapp Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IProject">
+               </objectClass>
+               <objectState
+                     name="nature"
+                     value="com.kizoom.plugin.wildebeest.webapp.nature">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>   
+   </extension>
+   <extension
+         id="com.kizoom.plugin.preferences"
+         name="Wildebeest Preferences"
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.kizoom.plugin.wildebeest.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.kizoom.plugin.preferences.KizoomPreferencePage"
+            class="com.kizoom.plugin.wildebeest.preferences.WildebeestPreferencePage"
+            id="com.kizoom.plugin.wildebeest.preferences.WildebeestPreferencePage"
+            name="Wildebeest">
+      </page>
+   </extension>
+   <extension
+         point="com.kizoom.plugin.kizoomMenu">
+      <factory
+            class="com.kizoom.plugin.wildebeest.ui.WildebeestProjectMenuCreator">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.OpenDeploymentConsoleAction"
+            description="Open deployment console"
+            id="com.kizoom.plugin.wildebeest.OpenDeploymentConsole"
+            name="Open deployment console">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.LocalDeployAction"
+            description="Local deploy"
+            id="com.kizoom.plugin.wildebeest.LocalDeploy"
+            name="Local deploy">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.LocalUndeployAction"
+            description="Local undeploy"
+            id="com.kizoom.plugin.wildebeest.LocalUndeploy"
+            name="Local undeploy">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.CleanAction"
+            description="Clean"
+            id="com.kizoom.plugin.wildebeest.Clean"
+            name="Clean">
+      </command>
+      <!--<command
+            categoryId="com.kizoom.plugin.wildebeest"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.CreateDeploymentPackageAction"
+            description="Create deployment package"
+            id="com.kizoom.plugin.wildebeest.CreateDeploymentPackage"
+            name="Create deployment package">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin.wildebeest"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.RsyncToDeploymentServerAction"
+            description="Rsync to deployment server"
+            id="com.kizoom.plugin.wildebeest.RsyncToDeploymentServer"
+            name="Rsync to deployment server">
+      </command>
+      -->
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.FindUnreferencedProjectsAction"
+            description="Find unreferenced ears projects"
+            id="com.kizoom.plugin.wildebeest.FindUnreferencedProjects"
+            name="Find unreferenced projects">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.QuickRefreshEarAction"
+            description="Quick refresh"
+            id="com.kizoom.plugin.wildebeest.QuickRefresh"
+            name="Quick refresh">
+      </command>
+      <command
+            categoryId="com.kizoom.plugin"
+            defaultHandler="com.kizoom.plugin.wildebeest.ear.actions.GenerateLaunchConfigsAction"
+            description="Quick refresh"
+            id="com.kizoom.plugin.wildebeest.GenerateLaunchConfigs"
+            name="Generate launch configs">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="com.kizoom.plugin.wildebeest.OpenDeploymentConsole"
+            disabledIcon="icons/full/dcl16/open_dep_console.png"
+            icon="icons/full/ecl16/open_dep_console.png">
+      </image>
+      <image
+            commandId="com.kizoom.plugin.wildebeest.QuickRefresh"
+            disabledIcon="icons/full/dcl16/refresh_ear.png"
+            icon="icons/full/ecl16/refresh_ear.png">
+      </image>
+     <!-- <image
+            commandId="com.kizoom.plugin.wildebeest.CreateDeploymentPackage"
+            disabledIcon="icons/full/dcl16/open_dep_console.png"
+            icon="icons/full/ecl16/open_dep_console.png">
+      </image>
+      <image
+            commandId="com.kizoom.plugin.wildebeest.RsyncToDeploymentServer"
+            disabledIcon="icons/full/dcl16/open_dep_console.png"
+            icon="icons/full/ecl16/open_dep_console.png">
+      </image>
+      -->
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:com.kizoom.plugin.menu">
+         <separator
+               name="com.kizoom.plugin.wildebeest.menu.separator1"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.Clean"
+               label="Clean"
+               style="push"
+               tooltip="Clean">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.LocalDeploy"
+               label="Local deploy"
+               style="push"
+               tooltip="Local deploy">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.LocalUndeploy"
+               label="Local undeploy"
+               style="push"
+               tooltip="Local undeploy">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.QuickRefresh"
+               disabledIcon="icons/full/dcl16/refresh_ear.png"
+               icon="icons/full/ecl16/refresh_ear.png"
+               label="Quick refresh"
+               style="push"
+               tooltip="Quick refresh Ear">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.OpenDeploymentConsole"
+               disabledIcon="icons/full/dcl16/open_dep_console.png"
+               icon="icons/full/ecl16/open_dep_console.png"
+               label="Open deployment console"
+               style="push"
+               tooltip="Open a PuTTY console for uploading a deployment package to Staging">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.GenerateLaunchConfigs"
+               disabledIcon="icons/full/dcl16/ant_kiz.png"
+               icon="icons/full/ecl16/ant_kiz.png"
+               label="Generate launch configs"
+               style="push"
+               tooltip="Generates eclipse launch configs for Wildebeest deployments">
+         </command>
+         
+        <!-- 
+         <command
+               commandId="com.kizoom.plugin.wildebeest.CreateDeploymentPackage"
+               disabledIcon="icons/full/dcl16/open_dep_console.png"
+               icon="icons/full/ecl16/open_dep_console.png"
+               label="Create deployment package"
+               style="push"
+               tooltip="Create deployment package">
+         </command>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.RsyncToDeploymentServer"
+               disabledIcon="icons/full/dcl16/open_dep_console.png"
+               icon="icons/full/ecl16/open_dep_console.png"
+               label="Rsync to deployment server"
+               style="push"
+               tooltip="Rsync to deployment server">
+         </command>
+         -->
+         <separator
+               name="com.kizoom.plugin.wildebeest.menu.separator2"
+               visible="true">
+         </separator>
+         <command
+               commandId="com.kizoom.plugin.wildebeest.FindUnreferencedProjects"
+               label="Find unreferenced projects"
+               style="push"
+               tooltip="Find unreferenced projects included in this ear">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="com.kizoom.plugin.wildebeest.toolbar">
+            <command
+                  commandId="com.kizoom.plugin.wildebeest.QuickRefresh"
+                  disabledIcon="icons/full/dcl16/refresh_ear.png"
+                  icon="icons/full/ecl16/refresh_ear.png"
+                  label="Quick refresh"
+                  style="push"
+                  tooltip="Quick refresh Ear">
+            </command>
+            <command
+                  commandId="com.kizoom.plugin.wildebeest.OpenDeploymentConsole"
+                  disabledIcon="icons/full/dcl16/open_dep_console.png"
+                  icon="icons/full/ecl16/open_dep_console.png"
+                  label="Open deployment console"
+                  style="push"
+                  tooltip="Open a PuTTY console for uploading a deployment package to Staging">
+            </command>
+            <!--
+            <command
+                  commandId="com.kizoom.plugin.wildebeest.CreateDeploymentPackage"
+                  disabledIcon="icons/full/dcl16/open_dep_console.png"
+                  icon="icons/full/ecl16/open_dep_console.png"
+                  label="Create deployment package"
+                  style="push"
+                  tooltip="Create deployment package">
+            </command>
+            <command
+                  commandId="com.kizoom.plugin.wildebeest.RsyncToDeploymentServer"
+                  disabledIcon="icons/full/dcl16/open_dep_console.png"
+                  icon="icons/full/ecl16/open_dep_console.png"
+                  label="Rsync to deployment server"
+                  style="push"
+                  tooltip="Rsync to deployment server">
+            </command>
+            -->
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="com.kizoom.plugin.ui.SearchResultPage"
+            id="com.kizoom.plugin.wildebeest.ui.referencedProjectsSearch"
+            searchResultClass="com.kizoom.plugin.ui.SearchResult">
+      </viewPage>
+       <viewPage
+            class="com.kizoom.plugin.ui.SearchResultPage"
+            id="com.kizoom.plugin.utils.ui.cvsReferencesSearch"
+            searchResultClass="com.kizoom.plugin.ui.SearchResult">
+      </viewPage>
+   </extension>
+</plugin>
