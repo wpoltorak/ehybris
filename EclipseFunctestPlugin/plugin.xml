@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.kizoom.plugin.wizard"
+            name="Kizoom">
+      </category>
+      <wizard
+            category="com.kizoom.plugin.wizard"
+            class="com.kizoom.plugin.functest.wizard.NewFunctestProjectWizard"
+            hasPages="true"
+            icon="icons/full/etool16/newfunctest_wiz.png"
+            id="com.kizoom.plugin.functest.wizard.NewFunctestProjectWizard"
+            name="Kizoom Functest Project"
+            project="true">
+         <description>
+            Create Kizoom Functest project
+         </description>
+      </wizard>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.views"
+         point="org.eclipse.ui.views">
+      <category
+            id="com.kizoom.plugin"
+            name="Kizoom">
+      </category>
+      <view
+            allowMultiple="false"
+            category="com.kizoom.plugin"
+            class="com.kizoom.plugin.functest.view.FunctestView"
+            icon="icons/full/etool16/functest.png"
+            id="com.kizoom.plugin.functest.view"
+            name="Functest"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="com.kizoom.plugin.functest.view"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.jdt.junit.ResultView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.functest.nature"
+         name="Functest Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.kizoom.plugin.functest.FunctestNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            icon="icons/full/dec8/functestprj_dec.png"
+            id="com.kizoom.plugin.functest.decorator"
+            label="Functest Decorator"
+            lightweight="true"
+            location="TOP_LEFT"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="org.eclipse.core.resources.IProject">
+               </objectClass>
+               <objectState
+                     name="nature"
+                     value="com.kizoom.plugin.functest.nature">
+               </objectState>
+            </and>
+         </enablement>
+      </decorator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="com.kizoom.plugin.preferences.KizoomPreferencePage"
+            class="com.kizoom.plugin.functest.preferences.FunctestPreferencePage"
+            id="com.kizoom.plugin.functest.preferences.FunctestPreferencePage"
+            name="Functional Tests">
+      </page>
+   </extension>
+   <extension
+         id="com.kizoom.plugin.preferences"
+         name="Kizoom Preferences"
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.kizoom.plugin.functest.preferences.FunctestPreferencesInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="com.kizoom.plugin.functest.launcher.FunctestLaunchShortcut"
+            icon="icons/full/etool16/run_functest.png"
+            id="com.kizoom.plugin.functest.launch.shortcut"
+            label="Functional Test"
+            modes="run,debug">
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.jdt.core.IJavaElement">
+                        <test property="org.eclipse.jdt.core.isInJavaProject"/>
+		                <test property="org.eclipse.jdt.core.hasTypeOnClasspath" value="junit.framework.Test"/>
+                  <test
+                        forcePluginActivation="true"
+                        property="com.kizoom.plugin.functest.canLaunchAsFunctest">
+                  </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </enablement>
+          </contextualLaunch>
+          <configurationType
+               id="com.kizoom.plugin.functest.launchconfig">
+         </configurationType>
+      </shortcut>
+   </extension>
+      <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.kizoom.plugin.functest.launcher.FunctestLaunchConfigurationDelegate"
+            delegateDescription="Run functional tests "
+            delegateName="Functest Launcher"
+            id="com.kizoom.plugin.functest.launchconfig"
+            modes="run, debug"
+            name="Functional Test"
+            public="true"
+            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
+      </launchConfigurationType>
+   </extension>
+      <extension
+            point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+         <launchConfigurationTabGroup
+               class="com.kizoom.plugin.functest.launcher.FunctestLaunchConfigurationTabGroup"
+               id="com.kizoom.plugin.functest.launchgroup"
+               type="com.kizoom.plugin.functest.launchconfig">
+            <launchMode
+                  description="Create a configuration that will launch a Functional Test."
+                  mode="run">
+            </launchMode>
+            <launchMode
+                  description="Create a configuration that will launch a Functional Test."
+                  mode="debug"
+                  perspective="org.eclipse.debug.ui.DebugPerspective">
+            </launchMode>
+         </launchConfigurationTabGroup>
+      </extension>
+      <extension
+            point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+         <launchConfigurationTypeImage
+               configTypeID="com.kizoom.plugin.functest.launchconfig"
+               icon="icons/full/etool16/run_functest.png"
+               id="com.kizoom.plugin.functest.launchconfigimage">
+         </launchConfigurationTypeImage>
+      </extension>
+      <extension
+            point="org.eclipse.jdt.launching.classpathProviders">
+         <classpathProvider
+               class="com.kizoom.plugin.functest.FunctestClasspathProvider"
+               id="com.kizoom.plugin.functest.FunctestClasspathProvider">
+         </classpathProvider>
+      </extension>
+      <extension
+            point="org.eclipse.core.expressions.propertyTesters">
+         <propertyTester
+               class="com.kizoom.plugin.functest.FunctestPropertyTester"
+               id="com.kizoom.plugin.functest.FunctestLaunchPropertyTester"
+               namespace="com.kizoom.plugin.functest"
+               properties="isFunctest,canLaunchAsFunctest"
+               type="org.eclipse.core.runtime.IAdaptable">
+         </propertyTester>
+      </extension>
+      <extension
+            point="com.kizoom.plugin.kizoomMenu">
+         <factory
+               class="com.kizoom.plugin.functest.actions.FunctestProjectMenuCreator">
+         </factory>
+      </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               commandId="com.kizoom.plugin.functest.launch.shortcut.run"
+               contextId="org.eclipse.ui.contexts.window"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M2+M3+X F">
+         </key>
+         <key
+               contextId="org.eclipse.ui.contexts.window"
+               platform="carbon"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M2+M3+X F">
+         </key>
+         <key
+               commandId="com.kizoom.plugin.functest.launch.shortcut.run"
+               contextId="org.eclipse.ui.contexts.window"
+               platform="carbon"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M1+M3+X F">
+         </key>
+         <key
+               commandId="com.kizoom.plugin.functest.launch.shortcut.debug"
+               contextId="org.eclipse.ui.contexts.window"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M2+M3+D F">
+         </key>
+         <key
+               contextId="org.eclipse.ui.contexts.window"
+               platform="carbon"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M2+M3+D F">
+         </key>
+         <key
+               commandId="com.kizoom.plugin.functest.launch.shortcut.debug"
+               contextId="org.eclipse.ui.contexts.window"
+               platform="carbon"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M1+M3+M4+D F">
+         </key>
+      </extension>
+      <extension
+            point="org.eclipse.ui.commands">
+         <command
+               categoryId="org.eclipse.debug.ui.category.run"
+               description="Run Functional Test"
+               id="com.kizoom.plugin.functest.launch.shortcut.run"
+               name="Run Functional Test">
+         </command>
+         <command
+               categoryId="org.eclipse.debug.ui.category.run"
+               description="Debug Functional Test"
+               id="com.kizoom.plugin.functest.launch.shortcut.debug"
+               name="Debug Functional Test">
+         </command>
+         <command
+            name="Rerun Functional Tests"
+            description="Rerun Functional Tests"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="com.kizoom.plugin.functest.launch.shortcut.rerunLast">
+         </command>
+         <command
+            name="Rerun Functional Tests - Failures Only"
+            description="Rerun Functional Tests - Failures Only"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="com.kizoom.plugin.functest.launch.shortcut.rerunFailed">
+         </command>
+         <command
+               categoryId="com.kizoom.plugin"
+               defaultHandler="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               description="Run Staging"
+               id="com.kizoom.plugin.functest.RunFunctestStaging"
+               name="Run Staging">
+         </command>    
+         <command
+               categoryId="com.kizoom.plugin"
+               defaultHandler="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               description="Run Production"
+               id="com.kizoom.plugin.functest.RunFunctestProduction"
+               name="Run Production">
+         </command>
+         <command
+               categoryId="com.kizoom.plugin"
+               defaultHandler="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               description="Run Local"
+               id="com.kizoom.plugin.functest.RunFunctestLocal"
+               name="Run Local">
+         </command>       
+      </extension>
+      <extension
+            point="org.eclipse.ui.commandImages">
+         <image
+               commandId="com.kizoom.plugin.functest.RunFunctestProduction"
+               disabledIcon="icons/full/dcl16/run_prod.png"
+               icon="icons/full/ecl16/run_prod.png">
+         </image>
+         <image
+               commandId="com.kizoom.plugin.functest.RunFunctestStaging"
+               disabledIcon="icons/full/dcl16/run_tst.png"
+               icon="icons/full/ecl16/run_tst.png">
+         </image>
+         <image
+               commandId="com.kizoom.plugin.functest.RunFunctestLocal"
+               disabledIcon="icons/full/dcl16/run_dev.png"
+               icon="icons/full/ecl16/run_dev.png">
+         </image>
+      </extension>
+      <extension
+            point="org.eclipse.ui.menus">
+         <menuContribution
+               locationURI="toolbar:org.eclipse.ui.main.toolbar">
+            <toolbar
+                  id="com.kizoom.plugin.functest.toolbar">
+               <command
+                     commandId="com.kizoom.plugin.functest.RunFunctestLocal"
+                     disabledIcon="icons/full/dcl16/run_dev.png"
+                     icon="icons/full/ecl16/run_dev.png"
+                     label="Run Local"
+                     style="push"
+                     tooltip="Run workspace functional tests against local server">
+               </command>
+               <command
+                     commandId="com.kizoom.plugin.functest.RunFunctestStaging"
+                     disabledIcon="icons/full/dcl16/run_tst.png"
+                     icon="icons/full/ecl16/run_tst.png"
+                     label="Run Staging"
+                     style="push"
+                     tooltip="Run workspace functional tests against staging server">
+               </command>
+               <command
+                     commandId="com.kizoom.plugin.functest.RunFunctestProduction"
+                     disabledIcon="icons/full/dcl16/run_prod.png"
+                     icon="icons/full/ecl16/run_prod.png"
+                     label="Run Production"
+                     style="push"
+                     tooltip="Run workspace functional tests against production server">
+               </command>
+            </toolbar>
+         </menuContribution>
+         <menuContribution
+               locationURI="menu:com.kizoom.plugin.menu">
+            <separator
+                  name="com.kizoom.plugin.functest.menu.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="com.kizoom.plugin.functest.RunFunctestLocal"
+                  disabledIcon="icons/full/dcl16/run_dev.png"
+                  icon="icons/full/ecl16/run_dev.png"
+                  label="Run Local"
+                  style="push"
+                  tooltip="Run workspace functional tests against local server">
+            </command>
+            <command
+                  commandId="com.kizoom.plugin.functest.RunFunctestStaging"
+                  disabledIcon="icons/full/dcl16/run_tst.png"
+                  icon="icons/full/ecl16/run_tst.png"
+                  label="Run Staging"
+                  style="push"
+                  tooltip="Run workspace functional tests against staging server">
+            </command>
+            <command
+                  commandId="com.kizoom.plugin.functest.RunFunctestProduction"
+                  disabledIcon="icons/full/dcl16/run_prod.png"
+                  icon="icons/full/ecl16/run_prod.png"
+                  label="Run Production"
+                  style="push"
+                  tooltip="Run workspace functional tests against production server">
+            </command>
+            <separator
+                  name="com.kizoom.plugin.functest.menu.separator2"
+                  visible="true">
+            </separator>
+         </menuContribution>
+      </extension>
+      <extension
+            point="org.eclipse.ui.handlers">
+         <handler
+               class="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               commandId="com.kizoom.plugin.functest.RunFunctestLocal">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <or>
+                     <equals
+                           value="org.eclipse.jdt.ui.JavaPerspective">
+                     </equals>
+                     <equals
+                           value="org.eclipse.debug.ui.DebugPerspective">
+                     </equals>
+                  </or>
+               </with></activeWhen>
+         </handler>
+         <handler
+               class="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               commandId="com.kizoom.plugin.functest.RunFunctestStaging">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <or>
+                     <equals
+                           value="org.eclipse.jdt.ui.JavaPerspective">
+                     </equals>
+                     <equals
+                           value="org.eclipse.debug.ui.DebugPerspective">
+                     </equals></or>
+               </with>
+            </activeWhen>
+         </handler>
+         <handler
+               class="com.kizoom.plugin.functest.actions.RunFunctestsAction"
+               commandId="com.kizoom.plugin.functest.RunFunctestProduction">
+            <activeWhen>
+               <with
+                     variable="activeWorkbenchWindow.activePerspective">
+                  <or>
+                     <equals
+                           value="org.eclipse.jdt.ui.JavaPerspective">
+                     </equals>
+                     <equals
+                           value="org.eclipse.debug.ui.DebugPerspective">
+                     </equals>
+                  </or>
+               </with>
+            </activeWhen>
+         </handler>
+      </extension>
+      <extension
+            point="org.eclipse.ui.propertyPages">
+         <page
+               class="com.kizoom.plugin.functest.properties.FunctestPropertyPage"
+               id="com.kizoom.plugin.functest.properties.samplePropertyPage"
+               name="Functional Tests"
+               nameFilter="*"
+               objectClass="org.eclipse.jdt.core.IJavaProject">
+            <enabledWhen>
+               <and>
+                  <test
+                        property="projectNature"
+                        value="com.kizoom.plugin.functest.nature">
+                  </test>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                  </adapt>
+               </and>
+            </enabledWhen>
+         </page>
+      </extension>
+</plugin>
