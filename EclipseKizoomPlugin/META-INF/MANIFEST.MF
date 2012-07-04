@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Kizoom Core Plug-in
+Bundle-SymbolicName: com.kizoom.plugin;singleton:=true
+Bundle-Version: 1.0.4
+Bundle-Activator: com.kizoom.plugin.KizoomPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime;bundle-version="3.4.0",
+ org.eclipse.jdt.ui;bundle-version="3.4.0",
+ org.eclipse.debug.ui;bundle-version="3.4.0",
+ org.eclipse.search;bundle-version="3.4.1"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .,
+ $nl$/
+Bundle-Vendor: Kizoom
+Bundle-ActivationPolicy: lazy
+Export-Package: com.kizoom.plugin;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils",
+ com.kizoom.plugin.actions;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils",
+ com.kizoom.plugin.nature;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils",
+ com.kizoom.plugin.preferences;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils",
+ com.kizoom.plugin.template;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils",
+ com.kizoom.plugin.ui;x-friends:="com.kizoom.plugin.functest,com.kizoom.plugin.wildebeest,com.kizoom.plugin.utils"
