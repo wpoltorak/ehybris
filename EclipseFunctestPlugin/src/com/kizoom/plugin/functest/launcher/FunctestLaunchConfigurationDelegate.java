@@ -293,7 +293,7 @@ public class FunctestLaunchConfigurationDelegate extends AbstractJavaLaunchConfi
 			collectExecutionArguments(configuration, vmArguments, programArguments);
 
 			// VM-specific attributes
-			Map<String, String[]> vmAttributesMap = getVMSpecificAttributesMap(configuration);
+			Map<String, Object> vmAttributesMap = getVMSpecificAttributesMap(configuration);
 
 			// Classpath
 			String[] classpath = getClasspath(configuration);

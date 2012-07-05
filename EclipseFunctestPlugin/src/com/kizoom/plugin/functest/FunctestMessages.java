@@ -214,5 +214,5 @@ public final class FunctestMessages extends NLS {
 	public static String CompareResultsAction_tooltip;
 
 	public static String TestSelectionElementsLabelProvider_testElementName_projectName;
-
+	public static String TestSearchEngine_message_searching;
 }

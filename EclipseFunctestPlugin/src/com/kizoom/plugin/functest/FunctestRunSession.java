@@ -225,6 +225,10 @@ public class FunctestRunSession implements ITestRunSession {
 		return ProgressState.COMPLETED;
 	}
 
+	public IJavaProject getLaunchedProject() {
+		return null;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 

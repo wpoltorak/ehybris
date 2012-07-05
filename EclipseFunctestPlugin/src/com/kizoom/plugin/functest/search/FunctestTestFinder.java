@@ -19,6 +19,7 @@ import org.eclipse.jdt.internal.junit.ui.JUnitMessages;
 import org.eclipse.jdt.internal.junit.util.TestSearchEngine;
 
 import com.kizoom.plugin.functest.FunctestManager;
+import com.kizoom.plugin.functest.FunctestMessages;
 
 public class FunctestTestFinder implements ITestFinder {
 
@@ -30,7 +31,7 @@ public class FunctestTestFinder implements ITestFinder {
 		if (pm == null)
 			pm = new NullProgressMonitor();
 
-		pm.beginTask(JUnitMessages.TestSearchEngine_message_searching, 10);
+		pm.beginTask(FunctestMessages.TestSearchEngine_message_searching, 10);
 		try {
 			if (element instanceof IType) {
 				if (isTest((IType) element)) {

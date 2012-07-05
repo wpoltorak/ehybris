@@ -12,16 +12,16 @@ import org.eclipse.swt.widgets.Label;
 public class SWTFactory {
 
 	public static Button createPushButton(Composite parent, String label, Image image) {
-		return org.eclipse.jdt.internal.debug.ui.SWTFactory.createPushButton(parent, label, image);
+		return org.eclipse.debug.internal.ui.SWTFactory.createPushButton(parent, label, image);
 	}
 
 	public static Group createGroup(Composite parent, String text, int columns, int hspan, int fill) {
-		return org.eclipse.jdt.internal.debug.ui.SWTFactory.createGroup(parent, text, columns, hspan, fill);
+		return org.eclipse.debug.internal.ui.SWTFactory.createGroup(parent, text, columns, hspan, fill);
 	}
 
 	public static Composite createComposite(Composite parent, Font font, int columns, int hspan, int fill,
 			int marginwidth, int marginheight) {
-		return org.eclipse.jdt.internal.debug.ui.SWTFactory.createComposite(parent, font, columns, hspan, fill,
+		return org.eclipse.debug.internal.ui.SWTFactory.createComposite(parent, font, columns, hspan, fill,
 				marginwidth, marginheight);
 	}
 
