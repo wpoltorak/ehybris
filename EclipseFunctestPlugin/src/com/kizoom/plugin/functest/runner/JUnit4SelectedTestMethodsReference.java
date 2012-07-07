@@ -3,21 +3,30 @@ package com.kizoom.plugin.functest.runner;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.internal.junit.runner.IStopListener;
 import org.eclipse.jdt.internal.junit.runner.ITestIdentifier;
+import org.eclipse.jdt.internal.junit.runner.ITestReference;
 import org.eclipse.jdt.internal.junit.runner.IVisitsTestTrees;
+import org.eclipse.jdt.internal.junit.runner.TestExecution;
 import org.eclipse.jdt.internal.junit4.runner.JUnit4Identifier;
+import org.eclipse.jdt.internal.junit4.runner.JUnit4TestListener;
 import org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference;
 import org.junit.runner.Description;
 import org.junit.runner.Request;
+import org.junit.runner.Result;
+import org.junit.runner.Runner;
 import org.junit.runner.manipulation.Filter;
+import org.junit.runner.notification.RunListener;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runner.notification.StoppedByUserException;
 
 @SuppressWarnings("restriction")
-public class JUnit4SelectedTestMethodsReference extends JUnit4TestReference {
+public class JUnit4SelectedTestMethodsReference implements ITestReference {
 
 	private final Description fDescription;
+	private Runner fRunner;
 
 	public JUnit4SelectedTestMethodsReference(Class<?> clazz, List<String> methodNames) {
-		super(null);
 		if (methodNames.size() <= 1)
 			throw new IllegalArgumentException("I expect more than one test method to run");
 
@@ -67,6 +76,30 @@ public class JUnit4SelectedTestMethodsReference extends JUnit4TestReference {
 	public ITestIdentifier getIdentifier() {
 		return new JUnit4Identifier(fDescription);
 	}
+	
+	public void run(TestExecution execution) {
+		final RunNotifier notifier= new RunNotifier();
+		notifier.addListener(new JUnit4TestListener(execution.getListener()));
+		execution.addStopListener(new IStopListener() {
+			public void stop() {
+				notifier.pleaseStop();
+			}
+		});
+
+		Result result= new Result();
+		RunListener listener= result.createListener();
+		notifier.addListener(listener);
+		try {
+			notifier.fireTestRunStarted(fRunner.getDescription());
+			fRunner.run(notifier);
+			notifier.fireTestRunFinished(result);
+		} catch (StoppedByUserException e) {
+			// not interesting, see https://bugs.eclipse.org/329498
+		} finally {
+			notifier.removeListener(listener);
+		}
+	}
+
 
 	class MethodFilter extends Filter {
 		private final List<Description> methods;

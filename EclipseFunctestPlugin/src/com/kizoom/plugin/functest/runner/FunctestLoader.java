@@ -214,10 +214,10 @@ public class FunctestLoader implements IFunctestLoader {
 		if (clazz == null)
 			return null;
 		if (testNames == null)
-			return new JUnit4TestClassReference(clazz);
+			return new JUnit4TestClassReference(clazz, null);
 		// TODO: tylko jeden test z listy odpala sie w junit4
 		else if (testNames.size() == 1)
-			return new JUnit4TestMethodReference(clazz, testNames.get(0));
+			return new JUnit4TestMethodReference(clazz, testNames.get(0), null);
 		else
 			return new JUnit4SelectedTestMethodsReference(clazz, testNames);
 	}
