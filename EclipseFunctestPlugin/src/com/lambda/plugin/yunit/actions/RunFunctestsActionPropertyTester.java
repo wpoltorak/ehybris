@@ -3,7 +3,7 @@ package com.lambda.plugin.yunit.actions;
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.jface.viewers.ISelection;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 public class RunFunctestsActionPropertyTester extends PropertyTester {
 
@@ -21,7 +21,7 @@ public class RunFunctestsActionPropertyTester extends PropertyTester {
 
 	private boolean functestProjectsExistsInWorkspace() {
 		try {
-			boolean noFunctest = FunctestPlugin.getDefault()
+			boolean noFunctest = YPlugin.getDefault()
 					.getFunctestProjects().isEmpty();
 			return !noFunctest;
 		} catch (Exception e) {

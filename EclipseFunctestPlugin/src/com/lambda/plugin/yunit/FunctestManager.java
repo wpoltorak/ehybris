@@ -13,97 +13,99 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 
-import com.kizoom.plugin.nature.KizoomNatureManager;
+import com.lambda.plugin.YNature;
+import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.yunit.actions.RunFunctestsAction;
 import com.lambda.plugin.yunit.preferences.PreferenceConstants;
 
-public class FunctestManager extends KizoomNatureManager implements IFunctestManager {
+public class FunctestManager extends YNatureManager implements IFunctestManager {
 
-	public final static String TEST_SUPERCLASS_NAME = "junit.framework.TestCase"; //$NON-NLS-1$
-	public final static String TEST_INTERFACE_NAME = "junit.framework.Test"; //$NON-NLS-1$
+    public final static String TEST_SUPERCLASS_NAME = "junit.framework.TestCase"; //$NON-NLS-1$
+    public final static String TEST_INTERFACE_NAME = "junit.framework.Test"; //$NON-NLS-1$
 
-	public final static String JUNIT4_ANNOTATION_NAME = "org.junit.Test"; //$NON-NLS-1$
-	public static final String SIMPLE_TEST_INTERFACE_NAME = "Test"; //$NON-NLS-1$
+    public final static String JUNIT4_ANNOTATION_NAME = "org.junit.Test"; //$NON-NLS-1$
+    public static final String SIMPLE_TEST_INTERFACE_NAME = "Test"; //$NON-NLS-1$
 
-	private FunctestRunListener listener = new FunctestRunListener();
-	private ListenerList fFunctestRunListeners;
+    private final FunctestRunListener listener = new FunctestRunListener();
+    private final ListenerList fFunctestRunListeners;
 
-	public FunctestManager() {
-		fFunctestRunListeners = new ListenerList();
-	}
+    public FunctestManager() {
+        fFunctestRunListeners = new ListenerList();
+    }
 
-	public void addFunctestNature(IProject project, IProgressMonitor monitor) throws CoreException {
-		addNature(FunctestNature.NATURE_ID, project, monitor);
-		fireNotify();
-	}
+    public void addFunctestNature(final IProject project, final IProgressMonitor monitor) throws CoreException {
+        addNature(YNature.NATURE_ID, project, monitor);
+        fireNotify();
+    }
 
-	public boolean hasFunctestNature(IProject project) {
-		return hasNature(FunctestNature.NATURE_ID, project);
-	}
+    public boolean hasFunctestNature(final IProject project) {
+        return hasNature(YNature.NATURE_ID, project);
+    }
 
-	public void removeFunctestNature(IProject project, IProgressMonitor monitor) throws CoreException {
-		removeNature(FunctestNature.NATURE_ID, project, monitor);
-		fireNotify();
-	}
-	
-	private void fireNotify(){
-		boolean enabled = false;
-		try {
-			enabled = FunctestPlugin.getDefault().getFunctestProjects().size() > 0;
-		} catch (Exception e1) {
-		}
-		fireNotify(new EvaluationContext(null, new Boolean(enabled)));
-	}
+    public void removeFunctestNature(final IProject project, final IProgressMonitor monitor) throws CoreException {
+        removeNature(YNature.NATURE_ID, project, monitor);
+        fireNotify();
+    }
 
-	private void fireNotify(IEvaluationContext context){
-		ICommandService service= (ICommandService)PlatformUI.getWorkbench().getAdapter(ICommandService.class);
-		service.getCommand(RunFunctestsAction.LOCAL).setEnabled(context);
-		service.getCommand(RunFunctestsAction.PRODUCTION).setEnabled(context);
-		service.getCommand(RunFunctestsAction.STAGING).setEnabled(context);
-	}
-	
-	public void initialize() {
-		fFunctestRunListeners.add(listener);
-		boolean persistResults = persistFunctestRunResults();
-		if (persistResults) {
+    private void fireNotify() {
+        boolean enabled = false;
+        try {
+            enabled = YPlugin.getDefault().getFunctestProjects().size() > 0;
+        } catch (final Exception e1) {
+        }
+        fireNotify(new EvaluationContext(null, new Boolean(enabled)));
+    }
 
-		}
+    private void fireNotify(final IEvaluationContext context) {
+        final ICommandService service = (ICommandService) PlatformUI.getWorkbench().getAdapter(ICommandService.class);
+        service.getCommand(RunFunctestsAction.LOCAL).setEnabled(context);
+        service.getCommand(RunFunctestsAction.PRODUCTION).setEnabled(context);
+        service.getCommand(RunFunctestsAction.STAGING).setEnabled(context);
+    }
 
-		// IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		// for (IProject project : workspace.getRoot().getProjects()) {
-		// if (project.isOpen() && hasEarNature(project) && !containsEar(project))
-		// createEar(project);
-		// }
-		// earListener = new EarChangeListener();
-		// workspace.addResourceChangeListener(earListener);
-		fireNotify();
-	}
+    public void initialize() {
+        fFunctestRunListeners.add(listener);
+        final boolean persistResults = persistFunctestRunResults();
+        if (persistResults) {
 
-	public void dispose() {
-		fFunctestRunListeners.remove(listener);
-		boolean persistResults = persistFunctestRunResults();
-		if (persistResults) {
+        }
 
-		}
+        // IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        // for (IProject project : workspace.getRoot().getProjects()) {
+        // if (project.isOpen() && hasEarNature(project) && !containsEar(project))
+        // createEar(project);
+        // }
+        // earListener = new EarChangeListener();
+        // workspace.addResourceChangeListener(earListener);
+        fireNotify();
+    }
 
-		// IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		// workspace.removeResourceChangeListener(earListener);
-		// root.clear();
-		// earListener = null;
-	}
+    public void dispose() {
+        fFunctestRunListeners.remove(listener);
+        final boolean persistResults = persistFunctestRunResults();
+        if (persistResults) {
 
-	private boolean persistFunctestRunResults() {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
-		boolean persistResults = store.getBoolean(PreferenceConstants.P_PERSIST_FUNCTEST_RESULTS);
-		return persistResults;
-	}
+        }
 
-	public Map<String, List<String>> getFailedTests() {
-		return listener.getFailedTests();
+        // IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        // workspace.removeResourceChangeListener(earListener);
+        // root.clear();
+        // earListener = null;
+    }
 
-	}
+    private boolean persistFunctestRunResults() {
+        final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
+        final boolean persistResults = store.getBoolean(PreferenceConstants.P_PERSIST_FUNCTEST_RESULTS);
+        return persistResults;
+    }
 
-	public Object[] getFunctestRunListeners() {
-		return fFunctestRunListeners.getListeners();
-	}
+    public Map<String, List<String>> getFailedTests() {
+        return listener.getFailedTests();
+
+    }
+
+    public Object[] getFunctestRunListeners() {
+        return fFunctestRunListeners.getListeners();
+    }
 }

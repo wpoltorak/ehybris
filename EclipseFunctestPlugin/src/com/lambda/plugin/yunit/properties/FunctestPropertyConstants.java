@@ -3,7 +3,7 @@ package com.lambda.plugin.yunit.properties;
 import java.util.Collections;
 import java.util.List;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 public class FunctestPropertyConstants {
 
@@ -14,13 +14,13 @@ public class FunctestPropertyConstants {
 	 * List of active test filters. A String containing a comma separated list of
 	 * fully qualified type names/patterns.
 	 */
-	public static final String PREF_ACTIVE_TEST_FILTERS_LIST = FunctestPlugin.PLUGIN_ID + ".active_test_filters"; //$NON-NLS-1$
+	public static final String PREF_ACTIVE_TEST_FILTERS_LIST = YPlugin.PLUGIN_ID + ".active_test_filters"; //$NON-NLS-1$
 
 	/**
 	 * List of inactive test filters. A String containing a comma separated list
 	 * of fully qualified type names/patterns.
 	 */
-	public static final String PREF_INACTIVE_TEST_FILTERS_LIST = FunctestPlugin.PLUGIN_ID + ".inactive_test_filters"; //$NON-NLS-1$	
+	public static final String PREF_INACTIVE_TEST_FILTERS_LIST = YPlugin.PLUGIN_ID + ".inactive_test_filters"; //$NON-NLS-1$	
 
 	
 	public static List<String> createDefaultTestFiltersList() {

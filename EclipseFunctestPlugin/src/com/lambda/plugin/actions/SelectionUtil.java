@@ -1,4 +1,4 @@
-package com.lambda.plugin.yunit.actions;
+package com.lambda.plugin.actions;
 
 import java.util.Iterator;
 
@@ -8,14 +8,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
-import com.lambda.plugin.YNature;
-
 class SelectionUtil {
 
 	public static final int UNSUPPORTED = 0;
 	public static final int PROJECT_WITHOUT_NATURES = 1;
-	public static final int PROJECT_WITH_FUNCTEST_NATURE = 2;
-	public static final int PROJECT_WITH_JAVA_NATURE = 4;
+	public static final int PROJECT_WITH_JAVA_NATURE = 2;
 
 	public static int getSelectionType(IStructuredSelection selection) {
 		int type = UNSUPPORTED;
@@ -37,9 +34,7 @@ class SelectionUtil {
 		if (project != null) {
 			try {
 				if (project.isOpen()) {
-					if (project.hasNature(YNature.NATURE_ID)) {
-						return PROJECT_WITH_FUNCTEST_NATURE;
-					} else if (project.hasNature("org.eclipse.jdt.core.javanature")) {
+					if (project.hasNature("org.eclipse.jdt.core.javanature")) {
 						return PROJECT_WITH_JAVA_NATURE;
 					}
 				}

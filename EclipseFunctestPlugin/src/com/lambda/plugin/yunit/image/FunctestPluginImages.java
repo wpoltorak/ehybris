@@ -9,7 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 
 
@@ -42,7 +42,7 @@ public class FunctestPluginImages {
 
 	public static ImageDescriptor createImageDescriptor(String prefix, String name) {
 		IPath path = ICONS_PATH.append(prefix).append(name);
-		Bundle bundle = FunctestPlugin.getDefault().getBundle();
+		Bundle bundle = YPlugin.getDefault().getBundle();
 		URL url = FileLocator.find(bundle, path, null);
 		if (url != null) {
 			return ImageDescriptor.createFromURL(url);
@@ -52,7 +52,7 @@ public class FunctestPluginImages {
 	
 	public static Image createImage(String prefix, String name) {
 		IPath path = ICONS_PATH.append(prefix).append(name);
-		Bundle bundle = FunctestPlugin.getDefault().getBundle();
+		Bundle bundle = YPlugin.getDefault().getBundle();
 		URL url = FileLocator.find(bundle, path, null);
 		if (url != null) {
 			return ImageDescriptor.createFromURL(url).createImage();

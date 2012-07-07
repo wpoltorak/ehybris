@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.eclipse.jface.action.IAction;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 public class RerunFailedFunctestsAction extends RunFunctestsAction {
 
@@ -14,7 +14,7 @@ public class RerunFailedFunctestsAction extends RunFunctestsAction {
 	}
 
 	public void run(IAction action) {
-		Map<String, List<String>> failures = FunctestPlugin.getDefault().getFunctestManager().getFailedTests();
+		Map<String, List<String>> failures = YPlugin.getDefault().getFunctestManager().getFailedTests();
 		if (failures.isEmpty())
 			return;
 

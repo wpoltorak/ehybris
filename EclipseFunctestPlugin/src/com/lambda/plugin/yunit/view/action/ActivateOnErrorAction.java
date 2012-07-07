@@ -4,8 +4,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 import com.lambda.plugin.yunit.preferences.FunctestPreferencesConstants;
 import com.lambda.plugin.yunit.view.FunctestView;
 
@@ -21,7 +21,7 @@ public class ActivateOnErrorAction extends Action {
 	}
 
 	public void update() {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		setChecked(store.getBoolean(FunctestPreferencesConstants.SHOW_ON_ERROR_ONLY));
 	}
 
@@ -29,7 +29,7 @@ public class ActivateOnErrorAction extends Action {
 	public void run() {
 		boolean checked = isChecked();
 		view.setShowOnErrorOnly(checked);
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		store.setValue(FunctestPreferencesConstants.SHOW_ON_ERROR_ONLY, checked);
 	}
 }

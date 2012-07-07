@@ -14,6 +14,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.junit.util.TestSearchEngine;
 
+import com.lambda.plugin.YPlugin;
+
 public class FunctestPropertyTester extends PropertyTester {
 
 	public static final String PROPERTY_IS_TEST = "isFunctest"; //$NON-NLS-1$
@@ -30,7 +32,7 @@ public class FunctestPropertyTester extends PropertyTester {
 		if (element == null)
 			return false;
 		
-		boolean hasFunctestNature = FunctestPlugin.getDefault().getFunctestManager().hasFunctestNature(
+		boolean hasFunctestNature = YPlugin.getDefault().getFunctestManager().hasFunctestNature(
 				element.getJavaProject().getProject());
 		if (!hasFunctestNature)
 			return false;

@@ -65,9 +65,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 
-import com.kizoom.plugin.ExceptionHandler;
+import com.lambda.plugin.ExceptionHandler;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 
 @SuppressWarnings("restriction")
 public class FunctestPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -302,7 +302,7 @@ public class FunctestPreferencePage extends PreferencePage implements IWorkbench
 	public FunctestPreferencePage() {
 		super();
 		setDescription(FunctestMessages.JUnitPreferencePage_description);
-		setPreferenceStore(FunctestPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
 	}
 
 	@Override
@@ -731,17 +731,17 @@ public class FunctestPreferencePage extends PreferencePage implements IWorkbench
 	}
 
 	public static String[] getFilterPatterns() {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		return FunctestPreferencePage.parseList(store.getString(FunctestPreferencesConstants.PREF_ACTIVE_STACK_FILTERS_LIST));
 	}
 
 	public static boolean getFilterStack() {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		return store.getBoolean(FunctestPreferencesConstants.DO_FILTER_STACK);
 	}
 
 	public static void setFilterStack(boolean filter) {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		store.setValue(FunctestPreferencesConstants.DO_FILTER_STACK, filter);
 	}
 

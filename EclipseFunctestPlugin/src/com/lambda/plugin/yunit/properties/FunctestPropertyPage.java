@@ -67,9 +67,9 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 
-import com.kizoom.plugin.ExceptionHandler;
+import com.lambda.plugin.ExceptionHandler;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 
 @SuppressWarnings("restriction")
 public class FunctestPropertyPage extends PropertyPage {
@@ -310,7 +310,7 @@ public class FunctestPropertyPage extends PropertyPage {
 	public FunctestPropertyPage() {
 		super();
 		setDescription(FunctestMessages.JUnitPropertyPage_description);
-		setPreferenceStore(FunctestPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
 	}
 
 	@Override

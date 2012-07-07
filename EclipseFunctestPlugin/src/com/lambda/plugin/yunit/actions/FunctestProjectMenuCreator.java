@@ -2,7 +2,7 @@ package com.lambda.plugin.yunit.actions;
 
 import org.eclipse.jface.action.IMenuManager;
 
-import com.kizoom.plugin.actions.AbstractActionMenuCreator;
+import com.lambda.plugin.actions.AbstractActionMenuCreator;
 
 public class FunctestProjectMenuCreator extends AbstractActionMenuCreator {
 

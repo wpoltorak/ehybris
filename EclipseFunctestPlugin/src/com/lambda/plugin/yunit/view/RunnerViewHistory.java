@@ -17,8 +17,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.PageSwitcher;
 
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 import com.lambda.plugin.yunit.FunctestRunSession;
 import com.lambda.plugin.yunit.preferences.FunctestPreferencesConstants;
 import com.lambda.plugin.yunit.view.action.ClearAction;
@@ -69,7 +69,7 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public List<FunctestRunSession> getHistoryEntries() {
-		return FunctestPlugin.getModel().getFunctestRunSessions();
+		return YPlugin.getModel().getFunctestRunSessions();
 	}
 
 	@Override
@@ -88,10 +88,10 @@ public class RunnerViewHistory extends ViewHistory {
 	public void setHistoryEntries(List remainingEntries, Object activeEntry) {
 		view.setActiveTestRunSession((FunctestRunSession) activeEntry);
 
-		List<FunctestRunSession> testRunSessions = FunctestPlugin.getModel().getFunctestRunSessions();
+		List<FunctestRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();
 		testRunSessions.removeAll(remainingEntries);
 		for (Iterator<FunctestRunSession> iter = testRunSessions.iterator(); iter.hasNext();) {
-			FunctestPlugin.getModel().removeFunctestRunSession(iter.next());
+			YPlugin.getModel().removeFunctestRunSession(iter.next());
 		}
 		for (Iterator<FunctestRunSession> iter = remainingEntries.iterator(); iter.hasNext();) {
 			FunctestRunSession remaining = iter.next();
@@ -143,13 +143,13 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public int getMaxEntries() {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		return store.getInt(FunctestPreferencesConstants.MAX_TEST_RUNS);
 	}
 
 	@Override
 	public void setMaxEntries(int maxEntries) {
-		IPreferenceStore store = FunctestPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
 		store.setValue(FunctestPreferencesConstants.MAX_TEST_RUNS, maxEntries);
 	}
 

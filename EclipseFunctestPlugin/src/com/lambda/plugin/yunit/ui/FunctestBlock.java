@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 public abstract class FunctestBlock {
 
-	protected static IStatus OK_STATUS = new Status(IStatus.OK, FunctestPlugin.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
+	protected static IStatus OK_STATUS = new Status(IStatus.OK, YPlugin.PLUGIN_ID, 0, "", null); //$NON-NLS-1$
 	private ListenerList fListeners = new ListenerList();
 	private IStatus fStatus = OK_STATUS;
 
@@ -33,7 +33,7 @@ public abstract class FunctestBlock {
 	}
 
 	protected void setError(String message) {
-		setStatus(new Status(IStatus.ERROR, FunctestPlugin.PLUGIN_ID, IJavaDebugUIConstants.INTERNAL_ERROR, message, null));
+		setStatus(new Status(IStatus.ERROR, YPlugin.PLUGIN_ID, IJavaDebugUIConstants.INTERNAL_ERROR, message, null));
 	}
 
 	public IStatus getStatus() {

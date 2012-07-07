@@ -14,8 +14,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-import com.kizoom.plugin.ExceptionHandler;
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.ExceptionHandler;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.launcher.FunctestLaunchShortcut;
 import com.lambda.plugin.yunit.ui.ServerBlock;
 
@@ -32,7 +32,7 @@ public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWin
 	public RunFunctestsAction() {
 		delegate = new FunctestLaunchShortcut();
 		try {
-			setBaseEnabled(FunctestPlugin.getDefault().getFunctestProjects().size() > 0);
+			setBaseEnabled(YPlugin.getDefault().getFunctestProjects().size() > 0);
 		} catch (Exception e1) {
 			setBaseEnabled(false);
 		}
@@ -51,7 +51,7 @@ public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWin
 		try {
 			ITestKind kind = TestKindRegistry.getDefault().getKind(TestKindRegistry.JUNIT3_TEST_KIND_ID);
 			String serverType = getServerType(id);
-			delegate.launch(new StructuredSelection(FunctestPlugin.getDefault().getFunctestProjects()), "run", serverType);
+			delegate.launch(new StructuredSelection(YPlugin.getDefault().getFunctestProjects()), "run", serverType);
 		} catch (CoreException e) {
 			ExceptionHandler.handle(e, getWindow().getShell(), "Error", "Error occured. See details for more information.");
 		} catch (InvocationTargetException e) {

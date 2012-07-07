@@ -55,7 +55,7 @@
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="com.lambda.plugin.yunit.FunctestNature">
+               class="com.lambda.plugin.YNature">
          </run>
       </runtime>
    </extension>

@@ -11,7 +11,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.IFunctestManager;
 
 public class ToggleFunctestNatureAction implements IObjectActionDelegate {
@@ -21,7 +21,7 @@ public class ToggleFunctestNatureAction implements IObjectActionDelegate {
 	private IFunctestManager functestManager;
 
 	public ToggleFunctestNatureAction() {
-		functestManager = FunctestPlugin.getDefault().getFunctestManager();
+		functestManager = YPlugin.getDefault().getFunctestManager();
 	}
 
 	/*

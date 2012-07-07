@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 import com.lambda.plugin.yunit.FunctestRunSession;
 import com.lambda.plugin.yunit.view.RunnerViewHistory;
 
@@ -18,7 +18,7 @@ public class ClearAction extends Action {
 		setText(FunctestMessages.FunctestView_clear_history_label);
 
 		boolean enabled = false;
-		List<FunctestRunSession> testRunSessions = FunctestPlugin.getModel().getFunctestRunSessions();
+		List<FunctestRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();
 		for (Iterator<FunctestRunSession> iter = testRunSessions.iterator(); iter.hasNext();) {
 			FunctestRunSession testRunSession = iter.next();
 			if (!testRunSession.isRunning() && !testRunSession.isStarting()) {
@@ -37,7 +37,7 @@ public class ClearAction extends Action {
 	}
 
 	private List<FunctestRunSession> getRunningSessions() {
-		List<FunctestRunSession> testRunSessions = FunctestPlugin.getModel().getFunctestRunSessions();
+		List<FunctestRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();
 		for (Iterator<FunctestRunSession> iter = testRunSessions.iterator(); iter.hasNext();) {
 			FunctestRunSession testRunSession = iter.next();
 			if (!testRunSession.isRunning() && !testRunSession.isStarting()) {

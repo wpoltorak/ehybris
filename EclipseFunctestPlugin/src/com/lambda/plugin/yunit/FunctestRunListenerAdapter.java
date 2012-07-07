@@ -7,6 +7,8 @@ import org.eclipse.jdt.internal.junit.model.TestElement.Status;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 
+import com.lambda.plugin.YPlugin;
+
 public class FunctestRunListenerAdapter implements ITestSessionListener {
 
 	private final FunctestRunSession fSession;
@@ -16,7 +18,7 @@ public class FunctestRunListenerAdapter implements ITestSessionListener {
 	}
 
 	private Object[] getListeners() {
-		return FunctestPlugin.getDefault().getFunctestManager().getFunctestRunListeners();
+		return YPlugin.getDefault().getFunctestManager().getFunctestRunListeners();
 	}
 
 	private void fireSessionStarted() {

@@ -31,8 +31,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPlugin;
 import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationUtils;
 import com.lambda.plugin.yunit.view.FunctestView;
@@ -140,7 +140,7 @@ public class RerunLastFailedOnlyAction extends Action {
 			}
 			return file.getAbsolutePath();
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, FunctestPlugin.PLUGIN_ID, IStatus.ERROR, "", e)); //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR, YPlugin.PLUGIN_ID, IStatus.ERROR, "", e)); //$NON-NLS-1$
 		}
 	}
 

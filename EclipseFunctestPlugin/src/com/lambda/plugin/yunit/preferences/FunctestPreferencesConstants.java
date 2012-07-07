@@ -3,7 +3,7 @@ package com.lambda.plugin.yunit.preferences;
 import java.util.Arrays;
 import java.util.List;
 
-import com.lambda.plugin.yunit.FunctestPlugin;
+import com.lambda.plugin.YPlugin;
 
 /**
  * Defines constants which are used to refer to values in the plugin's
@@ -11,51 +11,51 @@ import com.lambda.plugin.yunit.FunctestPlugin;
  */
 public class FunctestPreferencesConstants {
 	
-	public static final String DEFAULT_JUNIT_VERSION = FunctestPlugin.PLUGIN_ID + ".default_junit_version"; //$NON-NLS-1$ 
+	public static final String DEFAULT_JUNIT_VERSION = YPlugin.PLUGIN_ID + ".default_junit_version"; //$NON-NLS-1$ 
 	/**
 	 * Boolean preference controlling whether the failure stack should be
 	 * filtered.
 	 */
-	public static final String DO_FILTER_STACK = FunctestPlugin.PLUGIN_ID + ".do_filter_stack"; //$NON-NLS-1$
+	public static final String DO_FILTER_STACK = YPlugin.PLUGIN_ID + ".do_filter_stack"; //$NON-NLS-1$
 
 	/**
 	 * Boolean preference controlling whether the JUnit view should be shown on
 	 * errors only.
 	 */
-	public static final String SHOW_ON_ERROR_ONLY = FunctestPlugin.PLUGIN_ID + ".show_on_error"; //$NON-NLS-1$
+	public static final String SHOW_ON_ERROR_ONLY = YPlugin.PLUGIN_ID + ".show_on_error"; //$NON-NLS-1$
 
 	/**
 	 * Boolean preference controlling whether the JUnit view should be shown on
 	 * errors only.
 	 */
-	public static final String ENABLE_ASSERTIONS = FunctestPlugin.PLUGIN_ID + ".enable_assertions"; //$NON-NLS-1$
+	public static final String ENABLE_ASSERTIONS = YPlugin.PLUGIN_ID + ".enable_assertions"; //$NON-NLS-1$
 
 	/**
 	 * List of active stack filters. A String containing a comma separated list of
 	 * fully qualified type names/patterns.
 	 */
-	public static final String PREF_ACTIVE_STACK_FILTERS_LIST = FunctestPlugin.PLUGIN_ID + ".active_stack_filters"; //$NON-NLS-1$
+	public static final String PREF_ACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".active_stack_filters"; //$NON-NLS-1$
 
 	/**
 	 * List of inactive stack filters. A String containing a comma separated list
 	 * of fully qualified type names/patterns.
 	 */
-	public static final String PREF_INACTIVE_STACK_FILTERS_LIST = FunctestPlugin.PLUGIN_ID + ".inactive_stack_filters"; //$NON-NLS-1$	
+	public static final String PREF_INACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".inactive_stack_filters"; //$NON-NLS-1$	
 	
 	/**
 	 * Maximum number of remembered test runs.
 	 */
-	public static final String MAX_TEST_RUNS = FunctestPlugin.PLUGIN_ID + ".max_test_runs"; //$NON-NLS-1$
+	public static final String MAX_TEST_RUNS = YPlugin.PLUGIN_ID + ".max_test_runs"; //$NON-NLS-1$
 
 	/**
 	 * Javadoc location for JUnit 3
 	 */
-	public static final String JUNIT3_JAVADOC = FunctestPlugin.PLUGIN_ID + ".junit3.javadoclocation"; //$NON-NLS-1$
+	public static final String JUNIT3_JAVADOC = YPlugin.PLUGIN_ID + ".junit3.javadoclocation"; //$NON-NLS-1$
 
 	/**
 	 * Javadoc location for JUnit 4
 	 */
-	public static final String JUNIT4_JAVADOC = FunctestPlugin.PLUGIN_ID + ".junit4.javadoclocation"; //$NON-NLS-1$
+	public static final String JUNIT4_JAVADOC = YPlugin.PLUGIN_ID + ".junit4.javadoclocation"; //$NON-NLS-1$
 
 	private static final String[] fgDefaultFilterPatterns = new String[] { "com.kizoom.functest.avantgo.*", //$NON-NLS-1$
 			"com.kizoom.functest.chtml.*", //$NON-NLS-1$
