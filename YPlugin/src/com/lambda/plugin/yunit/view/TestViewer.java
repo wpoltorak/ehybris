@@ -51,8 +51,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.PageBook;
 
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestRunSession;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.view.action.CopyFailureListAction;
 import com.lambda.plugin.yunit.view.action.OpenTestAction;
 import com.lambda.plugin.yunit.view.action.RerunAction;
@@ -106,8 +106,8 @@ public class TestViewer {
 
 	private class ExpandAllAction extends Action {
 		public ExpandAllAction() {
-			setText(FunctestMessages.ExpandAllAction_text);
-			setToolTipText(FunctestMessages.ExpandAllAction_tooltip);
+			setText(YUnitMessages.ExpandAllAction_text);
+			setToolTipText(YUnitMessages.ExpandAllAction_tooltip);
 		}
 
 		@Override
@@ -118,7 +118,7 @@ public class TestViewer {
 
 	private final FailuresOnlyFilter fFailuresOnlyFilter = new FailuresOnlyFilter();
 
-	private final FunctestView fTestRunnerPart;
+	private final YUnitView fTestRunnerPart;
 	private final Clipboard fClipboard;
 
 	private PageBook fViewerbook;
@@ -134,7 +134,7 @@ public class TestViewer {
 	private boolean fTreeHasFilter;
 	private boolean fTableHasFilter;
 
-	private FunctestRunSession fTestRunSession;
+	private YUnitRunSession fTestRunSession;
 
 	private boolean fTreeNeedsRefresh;
 	private boolean fTableNeedsRefresh;
@@ -144,11 +144,11 @@ public class TestViewer {
 	private LinkedList<TestSuiteElement> fAutoClose;
 	private HashSet fAutoExpand;
 
-	public TestViewer(Composite parent, Clipboard clipboard, FunctestView runner) {
+	public TestViewer(Composite parent, Clipboard clipboard, YUnitView runner) {
 		fTestRunnerPart = runner;
 		fClipboard = clipboard;
 
-		fLayoutMode = FunctestView.LAYOUT_HIERARCHICAL;
+		fLayoutMode = YUnitView.LAYOUT_HIERARCHICAL;
 
 		createTestViewers(parent);
 
@@ -164,14 +164,14 @@ public class TestViewer {
 		fTreeViewer.setUseHashlookup(true);
 		fTreeContentProvider = new TestSessionTreeContentProvider();
 		fTreeViewer.setContentProvider(fTreeContentProvider);
-		fTreeLabelProvider = new TestSessionLabelProvider(fTestRunnerPart, FunctestView.LAYOUT_HIERARCHICAL);
+		fTreeLabelProvider = new TestSessionLabelProvider(fTestRunnerPart, YUnitView.LAYOUT_HIERARCHICAL);
 		fTreeViewer.setLabelProvider(new ColoringLabelProvider(fTreeLabelProvider));
 
 		fTableViewer = new TableViewer(fViewerbook, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
 		fTableViewer.setUseHashlookup(true);
 		fTableContentProvider = new TestSessionTableContentProvider();
 		fTableViewer.setContentProvider(fTableContentProvider);
-		fTableLabelProvider = new TestSessionLabelProvider(fTestRunnerPart, FunctestView.LAYOUT_FLAT);
+		fTableLabelProvider = new TestSessionLabelProvider(fTestRunnerPart, YUnitView.LAYOUT_FLAT);
 		fTableViewer.setLabelProvider(new ColoringLabelProvider(fTableLabelProvider));
 
 		fSelectionProvider = new SelectionProviderMediator(new StructuredViewer[] { fTreeViewer, fTableViewer },
@@ -207,15 +207,15 @@ public class TestViewer {
 			Object[] elements = selection.toArray();
 			List<IJavaElement> elems = findElements(Arrays.asList(elements));
 
-			RerunAction runAction = new RerunAction(FunctestMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
-			RerunAction debugAction = new RerunAction(FunctestMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
+			RerunAction runAction = new RerunAction(YUnitMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
+			RerunAction debugAction = new RerunAction(YUnitMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
 
 			if (!elems.isEmpty()){
 				manager.add(runAction);
 				manager.add(debugAction);
 			}
 
-			if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL) {
+			if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL) {
 				manager.add(new Separator());
 				manager.add(new ExpandAllAction());
 			}
@@ -223,8 +223,8 @@ public class TestViewer {
 			final TestElement testElement = (TestElement) selection.getFirstElement();
 			List<IJavaElement> elems = findElements(new ArrayList<TestElement>(){{add(testElement);}});
 			
-			RerunAction runAction = new RerunAction(FunctestMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
-			RerunAction debugAction = new RerunAction(FunctestMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
+			RerunAction runAction = new RerunAction(YUnitMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
+			RerunAction debugAction = new RerunAction(YUnitMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
 			
 			if (testElement instanceof TestSuiteElement) {
 				manager.add(new OpenTestAction(fTestRunnerPart, testElement.getTestName()));
@@ -241,14 +241,14 @@ public class TestViewer {
 					manager.add(debugAction);
 				}
 			}
-			if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL) {
+			if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL) {
 				manager.add(new Separator());
 				manager.add(new ExpandAllAction());
 			}
 
 		}
 		if (fTestRunSession != null && fTestRunSession.getFailureCount() + fTestRunSession.getErrorCount() > 0) {
-			if (fLayoutMode != FunctestView.LAYOUT_HIERARCHICAL)
+			if (fLayoutMode != YUnitView.LAYOUT_HIERARCHICAL)
 				manager.add(new Separator());
 			manager.add(new CopyFailureListAction(fTestRunnerPart, fClipboard));
 		}
@@ -344,7 +344,7 @@ public class TestViewer {
 		return fViewerbook;
 	}
 
-	public synchronized void registerActiveSession(FunctestRunSession testRunSession) {
+	public synchronized void registerActiveSession(YUnitRunSession testRunSession) {
 		fTestRunSession = testRunSession;
 		registerAutoScrollTarget(null);
 		registerViewersRefresh();
@@ -406,7 +406,7 @@ public class TestViewer {
 			boolean switchLayout = layoutMode != fLayoutMode;
 			if (switchLayout) {
 				selection = (IStructuredSelection) fSelectionProvider.getSelection();
-				if (layoutMode == FunctestView.LAYOUT_HIERARCHICAL) {
+				if (layoutMode == YUnitView.LAYOUT_HIERARCHICAL) {
 					if (fTreeNeedsRefresh) {
 						clearUpdateAndExpansion();
 					}
@@ -452,35 +452,35 @@ public class TestViewer {
 	}
 
 	private boolean getActiveViewerHasFilter() {
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL)
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL)
 			return fTreeHasFilter;
 		else
 			return fTableHasFilter;
 	}
 
 	private void setActiveViewerHasFilter(boolean filter) {
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL)
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL)
 			fTreeHasFilter = filter;
 		else
 			fTableHasFilter = filter;
 	}
 
 	private StructuredViewer getActiveViewer() {
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL)
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL)
 			return fTreeViewer;
 		else
 			return fTableViewer;
 	}
 
 	private boolean getActiveViewerNeedsRefresh() {
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL)
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL)
 			return fTreeNeedsRefresh;
 		else
 			return fTableNeedsRefresh;
 	}
 
 	private void setActiveViewerNeedsRefresh(boolean needsRefresh) {
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL)
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL)
 			fTreeNeedsRefresh = needsRefresh;
 		else
 			fTableNeedsRefresh = needsRefresh;
@@ -606,7 +606,7 @@ public class TestViewer {
 			return;
 		}
 
-		if (fLayoutMode == FunctestView.LAYOUT_FLAT) {
+		if (fLayoutMode == YUnitView.LAYOUT_FLAT) {
 			if (fAutoScrollTarget != null)
 				fTableViewer.reveal(fAutoScrollTarget);
 			return;

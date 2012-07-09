@@ -16,7 +16,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.launcher.FunctestLaunchShortcut;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut;
 import com.lambda.plugin.yunit.ui.ServerBlock;
 
 public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWindowActionDelegate {
@@ -27,10 +27,10 @@ public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWin
 
 	private IWorkbenchWindow window;
 	private ISelection selection;
-	private FunctestLaunchShortcut delegate;
+	private YUnitLaunchShortcut delegate;
 
 	public RunFunctestsAction() {
-		delegate = new FunctestLaunchShortcut();
+		delegate = new YUnitLaunchShortcut();
 		try {
 			setBaseEnabled(YPlugin.getDefault().getFunctestProjects().size() > 0);
 		} catch (Exception e1) {
@@ -91,7 +91,7 @@ public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWin
 		return selection;
 	}
 
-	protected FunctestLaunchShortcut getDelegate() {
+	protected YUnitLaunchShortcut getDelegate() {
 		return delegate;
 	}
 

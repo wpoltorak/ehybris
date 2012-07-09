@@ -9,13 +9,13 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class OpenEditorAtLineAction extends OpenEditorAction {
 
 	private int fLineNumber;
 
-	public OpenEditorAtLineAction(FunctestView testRunner, String className, int line) {
+	public OpenEditorAtLineAction(YUnitView testRunner, String className, int line) {
 		super(testRunner, className);
 		fLineNumber = line;
 	}

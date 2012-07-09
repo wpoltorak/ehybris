@@ -9,7 +9,7 @@
       </category>
       <wizard
             category="com.kizoom.plugin.wizard"
-            class="com.lambda.plugin.yunit.wizard.NewFunctestProjectWizard"
+            class="com.lambda.plugin.yunit.wizard.NewYUnitProjectWizard"
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.kizoom.plugin.functest.wizard.NewFunctestProjectWizard"
@@ -30,7 +30,7 @@
       <view
             allowMultiple="false"
             category="com.kizoom.plugin"
-            class="com.lambda.plugin.yunit.view.FunctestView"
+            class="com.lambda.plugin.yunit.view.YUnitView"
             icon="icons/full/etool16/functest.png"
             id="com.kizoom.plugin.functest.view"
             name="Functest"
@@ -86,7 +86,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="com.kizoom.plugin.preferences.KizoomPreferencePage"
-            class="com.lambda.plugin.yunit.preferences.FunctestPreferencePage"
+            class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             id="com.kizoom.plugin.functest.preferences.FunctestPreferencePage"
             name="Functional Tests">
       </page>
@@ -96,13 +96,13 @@
          name="Kizoom Preferences"
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="com.lambda.plugin.yunit.preferences.FunctestPreferencesInitializer">
+            class="com.lambda.plugin.yunit.preferences.YUnitPreferencesInitializer">
       </initializer>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="com.lambda.plugin.yunit.launcher.FunctestLaunchShortcut"
+            class="com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut"
             icon="icons/full/etool16/run_functest.png"
             id="com.kizoom.plugin.functest.launch.shortcut"
             label="Functional Test"
@@ -136,7 +136,7 @@
       <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationDelegate"
+            delegate="com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationDelegate"
             delegateDescription="Run functional tests "
             delegateName="Functest Launcher"
             id="com.kizoom.plugin.functest.launchconfig"
@@ -149,7 +149,7 @@
       <extension
             point="org.eclipse.debug.ui.launchConfigurationTabGroups">
          <launchConfigurationTabGroup
-               class="com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationTabGroup"
+               class="com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationTabGroup"
                id="com.kizoom.plugin.functest.launchgroup"
                type="com.kizoom.plugin.functest.launchconfig">
             <launchMode
@@ -181,7 +181,7 @@
       <extension
             point="org.eclipse.core.expressions.propertyTesters">
          <propertyTester
-               class="com.lambda.plugin.yunit.FunctestPropertyTester"
+               class="com.lambda.plugin.yunit.YUnitPropertyTester"
                id="com.kizoom.plugin.functest.FunctestLaunchPropertyTester"
                namespace="com.kizoom.plugin.functest"
                properties="isFunctest,canLaunchAsFunctest"
@@ -424,7 +424,7 @@
       <extension
             point="org.eclipse.ui.propertyPages">
          <page
-               class="com.lambda.plugin.yunit.properties.FunctestPropertyPage"
+               class="com.lambda.plugin.yunit.properties.YUnitPropertyPage"
                id="com.kizoom.plugin.functest.properties.samplePropertyPage"
                name="Functional Tests"
                nameFilter="*"

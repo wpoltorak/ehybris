@@ -12,13 +12,13 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.IFunctestManager;
+import com.lambda.plugin.yunit.IYUnitManager;
 
 public class ToggleFunctestNatureAction implements IObjectActionDelegate {
 
 	public static final String ID = "com.kizoom.plugin.toggle.ear.nature.action";
 	private ISelection selection;
-	private IFunctestManager functestManager;
+	private IYUnitManager functestManager;
 
 	public ToggleFunctestNatureAction() {
 		functestManager = YPlugin.getDefault().getFunctestManager();

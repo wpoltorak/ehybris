@@ -10,16 +10,16 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class CopyFailureListAction extends Action {
 
     private final Clipboard fClipboard;
-    private final FunctestView fRunner;
+    private final YUnitView fRunner;
 
-    public CopyFailureListAction(final FunctestView runner, final Clipboard clipboard) {
-        super(FunctestMessages.CopyFailureList_action_label);
+    public CopyFailureListAction(final YUnitView runner, final Clipboard clipboard) {
+        super(YUnitMessages.CopyFailureList_action_label);
         fRunner = runner;
         fClipboard = clipboard;
     }
@@ -37,8 +37,8 @@ public class CopyFailureListAction extends Action {
             if (e.code != DND.ERROR_CANNOT_SET_CLIPBOARD) {
                 throw e;
             }
-            if (MessageDialog.openQuestion(YPlugin.getActiveWorkbenchShell(), FunctestMessages.CopyFailureList_problem,
-                    FunctestMessages.CopyFailureList_clipboard_busy)) {
+            if (MessageDialog.openQuestion(YPlugin.getActiveWorkbenchShell(), YUnitMessages.CopyFailureList_problem,
+                    YUnitMessages.CopyFailureList_clipboard_busy)) {
                 run();
             }
         }

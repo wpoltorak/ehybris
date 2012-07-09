@@ -5,16 +5,16 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.preferences.FunctestPreferencesConstants;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class ActivateOnErrorAction extends Action {
 
-	private final FunctestView view;
+	private final YUnitView view;
 
-	public ActivateOnErrorAction(FunctestView view) {
-		super(FunctestMessages.FunctestView_activate_on_failure_only, IAction.AS_CHECK_BOX);
+	public ActivateOnErrorAction(YUnitView view) {
+		super(YUnitMessages.FunctestView_activate_on_failure_only, IAction.AS_CHECK_BOX);
 		this.view = view;
 		//setImageDescriptor(JUnitPlugin.getImageDescriptor("obj16/failures.gif")); //$NON-NLS-1$
 		update();
@@ -22,7 +22,7 @@ public class ActivateOnErrorAction extends Action {
 
 	public void update() {
 		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-		setChecked(store.getBoolean(FunctestPreferencesConstants.SHOW_ON_ERROR_ONLY));
+		setChecked(store.getBoolean(YUnitPreferencesConstants.SHOW_ON_ERROR_ONLY));
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class ActivateOnErrorAction extends Action {
 		boolean checked = isChecked();
 		view.setShowOnErrorOnly(checked);
 		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-		store.setValue(FunctestPreferencesConstants.SHOW_ON_ERROR_ONLY, checked);
+		store.setValue(YUnitPreferencesConstants.SHOW_ON_ERROR_ONLY, checked);
 	}
 }

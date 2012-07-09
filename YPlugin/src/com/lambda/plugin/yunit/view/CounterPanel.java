@@ -10,8 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.image.FunctestPluginImages;
+import com.lambda.plugin.images.YPluginImages;
+import com.lambda.plugin.yunit.YUnitMessages;
 
 public class CounterPanel extends Composite {
 	
@@ -22,8 +22,8 @@ public class CounterPanel extends Composite {
 	protected int fTotal;
 	protected int fIgnoredCount;
 	
-	private final Image fErrorIcon= FunctestPluginImages.createImage("ovr16", "error_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-	private final Image fFailureIcon= FunctestPluginImages.createImage("ovr16", "failed_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	private final Image fErrorIcon= YPluginImages.createImage("ovr16", "error_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	private final Image fFailureIcon= YPluginImages.createImage("ovr16", "failed_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 	public CounterPanel(Composite parent) {
 		super(parent, SWT.WRAP);
@@ -33,10 +33,10 @@ public class CounterPanel extends Composite {
 		gridLayout.marginWidth= 0;
 		setLayout(gridLayout);
 		
-		fServer = createLabel(FunctestMessages.CounterPanel_label_server, null, "  "); //$NON-NLS-1$
-		fNumberOfRuns= createLabel(FunctestMessages.CounterPanel_label_runs, null, " 0/0  "); //$NON-NLS-1$
-		fNumberOfErrors= createLabel(FunctestMessages.CounterPanel_label_errors, fErrorIcon, " 0 "); //$NON-NLS-1$
-		fNumberOfFailures= createLabel(FunctestMessages.CounterPanel_label_failures, fFailureIcon, " 0 "); //$NON-NLS-1$
+		fServer = createLabel(YUnitMessages.CounterPanel_label_server, null, "  "); //$NON-NLS-1$
+		fNumberOfRuns= createLabel(YUnitMessages.CounterPanel_label_runs, null, " 0/0  "); //$NON-NLS-1$
+		fNumberOfErrors= createLabel(YUnitMessages.CounterPanel_label_errors, fErrorIcon, " 0 "); //$NON-NLS-1$
+		fNumberOfFailures= createLabel(YUnitMessages.CounterPanel_label_failures, fFailureIcon, " 0 "); //$NON-NLS-1$
 
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -93,9 +93,9 @@ public class CounterPanel extends Composite {
 	public void setRunValue(int value, int ignoredCount) {
 		String runString;
 		if (ignoredCount == 0)
-			runString= FunctestMessages.format(FunctestMessages.CounterPanel_runcount, new String[] { Integer.toString(value), Integer.toString(fTotal) });
+			runString= YUnitMessages.format(YUnitMessages.CounterPanel_runcount, new String[] { Integer.toString(value), Integer.toString(fTotal) });
 		else
-			runString= FunctestMessages.format(FunctestMessages.CounterPanel_runcount_ignored, new String[] { Integer.toString(value), Integer.toString(fTotal), Integer.toString(ignoredCount) });
+			runString= YUnitMessages.format(YUnitMessages.CounterPanel_runcount_ignored, new String[] { Integer.toString(value), Integer.toString(fTotal), Integer.toString(ignoredCount) });
 		fNumberOfRuns.setText(runString);
 
 		if (fIgnoredCount == 0 && ignoredCount > 0	|| fIgnoredCount != 0 && ignoredCount == 0) {

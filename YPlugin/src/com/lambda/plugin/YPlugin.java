@@ -27,9 +27,9 @@ import org.osgi.service.packageadmin.PackageAdmin;
 
 import com.lambda.plugin.template.ITemplateManager;
 import com.lambda.plugin.template.TemplateManager;
-import com.lambda.plugin.yunit.FunctestManager;
-import com.lambda.plugin.yunit.FunctestModel;
-import com.lambda.plugin.yunit.IFunctestManager;
+import com.lambda.plugin.yunit.YUnitManager;
+import com.lambda.plugin.yunit.YUnitModel;
+import com.lambda.plugin.yunit.IYUnitManager;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -42,9 +42,9 @@ public class YPlugin extends AbstractUIPlugin {
 
     public static final String LOGGER_NAME = "lambda";
 
-    private FunctestManager functestManager;
+    private YUnitManager functestManager;
 
-    private final FunctestModel functestModel = new FunctestModel();
+    private final YUnitModel functestModel = new YUnitModel();
 
     // The shared instance
     private static YPlugin plugin;
@@ -70,7 +70,7 @@ public class YPlugin extends AbstractUIPlugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        ((FunctestManager) getFunctestManager()).initialize();
+        ((YUnitManager) getFunctestManager()).initialize();
         functestModel.start();
     }
 
@@ -83,7 +83,7 @@ public class YPlugin extends AbstractUIPlugin {
     public void stop(final BundleContext context) throws Exception {
         try {
             functestModel.stop();
-            ((FunctestManager) getFunctestManager()).dispose();
+            ((YUnitManager) getFunctestManager()).dispose();
             plugin = null;
         } finally {
             super.stop(context);
@@ -111,13 +111,13 @@ public class YPlugin extends AbstractUIPlugin {
         return window.getActivePage();
     }
 
-    public static FunctestModel getModel() {
+    public static YUnitModel getModel() {
         return getDefault().functestModel;
     }
 
-    public IFunctestManager getFunctestManager() {
+    public IYUnitManager getFunctestManager() {
         if (functestManager == null) {
-            functestManager = new FunctestManager();
+            functestManager = new YUnitManager();
         }
         return functestManager;
     }

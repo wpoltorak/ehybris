@@ -17,17 +17,17 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import com.lambda.plugin.yunit.FunctestMessages;
+import com.lambda.plugin.yunit.YUnitMessages;
 
 public class TestSessionLabelProvider extends LabelProvider implements IStyledLabelProvider {
 
-	private final FunctestView fTestRunnerPart;
+	private final YUnitView fTestRunnerPart;
 	private final int fLayoutMode;
 	private final NumberFormat timeFormat;
 
 	private boolean fShowTime;
 
-	public TestSessionLabelProvider(FunctestView view, int layoutMode) {
+	public TestSessionLabelProvider(YUnitView view, int layoutMode) {
 		fTestRunnerPart = view;
 		fLayoutMode = layoutMode;
 		fShowTime = true;
@@ -47,11 +47,11 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 		StyledString text = new StyledString(label);
 
 		ITestElement testElement = (ITestElement) element;
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL) {
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL) {
 			if (testElement.getParentContainer() instanceof ITestRunSession) {
 				String testKindDisplayName = fTestRunnerPart.getTestKindDisplayName();
 				if (testKindDisplayName != null) {
-					String decorated = FunctestMessages.format(FunctestMessages.TestSessionLabelProvider_testName_JUnitVersion,
+					String decorated = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_JUnitVersion,
 							new Object[] { label, testKindDisplayName });
 					text = ColoringLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, text);
 				}
@@ -60,7 +60,7 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 		} else {
 			if (element instanceof ITestCaseElement) {
 				String className = BasicElementLabels.getJavaElementName(((ITestCaseElement) element).getTestClassName());
-				String decorated = FunctestMessages.format(FunctestMessages.TestSessionLabelProvider_testMethodName_className,
+				String decorated = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testMethodName_className,
 						new Object[] { label, className });
 				text = ColoringLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, text);
 			}
@@ -79,7 +79,7 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 			return string;
 		}
 		String formattedTime = timeFormat.format(time);
-		return FunctestMessages.format(FunctestMessages.TestSessionLabelProvider_testName_elapsedTimeInSeconds,
+		return YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_elapsedTimeInSeconds,
 				new String[] { string, formattedTime });
 	}
 
@@ -99,18 +99,18 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 			return element.toString();
 		}
 		ITestElement testElement = (ITestElement) element;
-		if (fLayoutMode == FunctestView.LAYOUT_HIERARCHICAL) {
+		if (fLayoutMode == YUnitView.LAYOUT_HIERARCHICAL) {
 			if (testElement.getParentContainer() instanceof ITestRunSession) {
 				String testKindDisplayName = fTestRunnerPart.getTestKindDisplayName();
 				if (testKindDisplayName != null) {
-					label = FunctestMessages.format(FunctestMessages.TestSessionLabelProvider_testName_JUnitVersion,
+					label = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_JUnitVersion,
 							new Object[] { label, testKindDisplayName });
 				}
 			}
 		} else {
 			if (element instanceof ITestCaseElement) {
 				String className = BasicElementLabels.getJavaElementName(((ITestCaseElement) element).getTestClassName());
-				label = FunctestMessages.format(FunctestMessages.TestSessionLabelProvider_testMethodName_className,
+				label = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testMethodName_className,
 						new Object[] { label, className });
 			}
 		}
@@ -122,34 +122,34 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 		if (element instanceof TestCaseElement) {
 			TestCaseElement testCaseElement = ((TestCaseElement) element);
 			if (testCaseElement.isIgnored())
-				return FunctestViewImages.fTestIgnoredIcon;
+				return YUnitViewImages.fTestIgnoredIcon;
 
 			Status status = testCaseElement.getStatus();
 			if (status.isNotRun())
-				return FunctestViewImages.fTestIcon;
+				return YUnitViewImages.fTestIcon;
 			else if (status.isRunning())
-				return FunctestViewImages.fTestRunningIcon;
+				return YUnitViewImages.fTestRunningIcon;
 			else if (status.isError())
-				return FunctestViewImages.fTestErrorIcon;
+				return YUnitViewImages.fTestErrorIcon;
 			else if (status.isFailure())
-				return FunctestViewImages.fTestFailIcon;
+				return YUnitViewImages.fTestFailIcon;
 			else if (status.isOK())
-				return FunctestViewImages.fTestOkIcon;
+				return YUnitViewImages.fTestOkIcon;
 			else
 				throw new IllegalStateException(element.toString());
 
 		} else if (element instanceof TestSuiteElement) {
 			Status status = ((TestSuiteElement) element).getStatus();
 			if (status.isNotRun())
-				return FunctestViewImages.fSuiteIcon;
+				return YUnitViewImages.fSuiteIcon;
 			else if (status.isRunning())
-				return FunctestViewImages.fSuiteRunningIcon;
+				return YUnitViewImages.fSuiteRunningIcon;
 			else if (status.isError())
-				return FunctestViewImages.fSuiteErrorIcon;
+				return YUnitViewImages.fSuiteErrorIcon;
 			else if (status.isFailure())
-				return FunctestViewImages.fSuiteFailIcon;
+				return YUnitViewImages.fSuiteFailIcon;
 			else if (status.isOK())
-				return FunctestViewImages.fSuiteOkIcon;
+				return YUnitViewImages.fSuiteOkIcon;
 			else
 				throw new IllegalStateException(element.toString());
 

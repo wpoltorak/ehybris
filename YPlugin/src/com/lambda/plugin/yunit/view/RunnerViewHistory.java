@@ -18,19 +18,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.PageSwitcher;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestRunSession;
-import com.lambda.plugin.yunit.preferences.FunctestPreferencesConstants;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.YUnitRunSession;
+import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.action.ClearAction;
 
 
 @SuppressWarnings("restriction")
 public class RunnerViewHistory extends ViewHistory {
 
-	private final FunctestView view;
-	private final FunctestRunSession session;
+	private final YUnitView view;
+	private final YUnitRunSession session;
 
-	public RunnerViewHistory(FunctestView view, FunctestRunSession session) {
+	public RunnerViewHistory(YUnitView view, YUnitRunSession session) {
 		this.view = view;
 		this.session = session;
 		initPageSwitcher();
@@ -38,12 +38,12 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public void configureHistoryListAction(IAction action) {
-		action.setText(FunctestMessages.FunctestView_history);
+		action.setText(YUnitMessages.FunctestView_history);
 	}
 
 	@Override
 	public void configureHistoryDropDownAction(IAction action) {
-		action.setToolTipText(FunctestMessages.FunctestView_test_run_history);
+		action.setToolTipText(YUnitMessages.FunctestView_test_run_history);
 		JUnitPlugin.setLocalImageDescriptors(action, "history_list.gif"); //$NON-NLS-1$
 	}
 
@@ -54,12 +54,12 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public String getHistoryListDialogTitle() {
-		return FunctestMessages.FunctestView_test_runs;
+		return YUnitMessages.FunctestView_test_runs;
 	}
 
 	@Override
 	public String getHistoryListDialogMessage() {
-		return FunctestMessages.FunctestView_select_test_run;
+		return YUnitMessages.FunctestView_select_test_run;
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class RunnerViewHistory extends ViewHistory {
 	}
 
 	@Override
-	public List<FunctestRunSession> getHistoryEntries() {
+	public List<YUnitRunSession> getHistoryEntries() {
 		return YPlugin.getModel().getFunctestRunSessions();
 	}
 
@@ -79,55 +79,55 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public void setActiveEntry(Object entry) {
-		FunctestRunSession deactivatedSession = view.setActiveTestRunSession((FunctestRunSession) entry);
+		YUnitRunSession deactivatedSession = view.setActiveTestRunSession((YUnitRunSession) entry);
 		if (deactivatedSession != null)
 			deactivatedSession.swapOut();
 	}
 
 	@Override
 	public void setHistoryEntries(List remainingEntries, Object activeEntry) {
-		view.setActiveTestRunSession((FunctestRunSession) activeEntry);
+		view.setActiveTestRunSession((YUnitRunSession) activeEntry);
 
-		List<FunctestRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();
+		List<YUnitRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();
 		testRunSessions.removeAll(remainingEntries);
-		for (Iterator<FunctestRunSession> iter = testRunSessions.iterator(); iter.hasNext();) {
+		for (Iterator<YUnitRunSession> iter = testRunSessions.iterator(); iter.hasNext();) {
 			YPlugin.getModel().removeFunctestRunSession(iter.next());
 		}
-		for (Iterator<FunctestRunSession> iter = remainingEntries.iterator(); iter.hasNext();) {
-			FunctestRunSession remaining = iter.next();
+		for (Iterator<YUnitRunSession> iter = remainingEntries.iterator(); iter.hasNext();) {
+			YUnitRunSession remaining = iter.next();
 			remaining.swapOut();
 		}
 	}
 
 	@Override
 	public ImageDescriptor getImageDescriptor(Object element) {
-		FunctestRunSession session = (FunctestRunSession) element;
+		YUnitRunSession session = (YUnitRunSession) element;
 		if (session.isStopped())
-			return FunctestViewImages.fSuiteIconDescriptor;
+			return YUnitViewImages.fSuiteIconDescriptor;
 
 		if (session.isRunning())
-			return FunctestViewImages.fSuiteRunningIconDescriptor;
+			return YUnitViewImages.fSuiteRunningIconDescriptor;
 
 		Result result = session.getTestResult(true);
 		if (result == Result.OK)
-			return FunctestViewImages.fSuiteOkIconDescriptor;
+			return YUnitViewImages.fSuiteOkIconDescriptor;
 		else if (result == Result.ERROR)
-			return FunctestViewImages.fSuiteErrorIconDescriptor;
+			return YUnitViewImages.fSuiteErrorIconDescriptor;
 		else if (result == Result.FAILURE)
-			return FunctestViewImages.fSuiteFailIconDescriptor;
+			return YUnitViewImages.fSuiteFailIconDescriptor;
 		else
-			return FunctestViewImages.fSuiteIconDescriptor;
+			return YUnitViewImages.fSuiteIconDescriptor;
 	}
 
 	@Override
 	public String getText(Object element) {
-		FunctestRunSession session = (FunctestRunSession) element;
+		YUnitRunSession session = (YUnitRunSession) element;
 		String testRunLabel = BasicElementLabels.getJavaElementName(session.getTestRunName());
 		if (session.getStartTime() == 0) {
 			return testRunLabel;
 		} else {
 			String startTime = DateFormat.getDateTimeInstance().format(new Date(session.getStartTime()));
-			return FunctestMessages.format(FunctestMessages.FunctestView_testName_startTime, new Object[] { testRunLabel,
+			return YUnitMessages.format(YUnitMessages.FunctestView_testName_startTime, new Object[] { testRunLabel,
 					startTime });
 		}
 	}
@@ -138,19 +138,19 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public String getMaxEntriesMessage() {
-		return FunctestMessages.FunctestView_max_remembered;
+		return YUnitMessages.FunctestView_max_remembered;
 	}
 
 	@Override
 	public int getMaxEntries() {
 		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-		return store.getInt(FunctestPreferencesConstants.MAX_TEST_RUNS);
+		return store.getInt(YUnitPreferencesConstants.MAX_TEST_RUNS);
 	}
 
 	@Override
 	public void setMaxEntries(int maxEntries) {
 		IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-		store.setValue(FunctestPreferencesConstants.MAX_TEST_RUNS, maxEntries);
+		store.setValue(YUnitPreferencesConstants.MAX_TEST_RUNS, maxEntries);
 	}
 
 	private void initPageSwitcher() {

@@ -28,20 +28,20 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public abstract class OpenEditorAction extends Action {
     protected String fClassName;
-    protected FunctestView fTestRunner;
+    protected YUnitView fTestRunner;
     private final boolean fActivate;
 
-    protected OpenEditorAction(final FunctestView testRunner, final String testClassName) {
+    protected OpenEditorAction(final YUnitView testRunner, final String testClassName) {
         this(testRunner, testClassName, true);
     }
 
-    public OpenEditorAction(final FunctestView testRunner, final String className, final boolean activate) {
-        super(FunctestMessages.OpenEditorAction_action_label);
+    public OpenEditorAction(final YUnitView testRunner, final String className, final boolean activate) {
+        super(YUnitMessages.OpenEditorAction_action_label);
         fClassName = className;
         fTestRunner = testRunner;
         fActivate = activate;
@@ -56,18 +56,18 @@ public abstract class OpenEditorAction extends Action {
         try {
             final IJavaElement element = findElement(getLaunchedProjects(), fClassName);
             if (element == null) {
-                MessageDialog.openError(getShell(), FunctestMessages.OpenEditorAction_error_cannotopen_title,
-                        FunctestMessages.OpenEditorAction_error_cannotopen_message);
+                MessageDialog.openError(getShell(), YUnitMessages.OpenEditorAction_error_cannotopen_title,
+                        YUnitMessages.OpenEditorAction_error_cannotopen_message);
                 return;
             }
             textEditor = (ITextEditor) JavaUI.openInEditor(element, fActivate, false);
         } catch (final CoreException e) {
-            ErrorDialog.openError(getShell(), FunctestMessages.OpenEditorAction_error_dialog_title,
-                    FunctestMessages.OpenEditorAction_error_dialog_message, e.getStatus());
+            ErrorDialog.openError(getShell(), YUnitMessages.OpenEditorAction_error_dialog_title,
+                    YUnitMessages.OpenEditorAction_error_dialog_message, e.getStatus());
             return;
         }
         if (textEditor == null) {
-            fTestRunner.registerInfoMessage(FunctestMessages.OpenEditorAction_message_cannotopen);
+            fTestRunner.registerInfoMessage(YUnitMessages.OpenEditorAction_message_cannotopen);
             return;
         }
         reveal(textEditor);

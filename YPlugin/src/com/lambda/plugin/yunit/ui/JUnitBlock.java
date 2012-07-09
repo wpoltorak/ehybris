@@ -19,9 +19,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.lambda.plugin.yunit.FunctestMessages;
+import com.lambda.plugin.yunit.YUnitMessages;
 @SuppressWarnings("restriction")
-public class JUnitBlock extends FunctestBlock {
+public class JUnitBlock extends YUnitBlock {
 
 	public static final String PROPERTY_JUNIT_LOADER = "PROPERTY_JUNIT_LOADER"; //$NON-NLS-1$
 	public static final String PROPERTY_KEEP_RUNNING = "PROPERTY_KEEP_RUNNING"; //$NON-NLS-1$
@@ -36,7 +36,7 @@ public class JUnitBlock extends FunctestBlock {
 
 	private void createTestLoaderGroup(Composite comp) {
 		Label loaderLabel = new Label(comp, SWT.NONE);
-		loaderLabel.setText(FunctestMessages.FunctestLaunchConfigurationTab_Test_Loader);
+		loaderLabel.setText(YUnitMessages.FunctestLaunchConfigurationTab_Test_Loader);
 		GridData gd = new GridData();
 		gd.horizontalIndent = 0;
 		loaderLabel.setLayoutData(gd);

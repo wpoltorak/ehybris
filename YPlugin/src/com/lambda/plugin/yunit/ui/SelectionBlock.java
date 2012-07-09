@@ -51,11 +51,11 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.FunctestPropertyTester;
-import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationUtils;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.YUnitPropertyTester;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
 
-public class SelectionBlock extends FunctestBlock {
+public class SelectionBlock extends YUnitBlock {
 
     public static final String PROPERTY_TEST_SELECTION = "PROPERTY_TEST_SELECTION"; //$NON-NLS-1$
 
@@ -96,7 +96,7 @@ public class SelectionBlock extends FunctestBlock {
         acceptedClasses = new Class[] { IJavaModel.class, IJavaProject.class, IPackageFragmentRoot.class, IPackageFragment.class,
                 ICompilationUnit.class, IClassFile.class, IType.class, IMethod.class };
         final ViewerFilter filter = new TypedViewerFilter(acceptedClasses) {
-            FunctestPropertyTester tester = new FunctestPropertyTester();
+            YUnitPropertyTester tester = new YUnitPropertyTester();
 
             @Override
             public boolean select(final Viewer viewer, final Object parent, final Object element) {
@@ -110,7 +110,7 @@ public class SelectionBlock extends FunctestBlock {
                 } catch (final JavaModelException e) {
                     return false;
                 }
-                final boolean functest = tester.test(element, FunctestPropertyTester.PROPERTY_CAN_LAUNCH_AS_FUNCTEST, null, null);
+                final boolean functest = tester.test(element, YUnitPropertyTester.PROPERTY_CAN_LAUNCH_AS_FUNCTEST, null, null);
                 if (!functest) {
                     return false;
                 }
@@ -126,8 +126,8 @@ public class SelectionBlock extends FunctestBlock {
         dialog.setValidator(validator);
         dialog.setComparator(new JavaElementComparator());
         dialog.setHelpAvailable(false);
-        dialog.setTitle(FunctestMessages.FunctestLaunchConfigurationTab_folderdialog_title);
-        dialog.setMessage(FunctestMessages.FunctestLaunchConfigurationTab_folderdialog_message);
+        dialog.setTitle(YUnitMessages.FunctestLaunchConfigurationTab_folderdialog_title);
+        dialog.setMessage(YUnitMessages.FunctestLaunchConfigurationTab_folderdialog_message);
         dialog.addFilter(filter);
         dialog.setInput(JavaCore.create(getWorkspaceRoot()));
         // dialog.setInitialSelection(initElement);
@@ -194,7 +194,7 @@ public class SelectionBlock extends FunctestBlock {
         @Override
         public void run() {
             try {
-                final List<IJavaElement> elements = FunctestLaunchConfigurationUtils.filterElementsToLaunch(chooseFunctests());
+                final List<IJavaElement> elements = YUnitLaunchConfigurationUtils.filterElementsToLaunch(chooseFunctests());
                 if (elements != null) {
                     selectionTable.remove(elements.toArray(new IJavaElement[elements.size()]));
                     selectionTable.add(elements.toArray(new IJavaElement[elements.size()]));
@@ -251,16 +251,16 @@ public class SelectionBlock extends FunctestBlock {
                 switch (javaElement.getElementType()) {
                     case IJavaElement.PACKAGE_FRAGMENT_ROOT:
                     case IJavaElement.PACKAGE_FRAGMENT:
-                        return FunctestMessages.format(FunctestMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { fJavaElementLabelProvider.getText(element),
                                         javaElement.getJavaProject().getProject().getName() });
                     case IJavaElement.TYPE:
-                        return FunctestMessages.format(FunctestMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { ((IType) element).getFullyQualifiedName(),
                                         javaElement.getJavaProject().getProject().getName() });
                     case IJavaElement.METHOD:
                         final IMethod method = (IMethod) element;
-                        return FunctestMessages.format(FunctestMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { method.getDeclaringType().getFullyQualifiedName() + "." + method.getElementName(),
                                         javaElement.getJavaProject().getProject().getName() });
                 }
@@ -294,7 +294,7 @@ public class SelectionBlock extends FunctestBlock {
             final ILaunchConfiguration config = (ILaunchConfiguration) inputElement;
 
             try {
-                elements = FunctestLaunchConfigurationUtils.retrieveJavaElements(config);
+                elements = YUnitLaunchConfigurationUtils.retrieveJavaElements(config);
             } catch (final CoreException e) {
                 setError("Error reading configuration");
                 YPlugin.logError("Error reading configuration", e); //$NON-NLS-1$

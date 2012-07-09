@@ -32,10 +32,10 @@ import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationConstants;
-import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationUtils;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class RerunLastFailedOnlyAction extends Action {
 
@@ -43,12 +43,12 @@ public class RerunLastFailedOnlyAction extends Action {
 
 	private IHandlerActivation activation;
 
-	private final FunctestView view;
+	private final YUnitView view;
 
-	public RerunLastFailedOnlyAction(FunctestView view) {
+	public RerunLastFailedOnlyAction(YUnitView view) {
 		this.view = view;
-		setText(FunctestMessages.FunctestView_rerunfailuresonlyaction_label);
-		setToolTipText(FunctestMessages.FunctestView_rerunfailuresonlyaction_tooltip);
+		setText(YUnitMessages.FunctestView_rerunfailuresonlyaction_label);
+		setToolTipText(YUnitMessages.FunctestView_rerunfailuresonlyaction_tooltip);
 		JUnitPlugin.setLocalImageDescriptors(this, "relaunchf.gif"); //$NON-NLS-1$
 		setEnabled(false);
 		setActionDefinitionId(RERUN_FAILED_COMMAND);
@@ -90,24 +90,24 @@ public class RerunLastFailedOnlyAction extends Action {
 				try {
 					String oldName = launchConfiguration.getName();
 					String oldFailuresFilename = launchConfiguration.getAttribute(
-							FunctestLaunchConfigurationConstants.ATTR_FAILURES_NAMES, (String) null);
+							YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, (String) null);
 					String configName;
 					if (oldFailuresFilename != null) {
 						configName = oldName;
 					} else {
-						configName = FunctestMessages.format(FunctestMessages.FunctestView_rerunFailedLaunchConfigName, oldName);
+						configName = YUnitMessages.format(YUnitMessages.FunctestView_rerunFailedLaunchConfigName, oldName);
 					}
 					ILaunchConfigurationWorkingCopy tmp = launchConfiguration.copy(configName);
-					tmp.setAttribute(FunctestLaunchConfigurationConstants.ATTR_FAILURES_NAMES, createFailureNamesFile());
+					tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, createFailureNamesFile());
 					DebugUITools.launch(tmp, launch.getLaunchMode());
 					return;
 				} catch (CoreException e) {
-					ErrorDialog.openError(view.getSite().getShell(), FunctestMessages.FunctestView_error_cannotrerun, e
+					ErrorDialog.openError(view.getSite().getShell(), YUnitMessages.FunctestView_error_cannotrerun, e
 							.getMessage(), e.getStatus());
 				}
 			}
-			MessageDialog.openInformation(view.getSite().getShell(), FunctestMessages.FunctestView_cannotrerun_title,
-					FunctestMessages.FunctestView_cannotrerurn_message);
+			MessageDialog.openInformation(view.getSite().getShell(), YUnitMessages.FunctestView_cannotrerun_title,
+					YUnitMessages.FunctestView_cannotrerurn_message);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class RerunLastFailedOnlyAction extends Action {
 							project = findTestProject(testElement.getClassName());
 							cache.put(testElement.getClassName(), project);
 						}
-						bw.write(FunctestLaunchConfigurationUtils.toString(testElement, project, '$'));
+						bw.write(YUnitLaunchConfigurationUtils.toString(testElement, project, '$'));
 						bw.newLine();
 					}
 				}

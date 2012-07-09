@@ -21,10 +21,10 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.ToolBar;
 
-import com.lambda.plugin.yunit.preferences.FunctestPreferencePage;
+import com.lambda.plugin.yunit.preferences.YUnitPreferencePage;
 import com.lambda.plugin.yunit.view.action.CompareResultsAction;
 import com.lambda.plugin.yunit.view.action.EnableStackFilterAction;
-import com.lambda.plugin.yunit.view.action.FunctestCopyAction;
+import com.lambda.plugin.yunit.view.action.YUnitCopyAction;
 import com.lambda.plugin.yunit.view.action.OpenEditorAtLineAction;
 
 /**
@@ -35,14 +35,14 @@ public class FailureTrace implements IMenuListener {
 
 	public static final String FRAME_PREFIX = "at "; //$NON-NLS-1$
 	private Table fTable;
-	private FunctestView fTestRunner;
+	private YUnitView fTestRunner;
 	private String fInputTrace;
 	private final Clipboard fClipboard;
 	private TestElement fFailure;
 	private CompareResultsAction fCompareAction;
 	private final FailureTableDisplay fFailureTableDisplay;
 
-	public FailureTrace(Composite parent, Clipboard clipboard, FunctestView testRunner, ToolBar toolBar) {
+	public FailureTrace(Composite parent, Clipboard clipboard, YUnitView testRunner, ToolBar toolBar) {
 		Assert.isNotNull(clipboard);
 
 		// fill the failure trace viewer toolbar
@@ -89,7 +89,7 @@ public class FailureTrace implements IMenuListener {
 			Action a = createOpenEditorAction(getSelectedText());
 			if (a != null)
 				manager.add(a);
-			manager.add(new FunctestCopyAction(FailureTrace.this, fClipboard));
+			manager.add(new YUnitCopyAction(FailureTrace.this, fClipboard));
 		}
 		// fix for bug 68058
 		if (fFailure != null && fFailure.isComparisonFailure())
@@ -179,8 +179,8 @@ public class FailureTrace implements IMenuListener {
 	}
 
 	private String[] getFilterPatterns() {
-		if (FunctestPreferencePage.getFilterStack())
-			return FunctestPreferencePage.getFilterPatterns();
+		if (YUnitPreferencePage.getFilterStack())
+			return YUnitPreferencePage.getFilterPatterns();
 		return new String[0];
 	}
 

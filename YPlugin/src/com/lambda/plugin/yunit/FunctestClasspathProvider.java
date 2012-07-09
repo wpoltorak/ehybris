@@ -20,7 +20,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.StandardClasspathProvider;
 
-import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationConstants;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 
 public class FunctestClasspathProvider extends StandardClasspathProvider {
 
@@ -66,7 +66,7 @@ public class FunctestClasspathProvider extends StandardClasspathProvider {
 
 	private static List<IJavaProject> getFunctestProjects(ILaunchConfiguration configuration) throws CoreException {
 		List<IJavaProject> projects = new ArrayList<IJavaProject>();
-		String projectList = configuration.getAttribute(FunctestLaunchConfigurationConstants.ATTR_PROJECT_NAMES, "");
+		String projectList = configuration.getAttribute(YUnitLaunchConfigurationConstants.ATTR_PROJECT_NAMES, "");
 		if (!"".equals(projectList)){
 			String[] projectNames = projectList
 					.split(",");

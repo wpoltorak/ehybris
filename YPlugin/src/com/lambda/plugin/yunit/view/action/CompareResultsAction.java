@@ -7,7 +7,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 
-import com.lambda.plugin.yunit.FunctestMessages;
+import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.view.FailureTrace;
 
 public class CompareResultsAction extends Action {
@@ -16,9 +16,9 @@ public class CompareResultsAction extends Action {
 	private CompareResultDialog fOpenDialog;
 
 	public CompareResultsAction(FailureTrace view) {
-		super(FunctestMessages.CompareResultsAction_label);
-		setDescription(FunctestMessages.CompareResultsAction_description);
-		setToolTipText(FunctestMessages.CompareResultsAction_tooltip);
+		super(YUnitMessages.CompareResultsAction_label);
+		setDescription(YUnitMessages.CompareResultsAction_description);
+		setToolTipText(YUnitMessages.CompareResultsAction_tooltip);
 
 		setDisabledImageDescriptor(JUnitPlugin.getImageDescriptor("dlcl16/compare.gif")); //$NON-NLS-1$
 		setHoverImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/compare.gif")); //$NON-NLS-1$

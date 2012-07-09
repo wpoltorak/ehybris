@@ -14,19 +14,19 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.launcher.FunctestLaunchConfigurationConstants;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class RerunLastAction extends Action {
 	public static final String RERUN_LAST_COMMAND = "com.kizoom.plugin.functest.launch.shortcut.rerunLast"; //$NON-NLS-1$
-	private final FunctestView view;
+	private final YUnitView view;
 	private final IHandlerActivation activation;
 
-	public RerunLastAction(FunctestView view) {
+	public RerunLastAction(YUnitView view) {
 		this.view = view;
-		setText(FunctestMessages.FunctestView_rerunaction_label);
-		setToolTipText(FunctestMessages.FunctestView_rerunaction_tooltip);
+		setText(YUnitMessages.FunctestView_rerunaction_label);
+		setToolTipText(YUnitMessages.FunctestView_rerunaction_tooltip);
 		JUnitPlugin.setLocalImageDescriptors(this, "relaunch.gif"); //$NON-NLS-1$
 		setEnabled(false);
 		setActionDefinitionId(RERUN_LAST_COMMAND);
@@ -73,11 +73,11 @@ public class RerunLastAction extends Action {
 
 	private ILaunchConfiguration prepareLaunchConfigForRelaunch(ILaunchConfiguration configuration) {
 		try {
-			String attribute = configuration.getAttribute(FunctestLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
+			String attribute = configuration.getAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
 			if (attribute.length() != 0) {
-				String configName = FunctestMessages.format(FunctestMessages.FunctestView_configName, configuration.getName());
+				String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, configuration.getName());
 				ILaunchConfigurationWorkingCopy tmp = configuration.copy(configName);
-				tmp.setAttribute(FunctestLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
+				tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
 				return tmp;
 			}
 		} catch (CoreException e) {

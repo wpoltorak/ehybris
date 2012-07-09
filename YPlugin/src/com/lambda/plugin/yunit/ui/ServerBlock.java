@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import com.lambda.plugin.yunit.FunctestMessages;
+import com.lambda.plugin.yunit.YUnitMessages;
 
-public class ServerBlock extends FunctestBlock {
+public class ServerBlock extends YUnitBlock {
 
 	public static final String PROPERTY_SERVER = "PROPERTY_SERVER"; //$NON-NLS-1$
 	public static final String TYPE_LOCAL = "local";
@@ -30,7 +30,7 @@ public class ServerBlock extends FunctestBlock {
 		// fControl = createComposite(comp, 1, 1, GridData.FILL_BOTH);
 
 		fDevRadioButton = new Button(comp, SWT.RADIO);
-		fDevRadioButton.setText(FunctestMessages.FunctestLaunchConfigurationTab_label_development);
+		fDevRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_development);
 		GridData gd = new GridData();
 		gd.horizontalSpan = 3;
 		fDevRadioButton.setLayoutData(gd);
@@ -45,7 +45,7 @@ public class ServerBlock extends FunctestBlock {
 		});
 
 		fTstRadioButton = new Button(comp, SWT.RADIO);
-		fTstRadioButton.setText(FunctestMessages.FunctestLaunchConfigurationTab_label_staging);
+		fTstRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_staging);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fTstRadioButton.setLayoutData(gd);
@@ -60,7 +60,7 @@ public class ServerBlock extends FunctestBlock {
 		});
 
 		fPrdRadioButton = new Button(comp, SWT.RADIO);
-		fPrdRadioButton.setText(FunctestMessages.FunctestLaunchConfigurationTab_label_production);
+		fPrdRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_production);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fPrdRadioButton.setLayoutData(gd);
@@ -75,7 +75,7 @@ public class ServerBlock extends FunctestBlock {
 		});
 
 		fRmtRadioButton = new Button(comp, SWT.RADIO);
-		fRmtRadioButton.setText(FunctestMessages.FunctestLaunchConfigurationTab_label_remote);
+		fRmtRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_remote);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fRmtRadioButton.setLayoutData(gd);
@@ -98,7 +98,7 @@ public class ServerBlock extends FunctestBlock {
 				if (fRmtRadioButton.getSelection()) {
 					String serverName = fServerTextField.getText().trim();
 					if (serverName.length() == 0) {
-						setError(FunctestMessages.FunctestLaunchConfigurationTab_error_noRemoteServer);
+						setError(YUnitMessages.FunctestLaunchConfigurationTab_error_noRemoteServer);
 					}
 				}
 				firePropertyChange();

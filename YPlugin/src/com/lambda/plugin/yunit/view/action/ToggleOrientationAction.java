@@ -5,25 +5,25 @@ import org.eclipse.jdt.internal.junit.ui.JUnitPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 
-import com.lambda.plugin.yunit.FunctestMessages;
-import com.lambda.plugin.yunit.view.FunctestView;
+import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.yunit.view.YUnitView;
 
 public class ToggleOrientationAction extends Action {
 
 	private final int fActionOrientation;
-	private final FunctestView view;
+	private final YUnitView view;
 
-	public ToggleOrientationAction(FunctestView view, int orientation) {
+	public ToggleOrientationAction(YUnitView view, int orientation) {
 		super("", AS_RADIO_BUTTON); //$NON-NLS-1$
 		this.view = view;
-		if (orientation == FunctestView.VIEW_ORIENTATION_HORIZONTAL) {
-			setText(FunctestMessages.FunctestView_toggle_horizontal_label);
+		if (orientation == YUnitView.VIEW_ORIENTATION_HORIZONTAL) {
+			setText(YUnitMessages.FunctestView_toggle_horizontal_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_horizontal.gif")); //$NON-NLS-1$				
-		} else if (orientation == FunctestView.VIEW_ORIENTATION_VERTICAL) {
-			setText(FunctestMessages.FunctestView_toggle_vertical_label);
+		} else if (orientation == YUnitView.VIEW_ORIENTATION_VERTICAL) {
+			setText(YUnitMessages.FunctestView_toggle_vertical_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_vertical.gif")); //$NON-NLS-1$				
-		} else if (orientation == FunctestView.VIEW_ORIENTATION_AUTOMATIC) {
-			setText(FunctestMessages.FunctestView_toggle_automatic_label);
+		} else if (orientation == YUnitView.VIEW_ORIENTATION_AUTOMATIC) {
+			setText(YUnitMessages.FunctestView_toggle_automatic_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_automatic.gif")); //$NON-NLS-1$				
 		}
 		fActionOrientation = orientation;
