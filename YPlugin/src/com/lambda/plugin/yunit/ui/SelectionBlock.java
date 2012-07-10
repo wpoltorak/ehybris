@@ -110,7 +110,7 @@ public class SelectionBlock extends YUnitBlock {
                 } catch (final JavaModelException e) {
                     return false;
                 }
-                final boolean functest = tester.test(element, YUnitPropertyTester.PROPERTY_CAN_LAUNCH_AS_FUNCTEST, null, null);
+                final boolean functest = tester.test(element, YUnitPropertyTester.PROPERTY_CAN_LAUNCH_AS_YUNIT, null, null);
                 if (!functest) {
                     return false;
                 }

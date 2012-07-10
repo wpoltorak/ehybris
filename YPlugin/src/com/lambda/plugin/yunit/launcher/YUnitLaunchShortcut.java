@@ -39,7 +39,7 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.FunctestClasspathProvider;
+import com.lambda.plugin.yunit.YUnitClasspathProvider;
 import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.ui.YUnitDialog;
 import com.lambda.plugin.yunit.ui.ServerBlock;
@@ -59,7 +59,7 @@ public class YUnitLaunchShortcut implements ILaunchShortcut2 {
 
         final String path = JavaRuntime.newDefaultJREContainerPath().toPortableString();
         wc.setAttribute(YUnitLaunchConfigurationConstants.ATTR_TEST_SERVER, server);
-        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, FunctestClasspathProvider.PROVIDER_ID);
+        wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER, YUnitClasspathProvider.PROVIDER_ID);
         wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, path);
         wc.setAttribute(YUnitLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAMES, lce.getMainTypeQualifiedNames());
         wc.setAttribute(YUnitLaunchConfigurationConstants.ATTR_PROJECT_NAMES, lce.getProjectNames());

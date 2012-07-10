@@ -30,9 +30,9 @@ import org.eclipse.ui.IWorkbenchPart;
 
 import com.lambda.plugin.YPlugin;
 
-public class KizoomActionsMenu implements IObjectActionDelegate, IActionDelegate, IMenuCreator {
+public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMenuCreator {
 
-    private static final String EXTENSION_MENU_ITEMS = "com.kizoom.plugin.kizoomMenu";
+    private static final String EXTENSION_MENU_ITEMS = "com.lambda.plugin.yMenu";
 
     private List<AbstractActionMenuCreator> creators;
     private IAction delegateAction;

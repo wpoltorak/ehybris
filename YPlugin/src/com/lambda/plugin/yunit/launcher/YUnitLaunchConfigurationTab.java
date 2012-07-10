@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import com.lambda.plugin.images.YPluginImages;
-import com.lambda.plugin.yunit.FunctestClasspathProvider;
+import com.lambda.plugin.yunit.YUnitClasspathProvider;
 import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.ui.JUnitBlock;
 import com.lambda.plugin.yunit.ui.SWTFactory;
@@ -145,7 +145,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(YUnitLaunchConfigurationConstants.ATTR_TEST_SERVER, serverBlock.getServerType());
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER,
-				FunctestClasspathProvider.PROVIDER_ID);
+				YUnitClasspathProvider.PROVIDER_ID);
 		YUnitLaunchConfigurationElements elements = new YUnitLaunchConfigurationElements(selectionBlock
 				.getSelectedElements());
 

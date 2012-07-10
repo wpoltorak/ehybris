@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hybris YUnit Plug-in
-Bundle-SymbolicName: com.lambda.plugin.yunit;singleton:=true
-Bundle-Version: 1.0.2
+Bundle-Name: Hybris Plug-in
+Bundle-SymbolicName: com.lambda.yplugin;singleton:=true
+Bundle-Version: 1.0.0
 Bundle-Activator: com.lambda.plugin.YPlugin
 Bundle-Vendor: Wojciech Poltorak
 Require-Bundle: org.eclipse.ui,

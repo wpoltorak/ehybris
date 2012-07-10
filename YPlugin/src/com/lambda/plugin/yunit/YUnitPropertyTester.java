@@ -18,9 +18,9 @@ import com.lambda.plugin.YPlugin;
 
 public class YUnitPropertyTester extends PropertyTester {
 
-	public static final String PROPERTY_IS_TEST = "isFunctest"; //$NON-NLS-1$
+	public static final String PROPERTY_IS_YUNIT = "isYUnit"; //$NON-NLS-1$
 
-	public static final String PROPERTY_CAN_LAUNCH_AS_FUNCTEST = "canLaunchAsFunctest"; //$NON-NLS-1$
+	public static final String PROPERTY_CAN_LAUNCH_AS_YUNIT = "canLaunchAsYUnit"; //$NON-NLS-1$
 
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		if (!(receiver instanceof IAdaptable)) {
@@ -36,15 +36,15 @@ public class YUnitPropertyTester extends PropertyTester {
 				element.getJavaProject().getProject());
 		if (!hasFunctestNature)
 			return false;
-		if (PROPERTY_IS_TEST.equals(property)) {
+		if (PROPERTY_IS_YUNIT.equals(property)) {
 			return isTest(element);
-		} else if (PROPERTY_CAN_LAUNCH_AS_FUNCTEST.equals(property)) {
-			return canLaunchAsFunctest(element);
+		} else if (PROPERTY_CAN_LAUNCH_AS_YUNIT.equals(property)) {
+			return canLaunchAsYUnit(element);
 		}
 		throw new IllegalArgumentException("Unknown test property '" + property + "'"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private boolean canLaunchAsFunctest(IJavaElement element) {
+	private boolean canLaunchAsYUnit(IJavaElement element) {
 		try {
 			switch (element.getElementType()) {
 				case IJavaElement.JAVA_PROJECT:

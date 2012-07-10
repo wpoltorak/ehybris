@@ -22,9 +22,9 @@ import org.eclipse.jdt.launching.StandardClasspathProvider;
 
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 
-public class FunctestClasspathProvider extends StandardClasspathProvider {
+public class YUnitClasspathProvider extends StandardClasspathProvider {
 
-	public static final String PROVIDER_ID = "com.kizoom.plugin.functest.FunctestClasspathProvider";
+	public static final String PROVIDER_ID = "com.lambda.plugin.yunit.YUnitClasspathProvider";
 
 	@Override
 	public IRuntimeClasspathEntry[] computeUnresolvedClasspath(ILaunchConfiguration configuration) throws CoreException {
