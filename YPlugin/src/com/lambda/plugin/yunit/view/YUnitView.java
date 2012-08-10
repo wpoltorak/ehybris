@@ -74,12 +74,11 @@ import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.UIJob;
 
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.yunit.IYUnitRunSessionListener;
 import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.YUnitRunSession;
-import com.lambda.plugin.yunit.IYUnitRunSessionListener;
 import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.action.ActivateOnErrorAction;
-import com.lambda.plugin.yunit.view.action.YUnitCopyAction;
 import com.lambda.plugin.yunit.view.action.RerunLastAction;
 import com.lambda.plugin.yunit.view.action.RerunLastFailedOnlyAction;
 import com.lambda.plugin.yunit.view.action.ScrollLockAction;
@@ -88,10 +87,11 @@ import com.lambda.plugin.yunit.view.action.ShowPreviousFailureAction;
 import com.lambda.plugin.yunit.view.action.ShowTimeAction;
 import com.lambda.plugin.yunit.view.action.StopAction;
 import com.lambda.plugin.yunit.view.action.ToggleOrientationAction;
+import com.lambda.plugin.yunit.view.action.YUnitCopyAction;
 
 @SuppressWarnings("restriction")
 public class YUnitView extends ViewPart {
-    public static final String NAME = "com.kizoom.plugin.functest.view"; //$NON-NLS-1$
+    public static final String NAME = "com.lambda.plugin.yunit.view"; //$NON-NLS-1$
 
     static final int REFRESH_INTERVAL = 200;
 
@@ -339,8 +339,7 @@ public class YUnitView extends ViewPart {
 
             final String className = BasicElementLabels.getJavaElementName(testCaseElement.getClassName());
             final String method = BasicElementLabels.getJavaElementName(testCaseElement.getTestMethodName());
-            final String status = YUnitMessages
-                    .format(YUnitMessages.FunctestView_message_started, new String[] { className, method });
+            final String status = YUnitMessages.format(YUnitMessages.FunctestView_message_started, new String[] { className, method });
             registerInfoMessage(status);
         }
 
@@ -838,8 +837,8 @@ public class YUnitView extends ViewPart {
 
         final String testRunLabel = BasicElementLabels.getJavaElementName(fTestRunSession.getTestRunName());
         if (testKindDisplayStr != null) {
-            setTitleToolTip(MessageFormat.format(YUnitMessages.FunctestView_titleToolTip, new String[] { testRunLabel,
-                    testKindDisplayStr }));
+            setTitleToolTip(MessageFormat
+                    .format(YUnitMessages.FunctestView_titleToolTip, new String[] { testRunLabel, testKindDisplayStr }));
         } else {
             setTitleToolTip(testRunLabel);
         }

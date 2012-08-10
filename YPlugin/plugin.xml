@@ -495,5 +495,16 @@
             </enabledWhen>
          </page>
       </extension>
+      <extension
+            point="org.eclipse.ui.editors">
+         <editor
+               class="com.lambda.plugin.editors.ImpexEditor"
+               contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+               extensions="impex"
+               icon="icons/sample.gif"
+               id="com.lambda.plugin.editors.ImpexEditor"
+               name="Impex Editor">
+         </editor>
+      </extension>
 
 </plugin>

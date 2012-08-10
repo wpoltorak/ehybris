@@ -21,95 +21,96 @@ import com.lambda.plugin.yunit.ui.ServerBlock;
 
 public class RunFunctestsAction extends AbstractHandler implements IWorkbenchWindowActionDelegate {
 
-	public static final String LOCAL = "com.kizoom.plugin.functest.RunFunctestLocal";
-	public static final String STAGING = "com.kizoom.plugin.functest.RunFunctestStaging";
-	public static final String PRODUCTION = "com.kizoom.plugin.functest.RunFunctestProduction";
+    public static final String LOCAL = "com.lambda.plugin.yunit.RunFunctestLocal";
+    public static final String STAGING = "com.lambda.plugin.yunit.RunFunctestStaging";
+    public static final String PRODUCTION = "com.lambda.plugin.yunit.RunFunctestProduction";
 
-	private IWorkbenchWindow window;
-	private ISelection selection;
-	private YUnitLaunchShortcut delegate;
+    private IWorkbenchWindow window;
+    private ISelection selection;
+    private final YUnitLaunchShortcut delegate;
 
-	public RunFunctestsAction() {
-		delegate = new YUnitLaunchShortcut();
-		try {
-			setBaseEnabled(YPlugin.getDefault().getFunctestProjects().size() > 0);
-		} catch (Exception e1) {
-			setBaseEnabled(false);
-		}
-	}
+    public RunFunctestsAction() {
+        delegate = new YUnitLaunchShortcut();
+        try {
+            setBaseEnabled(YPlugin.getDefault().getFunctestProjects().size() > 0);
+        } catch (final Exception e1) {
+            setBaseEnabled(false);
+        }
+    }
 
-	public void run(IAction action) {
-		runFunctests(action.getId());
-	}
+    public void run(final IAction action) {
+        runFunctests(action.getId());
+    }
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		runFunctests(event.getCommand().getId());
-		return null;
-	}
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        runFunctests(event.getCommand().getId());
+        return null;
+    }
 
-	private void runFunctests(String id) {
-		try {
-			ITestKind kind = TestKindRegistry.getDefault().getKind(TestKindRegistry.JUNIT3_TEST_KIND_ID);
-			String serverType = getServerType(id);
-			delegate.launch(new StructuredSelection(YPlugin.getDefault().getFunctestProjects()), "run", serverType);
-		} catch (CoreException e) {
-			ExceptionHandler.handle(e, getWindow().getShell(), "Error", "Error occured. See details for more information.");
-		} catch (InvocationTargetException e) {
-			ExceptionHandler.handle(e, getWindow().getShell(), "Error", "Error occured. See details for more information.");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    private void runFunctests(final String id) {
+        try {
+            final ITestKind kind = TestKindRegistry.getDefault().getKind(TestKindRegistry.JUNIT3_TEST_KIND_ID);
+            final String serverType = getServerType(id);
+            delegate.launch(new StructuredSelection(YPlugin.getDefault().getFunctestProjects()), "run", serverType);
+        } catch (final CoreException e) {
+            ExceptionHandler.handle(e, getWindow().getShell(), "Error", "Error occured. See details for more information.");
+        } catch (final InvocationTargetException e) {
+            ExceptionHandler.handle(e, getWindow().getShell(), "Error", "Error occured. See details for more information.");
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-	private String getServerType(String id) {
-		if (LOCAL.equals(id))
-			return ServerBlock.TYPE_LOCAL;
-		else if (STAGING.equals(id))
-			return ServerBlock.TYPE_TEST;
-		else if (PRODUCTION.equals(id))
-			return ServerBlock.TYPE_PROD;
-		return null;
-	}
+    private String getServerType(final String id) {
+        if (LOCAL.equals(id)) {
+            return ServerBlock.TYPE_LOCAL;
+        } else if (STAGING.equals(id)) {
+            return ServerBlock.TYPE_TEST;
+        } else if (PRODUCTION.equals(id)) {
+            return ServerBlock.TYPE_PROD;
+        }
+        return null;
+    }
 
-	public void selectionChanged(IAction action, ISelection selection) {
-		this.selection = selection;
-	}
+    public void selectionChanged(final IAction action, final ISelection selection) {
+        this.selection = selection;
+    }
 
-	@Override
-	public void dispose() {
-	}
+    @Override
+    public void dispose() {
+    }
 
-	public void init(IWorkbenchWindow window) {
-		this.window = window;
-	}
+    public void init(final IWorkbenchWindow window) {
+        this.window = window;
+    }
 
-	protected IWorkbenchWindow getWindow() {
-		return window;
-	}
+    protected IWorkbenchWindow getWindow() {
+        return window;
+    }
 
-	protected ISelection getSelection() {
-		return selection;
-	}
+    protected ISelection getSelection() {
+        return selection;
+    }
 
-	protected YUnitLaunchShortcut getDelegate() {
-		return delegate;
-	}
+    protected YUnitLaunchShortcut getDelegate() {
+        return delegate;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-	// @Override
-	// public void setEnabled(Object evaluationContext) {
-	// boolean enabled = false;
-	// if (evaluationContext instanceof EvaluationContext) {
-	// Object defaultVariable = ((EvaluationContext)
-	// evaluationContext).getDefaultVariable();
-	// if (defaultVariable instanceof Boolean) {
-	// enabled = ((Boolean) defaultVariable).booleanValue();
-	// setBaseEnabled(enabled);
-	// }
-	// }
-	// }
+    // @Override
+    // public void setEnabled(Object evaluationContext) {
+    // boolean enabled = false;
+    // if (evaluationContext instanceof EvaluationContext) {
+    // Object defaultVariable = ((EvaluationContext)
+    // evaluationContext).getDefaultVariable();
+    // if (defaultVariable instanceof Boolean) {
+    // enabled = ((Boolean) defaultVariable).booleanValue();
+    // setBaseEnabled(enabled);
+    // }
+    // }
+    // }
 }

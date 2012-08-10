@@ -124,7 +124,7 @@ public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMe
                     item.dispose();
                 }
 
-                final IMenuManager mgr = new MenuManager("#kizoom");
+                final IMenuManager mgr = new MenuManager("#hybris");
                 mgr.add(new GroupMarker(AbstractActionMenuCreator.NEW));
                 mgr.insertAfter(AbstractActionMenuCreator.NEW, new GroupMarker(AbstractActionMenuCreator.UPDATE));
                 mgr.insertAfter(AbstractActionMenuCreator.UPDATE, new GroupMarker(AbstractActionMenuCreator.OPEN));

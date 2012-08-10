@@ -19,81 +19,83 @@ import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 public class RerunLastAction extends Action {
-	public static final String RERUN_LAST_COMMAND = "com.kizoom.plugin.functest.launch.shortcut.rerunLast"; //$NON-NLS-1$
-	private final YUnitView view;
-	private final IHandlerActivation activation;
+    public static final String RERUN_LAST_COMMAND = "com.lambda.plugin.yunit.launch.shortcut.rerunLast"; //$NON-NLS-1$
+    private final YUnitView view;
+    private final IHandlerActivation activation;
 
-	public RerunLastAction(YUnitView view) {
-		this.view = view;
-		setText(YUnitMessages.FunctestView_rerunaction_label);
-		setToolTipText(YUnitMessages.FunctestView_rerunaction_tooltip);
-		JUnitPlugin.setLocalImageDescriptors(this, "relaunch.gif"); //$NON-NLS-1$
-		setEnabled(false);
-		setActionDefinitionId(RERUN_LAST_COMMAND);
-		activation = createActivation();
-	}
+    public RerunLastAction(final YUnitView view) {
+        this.view = view;
+        setText(YUnitMessages.FunctestView_rerunaction_label);
+        setToolTipText(YUnitMessages.FunctestView_rerunaction_tooltip);
+        JUnitPlugin.setLocalImageDescriptors(this, "relaunch.gif"); //$NON-NLS-1$
+        setEnabled(false);
+        setActionDefinitionId(RERUN_LAST_COMMAND);
+        activation = createActivation();
+    }
 
-	private IHandlerActivation createActivation() {
-		IHandlerService handlerService = (IHandlerService) view.getSite().getWorkbenchWindow().getService(
-				IHandlerService.class);
-		IHandler handler = new AbstractHandler() {
-			public Object execute(ExecutionEvent event) throws ExecutionException {
-				run();
-				return null;
-			}
+    private IHandlerActivation createActivation() {
+        final IHandlerService handlerService = (IHandlerService) view.getSite().getWorkbenchWindow().getService(IHandlerService.class);
+        final IHandler handler = new AbstractHandler() {
+            public Object execute(final ExecutionEvent event) throws ExecutionException {
+                run();
+                return null;
+            }
 
-			@Override
-			public boolean isEnabled() {
-				return RerunLastAction.this.isEnabled();
-			}
-		};
-		return handlerService.activateHandler(RerunLastAction.RERUN_LAST_COMMAND, handler);
+            @Override
+            public boolean isEnabled() {
+                return RerunLastAction.this.isEnabled();
+            }
+        };
+        return handlerService.activateHandler(RerunLastAction.RERUN_LAST_COMMAND, handler);
 
-	}
+    }
 
-	@Override
-	public void run() {
-		rerunTestRun();
-	}
+    @Override
+    public void run() {
+        rerunTestRun();
+    }
 
-	/**
-	 * Stops the currently running test and shuts down the RemoteTestRunner
-	 */
-	public void rerunTestRun() {
-		ILaunch launch = getLaunch();
-		if (launch == null)
-			return;
-		ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
-		if (launchConfiguration == null)
-			return;
+    /**
+     * Stops the currently running test and shuts down the RemoteTestRunner
+     */
+    public void rerunTestRun() {
+        final ILaunch launch = getLaunch();
+        if (launch == null) {
+            return;
+        }
+        final ILaunchConfiguration launchConfiguration = launch.getLaunchConfiguration();
+        if (launchConfiguration == null) {
+            return;
+        }
 
-		ILaunchConfiguration configuration = prepareLaunchConfigForRelaunch(launchConfiguration);
-		DebugUITools.launch(configuration, launch.getLaunchMode());
-	}
+        final ILaunchConfiguration configuration = prepareLaunchConfigForRelaunch(launchConfiguration);
+        DebugUITools.launch(configuration, launch.getLaunchMode());
+    }
 
-	private ILaunchConfiguration prepareLaunchConfigForRelaunch(ILaunchConfiguration configuration) {
-		try {
-			String attribute = configuration.getAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
-			if (attribute.length() != 0) {
-				String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, configuration.getName());
-				ILaunchConfigurationWorkingCopy tmp = configuration.copy(configName);
-				tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
-				return tmp;
-			}
-		} catch (CoreException e) {
-			// fall through
-		}
-		return configuration;
-	}
+    private ILaunchConfiguration prepareLaunchConfigForRelaunch(final ILaunchConfiguration configuration) {
+        try {
+            final String attribute = configuration.getAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
+            if (attribute.length() != 0) {
+                final String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, configuration.getName());
+                final ILaunchConfigurationWorkingCopy tmp = configuration.copy(configName);
+                tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
+                return tmp;
+            }
+        } catch (final CoreException e) {
+            // fall through
+        }
+        return configuration;
+    }
 
-	public IHandlerActivation getActivation() {
-		return activation;
-	}
+    public IHandlerActivation getActivation() {
+        return activation;
+    }
 
-	public ILaunch getLaunch() {
-		if (view.getTestRunSession() == null)
-			return null;
-		return view.getTestRunSession().getLaunch();
-	}
+    public ILaunch getLaunch() {
+        if (view.getTestRunSession() == null) {
+            return null;
+        }
+        return view.getTestRunSession().getLaunch();
+    }
 
 }

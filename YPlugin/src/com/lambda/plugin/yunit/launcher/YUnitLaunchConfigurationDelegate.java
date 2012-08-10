@@ -485,6 +485,6 @@ public class YUnitLaunchConfigurationDelegate extends AbstractJavaLaunchConfigur
 
     @Override
     public String verifyMainTypeName(final ILaunchConfiguration configuration) throws CoreException {
-        return "com.kizoom.plugin.functest.runner.RemoteFunctestRunner"; //$NON-NLS-1$
+        return "com.lambda.plugin.yunit.runner.RemoteYUnitRunner"; //$NON-NLS-1$
     }
 }

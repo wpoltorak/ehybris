@@ -30,7 +30,7 @@ import com.lambda.plugin.YPlugin;
 public class TemplateManager implements ITemplateManager {
 
     private static final IPath TEMPLATES_BASEDIR = new Path("/templates");
-    private static final String BASEDIR_PLACEHOLDER = "\\$\\{com.kizoom.plugin.placeholder.basedir\\}";
+    private static final String BASEDIR_PLACEHOLDER = "\\$\\{com.lambda.plugin.placeholder.basedir\\}";
 
     private final Map<String, Template> templates = new HashMap<String, Template>();
 
