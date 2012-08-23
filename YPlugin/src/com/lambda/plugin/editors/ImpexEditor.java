@@ -9,8 +9,8 @@ public class ImpexEditor extends TextEditor {
 	public ImpexEditor() {
 		super();
 		colorManager = new ColorManager();
-		setSourceViewerConfiguration(new XMLConfiguration(colorManager));
-		setDocumentProvider(new XMLDocumentProvider());
+		setSourceViewerConfiguration(new ImpexConfiguration(colorManager));
+		setDocumentProvider(new ImpexDocumentProvider());
 	}
 	public void dispose() {
 		colorManager.dispose();

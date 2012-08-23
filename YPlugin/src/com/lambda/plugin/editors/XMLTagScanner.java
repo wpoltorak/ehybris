@@ -8,7 +8,7 @@ public class XMLTagScanner extends RuleBasedScanner {
 	public XMLTagScanner(ColorManager manager) {
 		IToken string =
 			new Token(
-				new TextAttribute(manager.getColor(IXMLColorConstants.STRING)));
+				new TextAttribute(manager.getColor(ImpexColorConstants.STRING)));
 
 		IRule[] rules = new IRule[3];
 
@@ -17,7 +17,7 @@ public class XMLTagScanner extends RuleBasedScanner {
 		// Add a rule for single quotes
 		rules[1] = new SingleLineRule("'", "'", string, '\\');
 		// Add generic whitespace rule.
-		rules[2] = new WhitespaceRule(new XMLWhitespaceDetector());
+		rules[2] = new WhitespaceRule(new ImpexWhitespaceDetector());
 
 		setRules(rules);
 	}
