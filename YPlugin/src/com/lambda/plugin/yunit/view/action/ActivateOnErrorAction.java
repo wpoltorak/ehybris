@@ -5,7 +5,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.YUnitView;
 
@@ -14,7 +14,7 @@ public class ActivateOnErrorAction extends Action {
 	private final YUnitView view;
 
 	public ActivateOnErrorAction(YUnitView view) {
-		super(YUnitMessages.FunctestView_activate_on_failure_only, IAction.AS_CHECK_BOX);
+		super(YMessages.FunctestView_activate_on_failure_only, IAction.AS_CHECK_BOX);
 		this.view = view;
 		//setImageDescriptor(JUnitPlugin.getImageDescriptor("obj16/failures.gif")); //$NON-NLS-1$
 		update();

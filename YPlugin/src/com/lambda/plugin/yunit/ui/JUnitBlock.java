@@ -19,7 +19,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 @SuppressWarnings("restriction")
 public class JUnitBlock extends YUnitBlock {
 
@@ -36,7 +36,7 @@ public class JUnitBlock extends YUnitBlock {
 
 	private void createTestLoaderGroup(Composite comp) {
 		Label loaderLabel = new Label(comp, SWT.NONE);
-		loaderLabel.setText(YUnitMessages.FunctestLaunchConfigurationTab_Test_Loader);
+		loaderLabel.setText(YMessages.FunctestLaunchConfigurationTab_Test_Loader);
 		GridData gd = new GridData();
 		gd.horizontalIndent = 0;
 		loaderLabel.setLayoutData(gd);

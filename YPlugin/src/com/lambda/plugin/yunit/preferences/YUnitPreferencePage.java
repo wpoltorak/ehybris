@@ -67,7 +67,7 @@ import org.eclipse.ui.progress.IProgressService;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 
 @SuppressWarnings("restriction")
 public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -185,7 +185,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 
 		public Image getColumnImage(Object object, int column) {
 			String name = ((Filter) object).getName();
-			if (name.indexOf(".*") != -1 || name.equals(YUnitMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
+			if (name.indexOf(".*") != -1 || name.equals(YMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
 				// package
 				return IMG_PKG;
 			} else if ("".equals(name)) { //$NON-NLS-1$
@@ -301,7 +301,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 
 	public YUnitPreferencePage() {
 		super();
-		setDescription(YUnitMessages.JUnitPreferencePage_description);
+		setDescription(YMessages.JUnitPreferencePage_description);
 		setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
 	}
 
@@ -328,7 +328,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 	 */
 	private void createStackFilterPreferences(Composite composite) {
 		fFilterViewerLabel = new Label(composite, SWT.SINGLE | SWT.LEFT);
-		fFilterViewerLabel.setText(YUnitMessages.JUnitPreferencePage_filter_label);
+		fFilterViewerLabel.setText(YMessages.JUnitPreferencePage_filter_label);
 
 		Composite container = new Composite(composite, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -384,8 +384,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		buttonContainer.setLayout(buttonLayout);
 
 		fAddFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fAddFilterButton.setText(YUnitMessages.JUnitPreferencePage_addfilterbutton_label);
-		fAddFilterButton.setToolTipText(YUnitMessages.JUnitPreferencePage_addfilterbutton_tooltip);
+		fAddFilterButton.setText(YMessages.JUnitPreferencePage_addfilterbutton_label);
+		fAddFilterButton.setToolTipText(YMessages.JUnitPreferencePage_addfilterbutton_tooltip);
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
 		fAddFilterButton.setLayoutData(gd);
 		LayoutUtil.setButtonDimensionHint(fAddFilterButton);
@@ -396,8 +396,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		});
 
 		fAddTypeButton = new Button(buttonContainer, SWT.PUSH);
-		fAddTypeButton.setText(YUnitMessages.JUnitPreferencePage_addtypebutton_label);
-		fAddTypeButton.setToolTipText(YUnitMessages.JUnitPreferencePage_addtypebutton_tooltip);
+		fAddTypeButton.setText(YMessages.JUnitPreferencePage_addtypebutton_label);
+		fAddTypeButton.setToolTipText(YMessages.JUnitPreferencePage_addtypebutton_tooltip);
 		gd = getButtonGridData(fAddTypeButton);
 		fAddTypeButton.setLayoutData(gd);
 		LayoutUtil.setButtonDimensionHint(fAddTypeButton);
@@ -408,8 +408,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		});
 
 		fAddPackageButton = new Button(buttonContainer, SWT.PUSH);
-		fAddPackageButton.setText(YUnitMessages.JUnitPreferencePage_addpackagebutton_label);
-		fAddPackageButton.setToolTipText(YUnitMessages.JUnitPreferencePage_addpackagebutton_tooltip);
+		fAddPackageButton.setText(YMessages.JUnitPreferencePage_addpackagebutton_label);
+		fAddPackageButton.setToolTipText(YMessages.JUnitPreferencePage_addpackagebutton_tooltip);
 		gd = getButtonGridData(fAddPackageButton);
 		fAddPackageButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fAddPackageButton);
@@ -420,8 +420,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		});
 
 		fRemoveFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fRemoveFilterButton.setText(YUnitMessages.JUnitPreferencePage_removefilterbutton_label);
-		fRemoveFilterButton.setToolTipText(YUnitMessages.JUnitPreferencePage_removefilterbutton_tooltip);
+		fRemoveFilterButton.setText(YMessages.JUnitPreferencePage_removefilterbutton_label);
+		fRemoveFilterButton.setToolTipText(YMessages.JUnitPreferencePage_removefilterbutton_tooltip);
 		gd = getButtonGridData(fRemoveFilterButton);
 		fRemoveFilterButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fRemoveFilterButton);
@@ -433,8 +433,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		fRemoveFilterButton.setEnabled(false);
 
 		fEnableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fEnableAllButton.setText(YUnitMessages.JUnitPreferencePage_enableallbutton_label);
-		fEnableAllButton.setToolTipText(YUnitMessages.JUnitPreferencePage_enableallbutton_tooltip);
+		fEnableAllButton.setText(YMessages.JUnitPreferencePage_enableallbutton_label);
+		fEnableAllButton.setToolTipText(YMessages.JUnitPreferencePage_enableallbutton_tooltip);
 		gd = getButtonGridData(fEnableAllButton);
 		fEnableAllButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fEnableAllButton);
@@ -445,8 +445,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		});
 
 		fDisableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fDisableAllButton.setText(YUnitMessages.JUnitPreferencePage_disableallbutton_label);
-		fDisableAllButton.setToolTipText(YUnitMessages.JUnitPreferencePage_disableallbutton_tooltip);
+		fDisableAllButton.setText(YMessages.JUnitPreferencePage_disableallbutton_label);
+		fDisableAllButton.setToolTipText(YMessages.JUnitPreferencePage_disableallbutton_tooltip);
 		gd = getButtonGridData(fDisableAllButton);
 		fDisableAllButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fDisableAllButton);
@@ -554,7 +554,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		// if it's invalid, beep and leave sitting in the editor
 		else if (!validateEditorInput(trimmedValue)) {
 			fInvalidEditorText = trimmedValue;
-			fEditorText.setText(YUnitMessages.JUnitPreferencePage_invalidstepfilterreturnescape);
+			fEditorText.setText(YMessages.JUnitPreferencePage_invalidstepfilterreturnescape);
 			getShell().getDisplay().beep();
 			return;
 			// otherwise, commit the new value if not a duplicate
@@ -627,14 +627,14 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 			dialog = JavaUI.createTypeDialog(shell, PlatformUI.getWorkbench().getProgressService(), SearchEngine
 					.createWorkspaceScope(), IJavaElementSearchConstants.CONSIDER_CLASSES, false);
 		} catch (JavaModelException jme) {
-			String title = YUnitMessages.JUnitPreferencePage_addtypedialog_title;
-			String message = YUnitMessages.JUnitPreferencePage_addtypedialog_error_message;
+			String title = YMessages.JUnitPreferencePage_addtypedialog_title;
+			String message = YMessages.JUnitPreferencePage_addtypedialog_error_message;
 			ExceptionHandler.handle(jme, shell, title, message);
 			return;
 		}
 
-		dialog.setTitle(YUnitMessages.JUnitPreferencePage_addtypedialog_title);
-		dialog.setMessage(YUnitMessages.JUnitPreferencePage_addtypedialog_message);
+		dialog.setTitle(YMessages.JUnitPreferencePage_addtypedialog_title);
+		dialog.setMessage(YMessages.JUnitPreferencePage_addtypedialog_message);
 		if (dialog.open() == IDialogConstants.CANCEL_ID)
 			return;
 
@@ -650,8 +650,8 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 		IProgressService context = PlatformUI.getWorkbench().getProgressService();
 		IJavaSearchScope createWorkspaceScope = SearchEngine.createWorkspaceScope();
 		SelectionDialog dialog = JavaUI.createPackageDialog(shell, context, createWorkspaceScope, true, true, ""); //$NON-NLS-1$
-		dialog.setTitle(YUnitMessages.JUnitPreferencePage_addpackagedialog_title);
-		dialog.setMessage(YUnitMessages.JUnitPreferencePage_addpackagedialog_message);
+		dialog.setTitle(YMessages.JUnitPreferencePage_addpackagedialog_title);
+		dialog.setMessage(YMessages.JUnitPreferencePage_addpackagedialog_message);
 		if (dialog.open() != Window.OK)
 			return;
 
@@ -664,7 +664,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 
 			String filter = pkg.getElementName();
 			if (filter.length() < 1)
-				filter = YUnitMessages.JUnitMainTab_label_defaultpackage;
+				filter = YMessages.JUnitMainTab_label_defaultpackage;
 			else
 				filter += ".*"; //$NON-NLS-1$
 

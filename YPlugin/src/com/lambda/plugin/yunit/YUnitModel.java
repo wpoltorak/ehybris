@@ -41,6 +41,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
 import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
@@ -398,13 +399,13 @@ public class YUnitModel {
     }
 
     private static void throwExportError(final File file, final Exception e) throws CoreException {
-        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YUnitMessages.format(
-                YUnitMessages.FunctestModel_could_not_write, BasicElementLabels.getPathLabel(file)), e));
+        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YMessages.format(
+                YMessages.FunctestModel_could_not_write, BasicElementLabels.getPathLabel(file)), e));
     }
 
     private static void throwImportError(final File file, final Exception e) throws CoreException {
-        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YUnitMessages.format(
-                YUnitMessages.FunctestModel_could_not_read, BasicElementLabels.getPathLabel(file)), e));
+        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YMessages.format(
+                YMessages.FunctestModel_could_not_read, BasicElementLabels.getPathLabel(file)), e));
     }
 
     /**

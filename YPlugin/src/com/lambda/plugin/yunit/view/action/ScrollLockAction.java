@@ -3,7 +3,7 @@ package com.lambda.plugin.yunit.view.action;
 import org.eclipse.jdt.internal.junit.ui.JUnitPlugin;
 import org.eclipse.jface.action.Action;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 public class ScrollLockAction extends Action {
@@ -11,9 +11,9 @@ public class ScrollLockAction extends Action {
 	private YUnitView fRunnerViewPart;
 
 	public ScrollLockAction(YUnitView viewer) {
-		super(YUnitMessages.ScrollLockAction_action_label);
+		super(YMessages.ScrollLockAction_action_label);
 		fRunnerViewPart = viewer;
-		setToolTipText(YUnitMessages.ScrollLockAction_action_tooltip);
+		setToolTipText(YMessages.ScrollLockAction_action_tooltip);
 		setDisabledImageDescriptor(JUnitPlugin.getImageDescriptor("dlcl16/lock.gif")); //$NON-NLS-1$
 		setHoverImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/lock.gif")); //$NON-NLS-1$
 		setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/lock.gif")); //$NON-NLS-1$

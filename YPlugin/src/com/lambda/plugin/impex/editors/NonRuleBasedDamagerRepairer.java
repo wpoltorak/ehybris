@@ -1,4 +1,4 @@
-package com.lambda.plugin.editors;
+package com.lambda.plugin.impex.editors;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;

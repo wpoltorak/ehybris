@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.PageBook;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.view.action.CopyFailureListAction;
 import com.lambda.plugin.yunit.view.action.OpenTestAction;
@@ -106,8 +106,8 @@ public class TestViewer {
 
 	private class ExpandAllAction extends Action {
 		public ExpandAllAction() {
-			setText(YUnitMessages.ExpandAllAction_text);
-			setToolTipText(YUnitMessages.ExpandAllAction_tooltip);
+			setText(YMessages.ExpandAllAction_text);
+			setToolTipText(YMessages.ExpandAllAction_tooltip);
 		}
 
 		@Override
@@ -207,8 +207,8 @@ public class TestViewer {
 			Object[] elements = selection.toArray();
 			List<IJavaElement> elems = findElements(Arrays.asList(elements));
 
-			RerunAction runAction = new RerunAction(YUnitMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
-			RerunAction debugAction = new RerunAction(YUnitMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
+			RerunAction runAction = new RerunAction(YMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
+			RerunAction debugAction = new RerunAction(YMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
 
 			if (!elems.isEmpty()){
 				manager.add(runAction);
@@ -223,8 +223,8 @@ public class TestViewer {
 			final TestElement testElement = (TestElement) selection.getFirstElement();
 			List<IJavaElement> elems = findElements(new ArrayList<TestElement>(){{add(testElement);}});
 			
-			RerunAction runAction = new RerunAction(YUnitMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
-			RerunAction debugAction = new RerunAction(YUnitMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
+			RerunAction runAction = new RerunAction(YMessages.RerunAction_label_run, fTestRunnerPart, elems, ILaunchManager.RUN_MODE);
+			RerunAction debugAction = new RerunAction(YMessages.RerunAction_label_debug, fTestRunnerPart, elems, ILaunchManager.DEBUG_MODE);
 			
 			if (testElement instanceof TestSuiteElement) {
 				manager.add(new OpenTestAction(fTestRunnerPart, testElement.getTestName()));

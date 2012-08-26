@@ -18,8 +18,8 @@ import org.eclipse.jdt.internal.junit.launcher.ITestFinder;
 import org.eclipse.jdt.internal.junit.ui.JUnitMessages;
 import org.eclipse.jdt.internal.junit.util.TestSearchEngine;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitManager;
-import com.lambda.plugin.yunit.YUnitMessages;
 
 public class YUnitTestFinder implements ITestFinder {
 
@@ -31,7 +31,7 @@ public class YUnitTestFinder implements ITestFinder {
 		if (pm == null)
 			pm = new NullProgressMonitor();
 
-		pm.beginTask(YUnitMessages.TestSearchEngine_message_searching, 10);
+		pm.beginTask(YMessages.TestSearchEngine_message_searching, 10);
 		try {
 			if (element instanceof IType) {
 				if (isTest((IType) element)) {

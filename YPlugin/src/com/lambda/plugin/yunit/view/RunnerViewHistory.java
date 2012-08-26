@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.PageSwitcher;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.action.ClearAction;
@@ -38,12 +38,12 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public void configureHistoryListAction(IAction action) {
-		action.setText(YUnitMessages.FunctestView_history);
+		action.setText(YMessages.FunctestView_history);
 	}
 
 	@Override
 	public void configureHistoryDropDownAction(IAction action) {
-		action.setToolTipText(YUnitMessages.FunctestView_test_run_history);
+		action.setToolTipText(YMessages.FunctestView_test_run_history);
 		JUnitPlugin.setLocalImageDescriptors(action, "history_list.gif"); //$NON-NLS-1$
 	}
 
@@ -54,12 +54,12 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public String getHistoryListDialogTitle() {
-		return YUnitMessages.FunctestView_test_runs;
+		return YMessages.FunctestView_test_runs;
 	}
 
 	@Override
 	public String getHistoryListDialogMessage() {
-		return YUnitMessages.FunctestView_select_test_run;
+		return YMessages.FunctestView_select_test_run;
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class RunnerViewHistory extends ViewHistory {
 			return testRunLabel;
 		} else {
 			String startTime = DateFormat.getDateTimeInstance().format(new Date(session.getStartTime()));
-			return YUnitMessages.format(YUnitMessages.FunctestView_testName_startTime, new Object[] { testRunLabel,
+			return YMessages.format(YMessages.FunctestView_testName_startTime, new Object[] { testRunLabel,
 					startTime });
 		}
 	}
@@ -138,7 +138,7 @@ public class RunnerViewHistory extends ViewHistory {
 
 	@Override
 	public String getMaxEntriesMessage() {
-		return YUnitMessages.FunctestView_max_remembered;
+		return YMessages.FunctestView_max_remembered;
 	}
 
 	@Override

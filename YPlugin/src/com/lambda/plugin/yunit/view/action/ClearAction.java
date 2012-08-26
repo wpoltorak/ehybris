@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.jface.action.Action;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.view.RunnerViewHistory;
 
@@ -15,7 +15,7 @@ public class ClearAction extends Action {
 
 	public ClearAction(RunnerViewHistory history) {
 		this.history = history;
-		setText(YUnitMessages.FunctestView_clear_history_label);
+		setText(YMessages.FunctestView_clear_history_label);
 
 		boolean enabled = false;
 		List<YUnitRunSession> testRunSessions = YPlugin.getModel().getFunctestRunSessions();

@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 
 public class ServerBlock extends YUnitBlock {
 
@@ -30,7 +30,7 @@ public class ServerBlock extends YUnitBlock {
 		// fControl = createComposite(comp, 1, 1, GridData.FILL_BOTH);
 
 		fDevRadioButton = new Button(comp, SWT.RADIO);
-		fDevRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_development);
+		fDevRadioButton.setText(YMessages.FunctestLaunchConfigurationTab_label_development);
 		GridData gd = new GridData();
 		gd.horizontalSpan = 3;
 		fDevRadioButton.setLayoutData(gd);
@@ -45,7 +45,7 @@ public class ServerBlock extends YUnitBlock {
 		});
 
 		fTstRadioButton = new Button(comp, SWT.RADIO);
-		fTstRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_staging);
+		fTstRadioButton.setText(YMessages.FunctestLaunchConfigurationTab_label_staging);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fTstRadioButton.setLayoutData(gd);
@@ -60,7 +60,7 @@ public class ServerBlock extends YUnitBlock {
 		});
 
 		fPrdRadioButton = new Button(comp, SWT.RADIO);
-		fPrdRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_production);
+		fPrdRadioButton.setText(YMessages.FunctestLaunchConfigurationTab_label_production);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fPrdRadioButton.setLayoutData(gd);
@@ -75,7 +75,7 @@ public class ServerBlock extends YUnitBlock {
 		});
 
 		fRmtRadioButton = new Button(comp, SWT.RADIO);
-		fRmtRadioButton.setText(YUnitMessages.FunctestLaunchConfigurationTab_label_remote);
+		fRmtRadioButton.setText(YMessages.FunctestLaunchConfigurationTab_label_remote);
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		fRmtRadioButton.setLayoutData(gd);
@@ -98,7 +98,7 @@ public class ServerBlock extends YUnitBlock {
 				if (fRmtRadioButton.getSelection()) {
 					String serverName = fServerTextField.getText().trim();
 					if (serverName.length() == 0) {
-						setError(YUnitMessages.FunctestLaunchConfigurationTab_error_noRemoteServer);
+						setError(YMessages.FunctestLaunchConfigurationTab_error_noRemoteServer);
 					}
 				}
 				firePropertyChange();

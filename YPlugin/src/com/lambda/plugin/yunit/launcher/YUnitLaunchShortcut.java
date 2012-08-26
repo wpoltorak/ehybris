@@ -39,8 +39,8 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitClasspathProvider;
-import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.ui.YUnitDialog;
 import com.lambda.plugin.yunit.ui.ServerBlock;
 
@@ -170,8 +170,8 @@ public class YUnitLaunchShortcut implements ILaunchShortcut2 {
         final IDebugModelPresentation labelProvider = DebugUITools.newDebugModelPresentation();
         final ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), labelProvider);
         dialog.setElements(configList);
-        dialog.setTitle(YUnitMessages.FunctestLaunchShortcut_message_selectConfiguration);
-        dialog.setMessage(YUnitMessages.FunctestLaunchShortcut_message_selectConfiguration);
+        dialog.setTitle(YMessages.FunctestLaunchShortcut_message_selectConfiguration);
+        dialog.setMessage(YMessages.FunctestLaunchShortcut_message_selectConfiguration);
         dialog.setMultipleSelection(false);
         final int result = dialog.open();
         if (result == Window.OK) {

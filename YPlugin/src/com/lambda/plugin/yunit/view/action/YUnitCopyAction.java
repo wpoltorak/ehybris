@@ -16,7 +16,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.ui.actions.SelectionListenerAction;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.view.FailureTrace;
 
 public class YUnitCopyAction extends SelectionListenerAction {
@@ -34,7 +34,7 @@ public class YUnitCopyAction extends SelectionListenerAction {
 	 * @param clipboard
 	 */
 	public YUnitCopyAction(FailureTrace view, Clipboard clipboard) {
-		super(YUnitMessages.CopyTrace_action_label);
+		super(YMessages.CopyTrace_action_label);
 		Assert.isNotNull(clipboard);
 		fView = view;
 		fClipboard = clipboard;
@@ -61,8 +61,8 @@ public class YUnitCopyAction extends SelectionListenerAction {
 		} catch (SWTError e) {
 			if (e.code != DND.ERROR_CANNOT_SET_CLIPBOARD)
 				throw e;
-			if (MessageDialog.openQuestion(fView.getComposite().getShell(), YUnitMessages.CopyTraceAction_problem,
-					YUnitMessages.CopyTraceAction_clipboard_busy))
+			if (MessageDialog.openQuestion(fView.getComposite().getShell(), YMessages.CopyTraceAction_problem,
+					YMessages.CopyTraceAction_clipboard_busy))
 				run();
 		}
 	}
