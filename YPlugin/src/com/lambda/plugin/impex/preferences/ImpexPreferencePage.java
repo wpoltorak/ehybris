@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.jdt.internal.ui.preferences.OverlayPreferenceStore;
+import org.eclipse.ant.internal.ui.preferences.AntEditorPreferenceConstants;
+import org.eclipse.ant.internal.ui.preferences.AntPreferencesMessages;
+import org.eclipse.ant.internal.ui.preferences.ColorEditor;
+import org.eclipse.ant.internal.ui.preferences.TabFolderLayout;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferencePage;
@@ -376,57 +379,5 @@ public class ImpexPreferencePage extends PreferencePage implements IWorkbenchPre
     private HighlightingColorListItem getHighlightingColorListItem() {
         final IStructuredSelection selection = (IStructuredSelection) fHighlightingColorListViewer.getSelection();
         return (HighlightingColorListItem) selection.getFirstElement();
-    }
-
-    protected OverlayPreferenceStore createOverlayStore() {
-        fSyntaxColorListModel = new String[][] {
-                { AntPreferencesMessages.AntEditorPreferencePage_Ant_editor_text_1, IAntEditorColorConstants.TEXT_COLOR, null },
-                { AntPreferencesMessages.AntEditorPreferencePage_Ant_editor_processing_instuctions_2,
-                        IAntEditorColorConstants.PROCESSING_INSTRUCTIONS_COLOR, null },
-                { AntPreferencesMessages.AntEditorPreferencePage_Ant_editor_constant_strings_3, IAntEditorColorConstants.STRING_COLOR, null },
-                { AntPreferencesMessages.AntEditorPreferencePage_Ant_editor_tags_4, IAntEditorColorConstants.TAG_COLOR, null },
-                { AntPreferencesMessages.AntEditorPreferencePage_Ant_editor_comments_5, IAntEditorColorConstants.XML_COMMENT_COLOR, null },
-                { AntPreferencesMessages.AntEditorPreferencePage_26, IAntEditorColorConstants.XML_DTD_COLOR, null } };
-        final ArrayList overlayKeys = new ArrayList();
-
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.INT,
-                AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION_DELAY));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.CODEASSIST_AUTOINSERT));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING,
-                AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION_TRIGGERS));
-
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_FOLDING_ENABLED));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_FOLDING_COMMENTS));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_FOLDING_DTD));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_FOLDING_DEFINING));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_FOLDING_TARGETS));
-
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_MARK_OCCURRENCES));
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.EDITOR_STICKY_OCCURRENCES));
-
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN,
-                AntEditorPreferenceConstants.BUILDFILE_IGNORE_ALL));
-
-        overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.STRING,
-                AntEditorPreferenceConstants.BUILDFILE_NAMES_TO_IGNORE));
-
-        for (int i = 0; i < fSyntaxColorListModel.length; i++) {
-            final String colorKey = fSyntaxColorListModel[i][1];
-            addTextKeyToCover(overlayKeys, colorKey);
-        }
-
-        final OverlayPreferenceStore.OverlayKey[] keys = new OverlayPreferenceStore.OverlayKey[overlayKeys.size()];
-        overlayKeys.toArray(keys);
-        return new OverlayPreferenceStore(getPreferenceStore(), keys);
     }
 }
