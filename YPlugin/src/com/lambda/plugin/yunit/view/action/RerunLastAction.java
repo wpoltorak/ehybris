@@ -14,7 +14,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.view.YUnitView;
 
@@ -25,8 +25,8 @@ public class RerunLastAction extends Action {
 
     public RerunLastAction(final YUnitView view) {
         this.view = view;
-        setText(YUnitMessages.FunctestView_rerunaction_label);
-        setToolTipText(YUnitMessages.FunctestView_rerunaction_tooltip);
+        setText(YMessages.FunctestView_rerunaction_label);
+        setToolTipText(YMessages.FunctestView_rerunaction_tooltip);
         JUnitPlugin.setLocalImageDescriptors(this, "relaunch.gif"); //$NON-NLS-1$
         setEnabled(false);
         setActionDefinitionId(RERUN_LAST_COMMAND);
@@ -76,7 +76,7 @@ public class RerunLastAction extends Action {
         try {
             final String attribute = configuration.getAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
             if (attribute.length() != 0) {
-                final String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, configuration.getName());
+                final String configName = YMessages.format(YMessages.FunctestView_configName, configuration.getName());
                 final ILaunchConfigurationWorkingCopy tmp = configuration.copy(configName);
                 tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, ""); //$NON-NLS-1$
                 return tmp;

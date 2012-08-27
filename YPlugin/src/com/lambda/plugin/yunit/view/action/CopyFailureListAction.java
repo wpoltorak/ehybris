@@ -10,7 +10,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 public class CopyFailureListAction extends Action {
@@ -19,7 +19,7 @@ public class CopyFailureListAction extends Action {
     private final YUnitView fRunner;
 
     public CopyFailureListAction(final YUnitView runner, final Clipboard clipboard) {
-        super(YUnitMessages.CopyFailureList_action_label);
+        super(YMessages.CopyFailureList_action_label);
         fRunner = runner;
         fClipboard = clipboard;
     }
@@ -37,8 +37,8 @@ public class CopyFailureListAction extends Action {
             if (e.code != DND.ERROR_CANNOT_SET_CLIPBOARD) {
                 throw e;
             }
-            if (MessageDialog.openQuestion(YPlugin.getActiveWorkbenchShell(), YUnitMessages.CopyFailureList_problem,
-                    YUnitMessages.CopyFailureList_clipboard_busy)) {
+            if (MessageDialog.openQuestion(YPlugin.getActiveWorkbenchShell(), YMessages.CopyFailureList_problem,
+                    YMessages.CopyFailureList_clipboard_busy)) {
                 run();
             }
         }

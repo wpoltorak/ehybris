@@ -51,7 +51,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.YUnitPropertyTester;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
 
@@ -126,8 +126,8 @@ public class SelectionBlock extends YUnitBlock {
         dialog.setValidator(validator);
         dialog.setComparator(new JavaElementComparator());
         dialog.setHelpAvailable(false);
-        dialog.setTitle(YUnitMessages.FunctestLaunchConfigurationTab_folderdialog_title);
-        dialog.setMessage(YUnitMessages.FunctestLaunchConfigurationTab_folderdialog_message);
+        dialog.setTitle(YMessages.FunctestLaunchConfigurationTab_folderdialog_title);
+        dialog.setMessage(YMessages.FunctestLaunchConfigurationTab_folderdialog_message);
         dialog.addFilter(filter);
         dialog.setInput(JavaCore.create(getWorkspaceRoot()));
         // dialog.setInitialSelection(initElement);
@@ -251,16 +251,16 @@ public class SelectionBlock extends YUnitBlock {
                 switch (javaElement.getElementType()) {
                     case IJavaElement.PACKAGE_FRAGMENT_ROOT:
                     case IJavaElement.PACKAGE_FRAGMENT:
-                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YMessages.format(YMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { fJavaElementLabelProvider.getText(element),
                                         javaElement.getJavaProject().getProject().getName() });
                     case IJavaElement.TYPE:
-                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YMessages.format(YMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { ((IType) element).getFullyQualifiedName(),
                                         javaElement.getJavaProject().getProject().getName() });
                     case IJavaElement.METHOD:
                         final IMethod method = (IMethod) element;
-                        return YUnitMessages.format(YUnitMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
+                        return YMessages.format(YMessages.TestSelectionElementsLabelProvider_testElementName_projectName,
                                 new Object[] { method.getDeclaringType().getFullyQualifiedName() + "." + method.getElementName(),
                                         javaElement.getJavaProject().getProject().getName() });
                 }

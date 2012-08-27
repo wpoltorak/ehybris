@@ -32,7 +32,7 @@ import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
 import com.lambda.plugin.yunit.view.YUnitView;
@@ -47,8 +47,8 @@ public class RerunLastFailedOnlyAction extends Action {
 
     public RerunLastFailedOnlyAction(final YUnitView view) {
         this.view = view;
-        setText(YUnitMessages.FunctestView_rerunfailuresonlyaction_label);
-        setToolTipText(YUnitMessages.FunctestView_rerunfailuresonlyaction_tooltip);
+        setText(YMessages.FunctestView_rerunfailuresonlyaction_label);
+        setToolTipText(YMessages.FunctestView_rerunfailuresonlyaction_tooltip);
         JUnitPlugin.setLocalImageDescriptors(this, "relaunchf.gif"); //$NON-NLS-1$
         setEnabled(false);
         setActionDefinitionId(RERUN_FAILED_COMMAND);
@@ -94,19 +94,19 @@ public class RerunLastFailedOnlyAction extends Action {
                     if (oldFailuresFilename != null) {
                         configName = oldName;
                     } else {
-                        configName = YUnitMessages.format(YUnitMessages.FunctestView_rerunFailedLaunchConfigName, oldName);
+                        configName = YMessages.format(YMessages.FunctestView_rerunFailedLaunchConfigName, oldName);
                     }
                     final ILaunchConfigurationWorkingCopy tmp = launchConfiguration.copy(configName);
                     tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_FAILURES_NAMES, createFailureNamesFile());
                     DebugUITools.launch(tmp, launch.getLaunchMode());
                     return;
                 } catch (final CoreException e) {
-                    ErrorDialog.openError(view.getSite().getShell(), YUnitMessages.FunctestView_error_cannotrerun, e.getMessage(),
+                    ErrorDialog.openError(view.getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(),
                             e.getStatus());
                 }
             }
-            MessageDialog.openInformation(view.getSite().getShell(), YUnitMessages.FunctestView_cannotrerun_title,
-                    YUnitMessages.FunctestView_cannotrerurn_message);
+            MessageDialog.openInformation(view.getSite().getShell(), YMessages.FunctestView_cannotrerun_title,
+                    YMessages.FunctestView_cannotrerurn_message);
         }
     }
 

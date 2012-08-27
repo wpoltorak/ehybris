@@ -10,8 +10,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.images.YPluginImages;
-import com.lambda.plugin.yunit.YUnitMessages;
 
 public class CounterPanel extends Composite {
 	
@@ -33,10 +33,10 @@ public class CounterPanel extends Composite {
 		gridLayout.marginWidth= 0;
 		setLayout(gridLayout);
 		
-		fServer = createLabel(YUnitMessages.CounterPanel_label_server, null, "  "); //$NON-NLS-1$
-		fNumberOfRuns= createLabel(YUnitMessages.CounterPanel_label_runs, null, " 0/0  "); //$NON-NLS-1$
-		fNumberOfErrors= createLabel(YUnitMessages.CounterPanel_label_errors, fErrorIcon, " 0 "); //$NON-NLS-1$
-		fNumberOfFailures= createLabel(YUnitMessages.CounterPanel_label_failures, fFailureIcon, " 0 "); //$NON-NLS-1$
+		fServer = createLabel(YMessages.CounterPanel_label_server, null, "  "); //$NON-NLS-1$
+		fNumberOfRuns= createLabel(YMessages.CounterPanel_label_runs, null, " 0/0  "); //$NON-NLS-1$
+		fNumberOfErrors= createLabel(YMessages.CounterPanel_label_errors, fErrorIcon, " 0 "); //$NON-NLS-1$
+		fNumberOfFailures= createLabel(YMessages.CounterPanel_label_failures, fFailureIcon, " 0 "); //$NON-NLS-1$
 
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
@@ -93,9 +93,9 @@ public class CounterPanel extends Composite {
 	public void setRunValue(int value, int ignoredCount) {
 		String runString;
 		if (ignoredCount == 0)
-			runString= YUnitMessages.format(YUnitMessages.CounterPanel_runcount, new String[] { Integer.toString(value), Integer.toString(fTotal) });
+			runString= YMessages.format(YMessages.CounterPanel_runcount, new String[] { Integer.toString(value), Integer.toString(fTotal) });
 		else
-			runString= YUnitMessages.format(YUnitMessages.CounterPanel_runcount_ignored, new String[] { Integer.toString(value), Integer.toString(fTotal), Integer.toString(ignoredCount) });
+			runString= YMessages.format(YMessages.CounterPanel_runcount_ignored, new String[] { Integer.toString(value), Integer.toString(fTotal), Integer.toString(ignoredCount) });
 		fNumberOfRuns.setText(runString);
 
 		if (fIgnoredCount == 0 && ignoredCount > 0	|| fIgnoredCount != 0 && ignoredCount == 0) {

@@ -28,7 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 public abstract class OpenEditorAction extends Action {
@@ -41,7 +41,7 @@ public abstract class OpenEditorAction extends Action {
     }
 
     public OpenEditorAction(final YUnitView testRunner, final String className, final boolean activate) {
-        super(YUnitMessages.OpenEditorAction_action_label);
+        super(YMessages.OpenEditorAction_action_label);
         fClassName = className;
         fTestRunner = testRunner;
         fActivate = activate;
@@ -56,18 +56,18 @@ public abstract class OpenEditorAction extends Action {
         try {
             final IJavaElement element = findElement(getLaunchedProjects(), fClassName);
             if (element == null) {
-                MessageDialog.openError(getShell(), YUnitMessages.OpenEditorAction_error_cannotopen_title,
-                        YUnitMessages.OpenEditorAction_error_cannotopen_message);
+                MessageDialog.openError(getShell(), YMessages.OpenEditorAction_error_cannotopen_title,
+                        YMessages.OpenEditorAction_error_cannotopen_message);
                 return;
             }
             textEditor = (ITextEditor) JavaUI.openInEditor(element, fActivate, false);
         } catch (final CoreException e) {
-            ErrorDialog.openError(getShell(), YUnitMessages.OpenEditorAction_error_dialog_title,
-                    YUnitMessages.OpenEditorAction_error_dialog_message, e.getStatus());
+            ErrorDialog.openError(getShell(), YMessages.OpenEditorAction_error_dialog_title,
+                    YMessages.OpenEditorAction_error_dialog_message, e.getStatus());
             return;
         }
         if (textEditor == null) {
-            fTestRunner.registerInfoMessage(YUnitMessages.OpenEditorAction_message_cannotopen);
+            fTestRunner.registerInfoMessage(YMessages.OpenEditorAction_message_cannotopen);
             return;
         }
         reveal(textEditor);

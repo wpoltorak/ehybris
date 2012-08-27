@@ -32,7 +32,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.junit.BasicElementLabels;
+import org.eclipse.osgi.util.TextProcessor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -40,10 +40,11 @@ import org.eclipse.ui.PartInitException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.preferences.PreferenceConstants;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationUtils;
-import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 /**
@@ -54,10 +55,10 @@ public class YUnitModel {
     private final class JUnitLaunchListener implements ILaunchListener {
 
         /**
-         * Used to track new launches. We need to do this so that we only attach a TestRunner once to a launch. Once a test runner is
-         * connected, it is removed from the set.
+         * Used to track new launches. We need to do this so that we only attach a TestRunner once to a launch. Once a
+         * test runner is connected, it is removed from the set.
          */
-        private final HashSet fTrackedLaunches = new HashSet(20);
+        private final HashSet<ILaunch> fTrackedLaunches = new HashSet<ILaunch>(20);
 
         /*
          * @see ILaunchListener#launchAdded(ILaunch)
@@ -135,13 +136,14 @@ public class YUnitModel {
             }
         }
 
-        private void connectTestRunner(final ILaunch launch, final Map<String, IJavaProject> javaProjects, final int port) {
+        private void connectTestRunner(final ILaunch launch, final Map<String, IJavaProject> javaProjects,
+                final int port) {
             showTestRunnerViewPartInActivePage(findTestRunnerViewPartInActivePage());
 
             // TODO: Do notifications have to be sent in UI thread?
             // Check concurrent access to fFunctestRunSessions (no problem inside
             // asyncExec())
-            final int maxCount = YPlugin.getDefault().getPreferenceStore().getInt(YUnitPreferencesConstants.MAX_TEST_RUNS);
+            final int maxCount = YPlugin.getDefault().getPreferenceStore().getInt(PreferenceConstants.YUNIT_MAX_TEST_RUNS);
             int toDelete = fFunctestRunSessions.size() - maxCount;
             while (toDelete > 0) {
                 toDelete--;
@@ -149,8 +151,8 @@ public class YUnitModel {
                 notifyFunctestRunSessionRemoved(session);
             }
 
-            final YUnitRunSession testRunSession = new YUnitRunSession(launch, new ArrayList<IJavaProject>(javaProjects.values()),
-                    port);
+            final YUnitRunSession testRunSession = new YUnitRunSession(launch, new ArrayList<IJavaProject>(
+                    javaProjects.values()), port);
             addFunctestRunSession(testRunSession);
         }
 
@@ -217,7 +219,8 @@ public class YUnitModel {
         launchManager.addLaunchListener(fLaunchListener);
 
         /*
-         * TODO: restore on restart: - only import headers! - only import last n sessions; remove all other files in historyDirectory
+         * TODO: restore on restart: - only import headers! - only import last n sessions; remove all other files in
+         * historyDirectory
          */
         // File historyDirectory= JUnitPlugin.getHistoryDirectory();
         // File[] swapFiles= historyDirectory.listFiles();
@@ -280,8 +283,9 @@ public class YUnitModel {
     }
 
     /**
-     * @return a list of active {@link YUnitRunSession}s. The list is a copy of the internal data structure and modifications do not
-     *         affect the global list of active sessions. The list is sorted by age, youngest first.
+     * @return a list of active {@link YUnitRunSession}s. The list is a copy of the internal data structure and
+     *         modifications do not affect the global list of active sessions. The list is sorted by age, youngest
+     *         first.
      */
     public List<YUnitRunSession> getFunctestRunSessions() {
         return new ArrayList<YUnitRunSession>(fFunctestRunSessions);
@@ -329,7 +333,8 @@ public class YUnitModel {
         return null; // does not happen
     }
 
-    public static void importIntoFunctestRunSession(final File swapFile, final YUnitRunSession testRunSession) throws CoreException {
+    public static void importIntoFunctestRunSession(final File swapFile, final YUnitRunSession testRunSession)
+            throws CoreException {
         try {
             final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
             // parserFactory.setValidating(true); // TODO: add DTD and debug flag
@@ -352,7 +357,8 @@ public class YUnitModel {
      * @param file the destination
      * @throws CoreException
      */
-    public static void exportFunctestRunSession(final YUnitRunSession testRunSession, final File file) throws CoreException {
+    public static void exportFunctestRunSession(final YUnitRunSession testRunSession, final File file)
+            throws CoreException {
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file);
@@ -385,7 +391,8 @@ public class YUnitModel {
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8"); //$NON-NLS-1$
         transformer.setOutputProperty(OutputKeys.INDENT, "yes"); //$NON-NLS-1$
         /*
-         * Bug in Xalan: Only indents if proprietary property org.apache.xalan.templates.OutputProperties.S_KEY_INDENT_AMOUNT is set.
+         * Bug in Xalan: Only indents if proprietary property
+         * org.apache.xalan.templates.OutputProperties.S_KEY_INDENT_AMOUNT is set.
          * 
          * Bug in Xalan as shipped with J2SE 5.0: Does not read the indent-amount property at all >:-(.
          */
@@ -398,13 +405,17 @@ public class YUnitModel {
     }
 
     private static void throwExportError(final File file, final Exception e) throws CoreException {
-        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YUnitMessages.format(
-                YUnitMessages.FunctestModel_could_not_write, BasicElementLabels.getPathLabel(file)), e));
+        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YMessages.format(
+                YMessages.FunctestModel_could_not_write, getPathLabel(file)), e));
     }
 
     private static void throwImportError(final File file, final Exception e) throws CoreException {
-        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YUnitMessages.format(
-                YUnitMessages.FunctestModel_could_not_read, BasicElementLabels.getPathLabel(file)), e));
+        throw new CoreException(new org.eclipse.core.runtime.Status(IStatus.ERROR, YPlugin.PLUGIN_ID, YMessages.format(
+                YMessages.FunctestModel_could_not_read, getPathLabel(file)), e));
+    }
+
+    public static String getPathLabel(File file) {
+        return TextProcessor.process(file.getAbsolutePath(), "/\\:."); //$NON-NLS-1$
     }
 
     /**

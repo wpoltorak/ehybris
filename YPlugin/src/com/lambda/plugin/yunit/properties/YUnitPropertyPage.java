@@ -69,7 +69,7 @@ import org.eclipse.ui.progress.IProgressService;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 
 @SuppressWarnings("restriction")
 public class YUnitPropertyPage extends PropertyPage {
@@ -188,7 +188,7 @@ public class YUnitPropertyPage extends PropertyPage {
 
 		public Image getColumnImage(Object object, int column) {
 			String name = ((Filter) object).getName();
-			if (name.indexOf(".*") != -1 || name.equals(YUnitMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
+			if (name.indexOf(".*") != -1 || name.equals(YMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
 				// package
 				return IMG_PKG;
 			} else if ("".equals(name)) { //$NON-NLS-1$
@@ -309,7 +309,7 @@ public class YUnitPropertyPage extends PropertyPage {
 
 	public YUnitPropertyPage() {
 		super();
-		setDescription(YUnitMessages.JUnitPropertyPage_description);
+		setDescription(YMessages.JUnitPropertyPage_description);
 		setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
 	}
 
@@ -336,7 +336,7 @@ public class YUnitPropertyPage extends PropertyPage {
 	 */
 	private void createTestFilterProperties(Composite composite) {
 		fFilterViewerLabel = new Label(composite, SWT.SINGLE | SWT.LEFT);
-		fFilterViewerLabel.setText(YUnitMessages.JUnitPropertyPage_filter_label);
+		fFilterViewerLabel.setText(YMessages.JUnitPropertyPage_filter_label);
 
 		Composite container = new Composite(composite, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -392,8 +392,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		buttonContainer.setLayout(buttonLayout);
 
 		fAddFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fAddFilterButton.setText(YUnitMessages.JUnitPropertyPage_addfilterbutton_label);
-		fAddFilterButton.setToolTipText(YUnitMessages.JUnitPropertyPage_addfilterbutton_tooltip);
+		fAddFilterButton.setText(YMessages.JUnitPropertyPage_addfilterbutton_label);
+		fAddFilterButton.setToolTipText(YMessages.JUnitPropertyPage_addfilterbutton_tooltip);
 		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
 		fAddFilterButton.setLayoutData(gd);
 		LayoutUtil.setButtonDimensionHint(fAddFilterButton);
@@ -404,8 +404,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		});
 
 		fAddTypeButton = new Button(buttonContainer, SWT.PUSH);
-		fAddTypeButton.setText(YUnitMessages.JUnitPropertyPage_addtypebutton_label);
-		fAddTypeButton.setToolTipText(YUnitMessages.JUnitPropertyPage_addtypebutton_tooltip);
+		fAddTypeButton.setText(YMessages.JUnitPropertyPage_addtypebutton_label);
+		fAddTypeButton.setToolTipText(YMessages.JUnitPropertyPage_addtypebutton_tooltip);
 		gd = getButtonGridData(fAddTypeButton);
 		fAddTypeButton.setLayoutData(gd);
 		LayoutUtil.setButtonDimensionHint(fAddTypeButton);
@@ -416,8 +416,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		});
 
 		fAddPackageButton = new Button(buttonContainer, SWT.PUSH);
-		fAddPackageButton.setText(YUnitMessages.JUnitPropertyPage_addpackagebutton_label);
-		fAddPackageButton.setToolTipText(YUnitMessages.JUnitPropertyPage_addpackagebutton_tooltip);
+		fAddPackageButton.setText(YMessages.JUnitPropertyPage_addpackagebutton_label);
+		fAddPackageButton.setToolTipText(YMessages.JUnitPropertyPage_addpackagebutton_tooltip);
 		gd = getButtonGridData(fAddPackageButton);
 		fAddPackageButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fAddPackageButton);
@@ -428,8 +428,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		});
 
 		fRemoveFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fRemoveFilterButton.setText(YUnitMessages.JUnitPropertyPage_removefilterbutton_label);
-		fRemoveFilterButton.setToolTipText(YUnitMessages.JUnitPropertyPage_removefilterbutton_tooltip);
+		fRemoveFilterButton.setText(YMessages.JUnitPropertyPage_removefilterbutton_label);
+		fRemoveFilterButton.setToolTipText(YMessages.JUnitPropertyPage_removefilterbutton_tooltip);
 		gd = getButtonGridData(fRemoveFilterButton);
 		fRemoveFilterButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fRemoveFilterButton);
@@ -441,8 +441,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		fRemoveFilterButton.setEnabled(false);
 
 		fEnableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fEnableAllButton.setText(YUnitMessages.JUnitPropertyPage_enableallbutton_label);
-		fEnableAllButton.setToolTipText(YUnitMessages.JUnitPropertyPage_enableallbutton_tooltip);
+		fEnableAllButton.setText(YMessages.JUnitPropertyPage_enableallbutton_label);
+		fEnableAllButton.setToolTipText(YMessages.JUnitPropertyPage_enableallbutton_tooltip);
 		gd = getButtonGridData(fEnableAllButton);
 		fEnableAllButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fEnableAllButton);
@@ -453,8 +453,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		});
 
 		fDisableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fDisableAllButton.setText(YUnitMessages.JUnitPropertyPage_disableallbutton_label);
-		fDisableAllButton.setToolTipText(YUnitMessages.JUnitPropertyPage_disableallbutton_tooltip);
+		fDisableAllButton.setText(YMessages.JUnitPropertyPage_disableallbutton_label);
+		fDisableAllButton.setToolTipText(YMessages.JUnitPropertyPage_disableallbutton_tooltip);
 		gd = getButtonGridData(fDisableAllButton);
 		fDisableAllButton.setLayoutData(gd);
 		SWTUtil.setButtonDimensionHint(fDisableAllButton);
@@ -562,7 +562,7 @@ public class YUnitPropertyPage extends PropertyPage {
 		// if it's invalid, beep and leave sitting in the editor
 		else if (!validateEditorInput(trimmedValue)) {
 			fInvalidEditorText = trimmedValue;
-			fEditorText.setText(YUnitMessages.JUnitPropertyPage_invalidstepfilterreturnescape);
+			fEditorText.setText(YMessages.JUnitPropertyPage_invalidstepfilterreturnescape);
 			getShell().getDisplay().beep();
 			return;
 			// otherwise, commit the new value if not a duplicate
@@ -635,14 +635,14 @@ public class YUnitPropertyPage extends PropertyPage {
 			dialog = JavaUI.createTypeDialog(shell, PlatformUI.getWorkbench().getProgressService(), SearchEngine
 					.createWorkspaceScope(), IJavaElementSearchConstants.CONSIDER_CLASSES, false);
 		} catch (JavaModelException jme) {
-			String title = YUnitMessages.JUnitPropertyPage_addtypedialog_title;
-			String message = YUnitMessages.JUnitPropertyPage_addtypedialog_error_message;
+			String title = YMessages.JUnitPropertyPage_addtypedialog_title;
+			String message = YMessages.JUnitPropertyPage_addtypedialog_error_message;
 			ExceptionHandler.handle(jme, shell, title, message);
 			return;
 		}
 
-		dialog.setTitle(YUnitMessages.JUnitPropertyPage_addtypedialog_title);
-		dialog.setMessage(YUnitMessages.JUnitPropertyPage_addtypedialog_message);
+		dialog.setTitle(YMessages.JUnitPropertyPage_addtypedialog_title);
+		dialog.setMessage(YMessages.JUnitPropertyPage_addtypedialog_message);
 		if (dialog.open() == IDialogConstants.CANCEL_ID)
 			return;
 
@@ -658,8 +658,8 @@ public class YUnitPropertyPage extends PropertyPage {
 		IProgressService context = PlatformUI.getWorkbench().getProgressService();
 		IJavaSearchScope createWorkspaceScope = SearchEngine.createWorkspaceScope();
 		SelectionDialog dialog = JavaUI.createPackageDialog(shell, context, createWorkspaceScope, true, true, ""); //$NON-NLS-1$
-		dialog.setTitle(YUnitMessages.JUnitPropertyPage_addpackagedialog_title);
-		dialog.setMessage(YUnitMessages.JUnitPropertyPage_addpackagedialog_message);
+		dialog.setTitle(YMessages.JUnitPropertyPage_addpackagedialog_title);
+		dialog.setMessage(YMessages.JUnitPropertyPage_addpackagedialog_message);
 		if (dialog.open() != Window.OK)
 			return;
 
@@ -672,7 +672,7 @@ public class YUnitPropertyPage extends PropertyPage {
 
 			String filter = pkg.getElementName();
 			if (filter.length() < 1)
-				filter = YUnitMessages.JUnitMainTab_label_defaultpackage;
+				filter = YMessages.JUnitMainTab_label_defaultpackage;
 			else
 				filter += ".*"; //$NON-NLS-1$
 

@@ -73,11 +73,11 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IWorkbenchSiteProgressService;
 import org.eclipse.ui.progress.UIJob;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.preferences.PreferenceConstants;
 import com.lambda.plugin.yunit.IYUnitRunSessionListener;
-import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.YUnitRunSession;
-import com.lambda.plugin.yunit.preferences.YUnitPreferencesConstants;
 import com.lambda.plugin.yunit.view.action.ActivateOnErrorAction;
 import com.lambda.plugin.yunit.view.action.RerunLastAction;
 import com.lambda.plugin.yunit.view.action.RerunLastFailedOnlyAction;
@@ -103,8 +103,8 @@ public class YUnitView extends ViewPart {
      */
     protected boolean fAutoScroll = true;
     /**
-     * The current orientation; either <code>VIEW_ORIENTATION_HORIZONTAL</code> <code>VIEW_ORIENTATION_VERTICAL</code>, or
-     * <code>VIEW_ORIENTATION_AUTOMATIC</code>.
+     * The current orientation; either <code>VIEW_ORIENTATION_HORIZONTAL</code> <code>VIEW_ORIENTATION_VERTICAL</code>,
+     * or <code>VIEW_ORIENTATION_AUTOMATIC</code>.
      */
     private int fOrientation = VIEW_ORIENTATION_AUTOMATIC;
     /**
@@ -200,7 +200,8 @@ public class YUnitView extends ViewPart {
     private UpdateUIJob fUpdateJob;
 
     /**
-     * A Job that runs as long as a test run is running. It is used to show busyness for running jobs in the view (title in italics).
+     * A Job that runs as long as a test run is running. It is used to show busyness for running jobs in the view (title
+     * in italics).
      */
     private FunctestIsRunningJob fFunctestIsRunningJob;
     private ILock fFunctestIsRunningLock;
@@ -250,7 +251,7 @@ public class YUnitView extends ViewPart {
                 final String testRunLabel = BasicElementLabels.getJavaElementName(fTestRunSession.getTestRunName());
                 String msg;
                 if (testRunSession.getLaunch() != null) {
-                    msg = YUnitMessages.format(YUnitMessages.FunctestView_Launching, new Object[] { testRunLabel });
+                    msg = YMessages.format(YMessages.FunctestView_Launching, new Object[] { testRunLabel });
                 } else {
                     msg = testRunLabel;
                 }
@@ -289,7 +290,7 @@ public class YUnitView extends ViewPart {
             fTestViewer.registerAutoScrollTarget(null);
 
             final String[] keys = { elapsedTimeAsString(elapsedTime) };
-            final String msg = YUnitMessages.format(YUnitMessages.FunctestView_message_finish, keys);
+            final String msg = YMessages.format(YMessages.FunctestView_message_finish, keys);
             registerInfoMessage(msg);
 
             postSyncRunnable(new Runnable() {
@@ -316,14 +317,14 @@ public class YUnitView extends ViewPart {
         public void sessionStopped(final long elapsedTime) {
             fTestViewer.registerAutoScrollTarget(null);
 
-            registerInfoMessage(YUnitMessages.FunctestView_message_stopped);
+            registerInfoMessage(YMessages.FunctestView_message_stopped);
             handleStopped();
         }
 
         public void sessionTerminated() {
             fTestViewer.registerAutoScrollTarget(null);
 
-            registerInfoMessage(YUnitMessages.FunctestView_message_terminated);
+            registerInfoMessage(YMessages.FunctestView_message_terminated);
             handleStopped();
         }
 
@@ -339,12 +340,13 @@ public class YUnitView extends ViewPart {
 
             final String className = BasicElementLabels.getJavaElementName(testCaseElement.getClassName());
             final String method = BasicElementLabels.getJavaElementName(testCaseElement.getTestMethodName());
-            final String status = YUnitMessages.format(YUnitMessages.FunctestView_message_started, new String[] { className, method });
+            final String status = YMessages.format(YMessages.FunctestView_message_started, new String[] { className,
+                    method });
             registerInfoMessage(status);
         }
 
-        public void testFailed(final TestElement testElement, final TestElement.Status status, final String trace, final String expected,
-                final String actual) {
+        public void testFailed(final TestElement testElement, final TestElement.Status status, final String trace,
+                final String expected, final String actual) {
             if (isAutoScroll()) {
                 fTestViewer.registerFailedForAutoScroll(testElement);
             }
@@ -370,8 +372,8 @@ public class YUnitView extends ViewPart {
             fTestViewer.registerViewerUpdate(testCaseElement);
         }
 
-        public void testReran(final TestCaseElement testCaseElement, final TestElement.Status status, final String trace,
-                final String expectedResult, final String actualResult) {
+        public void testReran(final TestCaseElement testCaseElement, final TestElement.Status status,
+                final String trace, final String expectedResult, final String actualResult) {
             fTestViewer.registerViewerUpdate(testCaseElement); // TODO: autoExpand?
             postSyncProcessChanges();
             showFailure(testCaseElement);
@@ -451,34 +453,34 @@ public class YUnitView extends ViewPart {
 
             switch (type) {
             // Consider containers for class files.
-                case IJavaElement.JAVA_MODEL:
-                case IJavaElement.JAVA_PROJECT:
-                case IJavaElement.PACKAGE_FRAGMENT_ROOT:
-                case IJavaElement.PACKAGE_FRAGMENT:
-                    // If we did something different than changing a child we flush the
-                    // undo / redo stack.
-                    if (kind != IJavaElementDelta.CHANGED || details != IJavaElementDelta.F_CHILDREN) {
-                        codeHasChanged();
-                        return false;
-                    }
-                    break;
-                case IJavaElement.COMPILATION_UNIT:
-                    // if we have changed a primary working copy (e.g created, removed,
-                    // ...)
-                    // then we do nothing.
-                    if ((details & IJavaElementDelta.F_PRIMARY_WORKING_COPY) != 0) {
-                        return true;
-                    }
+            case IJavaElement.JAVA_MODEL:
+            case IJavaElement.JAVA_PROJECT:
+            case IJavaElement.PACKAGE_FRAGMENT_ROOT:
+            case IJavaElement.PACKAGE_FRAGMENT:
+                // If we did something different than changing a child we flush the
+                // undo / redo stack.
+                if (kind != IJavaElementDelta.CHANGED || details != IJavaElementDelta.F_CHILDREN) {
                     codeHasChanged();
                     return false;
-
-                case IJavaElement.CLASS_FILE:
-                    // Don't examine children of a class file but keep on examining
-                    // siblings.
+                }
+                break;
+            case IJavaElement.COMPILATION_UNIT:
+                // if we have changed a primary working copy (e.g created, removed,
+                // ...)
+                // then we do nothing.
+                if ((details & IJavaElementDelta.F_PRIMARY_WORKING_COPY) != 0) {
                     return true;
-                default:
-                    codeHasChanged();
-                    return false;
+                }
+                codeHasChanged();
+                return false;
+
+            case IJavaElement.CLASS_FILE:
+                // Don't examine children of a class file but keep on examining
+                // siblings.
+                return true;
+            default:
+                codeHasChanged();
+                return false;
             }
 
             final IJavaElementDelta[] affectedChildren = delta.getAffectedChildren();
@@ -497,8 +499,8 @@ public class YUnitView extends ViewPart {
 
     private class FailuresOnlyFilterAction extends Action {
         public FailuresOnlyFilterAction() {
-            super(YUnitMessages.FunctestView_show_failures_only, AS_CHECK_BOX);
-            setToolTipText(YUnitMessages.FunctestView_show_failures_only);
+            super(YMessages.FunctestView_show_failures_only, AS_CHECK_BOX);
+            setToolTipText(YMessages.FunctestView_show_failures_only);
             setImageDescriptor(JUnitPlugin.getImageDescriptor("obj16/failures.gif")); //$NON-NLS-1$
         }
 
@@ -511,7 +513,7 @@ public class YUnitView extends ViewPart {
     private class ShowTestHierarchyAction extends Action {
 
         public ShowTestHierarchyAction() {
-            super(YUnitMessages.FunctestView_hierarchical_layout, IAction.AS_CHECK_BOX);
+            super(YMessages.FunctestView_hierarchical_layout, IAction.AS_CHECK_BOX);
             setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/hierarchicalLayout.gif")); //$NON-NLS-1$
         }
 
@@ -616,7 +618,7 @@ public class YUnitView extends ViewPart {
     public void stopTest() {
         if (fTestRunSession != null) {
             if (fTestRunSession.isRunning()) {
-                setContentDescription(YUnitMessages.FunctestView_message_stopping);
+                setContentDescription(YMessages.FunctestView_message_stopping);
             }
             fTestRunSession.stopTestRun();
         }
@@ -628,7 +630,7 @@ public class YUnitView extends ViewPart {
         if (fUpdateJob != null) {
             return;
         }
-        fFunctestIsRunningJob = new FunctestIsRunningJob(YUnitMessages.FunctestView_wrapperJobName);
+        fFunctestIsRunningJob = new FunctestIsRunningJob(YMessages.FunctestView_wrapperJobName);
         fFunctestIsRunningLock = Job.getJobManager().newLock();
         // acquire lock while a test run is running
         // the lock is released when the test run terminates
@@ -636,7 +638,7 @@ public class YUnitView extends ViewPart {
         fFunctestIsRunningLock.acquire();
         getProgressService().schedule(fFunctestIsRunningJob);
 
-        fUpdateJob = new UpdateUIJob(YUnitMessages.FunctestView_jobName);
+        fUpdateJob = new UpdateUIJob(YMessages.FunctestView_jobName);
         fUpdateJob.schedule(REFRESH_INTERVAL);
     }
 
@@ -728,7 +730,8 @@ public class YUnitView extends ViewPart {
     }
 
     private void updateViewIcon() {
-        if (fTestRunSession == null || fTestRunSession.isStopped() || fTestRunSession.isRunning() || fTestRunSession.getStartedCount() == 0) {
+        if (fTestRunSession == null || fTestRunSession.isStopped() || fTestRunSession.isRunning()
+                || fTestRunSession.getStartedCount() == 0) {
             fViewImage = fOriginalViewImage;
         } else if (hasErrorsOrFailures()) {
             fViewImage = YUnitViewImages.fTestRunFailIcon;
@@ -744,8 +747,8 @@ public class YUnitView extends ViewPart {
      */
     YUnitRunSession setActiveTestRunSession(final YUnitRunSession testRunSession) {
         /*
-         * - State: fTestRunSession fTestSessionListener Jobs fTestViewer.processChangesInUI(); - UI: fCounterPanel fProgressBar
-         * setContentDescription / fInfoMessage setTitleToolTip view icons statusLine fFailureTrace
+         * - State: fTestRunSession fTestSessionListener Jobs fTestViewer.processChangesInUI(); - UI: fCounterPanel
+         * fProgressBar setContentDescription / fInfoMessage setTitleToolTip view icons statusLine fFailureTrace
          * 
          * action enablement
          */
@@ -837,8 +840,8 @@ public class YUnitView extends ViewPart {
 
         final String testRunLabel = BasicElementLabels.getJavaElementName(fTestRunSession.getTestRunName());
         if (testKindDisplayStr != null) {
-            setTitleToolTip(MessageFormat
-                    .format(YUnitMessages.FunctestView_titleToolTip, new String[] { testRunLabel, testKindDisplayStr }));
+            setTitleToolTip(MessageFormat.format(YMessages.FunctestView_titleToolTip, new String[] { testRunLabel,
+                    testKindDisplayStr }));
         } else {
             setTitleToolTip(testRunLabel);
         }
@@ -851,7 +854,8 @@ public class YUnitView extends ViewPart {
             YPlugin.getModel().removeFunctestRunSessionListener(fTestRunSessionListener);
         }
 
-        final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getService(IHandlerService.class);
+        final IHandlerService handlerService = (IHandlerService) getSite().getWorkbenchWindow().getService(
+                IHandlerService.class);
         handlerService.deactivateHandler(fRerunLastTestAction.getActivation());
         handlerService.deactivateHandler(fRerunFailedAction.getActivation());
         setActiveTestRunSession(null);
@@ -981,7 +985,8 @@ public class YUnitView extends ViewPart {
         final Composite empty = new Composite(top, SWT.NONE);
         empty.setLayout(new Layout() {
             @Override
-            protected Point computeSize(final Composite composite, final int wHint, final int hHint, final boolean flushCache) {
+            protected Point computeSize(final Composite composite, final int wHint, final int hHint,
+                    final boolean flushCache) {
                 return new Point(1, 1); // (0, 0) does not work with super-intelligent
                 // ViewForm
             }
@@ -998,7 +1003,7 @@ public class YUnitView extends ViewPart {
         final ViewForm bottom = new ViewForm(fSashForm, SWT.NONE);
 
         final CLabel label = new CLabel(bottom, SWT.NONE);
-        label.setText(YUnitMessages.FunctestView_label_failure);
+        label.setText(YMessages.FunctestView_label_failure);
         label.setImage(YUnitViewImages.fStackViewIcon);
         bottom.setTopLeft(label);
         final ToolBar failureToolBar = new ToolBar(bottom, SWT.FLAT | SWT.WRAP);
@@ -1112,7 +1117,8 @@ public class YUnitView extends ViewPart {
         fFailuresOnlyFilterAction = new FailuresOnlyFilterAction();
         fScrollLockAction = new ScrollLockAction(this);
         fScrollLockAction.setChecked(!fAutoScroll);
-        fToggleOrientationActions = new ToggleOrientationAction[] { new ToggleOrientationAction(this, VIEW_ORIENTATION_VERTICAL),
+        fToggleOrientationActions = new ToggleOrientationAction[] {
+                new ToggleOrientationAction(this, VIEW_ORIENTATION_VERTICAL),
                 new ToggleOrientationAction(this, VIEW_ORIENTATION_HORIZONTAL),
                 new ToggleOrientationAction(this, VIEW_ORIENTATION_AUTOMATIC) };
         fShowTestHierarchyAction = new ShowTestHierarchyAction();
@@ -1132,7 +1138,7 @@ public class YUnitView extends ViewPart {
         viewMenu.add(fShowTimeAction);
         viewMenu.add(new Separator());
 
-        final MenuManager layoutSubMenu = new MenuManager(YUnitMessages.FunctestView_layout_menu);
+        final MenuManager layoutSubMenu = new MenuManager(YMessages.FunctestView_layout_menu);
         for (int i = 0; i < fToggleOrientationActions.length; ++i) {
             layoutSubMenu.add(fToggleOrientationActions[i]);
         }
@@ -1266,11 +1272,12 @@ public class YUnitView extends ViewPart {
         try {
             final boolean couldLaunch = fTestRunSession.rerunTest(testId, className, testName, launchMode);
             if (!couldLaunch) {
-                MessageDialog.openInformation(getSite().getShell(), YUnitMessages.FunctestView_cannotrerun_title,
-                        YUnitMessages.FunctestView_cannotrerurn_message);
+                MessageDialog.openInformation(getSite().getShell(), YMessages.FunctestView_cannotrerun_title,
+                        YMessages.FunctestView_cannotrerurn_message);
             }
         } catch (final CoreException e) {
-            ErrorDialog.openError(getSite().getShell(), YUnitMessages.FunctestView_error_cannotrerun, e.getMessage(), e.getStatus());
+            ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(),
+                    e.getStatus());
         }
     }
 
@@ -1279,11 +1286,12 @@ public class YUnitView extends ViewPart {
         try {
             final boolean couldLaunch = fTestRunSession.rerunTests(elements, launchMode);
             if (!couldLaunch) {
-                MessageDialog.openInformation(getSite().getShell(), YUnitMessages.FunctestView_cannotrerun_title,
-                        YUnitMessages.FunctestView_cannotrerurn_message);
+                MessageDialog.openInformation(getSite().getShell(), YMessages.FunctestView_cannotrerun_title,
+                        YMessages.FunctestView_cannotrerurn_message);
             }
         } catch (final CoreException e) {
-            ErrorDialog.openError(getSite().getShell(), YUnitMessages.FunctestView_error_cannotrerun, e.getMessage(), e.getStatus());
+            ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(),
+                    e.getStatus());
         }
     }
 
@@ -1327,7 +1335,7 @@ public class YUnitView extends ViewPart {
 
     private static boolean getShowOnErrorOnly() {
         final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-        return store.getBoolean(YUnitPreferencesConstants.SHOW_ON_ERROR_ONLY);
+        return store.getBoolean(PreferenceConstants.YUNIT_SHOW_ON_ERROR_ONLY);
     }
 
     public FailureTrace getFailureTrace() {

@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 
 public class TestSessionLabelProvider extends LabelProvider implements IStyledLabelProvider {
 
@@ -51,7 +51,7 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 			if (testElement.getParentContainer() instanceof ITestRunSession) {
 				String testKindDisplayName = fTestRunnerPart.getTestKindDisplayName();
 				if (testKindDisplayName != null) {
-					String decorated = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_JUnitVersion,
+					String decorated = YMessages.format(YMessages.TestSessionLabelProvider_testName_JUnitVersion,
 							new Object[] { label, testKindDisplayName });
 					text = ColoringLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, text);
 				}
@@ -60,7 +60,7 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 		} else {
 			if (element instanceof ITestCaseElement) {
 				String className = BasicElementLabels.getJavaElementName(((ITestCaseElement) element).getTestClassName());
-				String decorated = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testMethodName_className,
+				String decorated = YMessages.format(YMessages.TestSessionLabelProvider_testMethodName_className,
 						new Object[] { label, className });
 				text = ColoringLabelProvider.styleDecoratedString(decorated, StyledString.QUALIFIER_STYLER, text);
 			}
@@ -79,7 +79,7 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 			return string;
 		}
 		String formattedTime = timeFormat.format(time);
-		return YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_elapsedTimeInSeconds,
+		return YMessages.format(YMessages.TestSessionLabelProvider_testName_elapsedTimeInSeconds,
 				new String[] { string, formattedTime });
 	}
 
@@ -103,14 +103,14 @@ public class TestSessionLabelProvider extends LabelProvider implements IStyledLa
 			if (testElement.getParentContainer() instanceof ITestRunSession) {
 				String testKindDisplayName = fTestRunnerPart.getTestKindDisplayName();
 				if (testKindDisplayName != null) {
-					label = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testName_JUnitVersion,
+					label = YMessages.format(YMessages.TestSessionLabelProvider_testName_JUnitVersion,
 							new Object[] { label, testKindDisplayName });
 				}
 			}
 		} else {
 			if (element instanceof ITestCaseElement) {
 				String className = BasicElementLabels.getJavaElementName(((ITestCaseElement) element).getTestClassName());
-				label = YUnitMessages.format(YUnitMessages.TestSessionLabelProvider_testMethodName_className,
+				label = YMessages.format(YMessages.TestSessionLabelProvider_testMethodName_className,
 						new Object[] { label, className });
 			}
 		}

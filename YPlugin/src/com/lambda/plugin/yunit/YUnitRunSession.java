@@ -34,6 +34,7 @@ import org.eclipse.jdt.junit.model.ITestElementContainer;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationConstants;
 import com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationElements;
 
@@ -453,7 +454,7 @@ public class YUnitRunSession implements ITestRunSession {
                 if (testName != null) {
                     name += "." + testName; //$NON-NLS-1$
                 }
-                final String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, name);
+                final String configName = YMessages.format(YMessages.FunctestView_configName, name);
                 final ILaunchConfigurationWorkingCopy tmp = launchConfiguration.copy(configName);
                 // reset the container
                 tmp.setAttribute(YUnitLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAMES, ""); //$NON-NLS-1$
@@ -476,7 +477,7 @@ public class YUnitRunSession implements ITestRunSession {
             final YUnitLaunchConfigurationElements elems = new YUnitLaunchConfigurationElements(elements);
 
             if (launchConfiguration != null) {
-                final String configName = YUnitMessages.format(YUnitMessages.FunctestView_configName, launchConfiguration.getName());
+                final String configName = YMessages.format(YMessages.FunctestView_configName, launchConfiguration.getName());
 
                 final ILaunchConfigurationWorkingCopy tmp = launchConfiguration.copy(configName);
                 // reset the container
@@ -658,7 +659,7 @@ public class YUnitRunSession implements ITestRunSession {
 
         private TestSuiteElement getUnrootedSuite() {
             if (fUnrootedSuite == null) {
-                fUnrootedSuite = (TestSuiteElement) createFunctestSuite(fTestRoot, "-2", YUnitMessages.TestRunSession_unrootedTests, 0); //$NON-NLS-1$
+                fUnrootedSuite = (TestSuiteElement) createFunctestSuite(fTestRoot, "-2", YMessages.TestRunSession_unrootedTests, 0); //$NON-NLS-1$
             }
             return fUnrootedSuite;
         }

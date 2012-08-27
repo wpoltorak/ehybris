@@ -2,6 +2,16 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
+         id="com.lambda.plugin.yunit.nature"
+         name="Functest Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.lambda.plugin.YNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
          point="org.eclipse.ui.importWizards">
       <category
             id="com.lambda.plugin.importWizard"
@@ -9,12 +19,21 @@
       </category>
    </extension>
    <extension
-         point="org.eclipse.ui.views"
-         id="com.lambda.plugin.views">
+         id="com.lambda.plugin.views"
+         point="org.eclipse.ui.views">
       <category
             id="com.lambda.plugin"
             name="Hybris">
       </category>
+      <view
+            allowMultiple="false"
+            category="com.lambda.plugin"
+            class="com.lambda.plugin.yunit.view.YUnitView"
+            icon="icons/full/etool16/functest.png"
+            id="com.lambda.plugin.yunit.view"
+            name="YUnit"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -63,23 +82,6 @@
       </wizard>
    </extension>
    <extension
-         id="com.lambda.plugin.views"
-         point="org.eclipse.ui.views">
-      <category
-            id="com.lambda.plugin"
-            name="Hybris">
-      </category>
-      <view
-            allowMultiple="false"
-            category="com.lambda.plugin"
-            class="com.lambda.plugin.yunit.view.YUnitView"
-            icon="icons/full/etool16/functest.png"
-            id="com.lambda.plugin.yunit.view"
-            name="YUnit"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
@@ -90,16 +92,6 @@
                relative="org.eclipse.jdt.junit.ResultView">
          </view>
       </perspectiveExtension>
-   </extension>
-   <extension
-         id="com.lambda.plugin.yunit.nature"
-         name="Functest Nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="com.lambda.plugin.YNature">
-         </run>
-      </runtime>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -133,6 +125,12 @@
       </page>
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
+            class="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            id="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            name="ImpEx">
+      </page>
+      <page
+            category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             id="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             name="YUnit Tests">
@@ -144,6 +142,9 @@
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="com.lambda.plugin.preferences.PreferenceInitializer">
+      </initializer>
+      <initializer
+            class="com.lambda.plugin.impex.preferences.ImpexPreferenceInitializer">
       </initializer>
       <initializer
             class="com.lambda.plugin.yunit.preferences.YUnitPreferencesInitializer">
@@ -498,12 +499,12 @@
       <extension
             point="org.eclipse.ui.editors">
          <editor
-               class="com.lambda.plugin.editors.ImpexEditor"
+               class="com.lambda.plugin.impex.editors.ImpexEditor"
                contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
                extensions="impex"
                icon="icons/sample.gif"
-               id="com.lambda.plugin.editors.ImpexEditor"
-               name="Impex Editor">
+               id="com.lambda.plugin.impex.editors.ImpexEditor"
+               name="ImpEx Editor">
          </editor>
       </extension>
 

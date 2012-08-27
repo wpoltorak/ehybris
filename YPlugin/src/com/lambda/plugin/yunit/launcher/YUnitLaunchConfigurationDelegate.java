@@ -49,7 +49,7 @@ import org.osgi.framework.Bundle;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.properties.YUnitPropertyConstants;
 
 @SuppressWarnings("restriction")
@@ -189,7 +189,7 @@ public class YUnitLaunchConfigurationDelegate extends AbstractJavaLaunchConfigur
     private int evaluatePort() throws CoreException {
         final int port = SocketUtil.findFreePort();
         if (port == -1) {
-            informAndAbort(YUnitMessages.FunctestLaunchConfigurationDelegate_error_no_socket, null,
+            informAndAbort(YMessages.FunctestLaunchConfigurationDelegate_error_no_socket, null,
                     IJavaLaunchConfigurationConstants.ERR_NO_SOCKET_AVAILABLE);
         }
         return port;
@@ -254,7 +254,7 @@ public class YUnitLaunchConfigurationDelegate extends AbstractJavaLaunchConfigur
                 mode = ILaunchManager.RUN_MODE;
             }
 
-            monitor.subTask(YUnitMessages.FunctestLaunchConfigurationDelegate_verifying_attriburtes_description);
+            monitor.subTask(YMessages.FunctestLaunchConfigurationDelegate_verifying_attriburtes_description);
 
             try {
                 preLaunchCheck(configuration, launch, new SubProgressMonitor(monitor, 2));
@@ -321,7 +321,7 @@ public class YUnitLaunchConfigurationDelegate extends AbstractJavaLaunchConfigur
             // done the verification phase
             monitor.worked(1);
 
-            monitor.subTask(YUnitMessages.FunctestLaunchConfigurationDelegate_create_source_locator_description);
+            monitor.subTask(YMessages.FunctestLaunchConfigurationDelegate_create_source_locator_description);
             // set the default source locator if required
             setDefaultSourceLocator(launch, configuration);
             monitor.worked(1);
@@ -397,7 +397,7 @@ public class YUnitLaunchConfigurationDelegate extends AbstractJavaLaunchConfigur
                         bw.write(entry);
                         bw.newLine();
                     } else {
-                        informAndAbort(YUnitMessages.FunctestLaunchConfigurationDelegate_error_wrong_input, null,
+                        informAndAbort(YMessages.FunctestLaunchConfigurationDelegate_error_wrong_input, null,
                                 IJavaLaunchConfigurationConstants.ERR_UNSPECIFIED_MAIN_TYPE);
                     }
                 }

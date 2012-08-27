@@ -35,9 +35,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.images.YPluginImages;
 import com.lambda.plugin.yunit.YUnitClasspathProvider;
-import com.lambda.plugin.yunit.YUnitMessages;
 import com.lambda.plugin.yunit.ui.JUnitBlock;
 import com.lambda.plugin.yunit.ui.SWTFactory;
 import com.lambda.plugin.yunit.ui.SelectionBlock;
@@ -82,7 +82,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
     }
 
     private void createServerTypeSection(final Composite comp) {
-        final Group group = SWTFactory.createGroup(comp, YUnitMessages.FunctestLaunchConfigurationTab_server_group, 3, 1,
+        final Group group = SWTFactory.createGroup(comp, YMessages.FunctestLaunchConfigurationTab_server_group, 3, 1,
                 GridData.FILL_HORIZONTAL);
         serverBlock = new ServerBlock();
         serverBlock.addPropertyChangeListener(fListener);
@@ -91,7 +91,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
 
     private void createTestSection(final Composite comp) {
         final Group group = SWTFactory
-                .createGroup(comp, YUnitMessages.FunctestLaunchConfigurationTab_junit_group, 3, 1, GridData.FILL_BOTH);
+                .createGroup(comp, YMessages.FunctestLaunchConfigurationTab_junit_group, 3, 1, GridData.FILL_BOTH);
         createTestSelectionGroup(group);
         SWTFactory.createSpacer(group);
         createJUnitGroup(comp);
@@ -228,7 +228,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
                 if (vm instanceof AbstractVMInstall) {
                     final String compilance = ((AbstractVMInstall) vm).getJavaVersion();
                     if (compilance != null && !JUnitStubUtility.is50OrHigher(compilance)) {
-                        setErrorMessage(YUnitMessages.JUnitLaunchConfigurationTab_error_JDK15_required);
+                        setErrorMessage(YMessages.JUnitLaunchConfigurationTab_error_JDK15_required);
                     }
                 }
             }
@@ -257,7 +257,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
     }
 
     public String getName() {
-        return YUnitMessages.JUnitLaunchConfigurationTab_tab_label;
+        return YMessages.JUnitLaunchConfigurationTab_tab_label;
     }
 
     private List<IJavaElement> getContext() {

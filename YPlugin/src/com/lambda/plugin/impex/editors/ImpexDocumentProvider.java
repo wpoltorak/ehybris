@@ -1,4 +1,4 @@
-package com.lambda.plugin.editors;
+package com.lambda.plugin.impex.editors;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
@@ -12,8 +12,8 @@ public class ImpexDocumentProvider extends FileDocumentProvider {
     protected IDocument createDocument(final Object element) throws CoreException {
         final IDocument document = super.createDocument(element);
         if (document != null) {
-            final IDocumentPartitioner partitioner = new FastPartitioner(new ImpexPartitionScanner(),
-                    new String[] { ImpexPartitionScanner.XML_TAG });
+            final IDocumentPartitioner partitioner = new FastPartitioner(new ImpexPartitionScanner(), new String[] {
+                    ImpexPartitionScanner.IMPEX_HEADER, ImpexPartitionScanner.IMPEX_MACRO });
             partitioner.connect(document);
             document.setDocumentPartitioner(partitioner);
         }

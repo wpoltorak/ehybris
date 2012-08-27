@@ -16,8 +16,8 @@ import org.eclipse.ui.commands.ICommandService;
 import com.lambda.plugin.YNature;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.nature.YNatureManager;
+import com.lambda.plugin.preferences.PreferenceConstants;
 import com.lambda.plugin.yunit.actions.RunFunctestsAction;
-import com.lambda.plugin.yunit.preferences.PreferenceConstants;
 
 public class YUnitManager extends YNatureManager implements IYUnitManager {
 
@@ -96,7 +96,7 @@ public class YUnitManager extends YNatureManager implements IYUnitManager {
 
     private boolean persistFunctestRunResults() {
         final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
-        final boolean persistResults = store.getBoolean(PreferenceConstants.P_PERSIST_FUNCTEST_RESULTS);
+        final boolean persistResults = store.getBoolean(PreferenceConstants.YUNIT_PERSIST_FUNCTEST_RESULTS);
         return persistResults;
     }
 

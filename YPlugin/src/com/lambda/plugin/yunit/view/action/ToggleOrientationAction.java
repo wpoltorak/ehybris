@@ -5,7 +5,7 @@ import org.eclipse.jdt.internal.junit.ui.JUnitPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.PlatformUI;
 
-import com.lambda.plugin.yunit.YUnitMessages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.yunit.view.YUnitView;
 
 public class ToggleOrientationAction extends Action {
@@ -17,13 +17,13 @@ public class ToggleOrientationAction extends Action {
 		super("", AS_RADIO_BUTTON); //$NON-NLS-1$
 		this.view = view;
 		if (orientation == YUnitView.VIEW_ORIENTATION_HORIZONTAL) {
-			setText(YUnitMessages.FunctestView_toggle_horizontal_label);
+			setText(YMessages.FunctestView_toggle_horizontal_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_horizontal.gif")); //$NON-NLS-1$				
 		} else if (orientation == YUnitView.VIEW_ORIENTATION_VERTICAL) {
-			setText(YUnitMessages.FunctestView_toggle_vertical_label);
+			setText(YMessages.FunctestView_toggle_vertical_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_vertical.gif")); //$NON-NLS-1$				
 		} else if (orientation == YUnitView.VIEW_ORIENTATION_AUTOMATIC) {
-			setText(YUnitMessages.FunctestView_toggle_automatic_label);
+			setText(YMessages.FunctestView_toggle_automatic_label);
 			setImageDescriptor(JUnitPlugin.getImageDescriptor("elcl16/th_automatic.gif")); //$NON-NLS-1$				
 		}
 		fActionOrientation = orientation;

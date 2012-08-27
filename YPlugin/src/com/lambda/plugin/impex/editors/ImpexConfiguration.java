@@ -1,4 +1,4 @@
-package com.lambda.plugin.editors;
+package com.lambda.plugin.impex.editors;
 
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
@@ -12,7 +12,8 @@ import org.eclipse.jface.text.source.SourceViewerConfiguration;
 
 public class ImpexConfiguration extends SourceViewerConfiguration {
     private ImpexDoubleClickStrategy doubleClickStrategy;
-    private XMLTagScanner tagScanner;
+    private ImpexHeaderScanner headerScanner;
+    private ImpexMacroScanner macroAssignementScanner;
     private ImpexScanner scanner;
     private final ColorManager colorManager;
 
@@ -22,8 +23,8 @@ public class ImpexConfiguration extends SourceViewerConfiguration {
 
     @Override
     public String[] getConfiguredContentTypes(final ISourceViewer sourceViewer) {
-        return new String[] { IDocument.DEFAULT_CONTENT_TYPE, ImpexScanner.IMPEX_COMMENT, ImpexScanner.MACRO_ASSIGNMENT,
-                ImpexPartitionScanner.XML_TAG };
+        return new String[] { IDocument.DEFAULT_CONTENT_TYPE, ImpexScanner.IMPEX_COMMENT, ImpexPartitionScanner.IMPEX_MACRO,
+                ImpexPartitionScanner.IMPEX_HEADER };
     }
 
     @Override
@@ -42,29 +43,39 @@ public class ImpexConfiguration extends SourceViewerConfiguration {
         return scanner;
     }
 
-    protected XMLTagScanner getXMLTagScanner() {
-        if (tagScanner == null) {
-            tagScanner = new XMLTagScanner(colorManager);
-            tagScanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.TAG))));
+    protected ImpexHeaderScanner getHeaderScanner() {
+        if (headerScanner == null) {
+            headerScanner = new ImpexHeaderScanner(colorManager);
+            headerScanner.setDefaultReturnToken(new Token(
+                    new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_HEADER_DEFAULT))));
         }
-        return tagScanner;
+        return headerScanner;
+    }
+
+    protected ImpexMacroScanner getMacroAssignementScanner() {
+        if (macroAssignementScanner == null) {
+            macroAssignementScanner = new ImpexMacroScanner(colorManager);
+            macroAssignementScanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
+                    .getColor(ImpexColorConstants.IMPEX_MACRO))));
+        }
+        return macroAssignementScanner;
     }
 
     @Override
     public IPresentationReconciler getPresentationReconciler(final ISourceViewer sourceViewer) {
         final PresentationReconciler reconciler = new PresentationReconciler();
 
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getXMLTagScanner());
-        reconciler.setDamager(dr, ImpexPartitionScanner.XML_TAG);
-        reconciler.setRepairer(dr, ImpexPartitionScanner.XML_TAG);
+        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getHeaderScanner());
+        reconciler.setDamager(dr, ImpexPartitionScanner.IMPEX_HEADER);
+        reconciler.setRepairer(dr, ImpexPartitionScanner.IMPEX_HEADER);
 
         dr = new DefaultDamagerRepairer(getImpexScanner());
         reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
         reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
-        dr = new DefaultDamagerRepairer(getImpexScanner());
-        reconciler.setDamager(dr, ImpexScanner.MACRO_ASSIGNMENT);
-        reconciler.setRepairer(dr, ImpexScanner.MACRO_ASSIGNMENT);
+        dr = new DefaultDamagerRepairer(getMacroAssignementScanner());
+        reconciler.setDamager(dr, ImpexPartitionScanner.IMPEX_MACRO);
+        reconciler.setRepairer(dr, ImpexPartitionScanner.IMPEX_MACRO);
 
         final NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(
                 colorManager.getColor(ImpexColorConstants.IMPEX_COMMENT)));
