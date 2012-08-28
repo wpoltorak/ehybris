@@ -143,7 +143,8 @@ public class YUnitModel {
             // TODO: Do notifications have to be sent in UI thread?
             // Check concurrent access to fFunctestRunSessions (no problem inside
             // asyncExec())
-            final int maxCount = YPlugin.getDefault().getPreferenceStore().getInt(PreferenceConstants.YUNIT_MAX_TEST_RUNS);
+            final int maxCount = YPlugin.getDefault().getPreferenceStore()
+                    .getInt(PreferenceConstants.YUNIT_MAX_TEST_RUNS);
             int toDelete = fFunctestRunSessions.size() - maxCount;
             while (toDelete > 0) {
                 toDelete--;
