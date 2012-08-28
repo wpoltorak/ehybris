@@ -68,11 +68,7 @@ import org.eclipse.ui.progress.IProgressService;
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
-<<<<<<< HEAD
 import com.lambda.plugin.preferences.PreferenceConstants;
-=======
-import com.lambda.plugin.YMessages;
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
 @SuppressWarnings("restriction")
 public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -188,7 +184,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
             return TextProcessor.process(((Filter) element).getName());
         }
 
-<<<<<<< HEAD
         public Image getColumnImage(Object object, int column) {
             String name = ((Filter) object).getName();
             if (name.indexOf(".*") != -1 || name.equals(YMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
@@ -211,30 +206,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
             return null;
         }
     }
-=======
-		public Image getColumnImage(Object object, int column) {
-			String name = ((Filter) object).getName();
-			if (name.indexOf(".*") != -1 || name.equals(YMessages.JUnitMainTab_label_defaultpackage)) { //$NON-NLS-1$
-				// package
-				return IMG_PKG;
-			} else if ("".equals(name)) { //$NON-NLS-1$
-				// needed for the in-place editor
-				return null;
-			} else if ((Character.isUpperCase(name.charAt(0))) && (name.indexOf('.') < 0)) {
-				// class in default package
-				return IMG_CUNIT;
-			} else {
-				// fully-qualified class or other filter
-				final int lastDotIndex = name.lastIndexOf('.');
-				if ((-1 != lastDotIndex) && ((name.length() - 1) != lastDotIndex)
-						&& Character.isUpperCase(name.charAt(lastDotIndex + 1)))
-					return IMG_CUNIT;
-			}
-			// other filter
-			return null;
-		}
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     /**
      * Content provider for the filter table. Content consists of instances of Filter.
@@ -325,22 +296,13 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
 
         public void dispose() {
         }
-
     }
 
-<<<<<<< HEAD
     public YUnitPreferencePage() {
         super();
         setDescription(YMessages.JUnitPreferencePage_description);
         setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
     }
-=======
-	public YUnitPreferencePage() {
-		super();
-		setDescription(YMessages.JUnitPreferencePage_description);
-		setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     @Override
     protected Control createContents(Composite parent) {
@@ -360,21 +322,12 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         return composite;
     }
 
-<<<<<<< HEAD
     /*
      * Create a group to contain the step filter related widgets
      */
     private void createStackFilterPreferences(Composite composite) {
         fFilterViewerLabel = new Label(composite, SWT.SINGLE | SWT.LEFT);
         fFilterViewerLabel.setText(YMessages.JUnitPreferencePage_filter_label);
-=======
-	/*
-	 * Create a group to contain the step filter related widgets
-	 */
-	private void createStackFilterPreferences(Composite composite) {
-		fFilterViewerLabel = new Label(composite, SWT.SINGLE | SWT.LEFT);
-		fFilterViewerLabel.setText(YMessages.JUnitPreferencePage_filter_label);
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
         Composite container = new Composite(composite, SWT.NONE);
         GridLayout layout = new GridLayout();
@@ -429,7 +382,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         buttonLayout.marginWidth = 0;
         buttonContainer.setLayout(buttonLayout);
 
-<<<<<<< HEAD
         fAddFilterButton = new Button(buttonContainer, SWT.PUSH);
         fAddFilterButton.setText(YMessages.JUnitPreferencePage_addfilterbutton_label);
         fAddFilterButton.setToolTipText(YMessages.JUnitPreferencePage_addfilterbutton_tooltip);
@@ -441,21 +393,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
                 editFilter();
             }
         });
-=======
-		fAddFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fAddFilterButton.setText(YMessages.JUnitPreferencePage_addfilterbutton_label);
-		fAddFilterButton.setToolTipText(YMessages.JUnitPreferencePage_addfilterbutton_tooltip);
-		gd = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
-		fAddFilterButton.setLayoutData(gd);
-		LayoutUtil.setButtonDimensionHint(fAddFilterButton);
-		fAddFilterButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				editFilter();
-			}
-		});
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
-
-<<<<<<< HEAD
         fAddTypeButton = new Button(buttonContainer, SWT.PUSH);
         fAddTypeButton.setText(YMessages.JUnitPreferencePage_addtypebutton_label);
         fAddTypeButton.setToolTipText(YMessages.JUnitPreferencePage_addtypebutton_tooltip);
@@ -467,21 +404,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
                 addType();
             }
         });
-=======
-		fAddTypeButton = new Button(buttonContainer, SWT.PUSH);
-		fAddTypeButton.setText(YMessages.JUnitPreferencePage_addtypebutton_label);
-		fAddTypeButton.setToolTipText(YMessages.JUnitPreferencePage_addtypebutton_tooltip);
-		gd = getButtonGridData(fAddTypeButton);
-		fAddTypeButton.setLayoutData(gd);
-		LayoutUtil.setButtonDimensionHint(fAddTypeButton);
-		fAddTypeButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				addType();
-			}
-		});
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
         fAddPackageButton = new Button(buttonContainer, SWT.PUSH);
         fAddPackageButton.setText(YMessages.JUnitPreferencePage_addpackagebutton_label);
         fAddPackageButton.setToolTipText(YMessages.JUnitPreferencePage_addpackagebutton_tooltip);
@@ -493,21 +416,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
                 addPackage();
             }
         });
-=======
-		fAddPackageButton = new Button(buttonContainer, SWT.PUSH);
-		fAddPackageButton.setText(YMessages.JUnitPreferencePage_addpackagebutton_label);
-		fAddPackageButton.setToolTipText(YMessages.JUnitPreferencePage_addpackagebutton_tooltip);
-		gd = getButtonGridData(fAddPackageButton);
-		fAddPackageButton.setLayoutData(gd);
-		SWTUtil.setButtonDimensionHint(fAddPackageButton);
-		fAddPackageButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				addPackage();
-			}
-		});
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
         fRemoveFilterButton = new Button(buttonContainer, SWT.PUSH);
         fRemoveFilterButton.setText(YMessages.JUnitPreferencePage_removefilterbutton_label);
         fRemoveFilterButton.setToolTipText(YMessages.JUnitPreferencePage_removefilterbutton_tooltip);
@@ -520,22 +429,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
             }
         });
         fRemoveFilterButton.setEnabled(false);
-=======
-		fRemoveFilterButton = new Button(buttonContainer, SWT.PUSH);
-		fRemoveFilterButton.setText(YMessages.JUnitPreferencePage_removefilterbutton_label);
-		fRemoveFilterButton.setToolTipText(YMessages.JUnitPreferencePage_removefilterbutton_tooltip);
-		gd = getButtonGridData(fRemoveFilterButton);
-		fRemoveFilterButton.setLayoutData(gd);
-		SWTUtil.setButtonDimensionHint(fRemoveFilterButton);
-		fRemoveFilterButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				removeFilters();
-			}
-		});
-		fRemoveFilterButton.setEnabled(false);
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
         fEnableAllButton = new Button(buttonContainer, SWT.PUSH);
         fEnableAllButton.setText(YMessages.JUnitPreferencePage_enableallbutton_label);
         fEnableAllButton.setToolTipText(YMessages.JUnitPreferencePage_enableallbutton_tooltip);
@@ -547,21 +441,7 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
                 checkAllFilters(true);
             }
         });
-=======
-		fEnableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fEnableAllButton.setText(YMessages.JUnitPreferencePage_enableallbutton_label);
-		fEnableAllButton.setToolTipText(YMessages.JUnitPreferencePage_enableallbutton_tooltip);
-		gd = getButtonGridData(fEnableAllButton);
-		fEnableAllButton.setLayoutData(gd);
-		SWTUtil.setButtonDimensionHint(fEnableAllButton);
-		fEnableAllButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				checkAllFilters(true);
-			}
-		});
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
         fDisableAllButton = new Button(buttonContainer, SWT.PUSH);
         fDisableAllButton.setText(YMessages.JUnitPreferencePage_disableallbutton_label);
         fDisableAllButton.setToolTipText(YMessages.JUnitPreferencePage_disableallbutton_tooltip);
@@ -573,20 +453,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
                 checkAllFilters(false);
             }
         });
-=======
-		fDisableAllButton = new Button(buttonContainer, SWT.PUSH);
-		fDisableAllButton.setText(YMessages.JUnitPreferencePage_disableallbutton_label);
-		fDisableAllButton.setToolTipText(YMessages.JUnitPreferencePage_disableallbutton_tooltip);
-		gd = getButtonGridData(fDisableAllButton);
-		fDisableAllButton.setLayoutData(gd);
-		SWTUtil.setButtonDimensionHint(fDisableAllButton);
-		fDisableAllButton.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				checkAllFilters(false);
-			}
-		});
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
-
     }
 
     private GridData getButtonGridData(Button button) {
@@ -680,7 +546,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         if (trimmedValue.length() < 1)
             removeNewFilter();
 
-<<<<<<< HEAD
         // if it's invalid, beep and leave sitting in the editor
         else if (!validateEditorInput(trimmedValue)) {
             fInvalidEditorText = trimmedValue;
@@ -704,31 +569,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         }
         cleanupEditor();
     }
-=======
-		// if it's invalid, beep and leave sitting in the editor
-		else if (!validateEditorInput(trimmedValue)) {
-			fInvalidEditorText = trimmedValue;
-			fEditorText.setText(YMessages.JUnitPreferencePage_invalidstepfilterreturnescape);
-			getShell().getDisplay().beep();
-			return;
-			// otherwise, commit the new value if not a duplicate
-		} else {
-			Object[] filters = fStackFilterContentProvider.getElements(null);
-			for (int i = 0; i < filters.length; i++) {
-				Filter filter = (Filter) filters[i];
-				if (filter.getName().equals(trimmedValue)) {
-					removeNewFilter();
-					cleanupEditor();
-					return;
-				}
-			}
-			fNewTableItem.setText(trimmedValue);
-			fNewStackFilter.setName(trimmedValue);
-			fFilterViewer.refresh();
-		}
-		cleanupEditor();
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     /*
      * Cleanup all widgets & resources used by the in-place editing
@@ -774,7 +614,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         return true;
     }
 
-<<<<<<< HEAD
     private void addType() {
         Shell shell = getShell();
         SelectionDialog dialog = null;
@@ -787,33 +626,11 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
             ExceptionHandler.handle(jme, shell, title, message);
             return;
         }
-=======
-	private void addType() {
-		Shell shell = getShell();
-		SelectionDialog dialog = null;
-		try {
-			dialog = JavaUI.createTypeDialog(shell, PlatformUI.getWorkbench().getProgressService(), SearchEngine
-					.createWorkspaceScope(), IJavaElementSearchConstants.CONSIDER_CLASSES, false);
-		} catch (JavaModelException jme) {
-			String title = YMessages.JUnitPreferencePage_addtypedialog_title;
-			String message = YMessages.JUnitPreferencePage_addtypedialog_error_message;
-			ExceptionHandler.handle(jme, shell, title, message);
-			return;
-		}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
         dialog.setTitle(YMessages.JUnitPreferencePage_addtypedialog_title);
         dialog.setMessage(YMessages.JUnitPreferencePage_addtypedialog_message);
         if (dialog.open() == IDialogConstants.CANCEL_ID)
             return;
-=======
-		dialog.setTitle(YMessages.JUnitPreferencePage_addtypedialog_title);
-		dialog.setMessage(YMessages.JUnitPreferencePage_addtypedialog_message);
-		if (dialog.open() == IDialogConstants.CANCEL_ID)
-			return;
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
-
         Object[] types = dialog.getResult();
         if (types != null && types.length > 0) {
             IType type = (IType) types[0];
@@ -821,7 +638,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         }
     }
 
-<<<<<<< HEAD
     private void addPackage() {
         Shell shell = getShell();
         IProgressService context = PlatformUI.getWorkbench().getProgressService();
@@ -831,17 +647,6 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         dialog.setMessage(YMessages.JUnitPreferencePage_addpackagedialog_message);
         if (dialog.open() != Window.OK)
             return;
-=======
-	private void addPackage() {
-		Shell shell = getShell();
-		IProgressService context = PlatformUI.getWorkbench().getProgressService();
-		IJavaSearchScope createWorkspaceScope = SearchEngine.createWorkspaceScope();
-		SelectionDialog dialog = JavaUI.createPackageDialog(shell, context, createWorkspaceScope, true, true, ""); //$NON-NLS-1$
-		dialog.setTitle(YMessages.JUnitPreferencePage_addpackagedialog_title);
-		dialog.setMessage(YMessages.JUnitPreferencePage_addpackagedialog_message);
-		if (dialog.open() != Window.OK)
-			return;
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
         Object[] packages = dialog.getResult();
         if (packages == null)
@@ -850,20 +655,11 @@ public class YUnitPreferencePage extends PreferencePage implements IWorkbenchPre
         for (int i = 0; i < packages.length; i++) {
             IJavaElement pkg = (IJavaElement) packages[i];
 
-<<<<<<< HEAD
             String filter = pkg.getElementName();
             if (filter.length() < 1)
                 filter = YMessages.JUnitMainTab_label_defaultpackage;
             else
                 filter += ".*"; //$NON-NLS-1$
-=======
-			String filter = pkg.getElementName();
-			if (filter.length() < 1)
-				filter = YMessages.JUnitMainTab_label_defaultpackage;
-			else
-				filter += ".*"; //$NON-NLS-1$
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
-
             fStackFilterContentProvider.addFilter(filter, true);
         }
     }

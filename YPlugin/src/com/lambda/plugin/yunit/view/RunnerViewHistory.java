@@ -19,11 +19,7 @@ import org.eclipse.ui.part.PageSwitcher;
 
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
-<<<<<<< HEAD
 import com.lambda.plugin.preferences.PreferenceConstants;
-=======
-import com.lambda.plugin.YMessages;
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.view.action.ClearAction;
 
@@ -39,60 +35,31 @@ public class RunnerViewHistory extends ViewHistory {
         initPageSwitcher();
     }
 
-<<<<<<< HEAD
     @Override
     public void configureHistoryListAction(IAction action) {
         action.setText(YMessages.FunctestView_history);
     }
-=======
-	@Override
-	public void configureHistoryListAction(IAction action) {
-		action.setText(YMessages.FunctestView_history);
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
     @Override
     public void configureHistoryDropDownAction(IAction action) {
         action.setToolTipText(YMessages.FunctestView_test_run_history);
         JUnitPlugin.setLocalImageDescriptors(action, "history_list.gif"); //$NON-NLS-1$
     }
-=======
-	@Override
-	public void configureHistoryDropDownAction(IAction action) {
-		action.setToolTipText(YMessages.FunctestView_test_run_history);
-		JUnitPlugin.setLocalImageDescriptors(action, "history_list.gif"); //$NON-NLS-1$
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     @Override
     public Action getClearAction() {
         return new ClearAction(this);
     }
 
-<<<<<<< HEAD
     @Override
     public String getHistoryListDialogTitle() {
         return YMessages.FunctestView_test_runs;
     }
-=======
-	@Override
-	public String getHistoryListDialogTitle() {
-		return YMessages.FunctestView_test_runs;
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
-<<<<<<< HEAD
     @Override
     public String getHistoryListDialogMessage() {
         return YMessages.FunctestView_select_test_run;
     }
-=======
-	@Override
-	public String getHistoryListDialogMessage() {
-		return YMessages.FunctestView_select_test_run;
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     @Override
     public Shell getShell() {
@@ -151,7 +118,6 @@ public class RunnerViewHistory extends ViewHistory {
             return YUnitViewImages.fSuiteIconDescriptor;
     }
 
-<<<<<<< HEAD
     @Override
     public String getText(Object element) {
         YUnitRunSession session = (YUnitRunSession) element;
@@ -164,36 +130,15 @@ public class RunnerViewHistory extends ViewHistory {
                     .format(YMessages.FunctestView_testName_startTime, new Object[] { testRunLabel, startTime });
         }
     }
-=======
-	@Override
-	public String getText(Object element) {
-		YUnitRunSession session = (YUnitRunSession) element;
-		String testRunLabel = BasicElementLabels.getJavaElementName(session.getTestRunName());
-		if (session.getStartTime() == 0) {
-			return testRunLabel;
-		} else {
-			String startTime = DateFormat.getDateTimeInstance().format(new Date(session.getStartTime()));
-			return YMessages.format(YMessages.FunctestView_testName_startTime, new Object[] { testRunLabel,
-					startTime });
-		}
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     @Override
     public void addMenuEntries(MenuManager manager) {
     }
 
-<<<<<<< HEAD
     @Override
     public String getMaxEntriesMessage() {
         return YMessages.FunctestView_max_remembered;
     }
-=======
-	@Override
-	public String getMaxEntriesMessage() {
-		return YMessages.FunctestView_max_remembered;
-	}
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 
     @Override
     public int getMaxEntries() {

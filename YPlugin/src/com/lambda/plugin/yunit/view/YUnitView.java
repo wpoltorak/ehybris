@@ -75,11 +75,7 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
-<<<<<<< HEAD
 import com.lambda.plugin.preferences.PreferenceConstants;
-=======
-import com.lambda.plugin.YMessages;
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
 import com.lambda.plugin.yunit.IYUnitRunSessionListener;
 import com.lambda.plugin.yunit.YUnitRunSession;
 import com.lambda.plugin.yunit.view.action.ActivateOnErrorAction;
@@ -344,12 +340,8 @@ public class YUnitView extends ViewPart {
 
             final String className = BasicElementLabels.getJavaElementName(testCaseElement.getClassName());
             final String method = BasicElementLabels.getJavaElementName(testCaseElement.getTestMethodName());
-<<<<<<< HEAD
             final String status = YMessages.format(YMessages.FunctestView_message_started, new String[] { className,
                     method });
-=======
-            final String status = YMessages.format(YMessages.FunctestView_message_started, new String[] { className, method });
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
             registerInfoMessage(status);
         }
 
@@ -848,13 +840,8 @@ public class YUnitView extends ViewPart {
 
         final String testRunLabel = BasicElementLabels.getJavaElementName(fTestRunSession.getTestRunName());
         if (testKindDisplayStr != null) {
-<<<<<<< HEAD
             setTitleToolTip(MessageFormat.format(YMessages.FunctestView_titleToolTip, new String[] { testRunLabel,
                     testKindDisplayStr }));
-=======
-            setTitleToolTip(MessageFormat
-                    .format(YMessages.FunctestView_titleToolTip, new String[] { testRunLabel, testKindDisplayStr }));
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
         } else {
             setTitleToolTip(testRunLabel);
         }
@@ -1289,12 +1276,8 @@ public class YUnitView extends ViewPart {
                         YMessages.FunctestView_cannotrerurn_message);
             }
         } catch (final CoreException e) {
-<<<<<<< HEAD
             ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(),
                     e.getStatus());
-=======
-            ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(), e.getStatus());
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
         }
     }
 
@@ -1307,12 +1290,8 @@ public class YUnitView extends ViewPart {
                         YMessages.FunctestView_cannotrerurn_message);
             }
         } catch (final CoreException e) {
-<<<<<<< HEAD
             ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(),
                     e.getStatus());
-=======
-            ErrorDialog.openError(getSite().getShell(), YMessages.FunctestView_error_cannotrerun, e.getMessage(), e.getStatus());
->>>>>>> branch 'master' of git@bitbucket.org:wojciech.poltorak/ehybris.git
         }
     }
 
