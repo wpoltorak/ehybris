@@ -3,6 +3,11 @@ package com.lambda.plugin.impex.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.eclipse.ant.internal.ui.preferences.AntEditorPreferenceConstants;
+import org.eclipse.ant.internal.ui.preferences.AntPreferencesMessages;
+import org.eclipse.ant.internal.ui.preferences.ColorEditor;
+import org.eclipse.ant.internal.ui.preferences.TabFolderLayout;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.IColorProvider;
