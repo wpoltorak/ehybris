@@ -21,6 +21,11 @@ public class PreferenceConstants {
      */
     public static final String IMPEX_EDITOR_ITALIC_SUFFIX = "_italic"; //$NON-NLS-1$
 
+    /**
+     * Mark macro occurrences in Impex Editor
+     */
+    public static final String IMPEX_EDITOR_MARK_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_occurrences";
+
     public static final String YUNIT_PERSIST_FUNCTEST_RESULTS = "persistFunctestResults";
 
     public static final String YUNIT_DEFAULT_JUNIT_VERSION = YPlugin.PLUGIN_ID + ".default_junit_version"; //$NON-NLS-1$ 

@@ -7,7 +7,7 @@ import org.eclipse.jdt.internal.junit.ui.JUnitPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
-import com.lambda.plugin.images.YPluginImages;
+import com.lambda.plugin.YImages;
 
 public class YUnitViewImages {
 
@@ -42,7 +42,7 @@ public class YUnitViewImages {
 	public static Image fTestRunFailDirtyIcon = createFManagedImage("eview16", "ftesterrq.gif"); //$NON-NLS-1$
 
 	private static Image createFManagedImage(String path, String name) {
-		return createManagedImage(YPluginImages.createImageDescriptor(path, name));
+		return createManagedImage(YImages.createImageDescriptor(path, name));
 	}
 
 	private static Image createManagedImage(String path) {

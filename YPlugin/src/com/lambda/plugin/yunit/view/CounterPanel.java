@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.images.YPluginImages;
+import com.lambda.plugin.YImages;
 
 public class CounterPanel extends Composite {
 	
@@ -22,8 +22,8 @@ public class CounterPanel extends Composite {
 	protected int fTotal;
 	protected int fIgnoredCount;
 	
-	private final Image fErrorIcon= YPluginImages.createImage("ovr16", "error_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
-	private final Image fFailureIcon= YPluginImages.createImage("ovr16", "failed_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	private final Image fErrorIcon= YImages.createImage("ovr16", "error_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
+	private final Image fFailureIcon= YImages.createImage("ovr16", "failed_ovr.gif"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 	public CounterPanel(Composite parent) {
 		super(parent, SWT.WRAP);

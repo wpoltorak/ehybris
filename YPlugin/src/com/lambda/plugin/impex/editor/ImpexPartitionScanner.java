@@ -1,4 +1,4 @@
-package com.lambda.plugin.impex.editors;
+package com.lambda.plugin.impex.editor;
 
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.IPredicateRule;

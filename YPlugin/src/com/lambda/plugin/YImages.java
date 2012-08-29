@@ -1,4 +1,4 @@
-package com.lambda.plugin.images;
+package com.lambda.plugin;
 
 import java.net.URL;
 
@@ -9,9 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 
-import com.lambda.plugin.YPlugin;
-
-public class YPluginImages {
+public class YImages {
 
     public static final IPath ICONS_PATH = new Path("$nl$/icons/full");
 
@@ -31,9 +29,14 @@ public class YPluginImages {
     public static final String FUNCTEST_PROJECT_IMAGE = "functestprj_obj.png";
     private static final String FUNCTEST_IMAGE = "functest.png";
 
-    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN, FUNCTEST_WIZARD_IMAGE);
+    // IMPEX
+    private static final String MARK_OCCURENCES = "mark_occurences.gif";
+
+    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN,
+            FUNCTEST_WIZARD_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST_PRJ = createImageDescriptor(T_OBJ, FUNCTEST_PROJECT_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST = createImageDescriptor(T_ETOOL, FUNCTEST_IMAGE);
+    public static final ImageDescriptor DESC_MARK_OCCURRENCES = createImageDescriptor(T_ETOOL, MARK_OCCURENCES);
 
     public static ImageDescriptor createImageDescriptor(final String prefix, final String name) {
         final IPath path = ICONS_PATH.append(prefix).append(name);

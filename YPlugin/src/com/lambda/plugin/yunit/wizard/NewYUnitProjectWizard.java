@@ -33,7 +33,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.images.YPluginImages;
+import com.lambda.plugin.YImages;
 
 @SuppressWarnings("restriction")
 public class NewYUnitProjectWizard extends NewElementWizard implements IExecutableExtension {
@@ -51,7 +51,7 @@ public class NewYUnitProjectWizard extends NewElementWizard implements IExecutab
     }
 
     public NewYUnitProjectWizard(final NewJavaProjectWizardPageOne pageOne, final NewJavaProjectWizardPageTwo pageTwo) {
-        setDefaultPageImageDescriptor(YPluginImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
+        setDefaultPageImageDescriptor(YImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
         setDialogSettings(YPlugin.getDefault().getDialogSettings());
         setWindowTitle("New Functest Project");
 

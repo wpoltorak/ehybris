@@ -499,13 +499,22 @@
       <extension
             point="org.eclipse.ui.editors">
          <editor
-               class="com.lambda.plugin.impex.editors.ImpexEditor"
+               class="com.lambda.plugin.impex.editor.ImpexEditor"
                contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
                extensions="impex"
                icon="icons/sample.gif"
                id="com.lambda.plugin.impex.editors.ImpexEditor"
                name="ImpEx Editor">
          </editor>
+      </extension>
+      <extension
+            id="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
+            name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
+            point="org.eclipse.core.filebuffers.annotationModelCreation">
+         <factory
+               class="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
+               extensions="impex">
+         </factory>
       </extension>
 
 </plugin>

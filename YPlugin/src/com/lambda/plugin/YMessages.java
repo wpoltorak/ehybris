@@ -1,6 +1,7 @@
 package com.lambda.plugin;
 
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -14,6 +15,10 @@ public final class YMessages extends NLS {
 
     private YMessages() {
         // Do not instantiate
+    }
+
+    public static final ResourceBundle getBundle() {
+        return ResourceBundle.getBundle(BUNDLE_NAME);
     }
 
     public static String format(final String message, final Object object) {

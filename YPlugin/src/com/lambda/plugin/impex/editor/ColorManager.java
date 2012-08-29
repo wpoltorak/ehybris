@@ -1,4 +1,4 @@
-package com.lambda.plugin.impex.editors;
+package com.lambda.plugin.impex.editor;
 
 import java.util.HashMap;
 import java.util.Iterator;

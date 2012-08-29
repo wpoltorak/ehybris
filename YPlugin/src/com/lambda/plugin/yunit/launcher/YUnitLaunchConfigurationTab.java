@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.images.YPluginImages;
+import com.lambda.plugin.YImages;
 import com.lambda.plugin.yunit.YUnitClasspathProvider;
 import com.lambda.plugin.yunit.ui.JUnitBlock;
 import com.lambda.plugin.yunit.ui.SWTFactory;
@@ -49,7 +49,7 @@ public class YUnitLaunchConfigurationTab extends AbstractLaunchConfigurationTab 
     // TODO FunctestPlugin: warn user when tries to run classes with same package
     // name but from different projects
 
-    private final Image fTestIcon = YPluginImages.DESC_FUNCTEST.createImage();
+    private final Image fTestIcon = YImages.DESC_FUNCTEST.createImage();
 
     private ServerBlock serverBlock;
     private SelectionBlock selectionBlock;

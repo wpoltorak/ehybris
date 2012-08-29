@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.core.JavaModel;
 import org.eclipse.jdt.internal.core.JavaModelManager;
-import org.eclipse.jdt.internal.ui.viewsupport.ImageDescriptorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -27,9 +26,9 @@ import org.osgi.service.packageadmin.PackageAdmin;
 
 import com.lambda.plugin.template.ITemplateManager;
 import com.lambda.plugin.template.TemplateManager;
+import com.lambda.plugin.yunit.IYUnitManager;
 import com.lambda.plugin.yunit.YUnitManager;
 import com.lambda.plugin.yunit.YUnitModel;
-import com.lambda.plugin.yunit.IYUnitManager;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -49,7 +48,7 @@ public class YPlugin extends AbstractUIPlugin {
     // The shared instance
     private static YPlugin plugin;
 
-    private ImageDescriptorRegistry imageDescriptorRegistry;
+    // private ImageDescriptorRegistry imageDescriptorRegistry;
 
     private TemplateManager templateManager;
 
@@ -137,7 +136,8 @@ public class YPlugin extends AbstractUIPlugin {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException, InterruptedException {
+    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException,
+            InterruptedException {
         final JavaModel javaModel = JavaModelManager.getJavaModelManager().getJavaModel();
         final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
         for (final IJavaProject project : javaModel.getJavaProjects()) {
@@ -180,12 +180,12 @@ public class YPlugin extends AbstractUIPlugin {
         return null;
     }
 
-    public ImageDescriptorRegistry getImageDescriptorRegistry() {
-        if (imageDescriptorRegistry == null) {
-            imageDescriptorRegistry = new ImageDescriptorRegistry();
-        }
-        return imageDescriptorRegistry;
-    }
+    // public ImageDescriptorRegistry getImageDescriptorRegistry() {
+    // if (imageDescriptorRegistry == null) {
+    // imageDescriptorRegistry = new ImageDescriptorRegistry();
+    // }
+    // return imageDescriptorRegistry;
+    // }
 
     /**
      * Returns an Image for the file at the given relative path.
