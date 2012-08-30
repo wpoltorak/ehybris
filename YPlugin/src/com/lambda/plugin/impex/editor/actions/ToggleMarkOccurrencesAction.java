@@ -1,84 +1,50 @@
 package com.lambda.plugin.impex.editor.actions;
 
-import org.eclipse.ant.internal.ui.editor.AntEditor;
-import org.eclipse.ant.internal.ui.editor.actions.AntEditorActionMessages;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.ui.texteditor.ITextEditor;
-import org.eclipse.ui.texteditor.TextEditorAction;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.IEditorActionDelegate;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.lambda.plugin.YImages;
-import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.preferences.PreferenceConstants;
 
-public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPropertyChangeListener {
+public class ToggleMarkOccurrencesAction extends AbstractHandler implements IEditorActionDelegate {
 
     private IPreferenceStore fStore;
 
-    public ToggleMarkOccurrencesAction() {
-        super(YMessages.getBundle(), "ToggleMarkOccurrencesAction.", null, IAction.AS_CHECK_BOX); //$NON-NLS-1$
-        setImageDescriptor(YImages.DESC_MARK_OCCURRENCES);
-        setToolTipText(AntEditorActionMessages.getString("ToggleMarkOccurrencesAction.tooltip")); //$NON-NLS-1$
-        update();
+    public void run(final IAction action) {
+        throw new UnsupportedOperationException("toggle run(action)");
     }
 
-    /*
-     * @see IAction#actionPerformed
-     */
-    @Override
-    public void run() {
-        fStore.setValue(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES, isChecked());
+    public void selectionChanged(final IAction action, final ISelection selection) {
+        throw new UnsupportedOperationException("toggle selection changed(action, selection)");
+
     }
 
-    /*
-     * @see TextEditorAction#update
-     */
-    @Override
-    public void update() {
-        ITextEditor editor = getTextEditor();
-
-        boolean checked = false;
-        boolean enabled = false;
-        if (editor instanceof ImpexEditor) {
-            checked = ((ImpexEditor) editor).isMarkingOccurrences();
-            enabled = ((AntEditor) editor).getAntModel() != null;
-        }
-
-        setChecked(checked);
-        setEnabled(enabled);
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final Command command = event.getCommand();
+        final boolean oldValue = HandlerUtil.toggleCommandState(command);
+        fStore.setValue(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES, !oldValue);
+        return null;
     }
 
-    /*
-     * @see TextEditorAction#setEditor(ITextEditor)
-     */
-    @Override
-    public void setEditor(ITextEditor editor) {
-
-        super.setEditor(editor);
-
+    public void setActiveEditor(final IAction action, final IEditorPart editor) {
         if (editor != null) {
 
             if (fStore == null) {
                 fStore = YPlugin.getDefault().getPreferenceStore();
-                fStore.addPropertyChangeListener(this);
+                //                fStore.addPropertyChangeListener();
             }
 
         } else if (fStore != null) {
-            fStore.removePropertyChangeListener(this);
+            //            fStore.removePropertyChangeListener(this);
             fStore = null;
         }
-        update();
-    }
-
-    /*
-     * @see IPropertyChangeListener#propertyChange(PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent event) {
-        if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES))
-            setChecked(Boolean.valueOf(event.getNewValue().toString()).booleanValue());
     }
 }

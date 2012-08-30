@@ -2,15 +2,20 @@ package com.lambda.plugin.impex.editor;
 
 import org.eclipse.ui.editors.text.TextEditor;
 
+import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.preferences.PreferenceConstants;
+
 public class ImpexEditor extends TextEditor {
 
     private final ColorManager colorManager;
+    private final boolean fMarkingOccurrences;
 
     public ImpexEditor() {
-        super();
         colorManager = new ColorManager();
         setSourceViewerConfiguration(new ImpexConfiguration(colorManager));
         setDocumentProvider(new ImpexDocumentProvider());
+        setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
+        fMarkingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
     }
 
     @Override
@@ -20,8 +25,7 @@ public class ImpexEditor extends TextEditor {
     }
 
     public boolean isMarkingOccurrences() {
-        // TODO Auto-generated method stub
-        return false;
+        return fMarkingOccurrences;
     }
 
 }
