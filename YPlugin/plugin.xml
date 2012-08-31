@@ -323,10 +323,14 @@
          </command>
          <command
                categoryId="org.eclipse.ui.category.textEditor"
-               defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
+               defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
                description="Toggle Mark Occurrences"
                id="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
                name="Toggle Mark Occurrences">
+            <state
+                  class="org.eclipse.ui.handlers.RegistryToggleState"
+                  id="org.eclipse.ui.commands.toggleState">
+            </state>
          </command>       
       </extension>
       <extension
@@ -393,15 +397,13 @@
                      label="Toggle Mark Occurrences"
                      style="toggle"
                      tooltip="Toggle mark occurrences">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <reference
+                           definitionId="inImpexEditor">
+                     </reference>
+                  </visibleWhen>
                </command>
-               <visibleWhen>
-                  <with
-                        variable="activeEditorId">
-                     <equals
-                           value="com.lambda.plugin.impex.editor.ImpexEditor">
-                     </equals>
-                  </with>
-               </visibleWhen>
             </toolbar>
          </menuContribution>
          <menuContribution
@@ -540,6 +542,18 @@
                class="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
                extensions="impex">
          </factory>
+      </extension>
+      <extension
+            point="org.eclipse.core.expressions.definitions">
+         <definition
+               id="inImpexEditor">
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="com.lambda.plugin.impex.editor.ImpexEditor">
+               </equals>
+            </with>
+         </definition>
       </extension>
 
 </plugin>
