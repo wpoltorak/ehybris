@@ -235,24 +235,16 @@
       </extension>
       <extension
             point="org.eclipse.ui.bindings">
+            <sequenceModifier
+                  find="M1+M2"
+                  platforms="cocoa,carbon"
+                  replace="M2+M3">
+            </sequenceModifier>
          <key
                commandId="com.lambda.plugin.yunit.launch.shortcut.run"
                contextId="org.eclipse.ui.contexts.window"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                sequence="M2+M3+X F">
-         </key>
-         <key
-               contextId="org.eclipse.ui.contexts.window"
-               platform="carbon"
-               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M2+M3+X F">
-         </key>
-         <key
-               commandId="com.lambda.plugin.yunit.launch.shortcut.run"
-               contextId="org.eclipse.ui.contexts.window"
-               platform="carbon"
-               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M1+M3+X F">
          </key>
          <key
                commandId="com.lambda.plugin.yunit.launch.shortcut.debug"
@@ -261,17 +253,16 @@
                sequence="M2+M3+D F">
          </key>
          <key
+               commandId="com.lambda.plugin.impex.editor.actions.ToggleComment"
                contextId="org.eclipse.ui.contexts.window"
-               platform="carbon"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M2+M3+D F">
+               sequence="M1+/">
          </key>
          <key
-               commandId="com.lambda.plugin.yunit.launch.shortcut.debug"
+               commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
                contextId="org.eclipse.ui.contexts.window"
-               platform="carbon"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M1+M3+M4+D F">
+               sequence="M2+M3+O">
          </key>
       </extension>
       <extension
@@ -331,7 +322,13 @@
                   class="org.eclipse.ui.handlers.RegistryToggleState"
                   id="org.eclipse.ui.commands.toggleState">
             </state>
-         </command>       
+         </command>
+                  <command
+               categoryId="org.eclipse.ui.category.textEditor"
+               description="Toggle Comment"
+               id="com.lambda.plugin.impex.editor.actions.ToggleComment"
+               name="Toggle Comment">
+         </command>     
       </extension>
       <extension
             point="org.eclipse.ui.commandImages">
@@ -500,6 +497,15 @@
          <handler
                class="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
                commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences">
+         </handler>
+         <handler
+               class="com.lambda.plugin.impex.editor.actions.ToggleLineCommentAction"
+               commandId="com.lambda.plugin.impex.editor.actions.ToggleComment">
+            <enabledWhen>
+               <reference
+                     definitionId="inImpexEditor">
+               </reference>
+            </enabledWhen>
          </handler>
       </extension>
       <extension
