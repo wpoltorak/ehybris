@@ -253,7 +253,7 @@
                sequence="M2+M3+D F">
          </key>
          <key
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleComment"
+               commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
                contextId="org.eclipse.ui.contexts.window"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                sequence="M1+/">
@@ -325,9 +325,9 @@
          </command>
                   <command
                categoryId="org.eclipse.ui.category.textEditor"
-               description="Toggle Comment"
-               id="com.lambda.plugin.impex.editor.actions.ToggleComment"
-               name="Toggle Comment">
+               description="Toggle Line Comment"
+               id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
+               name="Toggle Line Comment">
          </command>     
       </extension>
       <extension
@@ -500,7 +500,7 @@
          </handler>
          <handler
                class="com.lambda.plugin.impex.editor.actions.ToggleLineCommentAction"
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleComment">
+               commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment">
             <enabledWhen>
                <reference
                      definitionId="inImpexEditor">
