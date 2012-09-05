@@ -1,0 +1,65 @@
+# ImpEx for Importing BTG configuration into Waterstones Store
+
+# Macros / Replacement Parameter definitions
+$productCatalog=waterstonesProductCatalog
+$contentCatalog=waterstonesContentCatalog
+$productCatalogName=Waterstones Product Catalog
+$productCatalogVersion=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true]
+$contentCatalogVersion=catalogVersion(catalog(id[default=$contentCatalog]),version[default='Staged'])[unique=true]
+
+##################################################################
+# Configuration 1: Crossselling
+##################################################################
+
+INSERT_UPDATE BTGSegment;uid[unique=true];name;sites(uid);active[default=true];scope(code)[default=ONLINE];$contentCatalogVersion
+;waterstonesCameraSegment;Camera Cross Selling Segment;waterstones
+
+INSERT_UPDATE BTGRule;uid[unique=true];code;segment(uid, $contentCatalogVersion);ruleType(code);$contentCatalogVersion
+;waterstonesCameraRule;Camera Rule;waterstonesCameraSegment;ORDER
+;waterstonesCameraAccRule;Camera Accessory Rule;waterstonesCameraSegment;ORDER
+
+INSERT_UPDATE BTGOperator;uid[unique=true];code;$contentCatalogVersion
+;waterstonesContainsOperator;contains
+;waterstonesNotContainsOperator;notContains
+
+INSERT_UPDATE BTGCategoriesInOrdersOperand;uid[unique=true];code;withSupercategories[default=false];scope(code)[default=ONLINE];$contentCatalogVersion
+;waterstonesCatInOrderOperand;categoryInOrderOperand
+
+INSERT_UPDATE BTGReferenceCategoriesOperand;uid[unique=true];code;categories(code, $productCatalogVersion);$contentCatalogVersion
+;waterstonesCameraCategoryOperand;CameraCategoryOperand;578
+;waterstonesCameraAccCategoryOperand;CameraAccCategoryOperand;827
+
+INSERT_UPDATE BTGExpression;uid[unique=true];leftOperand(uid, $contentCatalogVersion);rightOperand(uid, $contentCatalogVersion);operator(uid, $contentCatalogVersion);rule(uid, $contentCatalogVersion);$contentCatalogVersion
+;waterstonesCameraOrderExpression;waterstonesCatInOrderOperand;waterstonesCameraCategoryOperand;waterstonesContainsOperator;waterstonesCameraRule
+;waterstonesCameraOrderAccExpression;waterstonesCatInOrderOperand;waterstonesCameraAccCategoryOperand;waterstonesNotContainsOperator;waterstonesCameraAccRule
+
+INSERT_UPDATE CmsRestrictionActionDefinition;uid[unique=true];code;target;inverted;segment(uid, $contentCatalogVersion);$contentCatalogVersion
+;waterstonesBtgCmsCameraRestrictionAction;Camera Cross Selling Action;btgDummyAction;false;waterstonesCameraSegment
+
+INSERT_UPDATE BtgSegmentRestriction;uid[unique=true];outputActionDefinition(uid, $contentCatalogVersion);components(uid, $contentCatalogVersion);$contentCatalogVersion
+;waterstonesBtgCmsCameraRestriction;waterstonesBtgCmsCameraRestrictionAction;PurchasedCategoryCrossSelling
+
+##################################################################
+# Configuration 1: Regular Customer Segment
+##################################################################
+INSERT_UPDATE BTGSegment;uid[unique=true];name;sites(uid);active[default=true];scope(code)[default=ONLINE];$contentCatalogVersion
+;waterstonesRegularCustomerSegment;Regular Customer Segment;waterstones
+
+INSERT_UPDATE BTGRule;uid[unique=true];code;segment(uid, $contentCatalogVersion);ruleType(code);$contentCatalogVersion
+;waterstonesRegularCustomerRule;Regular Customer Rule;waterstonesRegularCustomerSegment;ORDER
+
+INSERT_UPDATE BTGOperator;uid[unique=true];code;$contentCatalogVersion
+;waterstonesGreaterOperator;numGreaterThanOrEqual
+
+INSERT_UPDATE BTGNumberOfOrdersRelativeDateOperand;uid[unique=true];value;unit(code);$contentCatalogVersion
+;waterstonesNumberOfOrdersOperand;6;MONTH
+
+INSERT_UPDATE BTGIntegerLiteralOperand;uid[unique=true];literal;$contentCatalogVersion
+;waterstonesOrdersIntegerOperand;4
+
+INSERT_UPDATE BTGExpression;uid[unique=true];leftOperand(uid, $contentCatalogVersion);rightOperand(uid, $contentCatalogVersion);operator(uid, $contentCatalogVersion);rule(uid, $contentCatalogVersion);$contentCatalogVersion
+;waterstonesRegularCustomerExpression;waterstonesNumberOfOrdersOperand;waterstonesOrdersIntegerOperand;waterstonesGreaterOperator;waterstonesRegularCustomerRule
+
+INSERT_UPDATE BTGAssignToGroupDefinition;uid[unique=true];code;target;userGroups(uid);segment(uid, $contentCatalogVersion);$contentCatalogVersion
+;waterstonesBtgAssignToRegularGroup;Add to Regular Segment;assignToGroup;regulargroup;waterstonesRegularCustomerSegment
+

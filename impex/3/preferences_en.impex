@@ -1,0 +1,59 @@
+# TODO: seems ok, but gives an error on initialization
+#
+# Initial preferences
+# 
+
+$lang=en
+
+$productCatalog=web
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$icon=icon(code, $catalogVersion)
+$jarIconResource=jar:uk.co.eclipsegroup.initialdata.constants.WaterstonesInitialDataConstants&/waterstonesinitialdata/import/common/icons
+
+INSERT_UPDATE WaterstonesPreference;code[unique=true];name[lang=$lang]
+;fiction;Fiction
+;businessandacademic;Business and Academic
+;crime;Crime
+;sffantasyandhorror;"SF, Fantasy and Horror" 
+;travelandtravelwriting;Travel and travel writing
+;kids;Kids
+;ebooksandelectronics;eBooks and electronics
+;specialeditions;Special Editions
+;events;Events
+;mindbodyandspirit;"Mind, Body and Spirit"
+;historyandpolitics;History and Politics
+;gifting;Gifting
+;foodhobbiesandhome;"Food, Hobbies and Home"
+;biographyandnonfiction;Biography and Non-fiction
+
+INSERT_UPDATE Media;code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];$catalogVersion
+;icon01.png;$jarIconResource/icon01.png;image/png
+;icon02.png;$jarIconResource/icon02.png;image/png
+;icon03.png;$jarIconResource/icon03.png;image/png
+;icon04.png;$jarIconResource/icon04.png;image/png
+;icon05.png;$jarIconResource/icon05.png;image/png
+;icon06.png;$jarIconResource/icon06.png;image/png
+;icon07.png;$jarIconResource/icon07.png;image/png
+;icon08.png;$jarIconResource/icon08.png;image/png
+;icon09.png;$jarIconResource/icon09.png;image/png
+;icon10.png;$jarIconResource/icon10.png;image/png
+;icon11.png;$jarIconResource/icon11.png;image/png
+;icon12.png;$jarIconResource/icon12.png;image/png
+;icon13.png;$jarIconResource/icon13.png;image/png
+;icon14.png;$jarIconResource/icon14.png;image/png
+
+INSERT_UPDATE WaterstonesPreference;code[unique=true];$icon[lang=$lang]
+;fiction;icon01.png
+;businessandacademic;icon02.png
+;crime;icon03.png
+;sffantasyandhorror;icon04.png
+;travelandtravelwriting;icon05.png
+;kids;icon06.png
+;ebooksandelectronics;icon07.png
+;specialeditions;icon08.png
+;events;icon09.png
+;mindbodyandspirit;icon10.png
+;historyandpolitics;icon11.png
+;gifting;icon12.png
+;foodhobbiesandhome;icon13.png
+;biographyandnonfiction;icon14.png

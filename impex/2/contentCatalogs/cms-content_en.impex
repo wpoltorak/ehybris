@@ -1,0 +1,56 @@
+#
+# Import the English  CMS content for the Waterstones site
+#
+$contentCatalog=waterstonesContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$lang=en
+
+# Content Pages
+INSERT_UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;homepage;Homepage
+;;checkoutSummaryPage;Checkout
+;;orderConfirmationPage;Order Confirmation
+;;cartPage;Your Shopping Basket
+;;account;Your Account
+;;profile;Profile
+;;address-book;Address Book
+;;add-edit-address;Add/Edit Address
+;;payment-details;Payment Details
+;;order;Order Details
+;;orders;Order History
+;;storefinderPage;StoreFinder
+;;checkout-login;Proceed to Checkout
+;;login;Login
+;;notFound;Not Found
+;;searchEmpty;No Results
+;;forgottenPassword;Forgotten Password
+;;updatePassword;Update Forgotten Password
+;;authors;Authors
+
+# Validation constraints
+INSERT_UPDATE AttributeConstraint;id[unique=true];message[lang=$lang]
+;CMSTabParagraphComponentTitle;
+;CMSTabParagraphComponentContent;
+
+UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;romanceBookCategoryCarouselLatestReleasesComponent;"Romance Latest Releases"
+;;romanceEBookCategoryCarouselLatestReleasesComponent;"Romance Latest Releases"
+;;romanceBookCategoryCarouselComponent;"Romance Carousel Title"
+;;romanceEBookCategoryCarouselComponent;"Romance Carousel Title"
+;;childrensBookCategoryCarouselLatestReleasesComponent;"Childrens' Title"
+;;childrensEBookCategoryCarouselLatestReleasesComponent;"Childrens' Title"
+;;childrensBookCategoryCarouselComponent;"Childrens' Title"
+;;childrensEBookCategoryCarouselComponent;"Childrens' Title"
+
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;romanceBookCategoryIntroParagraph;"<p class='large'>Romance Category</p>";
+;;romanceEBookCategoryIntroParagraph;"<p class='large'>Romance Category</p>";
+;;childrensBookCategoryIntroParagraph;"<p class='large'>Children's Category</p>";
+;;childrensEBookCategoryIntroParagraph;"<p class='large'>Children's Category</p>";
+
+UPDATE FeaturedProductsComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;romanceBookCategoryFeaturedProducts;"Featured Product";
+;;romanceEBookCategoryFeaturedProducts;"Featured Product";
+;;childrensBookCategoryFeaturedProducts;"Featured Product";
+;;childrensEBookCategoryFeaturedProducts;"Featured Product";

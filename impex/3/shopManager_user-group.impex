@@ -1,0 +1,828 @@
+#
+# Import Shop Managers group
+#
+
+$shopmanagergroup=shopmanagergroup
+$shopmanageradmingroup=shopmanageradmingroup
+$employeegroup=employeegroup
+$webCatalog=web
+$stagedVersion=Staged
+$onlineVersion=Online
+$webOnlineCatalogVersion=$webCatalog:$onlineVersion
+$webStagedCatalogVersion=$webCatalog:$stagedVersion
+$shopmanager2=manager@2.waterstones.com
+$shopmanager5=manager@5.waterstones.com
+$shopmanager6=manager@6.waterstones.com
+$shopmanager8=manager@8.waterstones.com
+$shopmanager11=manager@11.waterstones.com
+$shopmanager14=manager@14.waterstones.com
+$shopmanager15=manager@15.waterstones.com
+$shopmanager16=manager@16.waterstones.com
+$shopmanager19=manager@19.waterstones.com
+$shopmanager21=manager@21.waterstones.com
+$shopmanager22=manager@22.waterstones.com
+$shopmanager24=manager@24.waterstones.com
+$shopmanager26=manager@26.waterstones.com
+$shopmanager28=manager@28.waterstones.com
+$shopmanager30=manager@30.waterstones.com
+$shopmanager33=manager@33.waterstones.com
+$shopmanager34=manager@34.waterstones.com
+$shopmanager35=manager@35.waterstones.com
+$shopmanager38=manager@38.waterstones.com
+$shopmanager39=manager@39.waterstones.com
+$shopmanager41=manager@41.waterstones.com
+$shopmanager47=manager@47.waterstones.com
+$shopmanager48=manager@48.waterstones.com
+$shopmanager49=manager@49.waterstones.com
+$shopmanager50=manager@50.waterstones.com
+$shopmanager51=manager@51.waterstones.com
+$shopmanager52=manager@52.waterstones.com
+$shopmanager53=manager@53.waterstones.com
+$shopmanager55=manager@55.waterstones.com
+$shopmanager56=manager@56.waterstones.com
+$shopmanager57=manager@57.waterstones.com
+$shopmanager64=manager@64.waterstones.com
+$shopmanager69=manager@69.waterstones.com
+$shopmanager73=manager@73.waterstones.com
+$shopmanager74=manager@74.waterstones.com
+$shopmanager75=manager@75.waterstones.com
+$shopmanager76=manager@76.waterstones.com
+$shopmanager77=manager@77.waterstones.com
+$shopmanager78=manager@78.waterstones.com
+$shopmanager79=manager@79.waterstones.com
+$shopmanager82=manager@82.waterstones.com
+$shopmanager83=manager@83.waterstones.com
+$shopmanager84=manager@84.waterstones.com
+$shopmanager85=manager@85.waterstones.com
+$shopmanager90=manager@90.waterstones.com
+$shopmanager91=manager@91.waterstones.com
+$shopmanager93=manager@93.waterstones.com
+$shopmanager95=manager@95.waterstones.com
+$shopmanager98=manager@98.waterstones.com
+$shopmanager99=manager@99.waterstones.com
+$shopmanager101=manager@101.waterstones.com
+$shopmanager103=manager@103.waterstones.com
+$shopmanager105=manager@105.waterstones.com
+$shopmanager108=manager@108.waterstones.com
+$shopmanager111=manager@111.waterstones.com
+$shopmanager112=manager@112.waterstones.com
+$shopmanager114=manager@114.waterstones.com
+$shopmanager116=manager@116.waterstones.com
+$shopmanager118=manager@118.waterstones.com
+$shopmanager132=manager@132.waterstones.com
+$shopmanager138=manager@138.waterstones.com
+$shopmanager140=manager@140.waterstones.com
+$shopmanager150=manager@150.waterstones.com
+$shopmanager170=manager@170.waterstones.com
+$shopmanager201=manager@201.waterstones.com
+$shopmanager202=manager@202.waterstones.com
+$shopmanager205=manager@205.waterstones.com
+$shopmanager206=manager@206.waterstones.com
+$shopmanager208=manager@208.waterstones.com
+$shopmanager214=manager@214.waterstones.com
+$shopmanager215=manager@215.waterstones.com
+$shopmanager216=manager@216.waterstones.com
+$shopmanager220=manager@220.waterstones.com
+$shopmanager225=manager@225.waterstones.com
+$shopmanager226=manager@226.waterstones.com
+$shopmanager231=manager@231.waterstones.com
+$shopmanager232=manager@232.waterstones.com
+$shopmanager233=manager@233.waterstones.com
+$shopmanager235=manager@235.waterstones.com
+$shopmanager240=manager@240.waterstones.com
+$shopmanager244=manager@244.waterstones.com
+$shopmanager249=manager@249.waterstones.com
+$shopmanager254=manager@254.waterstones.com
+$shopmanager256=manager@256.waterstones.com
+$shopmanager262=manager@262.waterstones.com
+$shopmanager266=manager@266.waterstones.com
+$shopmanager273=manager@273.waterstones.com
+$shopmanager274=manager@274.waterstones.com
+$shopmanager276=manager@276.waterstones.com
+$shopmanager277=manager@277.waterstones.com
+$shopmanager278=manager@278.waterstones.com
+$shopmanager279=manager@279.waterstones.com
+$shopmanager281=manager@281.waterstones.com
+$shopmanager287=manager@287.waterstones.com
+$shopmanager289=manager@289.waterstones.com
+$shopmanager290=manager@290.waterstones.com
+$shopmanager291=manager@291.waterstones.com
+$shopmanager292=manager@292.waterstones.com
+$shopmanager293=manager@293.waterstones.com
+$shopmanager296=manager@296.waterstones.com
+$shopmanager297=manager@297.waterstones.com
+$shopmanager298=manager@298.waterstones.com
+$shopmanager299=manager@299.waterstones.com
+$shopmanager302=manager@302.waterstones.com
+$shopmanager304=manager@304.waterstones.com
+$shopmanager308=manager@308.waterstones.com
+$shopmanager310=manager@310.waterstones.com
+$shopmanager316=manager@316.waterstones.com
+$shopmanager320=manager@320.waterstones.com
+$shopmanager322=manager@322.waterstones.com
+$shopmanager328=manager@328.waterstones.com
+$shopmanager334=manager@334.waterstones.com
+$shopmanager336=manager@336.waterstones.com
+$shopmanager338=manager@338.waterstones.com
+$shopmanager342=manager@342.waterstones.com
+$shopmanager346=manager@346.waterstones.com
+$shopmanager352=manager@352.waterstones.com
+$shopmanager356=manager@356.waterstones.com
+$shopmanager358=manager@358.waterstones.com
+$shopmanager360=manager@360.waterstones.com
+$shopmanager362=manager@362.waterstones.com
+$shopmanager366=manager@366.waterstones.com
+$shopmanager370=manager@370.waterstones.com
+$shopmanager388=manager@388.waterstones.com
+$shopmanager394=manager@394.waterstones.com
+$shopmanager396=manager@396.waterstones.com
+$shopmanager401=manager@401.waterstones.com
+$shopmanager403=manager@403.waterstones.com
+$shopmanager407=manager@407.waterstones.com
+$shopmanager408=manager@408.waterstones.com
+$shopmanager409=manager@409.waterstones.com
+$shopmanager410=manager@410.waterstones.com
+$shopmanager411=manager@411.waterstones.com
+$shopmanager414=manager@414.waterstones.com
+$shopmanager415=manager@415.waterstones.com
+$shopmanager418=manager@418.waterstones.com
+$shopmanager419=manager@419.waterstones.com
+$shopmanager420=manager@420.waterstones.com
+$shopmanager421=manager@421.waterstones.com
+$shopmanager422=manager@422.waterstones.com
+$shopmanager423=manager@423.waterstones.com
+$shopmanager426=manager@426.waterstones.com
+$shopmanager427=manager@427.waterstones.com
+$shopmanager429=manager@429.waterstones.com
+$shopmanager430=manager@430.waterstones.com
+$shopmanager431=manager@431.waterstones.com
+$shopmanager432=manager@432.waterstones.com
+$shopmanager433=manager@433.waterstones.com
+$shopmanager434=manager@434.waterstones.com
+$shopmanager436=manager@436.waterstones.com
+$shopmanager437=manager@437.waterstones.com
+$shopmanager440=manager@440.waterstones.com
+$shopmanager441=manager@441.waterstones.com
+$shopmanager442=manager@442.waterstones.com
+$shopmanager443=manager@443.waterstones.com
+$shopmanager447=manager@447.waterstones.com
+$shopmanager451=manager@451.waterstones.com
+$shopmanager452=manager@452.waterstones.com
+$shopmanager453=manager@453.waterstones.com
+$shopmanager454=manager@454.waterstones.com
+$shopmanager455=manager@455.waterstones.com
+$shopmanager456=manager@456.waterstones.com
+$shopmanager457=manager@457.waterstones.com
+$shopmanager458=manager@458.waterstones.com
+$shopmanager461=manager@461.waterstones.com
+$shopmanager500=manager@500.waterstones.com
+$shopmanager501=manager@501.waterstones.com
+$shopmanager601=manager@601.waterstones.com
+$shopmanager602=manager@602.waterstones.com
+$shopmanager603=manager@603.waterstones.com
+$shopmanager604=manager@604.waterstones.com
+$shopmanager606=manager@606.waterstones.com
+$shopmanager607=manager@607.waterstones.com
+$shopmanager608=manager@608.waterstones.com
+$shopmanager609=manager@609.waterstones.com
+$shopmanager610=manager@610.waterstones.com
+$shopmanager611=manager@611.waterstones.com
+$shopmanager612=manager@612.waterstones.com
+$shopmanager613=manager@613.waterstones.com
+$shopmanager614=manager@614.waterstones.com
+$shopmanager615=manager@615.waterstones.com
+$shopmanager616=manager@616.waterstones.com
+$shopmanager617=manager@617.waterstones.com
+$shopmanager618=manager@618.waterstones.com
+$shopmanager620=manager@620.waterstones.com
+$shopmanager621=manager@621.waterstones.com
+$shopmanager622=manager@622.waterstones.com
+$shopmanager623=manager@623.waterstones.com
+$shopmanager624=manager@624.waterstones.com
+$shopmanager625=manager@625.waterstones.com
+$shopmanager626=manager@626.waterstones.com
+$shopmanager627=manager@627.waterstones.com
+$shopmanager628=manager@628.waterstones.com
+$shopmanager629=manager@629.waterstones.com
+$shopmanager630=manager@630.waterstones.com
+$shopmanager632=manager@632.waterstones.com
+$shopmanager633=manager@633.waterstones.com
+$shopmanager634=manager@634.waterstones.com
+$shopmanager635=manager@635.waterstones.com
+$shopmanager636=manager@636.waterstones.com
+$shopmanager637=manager@637.waterstones.com
+$shopmanager638=manager@638.waterstones.com
+$shopmanager639=manager@639.waterstones.com
+$shopmanager640=manager@640.waterstones.com
+$shopmanager641=manager@641.waterstones.com
+$shopmanager642=manager@642.waterstones.com
+$shopmanager643=manager@643.waterstones.com
+$shopmanager644=manager@644.waterstones.com
+$shopmanager645=manager@645.waterstones.com
+$shopmanager646=manager@646.waterstones.com
+$shopmanager648=manager@648.waterstones.com
+$shopmanager649=manager@649.waterstones.com
+$shopmanager650=manager@650.waterstones.com
+$shopmanager651=manager@651.waterstones.com
+$shopmanager652=manager@652.waterstones.com
+$shopmanager653=manager@653.waterstones.com
+$shopmanager654=manager@654.waterstones.com
+$shopmanager655=manager@655.waterstones.com
+$shopmanager656=manager@656.waterstones.com
+$shopmanager657=manager@657.waterstones.com
+$shopmanager658=manager@658.waterstones.com
+$shopmanager659=manager@659.waterstones.com
+$shopmanager660=manager@660.waterstones.com
+$shopmanager663=manager@663.waterstones.com
+$shopmanager664=manager@664.waterstones.com
+$shopmanager665=manager@665.waterstones.com
+$shopmanager666=manager@666.waterstones.com
+$shopmanager668=manager@668.waterstones.com
+$shopmanager669=manager@669.waterstones.com
+$shopmanager670=manager@670.waterstones.com
+$shopmanager671=manager@671.waterstones.com
+$shopmanager672=manager@672.waterstones.com
+$shopmanager673=manager@673.waterstones.com
+$shopmanager674=manager@674.waterstones.com
+$shopmanager675=manager@675.waterstones.com
+$shopmanager676=manager@676.waterstones.com
+$shopmanager678=manager@678.waterstones.com
+$shopmanager679=manager@679.waterstones.com
+$shopmanager680=manager@680.waterstones.com
+$shopmanager681=manager@681.waterstones.com
+$shopmanager683=manager@683.waterstones.com
+$shopmanager684=manager@684.waterstones.com
+$shopmanager685=manager@685.waterstones.com
+$shopmanager686=manager@686.waterstones.com
+$shopmanager687=manager@687.waterstones.com
+$shopmanager688=manager@688.waterstones.com
+$shopmanager689=manager@689.waterstones.com
+$shopmanager690=manager@690.waterstones.com
+$shopmanager691=manager@691.waterstones.com
+$shopmanager692=manager@692.waterstones.com
+$shopmanager693=manager@693.waterstones.com
+$shopmanager694=manager@694.waterstones.com
+$shopmanager695=manager@695.waterstones.com
+$shopmanager696=manager@696.waterstones.com
+$shopmanager697=manager@697.waterstones.com
+$shopmanager698=manager@698.waterstones.com
+$shopmanager704=manager@704.waterstones.com
+$shopmanager705=manager@705.waterstones.com
+$shopmanager708=manager@708.waterstones.com
+$shopmanager709=manager@709.waterstones.com
+$shopmanager711=manager@711.waterstones.com
+$shopmanager712=manager@712.waterstones.com
+$shopmanager714=manager@714.waterstones.com
+$shopmanager715=manager@715.waterstones.com
+$shopmanager716=manager@716.waterstones.com
+$shopmanager717=manager@717.waterstones.com
+$shopmanager718=manager@718.waterstones.com
+$shopmanager719=manager@719.waterstones.com
+$shopmanager720=manager@720.waterstones.com
+$shopmanager722=manager@722.waterstones.com
+$shopmanager723=manager@723.waterstones.com
+$shopmanager724=manager@724.waterstones.com
+$shopmanager725=manager@725.waterstones.com
+$shopmanager726=manager@726.waterstones.com
+$shopmanager728=manager@728.waterstones.com
+$shopmanager729=manager@729.waterstones.com
+$shopmanager730=manager@730.waterstones.com
+$shopmanager731=manager@731.waterstones.com
+$shopmanager732=manager@732.waterstones.com
+$shopmanager733=manager@733.waterstones.com
+$shopmanager734=manager@734.waterstones.com
+$shopmanager736=manager@736.waterstones.com
+$shopmanager737=manager@737.waterstones.com
+$shopmanager738=manager@738.waterstones.com
+$shopmanager739=manager@739.waterstones.com
+$shopmanager740=manager@740.waterstones.com
+$shopmanager741=manager@741.waterstones.com
+$shopmanager742=manager@742.waterstones.com
+$shopmanager743=manager@743.waterstones.com
+$shopmanager744=manager@744.waterstones.com
+$shopmanager783=manager@783.waterstones.com
+$shopmanager786=manager@786.waterstones.com
+$shopmanager872=manager@872.waterstones.com
+$shopmanageradmin=manageradmin@waterstones.com
+
+# Create Shop Manager Group and set hMC configuration 
+INSERT_UPDATE UserGroup;UID[unique=true];locname[lang=en];groups(uid);writableCatalogVersions(catalog(id),version);readableCatalogVersions(catalog(id),version)
+;$shopmanageradmingroup;Shop Manager Admin Group;$employeegroup;$webOnlineCatalogVersion,$webStagedCatalogVersion;$webOnlineCatalogVersion,$webStagedCatalogVersion
+;$shopmanagergroup;Shop Managers Group;$shopmanageradmingroup;$webOnlineCatalogVersion,$webStagedCatalogVersion;$webOnlineCatalogVersion,$webStagedCatalogVersion
+
+UPDATE UserGroup;UID[unique=true];hmcXML
+;$shopmanagergroup;"<?xml version=""1.0"" encoding=""ISO-8859-1""?>
+<configuration
+   xmlns=""hybris.de/schemas/hmc/generic"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+   xsi:schemaLocation=""hybris.de/schemas/hmc/generic hmc.xsd"">
+ 
+   <explorertree mode=""replace"">
+		<group name=""eventgroup"" expand=""true"">	
+			<typeref type=""Event"" mode=""append"" />
+		</group>
+	</explorertree>
+	
+	<type name=""Event"" mode=""append"">
+		<organizer>
+			<search mode=""replace"">
+			</search>
+			<result mode=""replace"">
+				<listview mode=""replace"">
+					<itemlayout>
+						<attribute name=""startDate"" width=""200"">
+							<display classname=""de.hybris.platform.hmc.attribute.DateDisplayChip"" />
+						</attribute>
+						<attribute name=""startTime"" width=""200"">
+							<display classname=""uk.co.eclipsegroup.core.hmc.attribute.TimeDisplayChip"" />
+						</attribute>
+						<attribute name=""catalogVersion"" width=""200"">
+							<display
+								classname=""uk.co.eclipsegroup.core.hmc.attribute.CatalogVersionDisplayChip"" />
+						</attribute>
+						<attribute name=""title"" width=""250"" />
+						<attribute name=""active"" width=""100"">
+							<display
+								classname=""uk.co.eclipsegroup.core.hmc.attribute.CancelledDisplayChip"" />
+						</attribute>
+					</itemlayout>
+				</listview>
+				<action type=""searchresult""
+            		  classname=""de.hybris.platform.cronjob.hmc.ExtendedRemoveAction""
+            		  name=""delete""/>
+				<action classname=""uk.co.eclipsegroup.core.hmc.action.CancelEventAction""
+					type=""searchresult"" name=""event.action.cancel"" />
+			</result>
+			<editor mode=""replace"">	
+				<essentials>
+					<listlayout width=""750"" height=""150"">
+						<text name=""event.addEvent.description"" />
+					</listlayout>
+				</essentials>
+				<tab name=""tab.events.general"">
+					<section name=""section.events.general"">
+						<columnlayout width=""1000"" leftwidth=""800""
+							rightwidth=""200"">
+							<row>
+								<attribute name=""title"" />
+								<text name=""event.title.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""venueType"" />
+								<text name=""event.venuetype.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""startDate"">
+									<customeditor
+										classname=""uk.co.eclipsegroup.core.hmc.attribute.DateDropDownEditorChip"" />
+								</attribute>
+								<text name=""event.startdate.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""endDate"">
+									<customeditor
+										classname=""uk.co.eclipsegroup.core.hmc.attribute.DateDropDownEditorChip"" />
+								</attribute>
+								<text name=""event.enddate.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""startTime"">
+									<customeditor
+										classname=""uk.co.eclipsegroup.core.hmc.attribute.TimeDropDownEditorChip"" />
+								</attribute>
+								<text name=""event.starttime.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""endTime"">
+									<customeditor
+										classname=""uk.co.eclipsegroup.core.hmc.attribute.TimeDropDownEditorChip"" />
+								</attribute>
+								<text name=""event.endtime.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""contactPhoneNumber"" />
+								<text name=""event.contactphonenumber.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""eventType"" />
+								<text name=""event.typeofevent.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""ticketed"">
+									<booleaneditor />
+								</attribute>
+								<text name=""event.eventisticketed.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""ticketsInfo"" />
+								<text name=""event.ticketinfo.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""ticketingLink"" />
+								<text name=""event.ticketingLink.description"" width=""200"" />
+							</row>
+							<row height=""100"">
+								<attribute name=""description"" maxlength=""800"" width=""654"">
+									<wysiwygeditor
+										config=""theme : 'simple', 
+									convert_urls : false, 
+ 									valid_elements: '+a[id|style|rel|rev|charset|hreflang|dir|lang|tabindex|accesskey|type|name|href|target|
+ 										title|class|onfocus|onblur|onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|
+ 										onmouseout|onkeypress|onkeydown|onkeyup],-strong[class|style],-b[class|style],-em[class|style],-
+										i[class|style],-strike[class|style],-u[class|style],#p[id|style|dir|class|align],-ol[class|style],-ul[class|style],-
+										li[class|style],br,img[id|dir|lang|longdesc|usemap|style|class|src|onmouseover|onmouseout|border|alt=|
+										title|hspace|vspace|width|height|align],-sub[style|class],-sup[style|class],-blockquote[dir|style],-
+										table[border=0|cellspacing|cellpadding|width|height|class|align|summary|style|dir|id|lang|bgcolor|
+										background|bordercolor],-tr[id|lang|dir|class|rowspan|width|height|align|valign|style|bgcolor|
+										background|bordercolor],tbody[id|class],thead[id|class],tfoot[id|class],-td[id|lang|dir|class|colspan|
+										rowspan|width|height|align|valign|style|bgcolor|background|bordercolor|scope],-th[id|lang|dir|class|
+										colspan|rowspan|width|height|align|valign|style|scope],caption[id|lang|dir|class|style],-div[id|dir|class|
+										align|style],-span[style|class|align],-pre[class|align|style],address[class|align|style],-h1[id|style|dir|class|
+										align],-h2[id|style|dir|class|align],-h3[id|style|dir|class|align],-h4[id|style|dir|class|align],-h5[id|style|dir|
+										class|align],-h6[id|style|dir|class|align],hr[class|style],-font[face|size|style|id|class|dir|color],dd[id|class|
+										title|style|dir|lang],dl[id|class|title|style|dir|lang],dt[id|class|title|style|dir|lang],embed[autostart|pluginspage|type|width|height|src|*]', 
+										extended_valid_elements : 'a[name|href|target|title|onclick],img[class|src|border=0|alt|title|hspace|
+										vspace|width|height|align|onmouseover|onmouseout|name],hr[class|width|size|noshade],font[face|size|
+										color|style],span[class|align|style],style[*]',"" />
+								</attribute>
+								<text name=""event.description.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""interestAge"" />
+								<text name=""event.interestage.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""book"">
+									<referenceeditor autoperform=""false"" autocomplete=""true"" />
+								</attribute>
+								<text name=""event.books.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""authors"">
+									<referencecollectioneditor editable=""true""
+										prohibitopening=""true"" resortable=""true"" add=""true"" create=""false""
+										remove=""true"" showsearcheditor=""true"" >
+										<itemeditorlayout>
+											<attribute name=""fullName"" width=""240"" />
+										</itemeditorlayout>
+									</referencecollectioneditor>
+								</attribute>
+								<text name=""event.authors.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""publicistName"" />
+								<text name=""event.publicistname.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""publicistContact"" />
+								<text name=""event.publicistcontact.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""shopContactName"" />
+								<text name=""event.shopcontactname.description"" width=""200"" />
+							</row>
+							<row>
+								<attribute name=""catalogVersion"" editable=""false"" />
+								<text name=""event.catalogversion.description"" width=""200"" />
+							</row>
+						</columnlayout>
+						<listlayout>
+							<action classname=""uk.co.eclipsegroup.core.hmc.action.PublishEventAction"" type=""item""  name=""event.action.publish"" />
+						</listlayout>
+					</section>
+				</tab>
+			</editor>
+		</organizer>
+	</type>
+</configuration>"
+;$shopmanageradmingroup;"<?xml version=""1.0"" encoding=""ISO-8859-1""?>
+<configuration
+   xmlns=""hybris.de/schemas/hmc/generic"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+   xsi:schemaLocation=""hybris.de/schemas/hmc/generic hmc.xsd"">
+ 
+   <explorertree mode=""replace"">
+		<group name=""eventgroup"" expand=""true"">
+			<typeref type=""Event"" mode=""append"" />
+		</group>
+	</explorertree>
+</configuration>"
+
+INSERT_UPDATE Employee;uid[unique=true];groups(uid)[mode=append];password;pointOfService(name);name;sessionLanguage(isocode)
+;$shopmanager2;$shopmanagergroup;W@t2;2;Shop manager at Hodges Figgis;en
+;$shopmanager5;$shopmanagergroup;W@t5;5;Shop manager at Waterstone's Colchester High Street;en
+;$shopmanager6;$shopmanagergroup;W@t6;6;Shop manager at Waterstone's Ealing;en
+;$shopmanager8;$shopmanagergroup;W@t8;8;Shop manager at Waterstone's Finchley;en
+;$shopmanager11;$shopmanagergroup;W@t11;11;Shop manager at Waterstone's Reading Broad Street;en
+;$shopmanager14;$shopmanagergroup;W@t14;14;Shop manager at Waterstone's Southend;en
+;$shopmanager15;$shopmanagergroup;W@t15;15;Shop manager at Waterstone's Salisbury;en
+;$shopmanager16;$shopmanagergroup;W@t16;16;Shop manager at Waterstone's Watford;en
+;$shopmanager19;$shopmanagergroup;W@t19;19;Shop manager at Hatchards;en
+;$shopmanager21;$shopmanagergroup;W@t21;21;Shop manager at Waterstone's Swansea;en
+;$shopmanager22;$shopmanagergroup;W@t22;22;Shop manager at Waterstone's Liverpool;en
+;$shopmanager24;$shopmanagergroup;W@t24;24;Shop manager at Waterstone's Plymouth;en
+;$shopmanager26;$shopmanagergroup;W@t26;26;Shop manager at Waterstone's Winchester High Street;en
+;$shopmanager28;$shopmanagergroup;W@t28;28;Shop manager at Waterstone's Taunton;en
+;$shopmanager30;$shopmanagergroup;W@t30;30;Shop manager at Waterstone's Newbury;en
+;$shopmanager33;$shopmanagergroup;W@t33;33;Shop manager at Waterstone's Bradford Wool Exchange;en
+;$shopmanager34;$shopmanagergroup;W@t34;34;Shop manager at Waterstone's Bradford University;en
+;$shopmanager35;$shopmanagergroup;W@t35;35;Shop manager at Waterstone's Northampton;en
+;$shopmanager38;$shopmanagergroup;W@t38;38;Shop manager at Waterstone's Leicester the Shires;en
+;$shopmanager39;$shopmanagergroup;W@t39;39;Shop manager at Waterstone's Derby St. Peters;en
+;$shopmanager41;$shopmanagergroup;W@t41;41;Shop manager at Waterstone's Camden;en
+;$shopmanager47;$shopmanagergroup;W@t47;47;Shop manager at Waterstone's Derby University;en
+;$shopmanager48;$shopmanagergroup;W@t48;48;Shop manager at Waterstone's Birmingham University;en
+;$shopmanager49;$shopmanagergroup;W@t49;49;Shop manager at Waterstone's Essex University;en
+;$shopmanager50;$shopmanagergroup;W@t50;50;Shop manager at Waterstone's Gower Street;en
+;$shopmanager51;$shopmanagergroup;W@t51;51;Shop manager at Waterstone's Macclesfield;en
+;$shopmanager52;$shopmanagergroup;W@t52;52;Shop manager at Waterstone's Hereford;en
+;$shopmanager53;$shopmanagergroup;W@t53;53;Shop manager at Waterstone's Leicester Market Street;en
+;$shopmanager55;$shopmanagergroup;W@t55;55;Shop manager at Waterstone's Stirling Thistle Centre;en
+;$shopmanager56;$shopmanagergroup;W@t56;56;Shop manager at Waterstone's Cardiff the Hayes;en
+;$shopmanager57;$shopmanagergroup;W@t57;57;Shop manager at Waterstone's Durham;en
+;$shopmanager64;$shopmanagergroup;W@t64;64;Shop manager at Waterstone's Hull;en
+;$shopmanager69;$shopmanagergroup;W@t69;69;Shop manager at Waterstone's Croydon;en
+;$shopmanager73;$shopmanagergroup;W@t73;73;Shop manager at Waterstone's Exeter Roman Gate;en
+;$shopmanager74;$shopmanagergroup;W@t74;74;Shop manager at Waterstone's King's Road;en
+;$shopmanager75;$shopmanagergroup;W@t75;75;Shop manager at Waterstone's Cambridge Sidney Street;en
+;$shopmanager76;$shopmanagergroup;W@t76;76;Shop manager at Waterstone's Solihull;en
+;$shopmanager77;$shopmanagergroup;W@t77;77;Shop manager at Waterstone's Aberdeen Langstane;en
+;$shopmanager78;$shopmanagergroup;W@t78;78;Shop manager at Waterstone's Newcastle Emerson Chambers;en
+;$shopmanager79;$shopmanagergroup;W@t79;79;Shop manager at Waterstone's Wolverhampton;en
+;$shopmanager82;$shopmanagergroup;W@t82;82;Shop manager at Waterstone's Bolton;en
+;$shopmanager83;$shopmanagergroup;W@t83;83;Shop manager at Waterstone's Tunbridge Wells;en
+;$shopmanager84;$shopmanagergroup;W@t84;84;Shop manager at Waterstone's Oxford;en
+;$shopmanager85;$shopmanagergroup;W@t85;85;Shop manager at Waterstone's Glasgow Sauchiehall Street;en
+;$shopmanager90;$shopmanagergroup;W@t90;90;Shop manager at Waterstone's Canterbury;en
+;$shopmanager91;$shopmanagergroup;W@t91;91;Shop manager at Waterstone's Belfast Fountain Street;en
+;$shopmanager93;$shopmanagergroup;W@t93;93;Shop manager at Waterstone's Birkenhead;en
+;$shopmanager95;$shopmanagergroup;W@t95;95;Shop manager at Waterstone's Hatfield;en
+;$shopmanager98;$shopmanagergroup;W@t98;98;Shop manager at Waterstone's Trafalgar Square;en
+;$shopmanager99;$shopmanagergroup;W@t99;99;Shop manager at Waterstone's Glasgow Argyle Street;en
+;$shopmanager101;$shopmanagergroup;W@t101;101;Shop manager at Waterstone's Birmingham New Street;en
+;$shopmanager103;$shopmanagergroup;W@t103;103;Shop manager at Waterstone's Kingston Bentalls Centre;en
+;$shopmanager105;$shopmanagergroup;W@t105;105;Shop manager at Waterstone's Crawley;en
+;$shopmanager108;$shopmanagergroup;W@t108;108;Shop manager at Waterstone's Cribbs Causeway;en
+;$shopmanager111;$shopmanagergroup;W@t111;111;Shop manager at Waterstone's Sutton;en
+;$shopmanager112;$shopmanagergroup;W@t112;112;Shop manager at Waterstone's Chiswick;en
+;$shopmanager114;$shopmanagergroup;W@t114;114;Shop manager at Waterstone's Aylesbury;en
+;$shopmanager116;$shopmanagergroup;W@t116;116;Shop manager at Waterstone's Durham Uni;en
+;$shopmanager118;$shopmanagergroup;W@t118;118;Shop manager at Waterstone's Sheffield Meadowhall;en
+;$shopmanager132;$shopmanagergroup;W@t132;132;Shop manager at Waterstone's Kettering;en
+;$shopmanager138;$shopmanagergroup;W@t138;138;Shop manager at Waterstone's Bury;en
+;$shopmanager140;$shopmanagergroup;W@t140;140;Shop manager at Waterstone's Hull University;en
+;$shopmanager150;$shopmanagergroup;W@t150;150;Shop manager at Waterstone's Ipswich;en
+;$shopmanager170;$shopmanagergroup;W@t170;170;Shop manager at Waterstone's Leamington Spa;en
+;$shopmanager201;$shopmanagergroup;W@t201;201;Shop manager at Waterstone's Brighton Clock Tower;en
+;$shopmanager202;$shopmanagergroup;W@t202;202;Shop manager at Waterstone's Chester Eastgate Row;en
+;$shopmanager205;$shopmanagergroup;W@t205;205;Shop manager at Waterstone's Milton Keynes;en
+;$shopmanager206;$shopmanagergroup;W@t206;206;Shop manager at Waterstone's Stockport Merseyway;en
+;$shopmanager208;$shopmanagergroup;W@t208;208;Shop manager at Waterstone's Blackpool;en
+;$shopmanager214;$shopmanagergroup;W@t214;214;Shop manager at Waterstone's Merry Hill;en
+;$shopmanager215;$shopmanagergroup;W@t215;215;Shop manager at Waterstone's Swindon Brunel Plaza;en
+;$shopmanager216;$shopmanagergroup;W@t216;216;Shop manager at Waterstone's Bedford;en
+;$shopmanager220;$shopmanagergroup;W@t220;220;Shop manager at Waterstone's Peterborough Bridge Street;en
+;$shopmanager225;$shopmanagergroup;W@t225;225;Shop manager at Waterstone's Ilford;en
+;$shopmanager226;$shopmanagergroup;W@t226;226;Shop manager at Waterstone's Winchester The Brooks;en
+;$shopmanager231;$shopmanagergroup;W@t231;231;Shop manager at Waterstone's Altrincham;en
+;$shopmanager232;$shopmanagergroup;W@t232;232;Shop manager at Waterstone's Exeter High Street;en
+;$shopmanager233;$shopmanagergroup;W@t233;233;Shop manager at Waterstone's Chichester;en
+;$shopmanager235;$shopmanagergroup;W@t235;235;Shop manager at Waterstone's Scarborough;en
+;$shopmanager240;$shopmanagergroup;W@t240;240;Shop manager at Waterstone's Wrexham;en
+;$shopmanager244;$shopmanagergroup;W@t244;244;Shop manager at Waterstone's Covent Garden;en
+;$shopmanager249;$shopmanagergroup;W@t249;249;Shop manager at Waterstone's Keele University;en
+;$shopmanager254;$shopmanagergroup;W@t254;254;Shop manager at Waterstone's Wimbledon;en
+;$shopmanager256;$shopmanagergroup;W@t256;256;Shop manager at Waterstone's Swansea University;en
+;$shopmanager262;$shopmanagergroup;W@t262;262;Shop manager at Waterstone's Bristol Galleries;en
+;$shopmanager266;$shopmanagergroup;W@t266;266;Shop manager at Waterstone's Leeds 93;en
+;$shopmanager273;$shopmanagergroup;W@t273;273;Shop manager at Waterstone's Reading Oracle;en
+;$shopmanager274;$shopmanagergroup;W@t274;274;Shop manager at Waterstone's Islington;en
+;$shopmanager276;$shopmanagergroup;W@t276;276;Shop manager at Waterstone's Southampton Above Bar;en
+;$shopmanager277;$shopmanagergroup;W@t277;277;Shop manager at Waterstone's Bluewater West;en
+;$shopmanager278;$shopmanagergroup;W@t278;278;Shop manager at Waterstone's Braehead;en
+;$shopmanager279;$shopmanagergroup;W@t279;279;Shop manager at Waterstone's Piccadilly;en
+;$shopmanager281;$shopmanagergroup;W@t281;281;Shop manager at Waterstone's Middlesbrough;en
+;$shopmanager287;$shopmanagergroup;W@t287;287;Shop manager at Waterstone's Ludgate Circus;en
+;$shopmanager289;$shopmanagergroup;W@t289;289;Shop manager at Waterstone's Nuneaton;en
+;$shopmanager290;$shopmanagergroup;W@t290;290;Shop manager at Waterstone's Telford;en
+;$shopmanager291;$shopmanagergroup;W@t291;291;Shop manager at Waterstone's Warrington;en
+;$shopmanager292;$shopmanagergroup;W@t292;292;Shop manager at Waterstone's Notting Hill;en
+;$shopmanager293;$shopmanagergroup;W@t293;293;Shop manager at Waterstone's Southampton West Quay;en
+;$shopmanager296;$shopmanagergroup;W@t296;296;Shop manager at Waterstone's Southport;en
+;$shopmanager297;$shopmanagergroup;W@t297;297;Shop manager at Waterstone's Coventry University;en
+;$shopmanager298;$shopmanagergroup;W@t298;298;Shop manager at Waterstone's UEA;en
+;$shopmanager299;$shopmanagergroup;W@t299;299;Shop manager at Waterstone's Worcester University;en
+;$shopmanager302;$shopmanagergroup;W@t302;302;Shop manager at Waterstone's Bath;en
+;$shopmanager304;$shopmanagergroup;W@t304;304;Shop manager at Waterstone's Hanley Tontines Centre;en
+;$shopmanager308;$shopmanagergroup;W@t308;308;Shop manager at Waterstone's Birmingham High Street;en
+;$shopmanager310;$shopmanagergroup;W@t310;310;Shop manager at Waterstone's Bournemouth Arcade;en
+;$shopmanager316;$shopmanagergroup;W@t316;316;Shop manager at Waterstone's Cork;en
+;$shopmanager320;$shopmanagergroup;W@t320;320;Shop manager at Waterstone's Eastbourne;en
+;$shopmanager322;$shopmanagergroup;W@t322;322;Shop manager at Waterstone's Edinburgh George Street;en
+;$shopmanager328;$shopmanagergroup;W@t328;328;Shop manager at Waterstone's Hampstead;en
+;$shopmanager334;$shopmanagergroup;W@t334;334;Shop manager at Waterstone's Maidstone Earl Street;en
+;$shopmanager336;$shopmanagergroup;W@t336;336;Shop manager at Waterstone's York;en
+;$shopmanager338;$shopmanagergroup;W@t338;338;Shop manager at Waterstone's Kensington;en
+;$shopmanager342;$shopmanagergroup;W@t342;342;Shop manager at Waterstone's Lancaster;en
+;$shopmanager346;$shopmanagergroup;W@t346;346;Shop manager at Waterstone's Manchester Deansgate;en
+;$shopmanager352;$shopmanagergroup;W@t352;352;Shop manager at Waterstone's Nottingham Bridlesmith Gate;en
+;$shopmanager356;$shopmanagergroup;W@t356;356;Shop manager at Waterstone's Perth;en
+;$shopmanager358;$shopmanagergroup;W@t358;358;Shop manager at Waterstone's Preston;en
+;$shopmanager360;$shopmanagergroup;W@t360;360;Shop manager at Waterstone's Richmond;en
+;$shopmanager362;$shopmanagergroup;W@t362;362;Shop manager at Waterstone's Shrewsbury;en
+;$shopmanager366;$shopmanagergroup;W@t366;366;Shop manager at Waterstone's Stratford-Upon-Avon;en
+;$shopmanager370;$shopmanagergroup;W@t370;370;Shop manager at Waterstone's Sheffield Orchard Square;en
+;$shopmanager388;$shopmanagergroup;W@t388;388;Shop manager at Waterstone's Dundee;en
+;$shopmanager394;$shopmanagergroup;W@t394;394;Shop manager at Waterstone's Edinburgh West End;en
+;$shopmanager396;$shopmanagergroup;W@t396;396;Shop manager at Waterstone's Leadenhall;en
+;$shopmanager401;$shopmanagergroup;W@t401;401;Shop manager at Waterstone's Economists' Bookshop;en
+;$shopmanager403;$shopmanagergroup;W@t403;403;Shop manager at Waterstone's City University;en
+;$shopmanager407;$shopmanagergroup;W@t407;407;Shop manager at Waterstone's Manchester Trafford Centre;en
+;$shopmanager408;$shopmanagergroup;W@t408;408;Shop manager at Waterstone's Romford;en
+;$shopmanager409;$shopmanagergroup;W@t409;409;Shop manager at Waterstone's Edinburgh Ocean Terminal;en
+;$shopmanager410;$shopmanagergroup;W@t410;410;Shop manager at Waterstone's Huddersfield;en
+;$shopmanager411;$shopmanagergroup;W@t411;411;Shop manager at Waterstone's Bournemouth Castlepoint;en
+;$shopmanager414;$shopmanagergroup;W@t414;414;Shop manager at Waterstone's Newry;en
+;$shopmanager415;$shopmanagergroup;W@t415;415;Shop manager at Waterstone's Redditch;en
+;$shopmanager418;$shopmanagergroup;W@t418;418;Shop manager at Waterstone's Manchester Arndale;en
+;$shopmanager419;$shopmanagergroup;W@t419;419;Shop manager at Waterstone's Stevenage;en
+;$shopmanager420;$shopmanagergroup;W@t420;420;Shop manager at Waterstone's Lisburn;en
+;$shopmanager421;$shopmanagergroup;W@t421;421;Shop manager at Coleraine;en
+;$shopmanager422;$shopmanagergroup;W@t422;422;Shop manager at Waterstone's Ballymena;en
+;$shopmanager423;$shopmanagergroup;W@t423;423;Shop manager at Waterstone's Wigan;en
+;$shopmanager426;$shopmanagergroup;W@t426;426;Shop manager at Waterstone's Thanet;en
+;$shopmanager427;$shopmanagergroup;W@t427;427;Shop manager at Waterstone's Lincoln;en
+;$shopmanager429;$shopmanagergroup;W@t429;429;Shop manager at Waterstone's Hemel Hempstead;en
+;$shopmanager430;$shopmanagergroup;W@t430;430;Shop manager at Waterstone's Drogheda;en
+;$shopmanager431;$shopmanagergroup;W@t431;431;Shop manager at Waterstone's Orpington;en
+;$shopmanager432;$shopmanagergroup;W@t432;432;Shop manager at Waterstone's Thurrock;en
+;$shopmanager433;$shopmanagergroup;W@t433;433;Shop manager at Waterstone's Walton-on-Thames;en
+;$shopmanager434;$shopmanagergroup;W@t434;434;Shop manager at Waterstone's Plymouth;en
+;$shopmanager436;$shopmanagergroup;W@t436;436;Shop manager at Waterstone's Knutsford;en
+;$shopmanager437;$shopmanagergroup;W@t437;437;Shop manager at Waterstone's Oxford Street West;en
+;$shopmanager440;$shopmanagergroup;W@t440;440;Shop manager at Waterstone's Dunfermline;en
+;$shopmanager441;$shopmanagergroup;W@t441;441;Shop manager at Waterstone's Livingston;en
+;$shopmanager442;$shopmanagergroup;W@t442;442;Shop manager at Waterstone's Liverpool One;en
+;$shopmanager443;$shopmanagergroup;W@t443;443;Shop manager at Waterstone's Morpeth;en
+;$shopmanager447;$shopmanagergroup;W@t447;447;Shop manager at Waterstsone's Bury St Edmunds Arc Centre;en
+;$shopmanager451;$shopmanagergroup;W@t451;451;Shop manager at Waterstone's Canary Wharf cabot;en
+;$shopmanager452;$shopmanagergroup;W@t452;452;Shop manager at Waterstone's Canary Wharf Jubilee;en
+;$shopmanager453;$shopmanagergroup;W@t453;453;Shop manager at Waterstone's Finchley Road (O2);en
+;$shopmanager454;$shopmanagergroup;W@t454;454;Shop manager at Waterstone's Fleet Street;en
+;$shopmanager455;$shopmanagergroup;W@t455;455;Shop manager at Waterstone's High Holborn;en
+;$shopmanager456;$shopmanagergroup;W@t456;456;Shop manager at Waterstone's London Wall;en
+;$shopmanager457;$shopmanagergroup;W@t457;457;Shop manager at Waterstone's Uxbridge;en
+;$shopmanager458;$shopmanagergroup;W@t458;458;Shop manager at Waterstone's Wandsworth;en
+;$shopmanager461;$shopmanagergroup;W@t461;461;Shop manager at Waterstone's Silverlink;en
+;$shopmanager500;$shopmanagergroup;W@t500;500;Shop manager at Waterstone's Amsterdam;en
+;$shopmanager501;$shopmanagergroup;W@t501;501;Shop manager at Waterstone's Brussels;en
+;$shopmanager601;$shopmanagergroup;W@t601;601;Shop manager at Waterstone's Yeovil;en
+;$shopmanager602;$shopmanagergroup;W@t602;602;Shop manager at Waterstone's Witney;en
+;$shopmanager603;$shopmanagergroup;W@t603;603;Shop manager at Waterstone's Cirencester;en
+;$shopmanager604;$shopmanagergroup;W@t604;604;Shop manager at Waterstone's Gloucester;en
+;$shopmanager606;$shopmanagergroup;W@t606;606;Shop manager at Waterstone's Lincoln;en
+;$shopmanager607;$shopmanagergroup;W@t607;607;Shop manager at Waterstone's Newport (Isle of Wight);en
+;$shopmanager608;$shopmanagergroup;W@t608;608;Shop manager at Waterstone's Poole;en
+;$shopmanager609;$shopmanagergroup;W@t609;609;Shop manager at Waterstone's Llandudno;en
+;$shopmanager610;$shopmanagergroup;W@t610;610;Shop manager at Waterstone's Folkestone;en
+;$shopmanager611;$shopmanagergroup;W@t611;611;Shop manager at Waterstone's Enfield;en
+;$shopmanager612;$shopmanagergroup;W@t612;612;Shop manager at Waterstone's East Grinstead;en
+;$shopmanager613;$shopmanagergroup;W@t613;613;Shop manager at Waterstone's Darlington;en
+;$shopmanager614;$shopmanagergroup;W@t614;614;Shop manager at Waterstone's Clapham;en
+;$shopmanager615;$shopmanagergroup;W@t615;615;Shop manager at Waterstone's Camberley;en
+;$shopmanager616;$shopmanagergroup;W@t616;616;Shop manager at Waterstone's Sutton Coldfield;en
+;$shopmanager617;$shopmanagergroup;W@t617;617;Shop manager at Waterstone's Walsall;en
+;$shopmanager618;$shopmanagergroup;W@t618;618;Shop manager at Waterstone's Stafford;en
+;$shopmanager620;$shopmanagergroup;W@t620;620;Shop manager at Waterstone's Putney;en
+;$shopmanager621;$shopmanagergroup;W@t621;621;Shop manager at Waterstone's Loughborough;en
+;$shopmanager622;$shopmanagergroup;W@t622;622;Shop manager at Waterstone's Kings Lynn;en
+;$shopmanager623;$shopmanagergroup;W@t623;623;Shop manager at Waterstone's Kendal;en
+;$shopmanager624;$shopmanagergroup;W@t624;624;Shop manager at Waterstone's Basildon;en
+;$shopmanager625;$shopmanagergroup;W@t625;625;Shop manager at Waterstone's Barrow-In-Furness;en
+;$shopmanager626;$shopmanagergroup;W@t626;626;Shop manager at Waterstone's Dorchester;en
+;$shopmanager627;$shopmanagergroup;W@t627;627;Shop manager at Waterstone's Crewe;en
+;$shopmanager628;$shopmanagergroup;W@t628;628;Shop manager at Waterstone's Carmarthen;en
+;$shopmanager629;$shopmanagergroup;W@t629;629;Shop manager at Waterstone's Brentwood;en
+;$shopmanager630;$shopmanagergroup;W@t630;630;Shop manager at Waterstone's Hastings;en
+;$shopmanager632;$shopmanagergroup;W@t632;632;Shop manager at Waterstone's Staines;en
+;$shopmanager633;$shopmanagergroup;W@t633;633;Shop manager at Waterstone's Newton Mearns;en
+;$shopmanager634;$shopmanagergroup;W@t634;634;Shop manager at Waterstone's Lowestoft;en
+;$shopmanager635;$shopmanagergroup;W@t635;635;Shop manager at Waterstones High Wycombe;en
+;$shopmanager636;$shopmanagergroup;W@t636;636;Shop manager at Waterstone's Grimsby;en
+;$shopmanager637;$shopmanagergroup;W@t637;637;Shop manager at Waterstone's East Kilbride;en
+;$shopmanager638;$shopmanagergroup;W@t638;638;Shop manager at Waterstone's Burton-On-Trent;en
+;$shopmanager639;$shopmanagergroup;W@t639;639;Shop manager at Waterstone's Bromsgrove;en
+;$shopmanager640;$shopmanagergroup;W@t640;640;Shop manager at Waterstone's Bromley;en
+;$shopmanager641;$shopmanagergroup;W@t641;641;Shop manager at Waterstone's Banbury;en
+;$shopmanager642;$shopmanagergroup;W@t642;642;Shop manager at Waterstone's Barnstaple;en
+;$shopmanager643;$shopmanagergroup;W@t643;643;Shop manager at Waterstone's Aberystwyth;en
+;$shopmanager644;$shopmanagergroup;W@t644;644;Shop manager at Waterstone's Aberdeen;en
+;$shopmanager645;$shopmanagergroup;W@t645;645;Shop manager at Waterstone's Wakefield;en
+;$shopmanager646;$shopmanagergroup;W@t646;646;Shop manager at Waterstone's Trowbridge;en
+;$shopmanager648;$shopmanagergroup;W@t648;648;Shop manager at Waterstone's Portsmouth;en
+;$shopmanager649;$shopmanagergroup;W@t649;649;Shop manager at Waterstone's Petersfield;en
+;$shopmanager650;$shopmanagergroup;W@t650;650;Shop manager at Waterstone's Kirkcaldy;en
+;$shopmanager651;$shopmanagergroup;W@t651;651;Shop manager at Waterstone's Elgin;en
+;$shopmanager652;$shopmanagergroup;W@t652;652;Shop manager at Waterstone's Eastleigh;en
+;$shopmanager653;$shopmanagergroup;W@t653;653;Shop manager at Waterstone's Chippenham;en
+;$shopmanager654;$shopmanagergroup;W@t654;654;Shop manager at Waterstone's Chelmsford;en
+;$shopmanager655;$shopmanagergroup;W@t655;655;Shop manager at Waterstone's Bury St Edmunds;en
+;$shopmanager656;$shopmanagergroup;W@t656;656;Shop manager at Waterstone's Bishops Stortford;en
+;$shopmanager657;$shopmanagergroup;W@t657;657;Shop manager at Waterstone's Haywards Heath;en
+;$shopmanager658;$shopmanagergroup;W@t658;658;Shop manager at Waterstone's Chatham;en
+;$shopmanager659;$shopmanagergroup;W@t659;659;Shop manager at Waterstone's Carlisle;en
+;$shopmanager660;$shopmanagergroup;W@t660;660;Shop manager at Waterstone's Newton Abbot;en
+;$shopmanager663;$shopmanagergroup;W@t663;663;Shop manager at Waterstone's Edinburgh (Cameron Toll);en
+;$shopmanager664;$shopmanagergroup;W@t664;664;Shop manager at Waterstone's Sheffield (Meadowhall Centre);en
+;$shopmanager665;$shopmanagergroup;W@t665;665;Shop manager at Waterstone's Newport (Gwent);en
+;$shopmanager666;$shopmanagergroup;W@t666;666;Shop manager at Waterstone's Huddersfield;en
+;$shopmanager668;$shopmanagergroup;W@t668;668;Shop manager at Waterstone's Douglas;en
+;$shopmanager669;$shopmanagergroup;W@t669;669;Shop manager at Waterstone's Crawley;en
+;$shopmanager670;$shopmanagergroup;W@t670;670;Shop manager at Waterstone's Sunderland;en
+;$shopmanager671;$shopmanagergroup;W@t671;671;Shop manager at Waterstone's Milton Keynes;en
+;$shopmanager672;$shopmanagergroup;W@t672;672;Shop manager at Waterstone's Norwich;en
+;$shopmanager673;$shopmanagergroup;W@t673;673;Shop manager at Waterstone's St Helier;en
+;$shopmanager674;$shopmanagergroup;W@t674;674;Shop manager at Waterstone's Lymington;en
+;$shopmanager675;$shopmanagergroup;W@t675;675;Shop manager at Waterstone's Northallerton;en
+;$shopmanager676;$shopmanagergroup;W@t676;676;Shop manager at Waterstone's Wilmslow;en
+;$shopmanager678;$shopmanagergroup;W@t678;678;Shop manager at Waterstone's Weston Super Mare;en
+;$shopmanager679;$shopmanagergroup;W@t679;679;Shop manager at Waterstone's Fareham;en
+;$shopmanager680;$shopmanagergroup;W@t680;680;Shop manager at Waterstone's Inverness;en
+;$shopmanager681;$shopmanagergroup;W@t681;681;Shop manager at Waterstone's Doncaster;en
+;$shopmanager683;$shopmanagergroup;W@t683;683;Shop manager at Waterstone's Dumfries;en
+;$shopmanager684;$shopmanagergroup;W@t684;684;Shop manager at Waterstone's Aviemore;en
+;$shopmanager685;$shopmanagergroup;W@t685;685;Shop manager at Waterstone's Tenterden;en
+;$shopmanager686;$shopmanagergroup;W@t686;686;Shop manager at Waterstone's Ormskirk;en
+;$shopmanager687;$shopmanagergroup;W@t687;687;Shop manager at Waterstone's Market Harborough;en
+;$shopmanager688;$shopmanagergroup;W@t688;688;Shop manager at Waterstone's Hexham;en
+;$shopmanager689;$shopmanagergroup;W@t689;689;Shop manager at Waterstone's Greenwich;en
+;$shopmanager690;$shopmanagergroup;W@t690;690;Shop manager at Waterstone's Ayr;en
+;$shopmanager691;$shopmanagergroup;W@t691;691;Shop manager at Waterstone's Abergavenny;en
+;$shopmanager692;$shopmanagergroup;W@t692;692;Shop manager at Waterstone's Windsor;en
+;$shopmanager693;$shopmanagergroup;W@t693;693;Shop manager at Waterstone's Harrow;en
+;$shopmanager694;$shopmanagergroup;W@t694;694;Shop manager at Waterstone's Harrogate;en
+;$shopmanager695;$shopmanagergroup;W@t695;695;Shop manager at Waterstone's Worcester;en
+;$shopmanager696;$shopmanagergroup;W@t696;696;Shop manager at Waterstone's Woking (Peacock's Centre);en
+;$shopmanager697;$shopmanagergroup;W@t697;697;Shop manager at Waterstone's Walthamstow;en
+;$shopmanager698;$shopmanagergroup;W@t698;698;Shop manager at Waterstone's St Albans;en
+;$shopmanager704;$shopmanagergroup;W@t704;704;Shop manager at Waterstone's Redhill;en
+;$shopmanager705;$shopmanagergroup;W@t705;705;Shop manager at Waterstone's Oldham;en
+;$shopmanager708;$shopmanagergroup;W@t708;708;Shop manager at Waterstone's Lancaster;en
+;$shopmanager709;$shopmanagergroup;W@t709;709;Shop manager at Waterstone's Horsham;en
+;$shopmanager711;$shopmanagergroup;W@t711;711;Shop manager at Waterstone's Farnham;en
+;$shopmanager712;$shopmanagergroup;W@t712;712;Shop manager at Waterstone's Epsom;en
+;$shopmanager714;$shopmanagergroup;W@t714;714;Shop manager at Waterstone's Bracknell;en
+;$shopmanager715;$shopmanagergroup;W@t715;715;Shop manager at Waterstone's Basingstoke;en
+;$shopmanager716;$shopmanagergroup;W@t716;716;Shop manager at Waterstone's Barnet;en
+;$shopmanager717;$shopmanagergroup;W@t717;717;Shop manager at Waterstone's Ashford;en
+;$shopmanager718;$shopmanagergroup;W@t718;718;Shop manager at Waterstone's Andover;en
+;$shopmanager719;$shopmanagergroup;W@t719;719;Shop manager at Waterstone's Truro;en
+;$shopmanager720;$shopmanagergroup;W@t720;720;Shop manager at Waterstone's Oban;en
+;$shopmanager722;$shopmanagergroup;W@t722;722;Shop manager at Waterstone's Guildford (71-73 High St);en
+;$shopmanager723;$shopmanagergroup;W@t723;723;Shop manager at Waterstone's Coventry (Smithfield Way);en
+;$shopmanager724;$shopmanagergroup;W@t724;724;Shop manager at Waterstone's Cheltenham (33-41);en
+;$shopmanager725;$shopmanagergroup;W@t725;725;Shop manager at Waterstone's Wells;en
+;$shopmanager726;$shopmanagergroup;W@t726;726;Shop manager at Waterstone's Twickenham;en
+;$shopmanager728;$shopmanagergroup;W@t728;728;Shop manager at Waterstone's Teddington;en
+;$shopmanager729;$shopmanagergroup;W@t729;729;Shop manager at Waterstone's St Neots;en
+;$shopmanager730;$shopmanagergroup;W@t730;730;Shop manager at Waterstone's St Andrews;en
+;$shopmanager731;$shopmanagergroup;W@t731;731;Shop manager at Waterstone's Falkirk;en
+;$shopmanager732;$shopmanagergroup;W@t732;732;Shop manager at Waterstone's Canterbury (Rose Lane);en
+;$shopmanager733;$shopmanagergroup;W@t733;733;Shop manager at Waterstone's Boston;en
+;$shopmanager734;$shopmanagergroup;W@t734;734;Shop manager at Waterstone's Berkhamsted;en
+;$shopmanager736;$shopmanagergroup;W@t736;736;Shop manager at Waterstone's Chesham;en
+;$shopmanager737;$shopmanagergroup;W@t737;737;Shop manager at Waterstone's Bridport;en
+;$shopmanager738;$shopmanagergroup;W@t738;738;Shop manager at Waterstone's Amersham;en
+;$shopmanager739;$shopmanagergroup;W@t739;739;Shop manager at Waterstone's Alton;en
+;$shopmanager740;$shopmanagergroup;W@t740;740;Shop manager at Waterstone's Chesterfield;en
+;$shopmanager741;$shopmanagergroup;W@t741;741;Shop manager at Waterstone's Hitchin;en
+;$shopmanager742;$shopmanagergroup;W@t742;742;Shop manager at Waterstone's Worthing;en
+;$shopmanager743;$shopmanagergroup;W@t743;743;Shop manager at Waterstone's Maidstone;en
+;$shopmanager744;$shopmanagergroup;W@t744;744;Shop manager at Waterstone's Godalming;en
+;$shopmanager783;$shopmanagergroup;W@t783;783;Shop manager at Waterstone's Oxford Street Plaza;en
+;$shopmanager786;$shopmanagergroup;W@t786;786;Shop manager at Waterstone's Edinburgh Fort Kinnaird;en
+;$shopmanager872;$shopmanagergroup;W@t872;872;Shop manager at Waterstones Dorking;en
+;$shopmanageradmin;$shopmanageradmingroup;W@t;;Shop manager admin;en
+
+
+$START_USERRIGHTS
+Type;UID;MemberOfGroups;Password;Target;read;change;create;delete;change_perm
+UserGroup;$shopmanageradmingroup;;
+;;;;Event;+;+;+;+;-
+;;;;EventType;+;-;-;-;-
+;;;;AbstractBook;+;-;-;-;-
+;;;;PointOfService;+;-;-;-;-
+;;;;Media;+;+;+;-;-
+;;;;Author;+;-;-;-;-
+;;;;Customer;-;-;-;-;-
+;;;;Product;-;-;-;-;-
+;;;;Category;-;-;-;-;-
+;;;;Employee;-;-;-;-;-
+UserGroup;$shopmanagergroup;;
+$END_USERRIGHTS
+
+INSERT_UPDATE SearchRestriction;"code[unique=true,allownull=true]";"name";"active";"query";"restrictedType(code)";"principal(uid)";"generate"
+;"shopmanager_catalogversion";"shopmanager_catalogversion";"true";"{pk} IN ( {{ select {cv.pk} FROM {CatalogVersion AS cv JOIN Catalog AS c ON {cv.catalog} = {c.pk}} WHERE {c.id} IN ('web') AND {cv.version} IN ( 'Online', 'Staged' ) }} )";"CatalogVersion";$shopmanageradmingroup;"false"
+;"shopmanager_books";"shopmanager_books";"true";"{Pk} IN ( {{ select {ab.Pk} from  { AbstractBook AS ab JOIN CatalogVersion As cv ON {ab.catalogVersion} = {cv.Pk} JOIN Catalog AS c ON {cv.catalog} = {c.PK}} WHERE {c.id} = 'web' AND {cv.version} IN ('Online') }} )";"AbstractBook";$shopmanageradmingroup;"false"
+;"shopmanager_authors";"shopmanager_authors";"true";"{Pk} IN ( {{ select {a.Pk} from  { Author AS a JOIN CatalogVersion As cv ON {a.catalogVersion} = {cv.Pk} JOIN Catalog AS c ON {cv.catalog} = {c.PK}} WHERE {c.id} = 'web' AND {cv.version} IN ('Online') }} )";"Author";$shopmanageradmingroup;"false"
+;"shopmanager_shops";"shopmanager_shops";"true";"{Pk} IN ( {{ select {p.Pk} from  { PointOfService AS p} WHERE {p.openCloseStatusInternal} in ({{select {ocsi.PK} from {OpenCloseStatus as ocsi} where {ocsi.code} in ('OPEN','CLOSING1')}}) }} )";"PointOfService";$shopmanageradmingroup;"false"
+;"shopmanager_shop";"shopmanager_shop";"true";"{pk} IN ( ?session.user.pointOfService )";"PointOfService";$shopmanagergroup;"false"
+;"shopmanager_event";"shopmanager_event";"true";"{pk} IN ( {{select {e:pk} from {Event AS e JOIN PointOfService AS p ON {e:pointOfService} = {p:pk}} where {p:pk} IN ( ?session.user.pointOfService ) }} )";"Event";$shopmanagergroup;"false"

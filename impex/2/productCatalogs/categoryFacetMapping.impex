@@ -1,0 +1,13 @@
+#
+# Import the Solr CronJob Trigger configuration for the Waterstones Product Catalog
+#
+$catalogVersion=catalogVersion(catalog(id[default='web']),version[default='Staged'])[unique=true,default='web:Staged'];
+
+UPDATE Category;$catalogVersion[unique=true];code[unique=true];facets(name);
+# all facets except InterestAge for root category
+#;;0;allCategories,author,category,categoryPath,price,productFormat,reviewRating,stockLevelStatus,productType
+;;0;allCategories,author,category,categoryPath,price,productFormat,reviewRating,productType
+
+# all facets (including InterestAge) for Children category 
+#;;16;allCategories,author,category,categoryPath,interestAge,price,productFormat,reviewRating,stockLevelStatus,productType
+;;16;allCategories,author,category,categoryPath,interestAge,price,productFormat,reviewRating,productType

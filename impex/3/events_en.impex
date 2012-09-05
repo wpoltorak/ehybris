@@ -1,0 +1,13 @@
+# ImpEx for Events
+# English localisations
+
+$lang=en
+
+UPDATE EventType;code[unique=true];name[lang=$lang]
+;Talk;Talk
+;Signing;Signing
+;ReadingGroup;Reading Group
+;ChildrenActivity;Children's Activity
+;Themed;Themed
+;Exhibition;Exhibition
+;LitLunchDinner;Lit Lunch/Dinner

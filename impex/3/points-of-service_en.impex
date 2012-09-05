@@ -1,0 +1,48 @@
+# ImpEx for Waterstones Stores
+# English localisations
+
+$lang=en
+
+$productCatalog=waterstonesProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$storeImage=storeImage(qualifier, $catalogVersion)
+
+# $standardHours=waterstones-japan-standard-hours
+# $weekendHours=waterstones-japan-weekend-hours
+
+UPDATE StoreLocatorFeature;code[unique=true];name[lang=$lang]
+;coffeeShop;"Coffee shop"
+;academicBranch;"Academic branch"
+
+# UPDATE SpecialOpeningDay;openingSchedule(code)[unique=true];date[unique=true,dateformat=dd.MM.yyyy];name[lang=$lang];message[lang=$lang]
+# ;$standardHours; 03.01.2011 ;"New Years Day";""
+# ;$standardHours; 10.01.2011 ;"Coming-of-age Day";""
+# ;$standardHours; 11.02.2011 ;"National Foundation Day";""
+# ;$standardHours; 21.03.2011 ;"Vernal Equinox Day";""
+# ;$standardHours; 29.04.2011 ;"Showa Day";""
+# ;$standardHours; 03.05.2011 ;"Constitution Memorial Day";""
+# ;$standardHours; 04.05.2011 ;"Greenery Day";""
+# ;$standardHours; 05.05.2011 ;"Childrens Day";""
+# ;$standardHours; 18.07.2011 ;"Marine Day";""
+# ;$standardHours; 19.09.2011 ;"Respect for the Aged Day";""
+# ;$standardHours; 23.09.2011 ;"Autumnal Equinox Day";""
+# ;$standardHours; 10.10.2011 ;"Health-Sports Day";""
+# ;$standardHours; 03.11.2011 ;"Culture Day";""
+# ;$standardHours; 23.11.2011 ;"Labour Thanksgiving Day";""
+# ;$standardHours; 23.12.2011 ;"The Emperor's Birthday";""
+
+# ;$weekendHours; 03.01.2011 ;"New Years Day";""
+# ;$weekendHours; 10.01.2011 ;"Coming-of-age Day";""
+# ;$weekendHours; 11.02.2011 ;"National Foundation Day";""
+# ;$weekendHours; 21.03.2011 ;"Vernal Equinox Day";""
+# ;$weekendHours; 29.04.2011 ;"Showa Day";""
+# ;$weekendHours; 03.05.2011 ;"Constitution Memorial Day";""
+# ;$weekendHours; 04.05.2011 ;"Greenery Day";""
+# ;$weekendHours; 05.05.2011 ;"Childrens Day";""
+# ;$weekendHours; 18.07.2011 ;"Marine Day";""
+# ;$weekendHours; 19.09.2011 ;"Respect for the Aged Day";""
+# ;$weekendHours; 23.09.2011 ;"Autumnal Equinox Day";""
+# ;$weekendHours; 10.10.2011 ;"Health-Sports Day";""
+# ;$weekendHours; 03.11.2011 ;"Culture Day";""
+# ;$weekendHours; 23.11.2011 ;"Labour Thanksgiving Day";""
+# ;$weekendHours; 23.12.2011 ;"The Emperor's Birthday";""

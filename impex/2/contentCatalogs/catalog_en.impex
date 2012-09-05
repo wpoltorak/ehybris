@@ -1,0 +1,11 @@
+#
+# Import the Waterstones Content Catalog
+#
+# ENGLISH LOCALIZATION
+#
+$lang=en
+$contentCatalog=waterstonesContentCatalog
+
+UPDATE ContentCatalog;id[unique=true];name[lang=$lang];
+;$contentCatalog;"Waterstones Content Catalog"
+;media;"Waterstones Media Content Catalog"

@@ -1,0 +1,8 @@
+INSERT_UPDATE WhiteListFraudRule;code[unique=true];
+;whiteList;
+
+INSERT_UPDATE BlackListFraudRule;code[unique=true];
+;blackList;
+
+INSERT_UPDATE OrderThresholdFraudRule;code[unique=true];thresholdLimit
+;orderThreshold;100,00

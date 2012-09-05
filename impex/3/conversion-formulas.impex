@@ -1,0 +1,7 @@
+# ImpEx for conversion formulae
+
+INSERT_UPDATE PointsToCurrencyConversion;currencyCode(isocode)[unique=true];numerator;denominator
+;GBP;100;1
+
+INSERT_UPDATE CurrencyToPointsConversion;currencyCode(isocode)[unique=true];numerator;denominator
+;GBP;1;3

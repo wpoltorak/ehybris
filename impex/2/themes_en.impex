@@ -1,0 +1,11 @@
+# Import Themes
+#
+# English Localisation
+#
+
+$lang=en
+
+UPDATE SiteTheme;code[unique=true];name[lang=$lang]
+;black;"Black"
+;blue;"Blue"
+;purple;"Purple"

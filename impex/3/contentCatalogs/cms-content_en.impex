@@ -1,0 +1,589 @@
+$contentCatalog=waterstonesContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$picture=media(code, $contentCV);
+#$siteResource=jar:de.hybris.platform.acceleratorsampledata.constants.AcceleratorSampleDataConstants&/acceleratorsampledata/import/contentCatalogs/$contentCatalog
+$siteResource=jar:uk.co.eclipsegroup.core.constants.WaterstonesCoreConstants&/waterstonesinitialdata/import/contentCatalogs/$contentCatalog
+
+# Language
+$lang=en
+
+# CMS Image Components
+UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+;;SiteLogoImage;/images/theme/logo-hybris.png
+
+# CMS Link Components
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];linkName[lang=$lang]
+;;HomepageNavLink;"Home"
+;;ContactUsLink;"Contact Us"
+;;FacebookLink;"Facebook"
+;;TwitterLink;"Twitter"
+;;WaterstonesEventsLink;"Events"
+;;WaterstonesHelpLink;"Help"
+
+;;WaterstonesCardsLink;"Waterstones Card"
+;;WaterstonesCardsCardHomeLink;Card home
+;;WaterstonesCardsPointsOffersAccountLink;Points offers
+;;WaterstonesCardsMyCardAccountLink;My Card account
+;;WaterstonesCardsCompetitionsLink;Card competitions
+;;WaterstonesCardsReadAndReviewLink;Read and review
+;;WaterstonesCardsExclusiveExtrasLink;Exclusive extras
+;;WaterstonesCardsCardNewsLink;Card news
+;;WaterstonesCardsReadingGuidesLink;Reading guides
+;;WaterstonesCardsRecipeCardsLink;Recipe cards
+;;WaterstonesCardsYourReviewsLink;Your reviews
+
+;;WaterstonesOffersLink;"Offers"
+
+;;WaterstonesKindleLink;Kindle;
+;;WaterstonesKindleKindleLink;Kindle;
+;;WaterstonesKindleFireLink;Kindle Fire;
+;;WaterstonesKindleAccessoriesLink;Kindle Accessories;
+;;WaterstonesKindleEBooksLink;Kindle eBooks;
+
+;;WaterstonesStationeryLink;Stationery & Gifts;
+;;WaterstonesStationeryGiftIdeasLink;Gift Ideas;
+;;WaterstonesStationeryToysGamesLink;Toys & Games;
+;;WaterstonesStationeryGeneralStationeryLink;General Stationery;
+
+;;WaterstonesChildrensLink;Children's;
+;;WaterstonesNewTitlesLink;New titles;
+;;WaterstonesUsedBooksLink;Used books;
+
+;;WaterstonesBooksSupercategoryLink;Books;
+;;WaterstonesBooks10017CategoryLink;Academic, Professional & Study;
+;;WaterstonesBooks10002CategoryLink;Art and Photography;
+;;WaterstonesBooks10024CategoryLink;Audiobooks & Spoken word;
+;;WaterstonesBooks10000CategoryLink;Biography;
+;;WaterstonesBooks10028CategoryLink;Business, Finance & Law;
+;;WaterstonesBooks10006CategoryLink;Children's;
+;;WaterstonesBooks10021CategoryLink;Crime;
+;;WaterstonesBooks10007CategoryLink;Entertainment;
+;;WaterstonesBooks10015CategoryLink;Fiction;
+;;WaterstonesBooks10008CategoryLink;Food & Drink;
+;;WaterstonesBooks10029CategoryLink;Graphic Novels & Manga;
+;;WaterstonesBooks10005CategoryLink;Health;
+;;WaterstonesBooks10016CategoryLink;History & Politics;
+;;WaterstonesBooks10014CategoryLink;Hobbies;
+;;WaterstonesBooks10009CategoryLink;Home & Garden;
+;;WaterstonesBooks10011CategoryLink;Humour & Gift;
+;;WaterstonesBooks10025CategoryLink;Personal Development & Relationships;
+;;WaterstonesBooks10004CategoryLink;Poetry & Drama;
+;;WaterstonesBooks10010CategoryLink;Popular Science & Nature;
+;;WaterstonesBooks10003CategoryLink;Reference;
+;;WaterstonesBooks10018CategoryLink;Religion & Beliefs;
+;;WaterstonesBooks10027CategoryLink;Romance;
+;;WaterstonesBooks10026CategoryLink;Science Fiction, Fantasy & Horror;
+;;WaterstonesBooks10012CategoryLink;Scientific, Technical & Medical;
+;;WaterstonesBooks10020CategoryLink;Sports & Games;
+;;WaterstonesBooks10023CategoryLink;Travel & Maps;
+
+;;WaterstonesEbooksSupercategoryLink;eBooks;
+;;WaterstonesEbooks10017CategoryLink;Academic, Professional & Study;
+;;WaterstonesEbooks10002CategoryLink;Art and Photography;
+;;WaterstonesEbooks10024CategoryLink;Audiobooks & Spoken word;
+;;WaterstonesEbooks10000CategoryLink;Biography;
+;;WaterstonesEbooks10028CategoryLink;Business, Finance & Law;
+;;WaterstonesEbooks10006CategoryLink;Children's;
+;;WaterstonesEbooks10021CategoryLink;Crime;
+;;WaterstonesEbooks10007CategoryLink;Entertainment;
+;;WaterstonesEbooks10015CategoryLink;Fiction;
+;;WaterstonesEbooks10008CategoryLink;Food & Drink;
+;;WaterstonesEbooks10029CategoryLink;Graphic Novels & Manga;
+;;WaterstonesEbooks10005CategoryLink;Health;
+;;WaterstonesEbooks10016CategoryLink;History & Politics;
+;;WaterstonesEbooks10014CategoryLink;Hobbies;
+;;WaterstonesEbooks10009CategoryLink;Home & Garden;
+;;WaterstonesEbooks10011CategoryLink;Humour & Gift;
+;;WaterstonesEbooks10025CategoryLink;Personal Development & Relationships;
+;;WaterstonesEbooks10004CategoryLink;Poetry & Drama;
+;;WaterstonesEbooks10010CategoryLink;Popular Science & Nature;
+;;WaterstonesEbooks10003CategoryLink;Reference;
+;;WaterstonesEbooks10018CategoryLink;Religion & Beliefs;
+;;WaterstonesEbooks10027CategoryLink;Romance;
+;;WaterstonesEbooks10026CategoryLink;Science Fiction, Fantasy & Horror;
+;;WaterstonesEbooks10012CategoryLink;Scientific, Technical & Medical;
+;;WaterstonesEbooks10020CategoryLink;Sports & Games;
+;;WaterstonesEbooks10023CategoryLink;Travel & Maps;
+;;WaterstonesEbooks10037CategoryLink;Audio Downloads;
+
+;;WaterstonesBestsellersLink;"Bestsellers"
+;;WaterstonesComingSoonLink;"Coming soon"
+;;TrackingYourOrderLink;Tracking your order;
+;;ReturningItemsLink;Returning items;
+;;ContactUsLink;Contact us;
+;;EReaderSupportLink;eReader support; 
+;;FreeDeliveryOffersLink;Free delivery offers;
+;;EBooksHelpLink;eBooks help;
+;;PrivacyPolicyLink;Privacy policy;
+;;AccessibilityLink;Accessibility;
+;;AboutUsLink;About us;
+;;CareersLink;Careers;
+;;WaterstonesMarketplaceLink;Waterstones Marketplace;
+;;AffiliatesLink;Affiliates;
+;;OurShopsLink;Our Shops;
+;;IndependentPublishersLink;Independent publishers;
+;;WorldBookNightLink;World Book Night;
+;;WaterstonesChildrenLaureateLink;Waterstones Children's Laureate;
+;;WaterstonesLocalNostalgiaLink;Waterstones Local Nostalgia;
+;;CompetitionsLink;Competitions;
+;;HatchardsLink;Hatchards;
+;;BrowsealoudLink;Browsealoud;
+;;SecurityHelpPageLink;Waterstones.com is secure. Your personal details are protected at all times (opens a new window);
+
+
+# Footer links displayed in horizontal way (one line) 
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];linkName[lang=$lang]
+;;footerVeriSignLink;VeriSign Secured;VeriSign Secured;
+;;footerTwitterLink;Follow us on Twitter;Follow us on Twitter;
+;;footerFacebookLink;Join us on Facebook;Join us on Facebook;
+;;footerYouTubeLink;Watch us on YouTube;Watch us on YouTube;
+;;footerWaterstonesAppsLink;Waterstones Apps;Waterstones Apps;
+;;footerWaterstonesLink;waterstones.com;waterstones.com;
+
+# Lightbox Banner for Mini Cart
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+# CMS Mini Cart Component
+UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=$lang]
+;;MiniCart;Mini Cart;Your shopping basket
+
+# CMS tabs components
+UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];content[lang=$lang]
+;;deliveryTab;Delivery;"<table border=""0"" cellspacing=""0"" cellpadding=""10"" style=""border-collapse: collapse; empty-cells: show; font-size: 12px; padding: 0px; margin: 0px; border: 0px initial initial;""><tbody><tr style=""padding: 0px; margin: 0px;""><td colspan=""4"" style=""vertical-align: top; text-align: left; font-weight: normal; padding: 0px; margin: 0px;""><div style=""padding-top: 10px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #8edf75; height: 30px; border-top-width: 1px; border-top-style: solid; border-top-color: #8edf75; margin: 0px;""><strong style=""font-weight: bold; padding: 0px; margin: 0px;""><span style=""color: #285190; font-size: 14px; padding: 0px; margin: 0px;"">Shipping and Delivery</span></strong></div></td></tr><tr style=""padding: 0px; margin: 0px;""><td colspan=""4"" style=""vertical-align: top; text-align: left; font-weight: normal; padding: 0px; margin: 0px;""><strong style=""font-weight: bold; padding: 0px; margin: 0px;""><br />2.1 How much is my shipping cost?<br /></strong>Shipping is absolutely free for all products shipped within the Continental US. Shipping is free for all products except binoculars and telescopes shipped to Alaska, Hawaii, Puerto Rico, Guam and APO addresses. For more details, please click here.<br /><br /><strong style=""font-weight: bold; padding: 0px; margin: 0px;"">2.2 How will my order ship?<br /></strong>Telescopes and Binoculars are shipped within the continental US via UPS or Fedex Ground service with tracking and full insurance.<br /><br />All other items are shipped via USPS (US Postal Service). Depending on your order, domestic US orders will ship via First Class mail (packages weighing 13oz or less), Priority mail (packages weighing over 13oz), Media mail (Charts, software or books), or a combination thereof. Delivery confirmation is included for most orders at no extra charge. However, insurance is optional.<br /><br /><strong style=""font-weight: bold; padding: 0px; margin: 0px;"">2.3 When will my order ship?</strong><br />We usually ship orders everyday from Mon-Fri. Orders received by 9am PT (12noon ET) will usually ship on the same day.<br /><br /><strong style=""font-weight: bold; padding: 0px; margin: 0px;"">2.4 Has my order shipped?</strong><br />You will receive an automatic e-mail notification when your order ships. If you create an online account with us, you can also log into your account at any time to view its status. If there is any problem or delay with your order, we will contact you promptly.<br /><br /><strong style=""font-weight: bold; padding: 0px; margin: 0px;"">2.5 When will I receive my order?</strong><br />For items shipped directly via US Postal Service (USPS) from our location in California:<br /><br />Delivery time will vary depending on the shipping method used (see ""How will my order ship?"" above) and your proximity to our location in Los Angeles, CA.<br /><br />* First Class Mail: 3 - 5 business days<br />* Priority Mail: 2 - 3 business days<br />* Express Mail: 1 business day<br />* Media Mail: 4 - 10 business days<br /><br />Note that these are typical delivery timelines and are NOT guaranteed by the USPS. In shipping thousands of orders over 5+ years, our experience has been that about 95% of orders arrive within this timeline. However, delays of up to 2-3 weeks can occur every now and then, even for priority mail service. In case of delays, please understand that once we ship your order from our local post office, there is nothing we can do but wait for the USPS to deliver your package to you.</td></tr></tbody></table>"
+
+# CMS Footer Component
+UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];notice[lang=$lang]
+;;FooterComponent; &copyWaterstones 2012;
+
+UPDATE FooterCheckoutComponent;$contentCV[unique=true];uid[unique=true];contactInfoLine1[lang=$lang];contactInfoLine2[lang=$lang];creditCardsInfo[lang=$lang];creditCardsImage(code,$contentCV)[lang=$lang];copyrightNotice[lang=$lang]
+;;FooterCheckoutComponent;Customer service helpline: 0845 217 2920;Monday to Friday 9am - 6pm;Waterstones accepts the following cards;/images/footer/accepted_cards.gif;&copyWaterstones 2012;
+
+# CMS Paragraph Component (Contact information)
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;contactInfo;"Call us: +1 302 295 5067"
+;;eventHeaderParagraph;"<h1>What's on at Waterstones</h1>"
+;;eventFirstParagraph;"<p class='large'>
+						<strong>Fancy an outing with a difference? </strong>			
+						Meet your favourite authors at Waterstones. We host book signings, talks, children's
+						fun days and other activities with authors and celebrities from a wide variety of
+						genres. Forthcoming events coming soon are listed below, and all listed in our Branch
+						selector.
+					</p>"
+;;eventSecondParagraph;"<p class='large'>
+						Find the name of the author you'd like to meet or your local shop in our drop-down
+						menu and click on the link to find more details or to order a book. Please
+						note that events can occasionally be cancelled at short notice or their times or dates
+						may alter, and we therefore recommend that you check with the host shop before
+						travelling. To find out more information about events near you, contact your local
+						shop. Click <a href='http://www.waterstones.com/waterstonesweb/displayFindBranch.do'>
+						here</a> for contact details.	
+				</p>"
+;;eventHeader2Paragraph;"<h2 class='intro-heading'>Search for events</h2>"				
+;;searchEventFirstParagraph;"<p>Please note that events can occasionally be cancelled at short notice or their times or dates may alter; we therefore recommend that you check with the shop before travelling.</p>"
+;;searchEventSecondParagraph;"<p>If you are unable to attend an event. we can often reserve signed copies. Please contact the host shop for details. Reserved copies cannot be guaranteed and may not always carry dedications.</p>"
+;;searchEventThirdParagraph;"<p>All signings (unless otherwise stated) operate on a first come first served basis, so early arrival is often recommended.</p>"
+				
+;;storeFinderIntroTextParagraph;"<p>
+						<em>Quickly and easily find details of your local Waterstones. Either enter your postcode or nearest town, and you can also find out if they are an academic store, or have a coffee shop. </em>
+						</p>
+						<p class='large'>You can have books ordered from Waterstones.com delivered FREE to your local Waterstones store - don't forget to set up your local shop in your account .</p>
+						";		
+# CMS ProductReferences Components
+UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;accessories;Accessories
+;;CrossSelling;You may also like...
+;;Others;Accessories
+;;Similar;You may also like...
+
+UPDATE PurchasedProductReferencesComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+# CMS Navigation Nodes
+UPDATE CMSNavigationNode;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;SiteRootNode;SiteRoot
+;;WaterstonesNavNode;Waterstones Site
+;;FollowUsNavNode;Follow Us
+;;WaterstonesCustomerServiceNavNode;Customer Services
+;;WaterstonesAboutWaterstonesNavNode;About Waterstones
+
+###### Waterstones Homepage ######
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText;&imageRef
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+
+UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];headline[lang=$lang];$picture[lang=$lang];content[lang=$lang]
+
+UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;WaterstonesHomepageProductCarouselComponent;"Our Bestselling Products"
+;;booksellersRecommendabilityCarousel;"Booksellers recommendability"
+
+###### Waterstones Camera Accessories and Supplies Category Landing Page ######
+
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText
+;;debutNovelsMedia				;$siteResource/images/banners/homepage/Banner_w11.jpg              	;;"Debut novels 2011"
+
+UPDATE CategoryFeatureComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang];description[lang=$lang];$picture[lang=$lang]
+
+UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];$picture[lang=$lang]
+;;DebutNovels;debutNovelsMedia
+
+
+###### Waterstones Search Results Page ######
+
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;NoSearchResultsParagraphComponent;"<p>
+Please try altering your search criteria or use the <a href='/advancedsearch'><ins>Advanced search</ins></a>
+<h2 class='hi-light'>Search tips</h2>
+<ul>	
+	<li>Double-check your spelling</li>
+	<li>Try browsing categories</li>
+	<li>See all search tips in the help and support section</li>
+	<li>Need inspiration? View out <a href='/offers'>latest offer</a></li>
+</ul>
+</p>";
+
+###### Waterstones Cart Page ######
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;EmptyCartParagraphComponent;"<h2>Your shopping basket is empty</h2>
+<p>Suggestions</p>
+<ul>
+	<li>Browse our products by selecting a category above</li>
+</ul>"
+
+###### Waterstones Offers Page ######
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;offersFirstParagraph;"<hr/>Welcome to our offers page where we highlight the very best deals on Waterstones.com - giving you fantastic savings on thousands of books. 
+							Scroll down the page for brilliant savings on books for kids of all ages and a whole host of other great offers from Waterstones.com to help you save on the books you love.
+							<p>&nbsp;</p><p>We also offer FREE UK delivery so you can save even more!</p>";
+
+UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;offersFirstCarouselComponent;"Our Bestselling Products"
+;;offersSecondCarouselComponent;"Our Bestselling Products"
+;;offersThirdCarouselComponent;"Our Bestselling Products"
+
+###### Waterstones Coming Soon Page ######
+
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;comingSoonIntroParagraph;"<p class='large'>Fantastic savings on the biggest and best forthcoming releases on <span class='hi-light'>Waterstones.com</span>. 
+						Scroll down to view new books from bestselling authors across Fiction, Crime, SF, Fantasy and Horror, Children's, Biography, Food and Drink, and History and Politics.
+						</p>";
+
+UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;comingSoonFirstCarouselComponent;"Promotional Carousel - manual - category filtered"
+;;comingSoonSecondCarouselComponent;"Promotional Carousel - manual - category filtered"
+
+UPDATE FeaturedProductsComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;comingSoonFeaturedProducts;"Featured Product"
+
+###### Waterstones Bestsellers Page ######
+
+UPDATE OrderedRankingListComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;BestsellersAndComingSoonComponent;Bestsellers and coming soon component
+
+UPDATE ContextAwareProductCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;BestsellersContextAwareCarousel;Bestsellers
+;;ComingSoonContextAwareCarousel ;Coming Soon
+
+UPDATE RecentlyViewedProductsComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;RecentlyViewedProductCarousel;You have recently visited
+
+INSERT_UPDATE EventsCarouselComponent;$contentCV[unique=true];uid[unique=true];title[lang=$lang]
+;;EventsCarouselForProductComponent;Events
+;;EventsCarouselForShopComponent;Events
+
+###### Terms And Conditions Page ######
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;TermsAndConditionsComponent;"<div id='content-primary'><h1 class='main-heading'>Terms and <span class='hi-light'>Conditions</span></h1>
+<div class='paragraph'>
+<p><strong>Terms and Conditions for the supply of Waterstones products</strong></p>
+<p><strong>Your details</strong></p>
+<p>a. When you register with the Waterstones website, you will be required to choose a contact email 
+address and password. You are responsible for all sessions and transactions 
+taken under these details. You should keep your password safe and not 
+disclose it to anyone. You should change it immediately if you feel 
+it has been compromised.</p>
+<p>b. If any of your details change, 
+such as your credit card billing address, you must inform Waterstones 
+as soon as possible. You may update your details by signing into your 
+account on the Waterstones website, and update the relevant section.
+</p>
+<p><strong>The contract between us</strong></p>
+<p>a. Any contract for purchases 
+made through the website will be with Waterstones Booksellers Limited, 
+whose registered office is situated at Capital Court, Capital Interchange Way, Brentford, Middlesex, TW8 0EX, 
+company registration number 610095 (Waterstones).</p>
+<p>b. Waterstones must receive 
+payment of the whole of the price for the goods that you order before 
+your order can be accepted, and the contract formed. Payment is not 
+taken until the point of despatch of the goods to you from our distribution 
+centre. Once payment has been received Waterstones will confirm that 
+your order has been received by sending an email to you at the email 
+address you provide in your registration form. The shipment email will 
+include your name, the order number and the total price. Waterstones 
+acceptance of your order brings into existence a legally binding contract 
+between us on these terms. Any term sought to be imposed by you in your 
+order will not form part of the contract.</p>
+<p>c. Waterstones are entitled 
+to withdraw from any contract in the case of obvious errors or inaccuracies 
+regarding the goods appearing on our website. If an error or inaccuracy 
+is discovered with regards to the advertised price of the goods that 
+you have ordered, we will contact you as soon as possible by email. 
+This will be to inform you of the correct price of the goods, and to 
+ask you if you wish to continue with the order at the amended price, 
+or to cancel the order altogether.</p>
+<p><strong>Withdrawal by you from the 
+contract</strong></p>
+</div>
+<div class='paragraph'>
+<p>If you are an individual and 
+are not buying goods on behalf of a business, there are certain circumstances 
+in which you may withdraw from the contract and these are set out here. 
+This right to withdraw does not apply to business buyers.</p>
+<p>a. You may withdraw your order 
+for goods at any time up to the end of the twenty first working day 
+after you have received the goods. You do not need to give Waterstones 
+any reason for withdrawing your order nor will you have to pay any penalty.</p>
+<p>b. The only circumstance in 
+which you cannot withdraw your order is where you have taken the goods 
+you have ordered (or the ones in relation to which you want to withdraw) 
+out of the sealed package in which they were delivered.</p>
+<p>c. To withdraw your order you 
+must notify Waterstones in writing at the address set out in the <a href='returning-items'>
+Waterstones returns section of this website.</a></p>
+<p>d. If you have received the 
+goods before you withdraw your order then, unless you have lost your 
+right to withdraw because you have taken the goods out of their sealed 
+package, you must send them back to the Waterstones return address 
+at your own cost and risk, (or a local Waterstones store) unless 
+the goods were supplied faulty or damaged. If you withdraw your order 
+but Waterstones has already processed the goods for delivery and 
+you have received them, you must not unpack the goods when they are 
+received by you and you must send the goods back to Waterstones at 
+the Waterstones return address at your own cost and risk as soon 
+as possible.</p>
+<p>e. Once you have notified Waterstones 
+that you are withdrawing your order, any sum debited to Waterstones 
+from your credit card will be re-credited to your account as soon as 
+possible and in any event within 30 days of your order.
+</p>
+<p><strong>Availability of goods you 
+order</strong></p>
+<p>If Waterstones has insufficient 
+stock to deliver the goods ordered by you, we will notify you as soon 
+as possible and any sum debited by Waterstones from your credit card 
+will be re-credited to your account and Waterstones will notify you 
+by email at the address given by you in your order form. The refund 
+will be made as soon as possible and in any event within 30 days of 
+your order. Waterstones will not be obliged to offer any additional 
+compensation for disappointment suffered.</p>
+<p>Please note: we endeavour to 
+bring our customers the best value we can by running special offers, 
+but please remember stocks are limited at the special offer price, and 
+subject to availability. We update our website as quickly as we can 
+to minimise disappointment. The process of updating the website when 
+goods have sold out at promotional price can take a few hours to update. 
+Please note that the price the goods are offered for tender are as displayed 
+in the Shopping Basket. Rest assured your credit card will only be debited 
+as your order or individual items from your order are dispatched.</p>
+<p><strong>Multi-buy offers</strong></p>
+<p>Prices exclude postage and packing. Promotions apply to listed titles only, which are subject to change and availability. If you choose to purchase a product from a multi-buy offer, but do not purchase enough products to qualify for the special discount, the product will be charged at the normal price. Please note that on 3 for 2 promotions (and other multi-buy offers), the lowest priced title will always be the 'free' item. </p>
+<p><strong>Delivery of goods to you</strong></p>
+<p>a. Waterstones will post, 
+or arrange a courier on your behalf, for the goods ordered by you to 
+the person and address you give Waterstones at the time you make 
+your order. For goods delivered outside of the EU, the consignee (ie the person to whom the consignment is 
+sent) will be the declarant and importer into the country for which 
+the consignment is destined. The consignee 
+will be responsible for both customs clearance and payment of customs 
+duties and local taxes where required.  </p>
+<p>b. Delivery will be made as 
+soon as possible after your order is accepted and in any event within 
+30 days of despatch of the order. All delivery times quoted on the website are estimates only, based on availability, normal processing and 
+delivery companies.</p>
+<p>c. You will become the owner 
+of the goods you have ordered when the goods are despatched to you from 
+our distribution centre.</p>
+<p><strong>Customs charges</strong></p>
+<p>If you are ordering goods for 
+delivery outside of the EU, please note that your consignment may be 
+subject to import duties and taxes, which are levied once the goods 
+reach the country of destination. Any such charges levied in relation 
+to customs clearance must be borne by you. It is accepted by you that 
+Waterstones has no control over additional charges in relation to 
+customs clearance. Waterstones recommend that you check with your 
+local customs officials or post office for more information regarding 
+importation taxes/duties that may be applicable to your online order.
+</p>
+<p><strong>Liability</strong></p>
+<p>This is as follows:</p>
+<p>a. If the goods Waterstones  
+delivers are not what you ordered or are damaged or defective or the 
+delivery is of an incorrect quantity, Waterstones shall have no liability 
+to you unless you notify Waterstones of the problem, in writing to <a href='mailto:service@waterstones.com'><strong>service@waterstones.com</strong></a> within 10 working days of the delivery 
+of goods in question.</p>
+<p>b. If you do not receive goods 
+ordered by you within 30 days of the date on which they were despatched 
+to you, Waterstones shall have no liability to you unless you notify 
+Waterstones in writing at the Waterstones contact address of the 
+problem within 40 days of the date on which the goods were despatched 
+to you.</p>
+</div> 
+<div class='paragraph'>
+<p>c. If you notify a problem 
+to Waterstones under this condition, Waterstones only obligation 
+will be, at its option, to make good any shortage or non-delivery; 
+to replace or repair any goods that are damaged or defective; or to 
+refund to you the amount paid by you for the goods in question to the 
+original method of payment, unless such method is no longer valid in 
+which case Waterstones e-coupons will be issued to the value of the 
+refund due.</p>
+<p>d. Waterstones will not 
+be liable to you for any indirect or consequential loss or damage arising 
+out of any problem you notify to Waterstones under this condition 
+and Waterstones shall have no liability to pay any money to you by 
+way of compensation other than to refund to you the amount paid by you 
+for the goods in question under paragraph (c) above.</p>
+<p>e. Nothing in this condition 
+is, however, intended to limit any rights you might have as a consumer 
+under applicable local law that may not be excluded nor in any way to 
+exclude or limit Waterstones liability to you for any death or personal 
+injury resulting from its negligence.</p>
+<p>Nothing in this contract creates 
+any right which is enforceable by any person who is not a party to the 
+contract.</p>
+<p><strong>Force Majeure</strong></p>
+<p>Waterstones shall have no 
+liability to you for any failure to deliver goods you have ordered or 
+any delay in doing so or for any damage or defect to goods delivered 
+that is caused by any event or circumstance beyond its reasonable control.
+</p>
+<p><strong>Invalidity</strong></p>
+<p>If any part of these conditions 
+is unenforceable (including any provision in which Waterstones excludes 
+its liability to you) the enforceability of any other part of these 
+conditions will not be affected.</p>
+<p><strong>Complaints</strong></p>
+<p>Waterstones operate a complaints 
+handling procedure which is used to try to resolve disputes when they 
+first arise. If you have a complaint, please contact the Customer Service 
+Co-ordinator at the following address:</p>
+<p>Waterstones.com, Capital Court, Capital Interchange Way, Brentford, Middlesex TW8 0EX (correspondence only, no returns to this address please).</p>
+<p><strong>Governing Law</strong></p>
+<p>The contract between us shall 
+be governed by and interpreted in accordance with English law, and 
+the English courts shall have jurisdiction to resolve any disputes 
+between us.</p>
+<p><strong>Entire Agreement</strong></p>
+<p>These terms and conditions, 
+together with the current Waterstones website prices, delivery details 
+and Waterstones contact details, set out the whole of our agreement 
+relating to the supply of the goods to you by Waterstones. These 
+terms and conditions cannot be varied except in writing signed by a 
+director of Waterstones. In particular nothing said by any sales 
+person on behalf of Waterstones should be understood as a variation 
+of these terms and conditions or as an authorised representation about 
+the nature or quality of any goods offered for sale by Waterstones. 
+Waterstones shall have no liability for any such representation being 
+untrue or misleading.</p>
+<p><b>Disclaimer</b></p>
+<p>The nature of Internet communications 
+means that your communications may be susceptible to data corruption, 
+interception and delays. Waterstones shall not be responsible 
+for any detrimental reliance you place on this website or its contents.</p>
+<p>Waterstones is providing 
+this site and its contents (including any downloadable data or software) 
+on an 'as is' basis and makes no representations or warranties of any 
+kind with respect to this site or its contents and disclaims all such 
+representations and warranties, whether express or implied, to the fullest 
+extent permitted by applicable law. In addition, Waterstones makes 
+no representations or warranties about the accuracy, completeness or 
+suitability for any particular purpose of the information and related 
+graphics published in this site or that any software or the server that 
+makes it available are free of viruses or other harmful components.</p>
+<p>The information contained in this site may contain technical inaccuracies or typographical errors. 
+All liability of Waterstones howsoever arising for any such inaccuracies 
+or errors is expressly excluded to the fullest extent permitted by applicable 
+law.</p>
+<p>Neither Waterstones nor 
+any of its Directors, employees or other representatives will be liable 
+for damages arising out of or in connection with the use of this site 
+in any way. This is a comprehensive limitation of liability that applies 
+to all damages of any kind, including (without limitation) compensatory, 
+direct, indirect or consequential damages, loss of data, income or profit, 
+loss of or damage to property and claims of third parties.</p>
+<p><b>Hyperlinks</b></p>
+<p>Our website may contain hyperlinks. 
+These hyperlinks connect you to sites of other organisations which are 
+not our responsibility. We have used our reasonable endeavours in preparing 
+our own website and the information included in it is done so in good 
+faith. However, we have no control over any of the information you can 
+access via other websites. Therefore, no mention of any organisation, 
+company or individual to which our website is linked shall imply any 
+approval or warranty as to the standing and capability of any such organisations, 
+company or individual on the part of Waterstones.</p>
+<p><b>Promotional discount codes</b></p>
+<p>We may occasionally offer discount codes to customers.</p>
+<p>Discount codes are exclusive of online postage and packaging and can only be used once per person with one discount code to be used per transaction. Discount codes cannot be used with any other voucher, coupon or offer. Discount codes can only be used at time of purchase and not retrospectively.  Discount codes can only be used on Waterstones.com and not in Waterstones stores. Discounts do not apply to the Reader from Sony, eBooks or Reader accessories and Penwizard personalised gifts.  We reserve the right to withdraw codes at any time.</p>
+<p>All discount codes are subject to their own terms and conditions.</p>
+<p><b>Copyright notice</b></p>
+<p>All design, text, graphics 
+and the selection or arrangement thereof are the copyright of Waterstones, 
+or of other copyright owners. Permission is granted to electronically 
+copy and print in hard copy portions of this site for the sole purpose 
+of placing an order with Waterstones, or using this site as a shopping 
+resource. Any other use of materials on this site (including reproduction 
+for purposes other than those noted above and modification, distribution, 
+or republication) without the prior written permission of Waterstones 
+is strictly prohibited.</p>
+<p><b>Trade marks</b></p>
+<p>Waterstones and the 'W' logo are registered trade marks belonging to Waterstones. All other trade 
+marks, product names and company names or logos used in this site are 
+the property of their respective owners. No permission is given by Waterstones 
+in respect of the use of its or any such other trade marks, product names, titles 
+or logos and such use may constitute an infringement of the holder's 
+rights.</p>
+<p><strong>Interpretation</strong></p>
+<p>In these terms and conditions:-</p>
+<p>'Waterstones' means Waterstones 
+Booksellers Limited of Capital Court, Capital Interchange Way, Brentford, Middlesex 
+TW8 0EX, any connected organisation that actually supplies goods ordered 
+by you and any successor to its business;</p>
+<p>'working day' means every day 
+of a calendar year apart from weekends and statutory and public holidays;</p>
+<p>'us' means Waterstones and 
+you together; and</p>
+<p>'you' and 'your' means the 
+person ordering goods under these terms and conditions.</p>
+</div>
+</div>"
+
+###### Returning items Page ######
+UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];content[lang=$lang]
+;;ReturningItemsComponent;"<div id='content-primary'>
+<h1 class='main-heading'>Returning <span class='hi-light'>items</span></h1>
+<div class='paragraph'>
+<p><strong>Can I return my item for an exchange? </strong></p>
+<p>We are happy to refund unwanted items (with the exception of eReaders) that are returned to us within 21 days, provided they are in perfect condition. Please send the items to the address below and enclose a note quoting your order number and specifying, with as much detail as possible, which items you require in exchange. Please call us on <strong>0845 217 2920</strong> (Monday-Friday, 9am-6pm, except for bank holidays) if you have any questions regarding the return process. Calls made from a BT Landline will usually be charged at a standard local rate. Calls from a mobile and other providers will incur a charge with rates varying dependent on the provider. </p>
+<p>Waterstones Returns Department, Waterstones Book Hub, Unipart Logistics, Fifth Avenue, Centrum One Hundred, Burton Upon Trent DE14 2UZ</p>
+<p><strong>Please note: For eReader support and returns information, please click on <a href='#'>eReader support.</a></strong></p>
+<p>For the return of high-value goods, we recommend that you use a recorded delivery service, as we cannot be responsible for non-delivery of returned items. </p>
+<p>You can also return unwanted or faulty items (excluding eReaders) to any Waterstones shop. Unfortunately we can't exchange unwanted/faulty items in our shops, only give you a refund (providing you bring your despatch note that accompanied your delivery and the unwanted item is in pristine condition). We hope to be able to offer exchanges for online purchases in Waterstones shops in the near future.</p>
+<p><strong>How can I return an incorrect, faulty or damaged item?</strong></p>
+<ul><p><strong><cite>UK customers</cite></strong></p></ul>
+<p>Should you receive any items that you did not order, or that prove to be faulty, please call us on <strong>0845 217 2920</strong> (Monday-Friday, 9am-6pm, except for bank holidays) to obtain information on how to to return. Calls made from a BT Landline will usually be charged at a standard local rate. Calls from a mobile and other providers will incur a charge with rates varying dependant on the provider. </p>
+<p>You can also return faulty or unwanted items to any Waterstones shop, but unfortunately we can't exchange items in shops. We can, however, give you a refund (providing you bring your despatch note that accompanied your delivery and the unwanted item is in pristine condition). We hope to be able to offer exchanges for online purchases in Waterstones shops in the near future.</p>
+<p><strong><cite>Overseas customers</cite></strong></p>
+<p>Please call us on <strong>+4420 8495 4549</strong> or email us at <a href='mailto:service@waterstones.com'><strong>service@waterstones.com</strong></a> to obtain information on how to return items.  </p>
+<p><strong>Can I return my eReader?</strong></p> 
+<p>Waterstones is committed to ensuring that you are happy with your eReader purchase.  If you encounter any problems with your device, please call our eReader experts on <strong>0845 217 7993</strong> (Monday-Friday, 9am-6pm, except for bank holidays). </p>
+<br><br></div></div>"
