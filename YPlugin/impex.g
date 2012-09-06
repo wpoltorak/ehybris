@@ -11,6 +11,12 @@ options {
 //@members{
 //}
 
+
+tokens{
+	ASSIGNEMENT;
+}
+
+
 @lexer::header {
   package com.lambda.plugin.impex.editor.model.lexer;
 }
@@ -18,58 +24,46 @@ options {
 @parser::header {
   package com.lambda.plugin.impex.editor.model.parser;
 }
-/*
-tokens{
-	TRUE='true';
-	FALSE='false';
-	INSERT;
-	INSERT_UPDATE;
-	UPDATE;
-	REMOVE;
-	BATCH_MODE= 'batchmode';
-	CACHE_UNIQUE='cacheUnique';
-	PROCESSOR='processor';
-}
-*/
 
+Insert		:'INSERT';
+InsertUpdate	:'INSERT_UPDATE';
+Update		:'UPDATE';
+Remove		:'REMOVE';
 
-TRUE		:'true';
-FALSE		:'false';
-INSERT		:'INSERT';
-INSERT_UPDATE	:'INSERT_UPDATE';
-UPDATE		:'UPDATE';
-REMOVE		:'REMOVE';
+BatchMode		:'batchmode';
+CacheUnique	:'cacheUnique';
+Processor		:'processor';
 
-BATCH_MODE	:'batchmode';
-CACHE_UNIQUE	:'cacheUnique';
-PROCESSOR		:'processor';
+Alias		:'alias';
+AllowNull		:'allownull';
+ForceWrite		:'forceWrite';
+IgnoreKeyCase	:'ignoreKeyCase';
+IgnoreNull		:'ignorenull';
+Unique		:'unique';
+Virtual		:'virtual';
+Pos		:'pos';
 
-ALIAS		:'alias';
-ALLOW_NULL		:'allownull';
-FORCE_WRITE	:'forceWrite';
-IGNORE_KEY_CASE	:'ignoreKeyCase';
-IGNORE_NULL	:'ignorenull';
-UNIQUE		:'unique';
-VIRTUAL		:'virtual';
-POS		:'pos';
+Dollar		:'$';
+Semicolon		:';';
+RightBracket	:']';
+LeftBracket		:'[';
+LeftParenthesis 	:'(';
+RightParenthesis	:')';
+Equals		:'=';
+Comma		: ',';
+Underscore		:'_';
+Hash		:'#';
 
-DOLLAR		:'$';
-SEMICOLON		:';';
-RIGHT_BRACKET	:']';
-LEFT_BRACKET	:'[';
-LEFT_PARENTHESIS 	:'(';
-RIGHT_PARENTHESIS	:')';
-EQUALS		:'=';
-COMMA		: ',';
-UNDERSCORE	:'_';
-HASH		:'#';
-
-LINE_CONTINUATION
-	:	WS* '\u2216 \u2216' WS*	//\\ 
+LineContinuation
+	:	Ws* '\u2216 \u2216' Ws*	//\\ 
 	;
 
-fragment BOOL	
-	:	TRUE | FALSE
+Bool	
+	:	'true' | 'false'
+	;
+
+Comment	
+	:	Hash ('\u0000' .. '\uffff')*
 	;
 	
 //WS
@@ -77,36 +71,36 @@ fragment BOOL
 //	|	'\u00a0'		//non brekable space
 //	|	'\u0009'		//tab
 //	;
-fragment WS
+fragment Ws
 	:	'\u0020' | '\u0009'
 	;
 
-NEW_LINE
+fragment NewLine
 	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix)
 	|	'\u000d'		// \r (MacOS)
    	;
 
-WORD	
-	:	LETTER+
+Word	
+	:	Letter+
 	;
 
-fragment LETTER
+fragment Letter
 	:	'a' .. 'z' | 'A' .. 'Z';
 	
-fragment DQUOTE	
+fragment DoubleQuote	
 	:	'"'
 	;
 
-fragment INT  
-  	:  	'1'..'9' DIGIT*  
+fragment Int  
+  	:  	'1'..'9' Digit*  
  	|  	'0'  
   	;  
     
-fragment DIGIT   
+fragment Digit   
   	:  	'0'..'9'  
  	;
  	
-CHAR
+Char
 	:	'\u0000' .. '\u0009'	//without \r \n " ; $
 	|	'\u000b' .. '\u000c'
 	|	'\u000e' .. '\u0021'
@@ -115,86 +109,87 @@ CHAR
 	|	'\u003c' .. '\uffff'
 	;
 
-fragment COMPLEX_ARGUMENT_REF
-	:	WORD WS* LEFT_PARENTHESIS WS* WORD (('.' WORD)? | (COMPLEX_ARGUMENT_REF (WS* COMMA WS* (WORD | COMPLEX_ARGUMENT_REF))?)) WS* RIGHT_PARENTHESIS WS*
+fragment ComplexArgumentRef
+	:	Word Ws* LeftParenthesis Ws* Word (('.' Word)? | (ComplexArgumentRef (Ws* Comma Ws* (Word | ComplexArgumentRef))?)) Ws* RightParenthesis Ws*
 	;
 
-fragment BOOL_HEADER_MODIFIER
-	:	BATCH_MODE | CACHE_UNIQUE
+fragment BoolHeaderModifier
+	:	BatchMode | CacheUnique
 	;
 
-fragment WORD_HEADER_MODIFIER
-	:	PROCESSOR
+fragment WordHeaderModifier
+	:	Processor
 	;
-fragment BOOL_ATTRIB_MODIFIER
-	:	ALLOW_NULL | FORCE_WRITE | IGNORE_KEY_CASE | IGNORE_NULL | UNIQUE | VIRTUAL
+fragment BoolAttribModifier
+	:	AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual
 	;
 	
-fragment WORD_ATTRIB_MODIFIER
-	:	ALIAS |  'cellDecorator' | 'collection-delimiter' | 'dateformat' | 'default' |  'key2value-delimiter' | 'lang' 
+fragment WordAttribModifier
+	:	Alias |  'cellDecorator' | 'collection-delimiter' | 'dateformat' | 'default' |  'key2value-delimiter' | 'lang' 
 	|	'map-delimiter' | 'mode' | 'numberformat' | 'path-delimiter' | 'translator' 
 	;
 
-fragment INT_ATTRIB_MODIFIER
-	:	POS
+fragment IntAttribModifier
+	:	Pos
 	;
 	
-comment	
-	:	HASH .*
-	;
-
-macro_identifier	
-	:	(LETTER | UNDERSCORE)(DIGIT | LETTER | UNDERSCORE)*
+MacroIdentifier
+	:	(Letter | Underscore)(Digit | Letter | Underscore)*
 	;
 	
-macro_definition
-	:	DOLLAR macro_identifier
+MacroDefinition
+	:	Dollar MacroIdentifier
 	;
 
 field	
-	:	(DQUOTE (CHAR | COMMA | DQUOTE DQUOTE | NEW_LINE | macro_definition)* DQUOTE) | (CHAR | macro_definition)+
+	:	(DoubleQuote (Char | Comma | DoubleQuote DoubleQuote | NewLine | MacroDefinition)* DoubleQuote) | (Char | MacroDefinition)+
 	;
 	
 header_mode 
-	:	INSERT | INSERT_UPDATE | UPDATE | REMOVE;
+	:	Insert | InsertUpdate | Update | Remove;
 
 header_mode_type	
-	:	WS* header_mode WS+ WORD  (WS* header_modifier)?
+	:	Ws* header_mode Ws+ Word  (Ws* header_modifier)?
 	;
 
 header_modifier	
-	:	LEFT_BRACKET (BOOL_HEADER_MODIFIER WS* EQUALS  WS* BOOL | WORD_HEADER_MODIFIER WS* EQUALS  WS* WORD) WS*  RIGHT_BRACKET
+	:	LeftBracket (BoolHeaderModifier Ws* Equals  Ws* Bool | WordHeaderModifier Ws* Equals  Ws* Word) Ws*  RightBracket
 	;
 		
 argument_modifier
-	:	LEFT_BRACKET (BOOL_ATTRIB_MODIFIER WS* EQUALS WS* BOOL | INT_ATTRIB_MODIFIER WS* EQUALS WS* INT | WORD_ATTRIB_MODIFIER WS* EQUALS WS* WORD) WS*  RIGHT_BRACKET
+	:	LeftBracket (BoolAttribModifier Ws* Equals Ws* Bool | IntAttribModifier Ws* Equals Ws* Int | WordAttribModifier Ws* Equals Ws* Word) Ws*  RightBracket
 	;
 	
 simple_attribute
-	:	WORD argument_modifier?
+	:	Word argument_modifier?
 	;
 
 complex_attribute
-	:	COMPLEX_ARGUMENT_REF (WS* argument_modifier)?
+	:	ComplexArgumentRef (Ws* argument_modifier)?
 	;
 header	
-	:	header_mode_type WS* SEMICOLON  (WS* SEMICOLON  (WS* (simple_attribute |  complex_attribute))?)+
+	:	header_mode_type Ws* Semicolon  (Ws* Semicolon  (Ws* (simple_attribute |  complex_attribute))?)+
 	;
 
 row	
-	:	(WS* SEMICOLON (WS*  field)?)* LINE_CONTINUATION? 
+	:	(Ws* Semicolon (Ws*  field)?)* LineContinuation? 
 	;
 
 //header + rows or comments
 impex_block
-	:	header (NEW_LINE (row | comment))+
+	:	header (NewLine (row | Comment))+
 	;
 
-macro_assignement
-	:	macro_definition  EQUALS (macro_definition | CHAR)+
+macroExpression
+	:	(MacroDefinition | Char)+
+	;
+	
+macroAssignement
+	:	MacroDefinition Equals macroExpression
+		-> ^(ASSIGNEMENT MacroDefinition macroExpression)
 	;		
 	
-file	
+impex	
 //	:	(COMMENT | macro_assignement | impex_block) (NEW_LINE (COMMENT | macro_assignement | impex_block))* EOF
-	:	(macro_assignement | impex_block)* EOF
+	:	(macroAssignement | impex_block)* EOF
 	;
