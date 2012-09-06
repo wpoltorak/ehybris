@@ -45,7 +45,7 @@ Pos		:'pos';
 
 Dollar		:'$';
 Semicolon		:';';
-RightBracket	:']';
+RightBracket		:']';
 LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
@@ -55,7 +55,7 @@ Underscore		:'_';
 Hash		:'#';
 
 LineContinuation
-	:	Ws* '\u2216 \u2216' Ws*	//\\ 
+	:	 '\u2216' '\u2216' 	//\\ 
 	;
 
 Bool	
@@ -63,7 +63,7 @@ Bool
 	;
 
 Comment	
-	:	Hash ('\u0000' .. '\uffff')*
+	:	Hash ('\u0000' .. '\uffff')* 
 	;
 	
 //WS
@@ -75,7 +75,7 @@ fragment Ws
 	:	'\u0020' | '\u0009'
 	;
 
-fragment NewLine
+LineBreak
 	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix)
 	|	'\u000d'		// \r (MacOS)
    	;
@@ -91,7 +91,7 @@ fragment DoubleQuote
 	:	'"'
 	;
 
-fragment Int  
+Int  
   	:  	'1'..'9' Digit*  
  	|  	'0'  
   	;  
@@ -142,42 +142,42 @@ MacroDefinition
 	;
 
 field	
-	:	(DoubleQuote (Char | Comma | DoubleQuote DoubleQuote | NewLine | MacroDefinition)* DoubleQuote) | (Char | MacroDefinition)+
+	:	(DoubleQuote (Char | Comma | DoubleQuote DoubleQuote)* DoubleQuote) | (Char | MacroDefinition)+
 	;
 	
-header_mode 
+headerMode 
 	:	Insert | InsertUpdate | Update | Remove;
 
-header_mode_type	
-	:	Ws* header_mode Ws+ Word  (Ws* header_modifier)?
+headerModeType	
+	:	Ws* headerMode Ws+ Word  (Ws* headerModifier)?
 	;
 
-header_modifier	
+headerModifier	
 	:	LeftBracket (BoolHeaderModifier Ws* Equals  Ws* Bool | WordHeaderModifier Ws* Equals  Ws* Word) Ws*  RightBracket
 	;
 		
-argument_modifier
+argumentModifier
 	:	LeftBracket (BoolAttribModifier Ws* Equals Ws* Bool | IntAttribModifier Ws* Equals Ws* Int | WordAttribModifier Ws* Equals Ws* Word) Ws*  RightBracket
 	;
 	
-simple_attribute
-	:	Word argument_modifier?
+simpleAttribute
+	:	Word argumentModifier?
 	;
 
-complex_attribute
-	:	ComplexArgumentRef (Ws* argument_modifier)?
+complexAttribute
+	:	ComplexArgumentRef (Ws* argumentModifier)?
 	;
 header	
-	:	header_mode_type Ws* Semicolon  (Ws* Semicolon  (Ws* (simple_attribute |  complex_attribute))?)+
+	:	headerModeType Ws* Semicolon  (Ws* Semicolon  (Ws* (simpleAttribute |  complexAttribute))?)+ (LineBreak | EOF)
 	;
 
 row	
-	:	(Ws* Semicolon (Ws*  field)?)* LineContinuation? 
+	:	(Ws* Semicolon (Ws*  field)?)* (Ws* LineContinuation Ws*)? (LineBreak | EOF)
 	;
 
 //header + rows or comments
-impex_block
-	:	header (NewLine (row | Comment))+
+impexBlock
+	:	header row*
 	;
 
 macroExpression
@@ -185,11 +185,11 @@ macroExpression
 	;
 	
 macroAssignement
-	:	MacroDefinition Equals macroExpression
-		-> ^(ASSIGNEMENT MacroDefinition macroExpression)
+	:	MacroDefinition Equals macroExpression (LineBreak | EOF)
+	-> 	^(ASSIGNEMENT MacroDefinition macroExpression)
 	;		
 	
 impex	
-//	:	(COMMENT | macro_assignement | impex_block) (NEW_LINE (COMMENT | macro_assignement | impex_block))* EOF
-	:	(macroAssignement | impex_block)* EOF
+	:	 ( macroAssignement | impexBlock | Comment)+
+//	:	( macroAssignement | impexBlock)* EOF
 	;
