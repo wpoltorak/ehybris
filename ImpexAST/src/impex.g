@@ -14,16 +14,108 @@ options {
 
 tokens{
 	ASSIGNEMENT;
+	ASSIGNEMENTS;
+	SIMPLE_ATTRIBUTE;
+	COMPLEX_ATTRIBUTE;
+	ATTRIBUTES;
+	ROW;
+	MACRO;
+	HEADER;
+	HEADER_PREFIX;
+	HEADER_TYPE;
+	IMPEX;
+	IMPEX_BLOCKS;
+	IMPEX_BLOCK;
+	COMMENTS;
+	ROWS;
 }
 
 
 @lexer::header {
-  package com.lambda.plugin.impex.editor.model.lexer;
+	 package output;
 }
  
 @parser::header {
-  package com.lambda.plugin.impex.editor.model.parser;
+  package output;
 }
+
+
+impex	
+	:	 (( macroAssignement| impexBlock | Comment))+ EOF -> ^(IMPEX ^(ASSIGNEMENTS macroAssignement*) ^(IMPEX_BLOCKS impexBlock*) ^(COMMENTS Comment*))
+//	:	( macroAssignement | impexBlock)* EOF
+	;
+
+macroAssignement
+	:	MacroDefinition Equals macroExpression  LineBreak? -> ^(ASSIGNEMENT MacroDefinition macroExpression)
+	;		
+
+macroExpression
+	:	(MacroDefinition
+	| 	Char
+		)+
+	;
+
+MacroDefinition
+	:	Dollar MacroIdentifier
+	;
+	
+
+//header + rows or comments
+impexBlock
+	:	header  (row)*  -> ^(IMPEX_BLOCK header ^(ROWS row*))
+	;
+
+header	
+	:	headerModeType  (Semicolon  Ws* (simpleAttribute |  complexAttribute))*  (LineBreak | EOF)  -> ^(headerModeType ^(ATTRIBUTES simpleAttribute* complexAttribute*))
+	;
+
+row	
+	:	(Ws* Semicolon (Ws*  field)?  )* (LineBreak | EOF)  -> ^(ROW field*)
+	;
+
+//row	
+//	:	(Semicolon (Ws*  field)?)* ( LineContinuation Ws* LineBreak row)*  -> ^(ROW field*  row*)
+//	;
+
+headerModeType	
+	:	Ws* headerMode Ws+ Word  (Ws* headerModifier)? -> ^(HEADER_PREFIX headerMode ^(HEADER_TYPE Word headerModifier?))
+	;
+
+simpleAttribute
+	:	Word attributeModifier? -> ^(SIMPLE_ATTRIBUTE Word attributeModifier?)	
+	;
+
+complexAttribute
+	:	complexAttributeRef (Ws* attributeModifier)? -> ^(COMPLEX_ATTRIBUTE complexAttributeRef attributeModifier?)
+	;
+
+
+complexAttributeRef
+	:	Word Ws* LeftParenthesis Ws* Word (('.' Word)? | (complexAttributeRef (Ws* Comma Ws* (Word | complexAttributeRef))?)) Ws* RightParenthesis 
+	;
+
+headerMode 
+	:	Insert | InsertUpdate | Update | Remove;
+
+headerModifier	
+	:	LeftBracket 
+		(BoolHeaderModifier Ws* Equals  Ws* Bool -> ^(Equals BoolHeaderModifier Bool)
+		| WordHeaderModifier Ws* Equals  Ws* Word -> ^(Equals WordHeaderModifier Word)
+		) Ws*  RightBracket
+	;
+
+attributeModifier
+	:	LeftBracket 
+		(BoolAttribModifier Ws* Equals Ws* Bool -> ^(Equals BoolAttribModifier Bool)
+		| IntAttribModifier Ws* Equals Ws* Int  -> ^(Equals IntAttribModifier Int)
+		| WordAttribModifier Ws* Equals Ws* Word -> ^(Equals WordAttribModifier Word)
+		) Ws*  RightBracket
+		
+	;
+
+field	
+	:	(DoubleQuote (Char | Comma | DoubleQuote DoubleQuote)* DoubleQuote) | (Char | MacroDefinition)+
+	;
 
 Insert		:'INSERT';
 InsertUpdate	:'INSERT_UPDATE';
@@ -63,19 +155,14 @@ Bool
 	;
 
 Comment	
-	:	Hash ('\u0000' .. '\uffff')* 
+	:	Hash ~('\u000d' | '\u000a')* LineBreak?
 	;
 	
-//WS
-//	:	'\u0020', 		//space
-//	|	'\u00a0'		//non brekable space
-//	|	'\u0009'		//tab
-//	;
 fragment Ws
 	:	'\u0020' | '\u0009'
 	;
 
-LineBreak
+ LineBreak
 	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix)
 	|	'\u000d'		// \r (MacOS)
    	;
@@ -109,10 +196,6 @@ Char
 	|	'\u003c' .. '\uffff'
 	;
 
-fragment ComplexArgumentRef
-	:	Word Ws* LeftParenthesis Ws* Word (('.' Word)? | (ComplexArgumentRef (Ws* Comma Ws* (Word | ComplexArgumentRef))?)) Ws* RightParenthesis Ws*
-	;
-
 fragment BoolHeaderModifier
 	:	BatchMode | CacheUnique
 	;
@@ -135,61 +218,5 @@ fragment IntAttribModifier
 	
 MacroIdentifier
 	:	(Letter | Underscore)(Digit | Letter | Underscore)*
-	;
+	;	
 	
-MacroDefinition
-	:	Dollar MacroIdentifier
-	;
-
-field	
-	:	(DoubleQuote (Char | Comma | DoubleQuote DoubleQuote)* DoubleQuote) | (Char | MacroDefinition)+
-	;
-	
-headerMode 
-	:	Insert | InsertUpdate | Update | Remove;
-
-headerModeType	
-	:	Ws* headerMode Ws+ Word  (Ws* headerModifier)?
-	;
-
-headerModifier	
-	:	LeftBracket (BoolHeaderModifier Ws* Equals  Ws* Bool | WordHeaderModifier Ws* Equals  Ws* Word) Ws*  RightBracket
-	;
-		
-argumentModifier
-	:	LeftBracket (BoolAttribModifier Ws* Equals Ws* Bool | IntAttribModifier Ws* Equals Ws* Int | WordAttribModifier Ws* Equals Ws* Word) Ws*  RightBracket
-	;
-	
-simpleAttribute
-	:	Word argumentModifier?
-	;
-
-complexAttribute
-	:	ComplexArgumentRef (Ws* argumentModifier)?
-	;
-header	
-	:	headerModeType Ws* Semicolon  (Ws* Semicolon  (Ws* (simpleAttribute |  complexAttribute))?)+ (LineBreak | EOF)
-	;
-
-row	
-	:	(Ws* Semicolon (Ws*  field)?)* (Ws* LineContinuation Ws*)? (LineBreak | EOF)
-	;
-
-//header + rows or comments
-impexBlock
-	:	header row*
-	;
-
-macroExpression
-	:	(MacroDefinition | Char)+
-	;
-	
-macroAssignement
-	:	MacroDefinition Equals macroExpression (LineBreak | EOF)
-	-> 	^(ASSIGNEMENT MacroDefinition macroExpression)
-	;		
-	
-impex	
-	:	 ( macroAssignement | impexBlock | Comment)+
-//	:	( macroAssignement | impexBlock)* EOF
-	;
