@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.preferences.PreferenceConstants;
 
 public class ImpexEditor extends TextEditor {
@@ -24,10 +25,11 @@ public class ImpexEditor extends TextEditor {
     private ProjectionSupport projectionSupport;
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
+    private IImpexModel impexModel;
 
     public ImpexEditor() {
         colorManager = new ColorManager();
-        setSourceViewerConfiguration(new ImpexConfiguration(colorManager));
+        setSourceViewerConfiguration(new ImpexConfiguration(this, colorManager));
         setDocumentProvider(new ImpexDocumentProvider());
         setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
@@ -88,4 +90,7 @@ public class ImpexEditor extends TextEditor {
         return markingOccurrences;
     }
 
+    public IImpexModel getImpexModel() {
+        return impexModel;
+    }
 }

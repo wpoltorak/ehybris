@@ -1,57 +1,45 @@
 package com.lambda.plugin.impex.editor;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentPartitioner;
-import org.eclipse.jface.text.ITypedRegion;
-import org.eclipse.jface.text.rules.FastPartitioner;
-import org.eclipse.jface.text.rules.IPartitionTokenScanner;
-import org.eclipse.ui.editors.text.FileDocumentProvider;
+import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel;
 
-public class ImpexDocumentProvider extends FileDocumentProvider {
+import com.lambda.plugin.impex.model.IImpexModel;
+import com.lambda.plugin.impex.model.ImpexModel;
 
-    @Override
-    protected IDocument createDocument(final Object element) throws CoreException {
-        final IDocument document = super.createDocument(element);
-        if (document != null) {
-            final IDocumentPartitioner partitioner = new ImpexPartitioner(new ImpexPartitionScanner(), new String[] {
-                    ImpexPartitionScanner.IMPEX_HEADER, ImpexPartitionScanner.IMPEX_MACRO });
-            partitioner.connect(document);
-            document.setDocumentPartitioner(partitioner);
-        }
-        return document;
+public class ImpexDocumentProvider extends TextFileDocumentProvider {
+
+    private ImpexModel impexModel;
+
+    public ImpexDocumentProvider() {
+        setParentDocumentProvider(new TextFileDocumentProvider(new ImpexStorageDocumentProvider()));
     }
 
-    public class ImpexPartitioner extends FastPartitioner {
-
-        public ImpexPartitioner(final IPartitionTokenScanner scanner, final String[] legalContentTypes) {
-            super(scanner, legalContentTypes);
+    @Override
+    protected FileInfo createFileInfo(final Object element) throws CoreException {
+        final FileInfo fileInfo = super.createFileInfo(element);
+        if (!(fileInfo instanceof ImpexFileInfo)) {
+            return null;
         }
+        final IDocument document = fileInfo.fTextFileBuffer.getDocument();
+        impexModel = new ImpexModel(document);
+        return fileInfo;
+    }
 
-        @Override
-        public void connect(final IDocument document, final boolean delayInitialization) {
-            super.connect(document, delayInitialization);
-            printPartitions(document);
-        }
+    @Override
+    protected FileInfo createEmptyFileInfo() {
+        return new ImpexFileInfo();
+    }
 
-        public void printPartitions(final IDocument document) {
-            final StringBuffer buffer = new StringBuffer();
+    @Override
+    protected IAnnotationModel createAnnotationModel(final IFile file) {
+        return new ResourceMarkerAnnotationModel(file);
+    }
 
-            final ITypedRegion[] partitions = computePartitioning(0, document.getLength());
-            for (int i = 0; i < partitions.length; i++) {
-                try {
-                    buffer.append("Partition type: " + partitions[i].getType() + ", offset: " + partitions[i].getOffset() + ", length: "
-                            + partitions[i].getLength());
-                    buffer.append("\n");
-                    buffer.append("Text:\n");
-                    buffer.append(document.get(partitions[i].getOffset(), partitions[i].getLength()));
-                    buffer.append("\n---------------------------\n\n\n");
-                } catch (final BadLocationException e) {
-                    e.printStackTrace();
-                }
-            }
-            System.out.print(buffer);
-        }
+    public class ImpexFileInfo extends FileInfo {
+        public IImpexModel model;
     }
 }

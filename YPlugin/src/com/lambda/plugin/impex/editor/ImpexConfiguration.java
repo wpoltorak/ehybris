@@ -11,6 +11,8 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
 import org.eclipse.jface.text.presentation.PresentationReconciler;
+import org.eclipse.jface.text.reconciler.IReconciler;
+import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -23,8 +25,10 @@ public class ImpexConfiguration extends SourceViewerConfiguration {
     private ImpexMacroScanner macroAssignementScanner;
     private ImpexScanner scanner;
     private final ColorManager colorManager;
+    private final ImpexEditor editor;
 
-    public ImpexConfiguration(final ColorManager colorManager) {
+    public ImpexConfiguration(final ImpexEditor editor, final ColorManager colorManager) {
+        this.editor = editor;
         this.colorManager = colorManager;
     }
 
@@ -117,6 +121,14 @@ public class ImpexConfiguration extends SourceViewerConfiguration {
         reconciler.setDamager(ndr, ImpexScanner.IMPEX_COMMENT);
         reconciler.setRepairer(ndr, ImpexScanner.IMPEX_COMMENT);
 
+        return reconciler;
+    }
+
+    @Override
+    public IReconciler getReconciler(final ISourceViewer sourceViewer) {
+        final MonoReconciler reconciler = new MonoReconciler(new ImpexReconcilingStrategy(editor), false);
+        reconciler.setDelay(ImpexReconcilingStrategy.DELAY);
+        //        reconciler.addReconcilingParticipant(editor);
         return reconciler;
     }
 
