@@ -5,6 +5,8 @@ import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.eclipse.jface.text.IDocument;
 
+import output.impexLexer;
+
 public class ImpexModel implements IImpexModel {
 
     private final IDocument document;
