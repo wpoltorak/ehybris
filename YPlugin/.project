@@ -29,7 +29,7 @@
 		<link>
 			<name>astsrc</name>
 			<type>2</type>
-			<locationURI>IMPEX_AST_SRC</locationURI>
+			<locationURI>IMPEX_AST_HOME/src/main/java</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

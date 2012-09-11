@@ -1,5 +1,7 @@
 package com.lambda.plugin.impex.model;
 
-public interface IImpexModel {
+import com.lambda.plugin.YPlugin;
 
+public interface IImpexModel {
+    public static final String IMPEXFILE_PROBLEM_MARKER = YPlugin.PLUGIN_ID + ".impexFileProblem"; //$NON-NLS-1$
 }

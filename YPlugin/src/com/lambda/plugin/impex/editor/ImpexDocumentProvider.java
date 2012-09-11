@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel;
 
@@ -25,7 +26,7 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
             return null;
         }
         final IDocument document = fileInfo.fTextFileBuffer.getDocument();
-        impexModel = new ImpexModel(document);
+        impexModel = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element : null);
         return fileInfo;
     }
 
