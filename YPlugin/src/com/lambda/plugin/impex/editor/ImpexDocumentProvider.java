@@ -13,8 +13,6 @@ import com.lambda.plugin.impex.model.ImpexModel;
 
 public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
-    private ImpexModel impexModel;
-
     public ImpexDocumentProvider() {
         setParentDocumentProvider(new TextFileDocumentProvider(new ImpexStorageDocumentProvider()));
     }
@@ -25,8 +23,10 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
         if (!(fileInfo instanceof ImpexFileInfo)) {
             return null;
         }
+
+        final ImpexFileInfo impexFileInfo = (ImpexFileInfo) fileInfo;
         final IDocument document = fileInfo.fTextFileBuffer.getDocument();
-        impexModel = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element : null);
+        impexFileInfo.model = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element : null);
         return fileInfo;
     }
 
@@ -38,6 +38,15 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
     @Override
     protected IAnnotationModel createAnnotationModel(final IFile file) {
         return new ResourceMarkerAnnotationModel(file);
+    }
+
+    public IImpexModel getImpexModel(final Object element) {
+        final FileInfo info = getFileInfo(element);
+        if (info instanceof ImpexFileInfo) {
+            final ImpexFileInfo xmlInfo = (ImpexFileInfo) info;
+            return xmlInfo.model;
+        }
+        return null;
     }
 
     public class ImpexFileInfo extends FileInfo {

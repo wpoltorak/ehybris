@@ -58,18 +58,17 @@ public class ImpexModel implements IImpexModel {
             final Map<String, Object> map = new HashMap<String, Object>();
             MarkerUtilities.setLineNumber(map, lineNumber);
             MarkerUtilities.setMessage(map, e.getMessage());
-            map.put(IMarker.MESSAGE, e.getMessage());
             final IFile file = editorInput.getFile();
             map.put(IMarker.LOCATION, file.getFullPath().toString());
 
             final Integer charStart = getCharStart(lineNumber, columnNumber);
             if (charStart != null) {
-                map.put(IMarker.CHAR_START, charStart);
+                MarkerUtilities.setCharStart(map, charStart);
             }
 
             final Integer charEnd = getCharEnd(lineNumber, columnNumber);
             if (charEnd != null) {
-                map.put(IMarker.CHAR_END, charEnd);
+                MarkerUtilities.setCharEnd(map, charEnd);
             }
 
             map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));

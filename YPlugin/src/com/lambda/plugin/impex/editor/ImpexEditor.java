@@ -3,6 +3,7 @@ package com.lambda.plugin.impex.editor;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -13,6 +14,7 @@ import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.model.IImpexModel;
@@ -51,6 +53,22 @@ public class ImpexEditor extends TextEditor {
         annotationModel = viewer.getProjectionAnnotationModel();
     }
 
+    /**
+     * Returns the Ant model for the current editor input of this editor.
+     * 
+     * @return the Ant model for this editor or <code>null</code>
+     */
+    public IImpexModel getImpexModel() {
+        if (impexModel == null) {
+            final IDocumentProvider provider = getDocumentProvider();
+            if (provider instanceof ImpexDocumentProvider) {
+                final ImpexDocumentProvider documentProvider = (ImpexDocumentProvider) provider;
+                impexModel = documentProvider.getImpexModel(getEditorInput());
+            }
+        }
+        return impexModel;
+    }
+
     @Override
     protected ISourceViewer createSourceViewer(final Composite parent, final IVerticalRuler ruler, final int styles) {
         final ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
@@ -81,6 +99,15 @@ public class ImpexEditor extends TextEditor {
     }
 
     @Override
+    public void doSave(final IProgressMonitor monitor) {
+        super.doSave(monitor);
+        final IImpexModel model = getImpexModel();
+        model.reconcile();
+        //TODO need to update editor image 
+        // updateEditorImage(model);
+    }
+
+    @Override
     public void dispose() {
         colorManager.dispose();
         super.dispose();
@@ -88,9 +115,5 @@ public class ImpexEditor extends TextEditor {
 
     public boolean isMarkingOccurrences() {
         return markingOccurrences;
-    }
-
-    public IImpexModel getImpexModel() {
-        return impexModel;
     }
 }
