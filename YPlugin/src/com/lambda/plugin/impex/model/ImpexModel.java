@@ -17,6 +17,8 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import output.impexLexer;
 
+import com.lambda.plugin.YPlugin;
+
 public class ImpexModel implements IImpexModel {
 
     private final IDocument document;
@@ -28,6 +30,7 @@ public class ImpexModel implements IImpexModel {
     }
 
     public void reconcile() {
+        removeMarkers();
         final String source = document.get();
         // create an instance of the lexer
         final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(source));
@@ -41,6 +44,14 @@ public class ImpexModel implements IImpexModel {
         for (final Object o : tokens.getTokens()) {
             final CommonToken token = (CommonToken) o;
             System.out.println("token(" + n++ + ") = " + token.getText().replace("\n", "\\n"));
+        }
+    }
+
+    private void removeMarkers() {
+        try {
+            editorInput.getFile().deleteMarkers(IMPEXFILE_PROBLEM_MARKER, true, 0);
+        } catch (final CoreException e) {
+            YPlugin.logError(e);
         }
     }
 
@@ -58,8 +69,10 @@ public class ImpexModel implements IImpexModel {
             final Map<String, Object> map = new HashMap<String, Object>();
             MarkerUtilities.setLineNumber(map, lineNumber);
             MarkerUtilities.setMessage(map, e.getMessage());
+
+            MarkerUtilities.setMessage(map, e.getMessage());
             final IFile file = editorInput.getFile();
-            map.put(IMarker.LOCATION, file.getFullPath().toString());
+            //            map.put(IMarker.LOCATION, file.getFullPath().toString());
 
             final Integer charStart = getCharStart(lineNumber, columnNumber);
             if (charStart != null) {
@@ -82,13 +95,11 @@ public class ImpexModel implements IImpexModel {
         }
 
         private int getCharEnd(final int lineNumber, final int columnNumber) {
-            // TODO Auto-generated method stub
-            return 0;
+            return columnNumber;
         }
 
         private int getCharStart(final int lineNumber, final int columnNumber) {
-            // TODO Auto-generated method stub
-            return 0;
+            return columnNumber;
         }
     }
 }

@@ -561,5 +561,8 @@
             </with>
          </definition>
       </extension>
-
+	<extension id="impexFileProblem" name="%Impex.marker.label" point="org.eclipse.core.resources.markers">
+  		<super type="org.eclipse.core.resources.problemmarker" /> 
+  			<persistent value="true" /> 
+	</extension>
 </plugin>
