@@ -30,6 +30,7 @@ public class ImpexModel implements IImpexModel {
     }
 
     public void reconcile() {
+        System.out.println("##################33 RECONSILE ##################################");
         removeMarkers();
         final String source = document.get();
         // create an instance of the lexer
@@ -45,6 +46,7 @@ public class ImpexModel implements IImpexModel {
             final CommonToken token = (CommonToken) o;
             System.out.println("token(" + n++ + ") = " + token.getText().replace("\n", "\\n"));
         }
+        lexer.createMarkers();
     }
 
     private void removeMarkers() {
@@ -57,39 +59,44 @@ public class ImpexModel implements IImpexModel {
 
     private class ImpexLexer extends impexLexer {
 
+        private final Map<Integer, Map<String, Object>> markerAttributes = new HashMap<Integer, Map<String, Object>>();
+
         public ImpexLexer(final CharStream input) {
             super(input);
+        }
+
+        public void createMarkers() {
+            for (final Map<String, Object> attributes : markerAttributes.values()) {
+                try {
+                    final IFile file = editorInput.getFile();
+                    MarkerUtilities.createMarker(file, attributes, IMPEXFILE_PROBLEM_MARKER);
+                } catch (final CoreException ee) {
+                    ee.printStackTrace();
+                }
+            }
         }
 
         @Override
         public void reportError(final RecognitionException e) {
             final int lineNumber = getLine();
             final int columnNumber = getCharPositionInLine();
+            Map<String, Object> map = markerAttributes.get(lineNumber);
+            if (map != null) {
+                MarkerUtilities.setCharEnd(map, columnNumber);
+            } else {
+                map = new HashMap<String, Object>();
+                MarkerUtilities.setLineNumber(map, lineNumber);
+                MarkerUtilities.setMessage(map, "Syntax error");
 
-            final Map<String, Object> map = new HashMap<String, Object>();
-            MarkerUtilities.setLineNumber(map, lineNumber);
-            MarkerUtilities.setMessage(map, e.getMessage());
+                //            map.put(IMarker.LOCATION, file.getFullPath().toString());
 
-            MarkerUtilities.setMessage(map, e.getMessage());
-            final IFile file = editorInput.getFile();
-            //            map.put(IMarker.LOCATION, file.getFullPath().toString());
+                final Integer charStart = getCharStart(lineNumber, columnNumber);
+                if (charStart != null) {
+                    MarkerUtilities.setCharStart(map, charStart);
+                }
 
-            final Integer charStart = getCharStart(lineNumber, columnNumber);
-            if (charStart != null) {
-                MarkerUtilities.setCharStart(map, charStart);
-            }
-
-            final Integer charEnd = getCharEnd(lineNumber, columnNumber);
-            if (charEnd != null) {
-                MarkerUtilities.setCharEnd(map, charEnd);
-            }
-
-            map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
-
-            try {
-                MarkerUtilities.createMarker(file, map, IMPEXFILE_PROBLEM_MARKER);
-            } catch (final CoreException ee) {
-                ee.printStackTrace();
+                map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
+                markerAttributes.put(lineNumber, map);
             }
             super.reportError(e);
         }

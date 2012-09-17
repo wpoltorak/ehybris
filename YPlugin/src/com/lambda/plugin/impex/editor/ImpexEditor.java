@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
+import org.eclipse.jface.text.source.CompositeRuler;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
@@ -76,6 +77,16 @@ public class ImpexEditor extends TextEditor {
         getSourceViewerDecorationSupport(viewer);
 
         return viewer;
+    }
+
+    @Override
+    protected CompositeRuler createCompositeRuler() {
+        final CompositeRuler ruler = new CompositeRuler();
+        //        ruler.addDecorator(0, new AnnotationRulerColumn(VERTICAL_RULER_WIDTH));
+        //        if (isLineNumberRulerVisible()) {
+        //            ruler.addDecorator(1, createLineNumberRulerColumn());
+        //        }
+        return ruler;
     }
 
     public void updateFoldingStructure(final List<Position> positions) {

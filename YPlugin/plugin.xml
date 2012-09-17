@@ -562,7 +562,11 @@
          </definition>
       </extension>
 	<extension id="impexFileProblem" name="%Impex.marker.label" point="org.eclipse.core.resources.markers">
-  		<super type="org.eclipse.core.resources.problemmarker" /> 
+  		<super type="org.eclipse.core.resources.problemmarker" />
+  		<!-- for annotations -->
+    <super
+          type="org.eclipse.core.resources.textmarker">
+    </super> 
   			<persistent value="true" /> 
 	</extension>
 </plugin>
