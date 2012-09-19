@@ -5,11 +5,17 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 
 public class YImages {
+
+    public interface Icons {
+        // ImpEx Editor actions
+        public static final String TOGGLE_MARK_OCCURENCES = "mark_occurences.gif";
+    }
 
     public static final IPath ICONS_PATH = new Path("$nl$/icons/full");
 
@@ -29,23 +35,44 @@ public class YImages {
     public static final String FUNCTEST_PROJECT_IMAGE = "functestprj_obj.png";
     private static final String FUNCTEST_IMAGE = "functest.png";
 
-    // IMPEX
-    private static final String MARK_OCCURENCES = "mark_occurences.gif";
-
     public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN,
             FUNCTEST_WIZARD_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST_PRJ = createImageDescriptor(T_OBJ, FUNCTEST_PROJECT_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST = createImageDescriptor(T_ETOOL, FUNCTEST_IMAGE);
-    public static final ImageDescriptor DESC_MARK_OCCURRENCES = createImageDescriptor(T_ETOOL, MARK_OCCURENCES);
+
+    /**
+     * Sets the three image descriptors for enabled, disabled, and hovered to an action. The actions are retrieved from
+     * the *lcl16 folders.
+     * 
+     * @param action the action
+     * @param iconName the icon name
+     */
+    public static void setLocalImageDescriptors(IAction action, String iconName) {
+        setImageDescriptors(action, "lcl16", iconName); //$NON-NLS-1$
+    }
+
+    private static void setImageDescriptors(IAction action, String type, String relPath) {
+        ImageDescriptor id = createImageDescriptor("d" + type, relPath, false); //$NON-NLS-1$
+        if (id != null) {
+            action.setDisabledImageDescriptor(id);
+        }
+        ImageDescriptor descriptor = createImageDescriptor("e" + type, relPath, true); //$NON-NLS-1$
+        action.setHoverImageDescriptor(descriptor);
+        action.setImageDescriptor(descriptor);
+    }
 
     public static ImageDescriptor createImageDescriptor(final String prefix, final String name) {
+        return createImageDescriptor(prefix, name, true);
+    }
+
+    public static ImageDescriptor createImageDescriptor(final String prefix, final String name, boolean useMissing) {
         final IPath path = ICONS_PATH.append(prefix).append(name);
         final Bundle bundle = YPlugin.getDefault().getBundle();
         final URL url = FileLocator.find(bundle, path, null);
         if (url != null) {
             return ImageDescriptor.createFromURL(url);
         }
-        return ImageDescriptor.getMissingImageDescriptor();
+        return useMissing ? ImageDescriptor.getMissingImageDescriptor() : null;
     }
 
     public static Image createImage(final String prefix, final String name) {
