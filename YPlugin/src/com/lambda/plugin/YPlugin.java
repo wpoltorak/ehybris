@@ -12,13 +12,16 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.core.JavaModel;
 import org.eclipse.jdt.internal.core.JavaModelManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -53,6 +56,8 @@ public class YPlugin extends AbstractUIPlugin {
     private TemplateManager templateManager;
 
     private BundleContext fBundleContext;
+
+    private IPreferenceStore fCombinedPreferenceStore;
 
     /**
      * The constructor
@@ -136,8 +141,7 @@ public class YPlugin extends AbstractUIPlugin {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException,
-            InterruptedException {
+    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException, InterruptedException {
         final JavaModel javaModel = JavaModelManager.getJavaModelManager().getJavaModel();
         final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
         for (final IJavaProject project : javaModel.getJavaProjects()) {
@@ -211,6 +215,21 @@ public class YPlugin extends AbstractUIPlugin {
             templateManager = new TemplateManager();
         }
         return templateManager;
+    }
+
+    /**
+     * Returns a combined preference store.<br/>
+     * The store is read only
+     * 
+     * 
+     * @return combined preference store
+     */
+    public IPreferenceStore getCombinedPreferenceStore() {
+        if (fCombinedPreferenceStore == null) {
+            final IPreferenceStore generalTextStore = EditorsUI.getPreferenceStore();
+            fCombinedPreferenceStore = new ChainedPreferenceStore(new IPreferenceStore[] { getPreferenceStore(), generalTextStore });
+        }
+        return fCombinedPreferenceStore;
     }
 
     public Bundle getBundle(final String bundleName) {

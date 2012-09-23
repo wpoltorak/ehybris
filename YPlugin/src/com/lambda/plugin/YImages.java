@@ -23,8 +23,8 @@ public class YImages {
     private static final String T_WIZBAN = "wizban"; //$NON-NLS-1$
     private static final String T_OVR = "ovr16"; //$NON-NLS-1$
 
-    private static final String T_ECL = "ecl16"; //$NON-NLS-1$
-    private static final String T_DCL = "dcl16"; //$NON-NLS-1$
+    private static final String T_ECL = "elcl16"; //$NON-NLS-1$
+    private static final String T_DCL = "dlcl16"; //$NON-NLS-1$
     private static final String T_ETOOL = "etool16"; //$NON-NLS-1$
     private static final String T_EVIEW = "eview16"; //$NON-NLS-1$
     private static final String T_DEC = "dec8"; //$NON-NLS-1$
@@ -35,28 +35,26 @@ public class YImages {
     public static final String FUNCTEST_PROJECT_IMAGE = "functestprj_obj.png";
     private static final String FUNCTEST_IMAGE = "functest.png";
 
-    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN,
-            FUNCTEST_WIZARD_IMAGE);
+    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN, FUNCTEST_WIZARD_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST_PRJ = createImageDescriptor(T_OBJ, FUNCTEST_PROJECT_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST = createImageDescriptor(T_ETOOL, FUNCTEST_IMAGE);
 
     /**
-     * Sets the three image descriptors for enabled, disabled, and hovered to an action. The actions are retrieved from
-     * the *lcl16 folders.
+     * Sets the three image descriptors for enabled, disabled, and hovered to an action. The actions are retrieved from the *lcl16 folders.
      * 
      * @param action the action
      * @param iconName the icon name
      */
-    public static void setLocalImageDescriptors(IAction action, String iconName) {
+    public static void setLocalImageDescriptors(final IAction action, final String iconName) {
         setImageDescriptors(action, "lcl16", iconName); //$NON-NLS-1$
     }
 
-    private static void setImageDescriptors(IAction action, String type, String relPath) {
-        ImageDescriptor id = createImageDescriptor("d" + type, relPath, false); //$NON-NLS-1$
+    private static void setImageDescriptors(final IAction action, final String type, final String relPath) {
+        final ImageDescriptor id = createImageDescriptor("d" + type, relPath, false); //$NON-NLS-1$
         if (id != null) {
             action.setDisabledImageDescriptor(id);
         }
-        ImageDescriptor descriptor = createImageDescriptor("e" + type, relPath, true); //$NON-NLS-1$
+        final ImageDescriptor descriptor = createImageDescriptor("e" + type, relPath, true); //$NON-NLS-1$
         action.setHoverImageDescriptor(descriptor);
         action.setImageDescriptor(descriptor);
     }
@@ -65,7 +63,7 @@ public class YImages {
         return createImageDescriptor(prefix, name, true);
     }
 
-    public static ImageDescriptor createImageDescriptor(final String prefix, final String name, boolean useMissing) {
+    public static ImageDescriptor createImageDescriptor(final String prefix, final String name, final boolean useMissing) {
         final IPath path = ICONS_PATH.append(prefix).append(name);
         final Bundle bundle = YPlugin.getDefault().getBundle();
         final URL url = FileLocator.find(bundle, path, null);

@@ -34,7 +34,7 @@ public class ImpexEditor extends TextEditor {
         colorManager = new ColorManager();
         setSourceViewerConfiguration(new ImpexConfiguration(this, colorManager));
         setDocumentProvider(new ImpexDocumentProvider());
-        setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
+        setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
         //        getVerticalRuler().getModel().addAnnotation(annotation, position);
     }

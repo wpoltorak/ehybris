@@ -328,29 +328,29 @@
                description="Toggle Line Comment"
                id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
                name="Toggle Line Comment">
-         </command>     
-      </extension>
+         </command>  
+       </extension>
       <extension
             point="org.eclipse.ui.commandImages">
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-               disabledIcon="icons/full/dcl16/run_prod.png"
-               icon="icons/full/ecl16/run_prod.png">
+               disabledIcon="icons/full/dlcl16/run_prod.png"
+               icon="icons/full/elcl16/run_prod.png">
          </image>
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-               disabledIcon="icons/full/dcl16/run_tst.png"
-               icon="icons/full/ecl16/run_tst.png">
+               disabledIcon="icons/full/dlcl16/run_tst.png"
+               icon="icons/full/elcl16/run_tst.png">
          </image>
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-               disabledIcon="icons/full/dcl16/run_dev.png"
-               icon="icons/full/ecl16/run_dev.png">
+               disabledIcon="icons/full/dlcl16/run_dev.png"
+               icon="icons/full/elcl16/run_dev.png">
          </image>
          <image
                commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
-               disabledIcon="icons/full/dcl16/run_dev.png"
-               icon="icons/full/ecl16/mark_occurrences.gif">
+               disabledIcon="icons/full/dlcl16/mark_occurrences.gif"
+               icon="icons/full/elcl16/mark_occurrences.gif">
          </image>
       </extension>
       <extension
@@ -362,44 +362,27 @@
                   id="com.lambda.plugin.yunit.toolbar">
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                     disabledIcon="icons/full/dcl16/run_dev.png"
-                     icon="icons/full/ecl16/run_dev.png"
+                     disabledIcon="icons/full/dlcl16/run_dev.png"
+                     icon="icons/full/elcl16/run_dev.png"
                      label="Run Local"
                      style="push"
                      tooltip="Run workspace functional tests against local server">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                     disabledIcon="icons/full/dcl16/run_tst.png"
-                     icon="icons/full/ecl16/run_tst.png"
+                     disabledIcon="icons/full/dlcl16/run_tst.png"
+                     icon="icons/full/elcl16/run_tst.png"
                      label="Run Staging"
                      style="push"
                      tooltip="Run workspace functional tests against staging server">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                     disabledIcon="icons/full/dcl16/run_prod.png"
-                     icon="icons/full/ecl16/run_prod.png"
+                     disabledIcon="icons/full/dlcl16/run_prod.png"
+                     icon="icons/full/elcl16/run_prod.png"
                      label="Run Production"
                      style="push"
                      tooltip="Run workspace functional tests against production server">
-               </command>
-            </toolbar>
-            <toolbar
-                  id="com.lambda.plugin.impex.editor.toolbar">
-               <command
-                     commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
-                     disabledIcon="icons/full/dcl16/mark_occurrences.gif"
-                     icon="icons/full/ecl16/mark_occurrences.gif"
-                     label="Toggle Mark Occurrences"
-                     style="toggle"
-                     tooltip="Toggle mark occurrences">
-                  <visibleWhen
-                        checkEnabled="false">
-                     <reference
-                           definitionId="inImpexEditor">
-                     </reference>
-                  </visibleWhen>
                </command>
             </toolbar>
          </menuContribution>
@@ -419,24 +402,24 @@
             </separator>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                  disabledIcon="icons/full/dcl16/run_dev.png"
-                  icon="icons/full/ecl16/run_dev.png"
+                  disabledIcon="icons/full/dlcl16/run_dev.png"
+                  icon="icons/full/elcl16/run_dev.png"
                   label="Run Local"
                   style="push"
                   tooltip="Run workspace functional tests against local server">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                  disabledIcon="icons/full/dcl16/run_tst.png"
-                  icon="icons/full/ecl16/run_tst.png"
+                  disabledIcon="icons/full/dlcl16/run_tst.png"
+                  icon="icons/full/elcl16/run_tst.png"
                   label="Run Staging"
                   style="push"
                   tooltip="Run workspace functional tests against staging server">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                  disabledIcon="icons/full/dcl16/run_prod.png"
-                  icon="icons/full/ecl16/run_prod.png"
+                  disabledIcon="icons/full/dlcl16/run_prod.png"
+                  icon="icons/full/elcl16/run_prod.png"
                   label="Run Production"
                   style="push"
                   tooltip="Run workspace functional tests against production server">
@@ -494,19 +477,6 @@
                </with>
             </activeWhen>
          </handler>
-         <handler
-               class="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences">
-         </handler>
-         <handler
-               class="com.lambda.plugin.impex.editor.actions.ToggleLineCommentAction"
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment">
-            <enabledWhen>
-               <reference
-                     definitionId="inImpexEditor">
-               </reference>
-            </enabledWhen>
-         </handler>
       </extension>
       <extension
             point="org.eclipse.ui.propertyPages">
@@ -533,7 +503,7 @@
             point="org.eclipse.ui.editors">
          <editor
                class="com.lambda.plugin.impex.editor.ImpexEditor"
-               contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+               contributorClass="com.lambda.plugin.impex.editor.actions.ImpexEditorActionContributor"
                extensions="impex"
                icon="icons/sample.gif"
                id="com.lambda.plugin.impex.editor.ImpexEditor"

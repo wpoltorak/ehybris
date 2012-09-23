@@ -8,6 +8,8 @@ import org.eclipse.osgi.util.NLS;
 public final class YMessages extends NLS {
 
     private static final String BUNDLE_NAME = "com.lambda.plugin.YMessages";//$NON-NLS-1$
+    private static final String IMPEX_EDITOR_ACTIONS_BUNDLE_NAME = "com.lambda.plugin.impex.editor.actions.ImpexActionMessages";
+    private static ResourceBundle impexEditorActionsBundle = ResourceBundle.getBundle(IMPEX_EDITOR_ACTIONS_BUNDLE_NAME);
 
     static {
         NLS.initializeMessages(BUNDLE_NAME, YMessages.class);
@@ -15,6 +17,10 @@ public final class YMessages extends NLS {
 
     private YMessages() {
         // Do not instantiate
+    }
+
+    public static ResourceBundle getImpexEditorActionsBundle() {
+        return impexEditorActionsBundle;
     }
 
     public static final ResourceBundle getBundle() {
