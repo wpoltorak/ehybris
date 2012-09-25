@@ -15,6 +15,7 @@ import org.eclipse.ui.editors.text.TextEditorActionContributor;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
 import com.lambda.plugin.YImages;
@@ -41,6 +42,7 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
         YImages.setLocalImageDescriptors(toggleMarkOccurrencesAction, "mark_occurrences.gif");
 
         showWhitespaceCharactersAction = new RetargetTextEditorAction(bundle, null, "ShowWhitespaceCharactersAction.", IAction.AS_CHECK_BOX);
+        showWhitespaceCharactersAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_WHITESPACE_CHARACTERS);
         showWhitespaceCharactersAction.setChecked(EditorsUI.getPreferenceStore().getBoolean(
                 AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS));
         YImages.setLocalImageDescriptors(showWhitespaceCharactersAction, "show_whitespace_chars.gif");

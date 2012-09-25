@@ -13,6 +13,7 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -24,7 +25,7 @@ import com.lambda.plugin.preferences.PreferenceConstants;
 public class ImpexEditor extends TextEditor {
 
     private final ColorManager colorManager;
-    private final boolean markingOccurrences;
+    private boolean markingOccurrences;
     private ProjectionSupport projectionSupport;
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
@@ -116,6 +117,14 @@ public class ImpexEditor extends TextEditor {
         model.reconcile();
         //TODO need to update editor image 
         // updateEditorImage(model);
+    }
+
+    @Override
+    protected void handlePreferenceStoreChanged(final PropertyChangeEvent event) {
+        if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES)) {
+            markingOccurrences = Boolean.TRUE.equals(event.getNewValue());
+        }
+        super.handlePreferenceStoreChanged(event);
     }
 
     @Override
