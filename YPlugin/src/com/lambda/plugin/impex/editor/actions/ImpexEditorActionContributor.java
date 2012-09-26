@@ -16,7 +16,6 @@ import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
-import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 
 import com.lambda.plugin.YImages;
 import com.lambda.plugin.YMessages;
@@ -28,12 +27,12 @@ import com.lambda.plugin.impex.editor.ImpexEditor;
 public class ImpexEditorActionContributor extends TextEditorActionContributor {
 
     private final static String TOGGLE_MARK_OCCURRENCES_ID = "com.lambda.plugin.impex.editor.actions.toggleMarkOccurrences"; //$NON-NLS-1$
-    //    protected RetargetTextEditorAction fContentAssistProposal;
-    //    protected RetargetTextEditorAction fContentFormat;
+    // protected RetargetTextEditorAction fContentAssistProposal;
+    // protected RetargetTextEditorAction fContentFormat;
     private final ToggleMarkOccurrencesAction toggleMarkOccurrencesAction;
     private final RetargetTextEditorAction showWhitespaceCharactersAction;
 
-    //    private final ToggleAutoReconcileAction fToggleAutoReconcileAction;
+    // private final ToggleAutoReconcileAction fToggleAutoReconcileAction;
 
     public ImpexEditorActionContributor() {
         final ResourceBundle bundle = YMessages.getImpexEditorActionsBundle();
@@ -41,19 +40,20 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
                 "ToggleMarkOccurrencesAction.", null, IAction.AS_CHECK_BOX); //$NON-NLS-1$
         YImages.setLocalImageDescriptors(toggleMarkOccurrencesAction, "mark_occurrences.gif");
 
-        showWhitespaceCharactersAction = new RetargetTextEditorAction(bundle, null, "ShowWhitespaceCharactersAction.", IAction.AS_CHECK_BOX);
+        showWhitespaceCharactersAction = new RetargetTextEditorAction(bundle, null, "ShowWhitespaceCharactersAction.",
+                IAction.AS_CHECK_BOX);
         showWhitespaceCharactersAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_WHITESPACE_CHARACTERS);
         showWhitespaceCharactersAction.setChecked(EditorsUI.getPreferenceStore().getBoolean(
                 AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS));
         YImages.setLocalImageDescriptors(showWhitespaceCharactersAction, "show_whitespace_chars.gif");
 
-        //        showWhitespaceCharactersAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_WHITESPACE_CHARACTERS);
+        // showWhitespaceCharactersAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_WHITESPACE_CHARACTERS);
         //        fContentAssistProposal = new RetargetTextEditorAction(bundle, "ContentAssistProposal."); //$NON-NLS-1$
-        //        fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
+        // fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
         //        fContentFormat = new RetargetTextEditorAction(bundle, "ContentFormat."); //$NON-NLS-1$
-        //        fContentFormat.setActionDefinitionId(IJavaEditorActionDefinitionIds.FORMAT);
+        // fContentFormat.setActionDefinitionId(IJavaEditorActionDefinitionIds.FORMAT);
 
-        //        fToggleAutoReconcileAction = new ToggleAutoReconcileAction();
+        // fToggleAutoReconcileAction = new ToggleAutoReconcileAction();
 
     }
 
@@ -65,34 +65,35 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
             editor = (ITextEditor) part;
         }
 
-        //        fContentAssistProposal.setAction(getAction(editor, ITextEditorActionConstants.CONTENT_ASSIST));
+        // fContentAssistProposal.setAction(getAction(editor, ITextEditorActionConstants.CONTENT_ASSIST));
         //        fContentFormat.setAction(getAction(editor, "ContentFormat")); //$NON-NLS-1$
 
         if (editor instanceof ImpexEditor) {
             final ImpexEditor impexEditor = (ImpexEditor) part;
             contributeToMenu(getActionBars().getMenuManager());
 
-            //            final FoldingActionGroup foldingActions = impexEditor.getFoldingActionGroup();
-            //            if (foldingActions != null) {
-            //                foldingActions.updateActionBars();
-            //            }
+            // final FoldingActionGroup foldingActions = impexEditor.getFoldingActionGroup();
+            // if (foldingActions != null) {
+            // foldingActions.updateActionBars();
+            // }
         }
 
         toggleMarkOccurrencesAction.setEditor(editor);
-        showWhitespaceCharactersAction.setAction(getAction(editor, ITextEditorActionConstants.SHOW_WHITESPACE_CHARACTERS));
+        IAction action = getAction(editor, ITextEditorActionConstants.SHOW_WHITESPACE_CHARACTERS);
+        showWhitespaceCharactersAction.setAction(action);
 
-        //        toggleMarkOccurrencesAction.setEnabled(editor != null && editor.isEditable());
-        //        if (fToggleAutoReconcileAction != null) {
-        //            fToggleAutoReconcileAction.setEditor(editor);
-        //        }
+        // toggleMarkOccurrencesAction.setEnabled(editor != null && editor.isEditable());
+        // if (fToggleAutoReconcileAction != null) {
+        // fToggleAutoReconcileAction.setEditor(editor);
+        // }
     }
 
-    //    private void updateActionsEnablement(final ITextEditor editor, final IAction... actions) {
-    //        final boolean enabled = editor != null && editor.isEditable();
-    //        for (final IAction action : actions) {
-    //            action.setEnabled(enabled);
-    //        }
-    //    }
+    // private void updateActionsEnablement(final ITextEditor editor, final IAction... actions) {
+    // final boolean enabled = editor != null && editor.isEditable();
+    // for (final IAction action : actions) {
+    // action.setEnabled(enabled);
+    // }
+    // }
 
     @Override
     public void contributeToToolBar(final IToolBarManager toolBarManager) {
@@ -110,12 +111,12 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
     public void contributeToMenu(final IMenuManager menu) {
         super.contributeToMenu(menu);
 
-        //        final IMenuManager navigateMenu = menu.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
-        //        if (navigateMenu != null) {
-        //            navigateMenu.appendToGroup(IWorkbenchActionConstants.OPEN_EXT, fOpenDeclarationAction);
-        //            navigateMenu.appendToGroup(IWorkbenchActionConstants.OPEN_EXT, fOpenExternalDocAction);
-        //            navigateMenu.setVisible(true);
-        //        }
+        // final IMenuManager navigateMenu = menu.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
+        // if (navigateMenu != null) {
+        // navigateMenu.appendToGroup(IWorkbenchActionConstants.OPEN_EXT, fOpenDeclarationAction);
+        // navigateMenu.appendToGroup(IWorkbenchActionConstants.OPEN_EXT, fOpenExternalDocAction);
+        // navigateMenu.setVisible(true);
+        // }
     }
 
     /*
@@ -131,8 +132,8 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
         final IMenuManager editMenu = menuManager.findMenuUsingPath(IWorkbenchActionConstants.M_EDIT);
         if (editMenu != null) {
             editMenu.add(new Separator());
-            //            editMenu.add(fContentAssistProposal);
-            //            editMenu.add(fContentFormat);
+            // editMenu.add(fContentAssistProposal);
+            // editMenu.add(fContentFormat);
         }
     }
 
