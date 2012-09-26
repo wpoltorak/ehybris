@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/impex.g 2012-09-09 13:19:43
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/impex.g 2012-09-26 23:34:12
 
   package output;
 
@@ -97,7 +97,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "impex"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:43:1: impex : ( Comment ( LineBreak )? )+ EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:43:1: impex : ( Comment )? ( LineBreak )? EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ) ;
     public final impexParser.impex_return impex() throws RecognitionException {
         impexParser.impex_return retval = new impexParser.impex_return();
         retval.start = input.LT(1);
@@ -117,64 +117,52 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleTokenStream stream_EOF=new RewriteRuleTokenStream(adaptor,"token EOF");
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:2: ( ( Comment ( LineBreak )? )+ EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:6: ( Comment ( LineBreak )? )+ EOF
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:2: ( ( Comment )? ( LineBreak )? EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:6: ( Comment )? ( LineBreak )? EOF
             {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:6: ( Comment ( LineBreak )? )+
-            int cnt2=0;
-            loop2:
-            do {
-                int alt2=2;
-                int LA2_0 = input.LA(1);
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:6: ( Comment )?
+            int alt1=2;
+            int LA1_0 = input.LA(1);
 
-                if ( (LA2_0==Comment) ) {
-                    alt2=1;
-                }
-
-
-                switch (alt2) {
-            	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:7: Comment ( LineBreak )?
-            	    {
-            	    Comment1=(Token)match(input,Comment,FOLLOW_Comment_in_impex143);  
-            	    stream_Comment.add(Comment1);
+            if ( (LA1_0==Comment) ) {
+                alt1=1;
+            }
+            switch (alt1) {
+                case 1 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:6: Comment
+                    {
+                    Comment1=(Token)match(input,Comment,FOLLOW_Comment_in_impex142);  
+                    stream_Comment.add(Comment1);
 
 
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:15: ( LineBreak )?
-            	    int alt1=2;
-            	    int LA1_0 = input.LA(1);
+                    }
+                    break;
 
-            	    if ( (LA1_0==LineBreak) ) {
-            	        alt1=1;
-            	    }
-            	    switch (alt1) {
-            	        case 1 :
-            	            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:15: LineBreak
-            	            {
-            	            LineBreak2=(Token)match(input,LineBreak,FOLLOW_LineBreak_in_impex145);  
-            	            stream_LineBreak.add(LineBreak2);
+            }
 
 
-            	            }
-            	            break;
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:15: ( LineBreak )?
+            int alt2=2;
+            int LA2_0 = input.LA(1);
 
-            	    }
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt2 >= 1 ) break loop2;
-                        EarlyExitException eee =
-                            new EarlyExitException(2, input);
-                        throw eee;
-                }
-                cnt2++;
-            } while (true);
+            if ( (LA2_0==LineBreak) ) {
+                alt2=1;
+            }
+            switch (alt2) {
+                case 1 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:15: LineBreak
+                    {
+                    LineBreak2=(Token)match(input,LineBreak,FOLLOW_LineBreak_in_impex145);  
+                    stream_LineBreak.add(LineBreak2);
 
 
-            EOF3=(Token)match(input,EOF,FOLLOW_EOF_in_impex150);  
+                    }
+                    break;
+
+            }
+
+
+            EOF3=(Token)match(input,EOF,FOLLOW_EOF_in_impex148);  
             stream_EOF.add(EOF3);
 
 
@@ -189,23 +177,23 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 44:32: -> ^( IMPEX ^( COMMENTS ( Comment )* ) )
+            // 44:30: -> ^( IMPEX ^( COMMENTS ( Comment )* ) )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:35: ^( IMPEX ^( COMMENTS ( Comment )* ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:33: ^( IMPEX ^( COMMENTS ( Comment )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(IMPEX, "IMPEX")
                 , root_1);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:44: ^( COMMENTS ( Comment )* )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:42: ^( COMMENTS ( Comment )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(COMMENTS, "COMMENTS")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:55: ( Comment )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:44:53: ( Comment )*
                 while ( stream_Comment.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_Comment.nextNode()
@@ -253,8 +241,8 @@ public TreeAdaptor getTreeAdaptor() {
 
  
 
-    public static final BitSet FOLLOW_Comment_in_impex143 = new BitSet(new long[]{0x0000000080004000L});
-    public static final BitSet FOLLOW_LineBreak_in_impex145 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_EOF_in_impex150 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Comment_in_impex142 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_LineBreak_in_impex145 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_impex148 = new BitSet(new long[]{0x0000000000000002L});
 
 }

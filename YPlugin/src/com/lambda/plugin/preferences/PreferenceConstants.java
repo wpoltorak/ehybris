@@ -10,6 +10,7 @@ import com.lambda.plugin.YPlugin;
  */
 public class PreferenceConstants {
 
+    // Impex Editor Preferences
     /**
      * Preference key suffix for bold text style preference keys.
      * 
@@ -22,9 +23,31 @@ public class PreferenceConstants {
     public static final String IMPEX_EDITOR_ITALIC_SUFFIX = "_italic"; //$NON-NLS-1$
 
     /**
-     * Mark macro occurrences in Impex Editor
+     * Mark occurrences in Impex Editor
      */
     public static final String IMPEX_EDITOR_MARK_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_occurrences";
+
+    /**
+     * Mark macro occurrences in Impex Editor
+     */
+    public static final String IMPEX_EDITOR_MARK_MACRO_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_macro_occurrences";
+
+    /**
+     * Mark table name occurrences in Impex Editor
+     */
+    public static final String IMPEX_EDITOR_MARK_TABLE_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_table_occurrences";
+
+    /**
+     * Mark column name occurrences in Impex Editor
+     */
+    public static final String IMPEX_EDITOR_MARK_COLUMN_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_column_occurrences";
+
+    /**
+     * Mark column name occurrences in Impex Editor
+     */
+    public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_value_occurrences";
+
+    //
 
     public static final String YUNIT_PERSIST_FUNCTEST_RESULTS = "persistFunctestResults";
 
@@ -50,8 +73,7 @@ public class PreferenceConstants {
     public static final String YUNIT_PREF_ACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".active_stack_filters"; //$NON-NLS-1$
 
     /**
-     * List of inactive stack filters. A String containing a comma separated list of fully qualified type
-     * names/patterns.
+     * List of inactive stack filters. A String containing a comma separated list of fully qualified type names/patterns.
      */
     public static final String YUNIT_PREF_INACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".inactive_stack_filters"; //$NON-NLS-1$  
 
@@ -130,14 +152,16 @@ public class PreferenceConstants {
      * @param list array of strings
      * @return a single string composed of the given list
      */
-    public static String serializeList(String[] list) {
-        if (list == null)
+    public static String serializeList(final String[] list) {
+        if (list == null) {
             return ""; //$NON-NLS-1$
+        }
 
-        StringBuffer buffer = new StringBuffer();
+        final StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < list.length; i++) {
-            if (i > 0)
+            if (i > 0) {
                 buffer.append(',');
+            }
 
             buffer.append(list[i]);
         }

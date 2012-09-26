@@ -130,6 +130,12 @@
             name="ImpEx">
       </page>
       <page
+            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
+            id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
+            name="Mark Occurrences">
+      </page>
+      <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             id="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"

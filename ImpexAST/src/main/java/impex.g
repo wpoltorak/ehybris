@@ -41,7 +41,7 @@ tokens{
 
 
 impex	
-	:	  (Comment LineBreak?)+ EOF -> ^(IMPEX  ^(COMMENTS Comment*))
+	:	  Comment? LineBreak? EOF -> ^(IMPEX  ^(COMMENTS Comment*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
