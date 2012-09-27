@@ -30,23 +30,29 @@ public class ImpexModel implements IImpexModel {
     }
 
     public void reconcile() {
-        System.out.println("##################33 RECONSILE ##################################");
-        removeMarkers();
-        final String source = document.get();
-        // create an instance of the lexer
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(source));
-        // wrap a token-stream around the lexer
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        tokens.fill();
-        // traverse the tokens and print them to see if the correct tokens are created
-        System.out.println("Tokenizing " + (lexer.failed() ? "failed" : "succeeded"));
-        System.out.println("Tokens:");
-        int n = 1;
-        for (final Object o : tokens.getTokens()) {
-            final CommonToken token = (CommonToken) o;
-            System.out.println("token(" + n++ + ") = " + token.getText().replace("\n", "\\n"));
+        long start = System.currentTimeMillis();
+        try {
+            System.out.println("===> RECONCILE " + editorInput.getName() + "##################################");
+            removeMarkers();
+            final String source = document.get();
+            // create an instance of the lexer
+            final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(source));
+            // wrap a token-stream around the lexer
+            final CommonTokenStream tokens = new CommonTokenStream(lexer);
+            tokens.fill();
+            // traverse the tokens and print them to see if the correct tokens are created
+            System.out.println("Tokenizing " + (lexer.failed() ? "failed" : "succeeded"));
+            System.out.println("Tokens:");
+            int n = 1;
+            for (final Object o : tokens.getTokens()) {
+                final CommonToken token = (CommonToken) o;
+                System.out.println("token(" + n++ + ") = " + token.getText().replace("\n", "\\n"));
+            }
+            lexer.createMarkers();
+        } finally {
+            System.out.println("===> TOOK " + (System.currentTimeMillis() - start) / 1000);
+
         }
-        lexer.createMarkers();
     }
 
     private void removeMarkers() {
@@ -88,7 +94,7 @@ public class ImpexModel implements IImpexModel {
                 MarkerUtilities.setLineNumber(map, lineNumber);
                 MarkerUtilities.setMessage(map, "Syntax error");
 
-                //            map.put(IMarker.LOCATION, file.getFullPath().toString());
+                // map.put(IMarker.LOCATION, file.getFullPath().toString());
 
                 final Integer charStart = getCharStart(lineNumber, columnNumber);
                 if (charStart != null) {
