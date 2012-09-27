@@ -16,6 +16,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import output.impexLexer;
+import output.impexParser;
 
 import com.lambda.plugin.YPlugin;
 
@@ -39,7 +40,9 @@ public class ImpexModel implements IImpexModel {
             final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(source));
             // wrap a token-stream around the lexer
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
-            tokens.fill();
+            impexParser parser = new impexParser(tokens);
+            parser.impex();
+            // tokens.fill();
             // traverse the tokens and print them to see if the correct tokens are created
             System.out.println("Tokenizing " + (lexer.failed() ? "failed" : "succeeded"));
             System.out.println("Tokens:");
@@ -49,8 +52,10 @@ public class ImpexModel implements IImpexModel {
                 System.out.println("token(" + n++ + ") = " + token.getText().replace("\n", "\\n"));
             }
             lexer.createMarkers();
+        } catch (RecognitionException e) {
+            e.printStackTrace();
         } finally {
-            System.out.println("===> TOOK " + (System.currentTimeMillis() - start) / 1000);
+            System.out.println("===> TOOK " + (System.currentTimeMillis() - start) / 1000 + " seconds");
 
         }
     }
