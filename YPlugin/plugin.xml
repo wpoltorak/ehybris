@@ -521,7 +521,7 @@
             name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
             point="org.eclipse.core.filebuffers.annotationModelCreation">
          <factory
-               class="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
+               class="com.lambda.plugin.impex.editor.ImpexAnnotationModelFactory"
                extensions="impex">
          </factory>
       </extension>

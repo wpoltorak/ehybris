@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.BitSet;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.IntStream;
 import org.antlr.runtime.RecognitionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -30,7 +32,7 @@ public class ImpexModel implements IImpexModel {
     }
 
     public void reconcile() {
-        long start = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
         try {
             System.out.println("===> RECONCILE " + editorInput.getName() + "##################################");
             removeMarkers();
@@ -39,6 +41,7 @@ public class ImpexModel implements IImpexModel {
             final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(source));
             // wrap a token-stream around the lexer
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
+
             tokens.fill();
             // traverse the tokens and print them to see if the correct tokens are created
             System.out.println("Tokenizing " + (lexer.failed() ? "failed" : "succeeded"));
@@ -75,11 +78,39 @@ public class ImpexModel implements IImpexModel {
             for (final Map<String, Object> attributes : markerAttributes.values()) {
                 try {
                     final IFile file = editorInput.getFile();
+
                     MarkerUtilities.createMarker(file, attributes, IMPEXFILE_PROBLEM_MARKER);
+                    YPlugin.logInfo("Line: " + attributes.get(IMarker.LINE_NUMBER) + ", from: " + attributes.get(IMarker.CHAR_START)
+                            + ", to: " + attributes.get(IMarker.CHAR_END), null);
                 } catch (final CoreException ee) {
                     ee.printStackTrace();
                 }
             }
+        }
+
+        @Override
+        public void recover(final IntStream input, final RecognitionException re) {
+            // TODO Auto-generated method stub
+            super.recover(input, re);
+        }
+
+        @Override
+        public void recover(final RecognitionException re) {
+            // TODO Auto-generated method stub
+            super.recover(re);
+        }
+
+        @Override
+        public Object recoverFromMismatchedSet(final IntStream input, final RecognitionException e, final BitSet follow)
+                throws RecognitionException {
+            // TODO Auto-generated method stub
+            return super.recoverFromMismatchedSet(input, e, follow);
+        }
+
+        @Override
+        protected Object recoverFromMismatchedToken(final IntStream arg0, final int arg1, final BitSet arg2) throws RecognitionException {
+            // TODO Auto-generated method stub
+            return super.recoverFromMismatchedToken(arg0, arg1, arg2);
         }
 
         @Override
@@ -94,11 +125,12 @@ public class ImpexModel implements IImpexModel {
                 MarkerUtilities.setLineNumber(map, lineNumber);
                 MarkerUtilities.setMessage(map, "Syntax error");
 
-                // map.put(IMarker.LOCATION, file.getFullPath().toString());
+                //map.put(IMarker.LOCATION, lineNumber);
 
                 final Integer charStart = getCharStart(lineNumber, columnNumber);
                 if (charStart != null) {
                     MarkerUtilities.setCharStart(map, charStart);
+                    MarkerUtilities.setCharEnd(map, charStart);
                 }
 
                 map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
@@ -114,5 +146,15 @@ public class ImpexModel implements IImpexModel {
         private int getCharStart(final int lineNumber, final int columnNumber) {
             return columnNumber;
         }
+
+        private IProblem createProblem(final Exception exception, final int offset, final int length, final int lineNumber,
+                final int severity) {
+            return createProblem(exception.getMessage(), offset, length, lineNumber, severity);
+        }
+
+        private IProblem createProblem(final String message, final int offset, final int length, final int lineNumber, final int severity) {
+            return new ImpexModelProblem(message, severity, offset, length, lineNumber);
+        }
+
     }
 }
