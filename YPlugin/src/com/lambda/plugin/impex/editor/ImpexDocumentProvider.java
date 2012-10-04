@@ -6,7 +6,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
-import org.eclipse.ui.texteditor.ResourceMarkerAnnotationModel;
 
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
@@ -37,7 +36,7 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
     @Override
     protected IAnnotationModel createAnnotationModel(final IFile file) {
-        return new ResourceMarkerAnnotationModel(file);
+        return new ImpexAnnotationModel(file);
     }
 
     public IImpexModel getImpexModel(final Object element) {

@@ -12,7 +12,6 @@ public class ImpexScanner extends RuleBasedScanner {
     public final static String IMPEX_COMMENT = "__xml_comment";
 
     public ImpexScanner(final ColorManager manager) {
-        final IToken procInstr = new Token(new TextAttribute(manager.getColor(ImpexColorConstants.PROC_INSTR)));
         final IToken impexComment = new Token(new TextAttribute(manager.getColor(ImpexColorConstants.IMPEX_COMMENT)));
 
         final IRule[] rules = new IRule[2];

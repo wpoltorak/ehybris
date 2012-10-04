@@ -41,7 +41,7 @@ tokens{
 
 
 impex	
-	:	((Comment LineBreak?) | BlankLine)* EOF -> ^(IMPEX  ^(COMMENTS Comment*))
+	:	((Ws | Comment )  LineBreak?)* EOF -> ^(IMPEX  ^(COMMENTS Comment*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
@@ -84,10 +84,6 @@ LineBreak
 	|	'\u000d'		// \r (MacOS)
    	;
 
-BlankLine
-	:	Ws* LineBreak?
-	;
-	
-fragment Ws
+Ws
 	:	'\u0020' | '\u0009'
 	;

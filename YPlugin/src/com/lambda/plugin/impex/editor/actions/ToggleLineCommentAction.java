@@ -3,6 +3,7 @@ package com.lambda.plugin.impex.editor.actions;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
@@ -12,6 +13,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.editor.ImpexEditor;
 
 public class ToggleLineCommentAction extends AbstractHandler {
@@ -26,8 +28,18 @@ public class ToggleLineCommentAction extends AbstractHandler {
                 // get current text selection
                 final ITextSelection textSelection = getCurrentSelection(impexEditor);
                 if (!textSelection.isEmpty()) {
-                    //call the implementers code to deal with the event
-                    //                    processAction(impexEditor, (IStructuredDocument) document, textSelection);
+                    try {
+                        YPlugin.logError("Start line: " + textSelection.getStartLine(), null);
+                        YPlugin.logError("End line: " + textSelection.getEndLine(), null);
+                        YPlugin.logError("Offset: " + textSelection.getOffset(), null);
+                        YPlugin.logError("End Line Offset: " + document.getLineOffset(textSelection.getEndLine()), null);
+                        YPlugin.logError("Length: " + textSelection.getLength(), null);
+                        YPlugin.logError("Text: " + textSelection.getText(), null);
+                        //call the implementers code to deal with the event
+                        //                    processAction(impexEditor, (IStructuredDocument) document, textSelection);
+                    } catch (final BadLocationException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
