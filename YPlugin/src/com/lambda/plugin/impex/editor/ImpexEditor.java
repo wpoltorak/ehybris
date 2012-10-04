@@ -7,6 +7,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.CompositeRuler;
+import org.eclipse.jface.text.source.IOverviewRuler;
+import org.eclipse.jface.text.source.ISharedTextColors;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
@@ -88,6 +90,11 @@ public class ImpexEditor extends TextEditor {
         //            ruler.addDecorator(1, createLineNumberRulerColumn());
         //        }
         return ruler;
+    }
+
+    @Override
+    protected IOverviewRuler createOverviewRuler(final ISharedTextColors sharedColors) {
+        return super.createOverviewRuler(sharedColors);
     }
 
     public void updateFoldingStructure(final List<Position> positions) {

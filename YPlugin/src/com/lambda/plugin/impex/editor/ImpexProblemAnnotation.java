@@ -1,7 +1,8 @@
 package com.lambda.plugin.impex.editor;
 
-import org.eclipse.ant.internal.ui.model.IProblem;
 import org.eclipse.jface.text.source.Annotation;
+
+import com.lambda.plugin.impex.model.IProblem;
 
 /**
  * Annotation representing an <code>IProblem</code>.

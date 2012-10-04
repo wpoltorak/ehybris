@@ -1,5 +1,7 @@
 package com.lambda.plugin.impex.model;
 
+import org.eclipse.core.resources.IMarker;
+
 public class ImpexModelProblem implements IProblem {
 
     private final String message;
@@ -34,5 +36,13 @@ public class ImpexModelProblem implements IProblem {
 
     public int getLineNumber() {
         return lineNumber;
+    }
+
+    public boolean isError() {
+        return severity == IMarker.SEVERITY_ERROR;
+    }
+
+    public boolean isWarning() {
+        return severity == IMarker.SEVERITY_WARNING;
     }
 }

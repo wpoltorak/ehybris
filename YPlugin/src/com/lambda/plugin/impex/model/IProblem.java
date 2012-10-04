@@ -12,4 +12,8 @@ public interface IProblem {
 
     String getMessage();
 
+    boolean isError();
+
+    boolean isWarning();
+
 }

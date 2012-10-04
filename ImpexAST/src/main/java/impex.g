@@ -39,11 +39,14 @@ tokens{
   package output;
 }
 
-
 impex	
-	:	((Ws | Comment )  LineBreak?)* EOF -> ^(IMPEX  ^(COMMENTS Comment*))
+	:	((Ws | Comment)  LineBreak?)* EOF -> ^(IMPEX  ^(COMMENTS Comment*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
+
+macroAssignement
+	:	MacroDefinition Equals MacroExpression  -> ^(ASSIGNEMENT MacroDefinition MacroExpression)
+	;			
 
 Insert		:'INSERT';
 InsertUpdate		:'INSERT_UPDATE';
@@ -75,6 +78,14 @@ Underscore		:'_';
 Hash		:'#';
 LineContinuation	:'\\\\';
 
+MacroDefinition
+	:	Dollar MacroIdentifier
+	;
+
+fragment MacroIdentifier
+	:	(Letter | Underscore)(Digit | Letter | Underscore)*
+	;	
+
 Comment	
 	:	Hash ~('\u000d' | '\u000a')*
 	;
@@ -83,7 +94,26 @@ LineBreak
 	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix)
 	|	'\u000d'		// \r (MacOS)
    	;
-
 Ws
 	:	'\u0020' | '\u0009'
+	;
+
+fragment Letter
+	:	'a' .. 'z' | 'A' .. 'Z';
+
+fragment Digit   
+  	:  	'0'..'9'  
+ 	;
+
+fragment MacroExpression
+	:	Char+
+	;
+
+fragment Char
+	:	'\u0000' .. '\u0009'	//without \r \n " ; $
+	|	'\u000b' .. '\u000c'
+	|	'\u000e' .. '\u0021'
+	|	'\u0023'
+	|	'\u0025' .. '\u003a'	
+	|	'\u003c' .. '\uffff'
 	;

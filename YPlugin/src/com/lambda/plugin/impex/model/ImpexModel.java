@@ -12,7 +12,10 @@ import org.antlr.runtime.IntStream;
 import org.antlr.runtime.RecognitionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerUtilities;
@@ -75,16 +78,19 @@ public class ImpexModel implements IImpexModel {
         }
 
         public void createMarkers() {
-            for (final Map<String, Object> attributes : markerAttributes.values()) {
-                try {
-                    final IFile file = editorInput.getFile();
-
-                    MarkerUtilities.createMarker(file, attributes, IMPEXFILE_PROBLEM_MARKER);
-                    YPlugin.logInfo("Line: " + attributes.get(IMarker.LINE_NUMBER) + ", from: " + attributes.get(IMarker.CHAR_START)
-                            + ", to: " + attributes.get(IMarker.CHAR_END), null);
-                } catch (final CoreException ee) {
-                    ee.printStackTrace();
+            final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+                public void run(final IProgressMonitor monitor) throws CoreException {
+                    for (final Map<String, Object> attributes : markerAttributes.values()) {
+                        final IFile file = editorInput.getFile();
+                        final IMarker marker = file.createMarker(IMPEXFILE_PROBLEM_MARKER);
+                        marker.setAttributes(attributes);
+                    }
                 }
+            };
+            try {
+                wr.run(new NullProgressMonitor());
+            } catch (final CoreException e) {
+                YPlugin.logError(e);
             }
         }
 
@@ -116,35 +122,21 @@ public class ImpexModel implements IImpexModel {
         @Override
         public void reportError(final RecognitionException e) {
             final int lineNumber = getLine();
-            final int columnNumber = getCharPositionInLine();
             Map<String, Object> map = markerAttributes.get(lineNumber);
+            final int charIndex = getCharIndex();
             if (map != null) {
-                MarkerUtilities.setCharEnd(map, columnNumber);
+                MarkerUtilities.setCharEnd(map, charIndex);
             } else {
                 map = new HashMap<String, Object>();
                 MarkerUtilities.setLineNumber(map, lineNumber);
                 MarkerUtilities.setMessage(map, "Syntax error");
-
-                //map.put(IMarker.LOCATION, lineNumber);
-
-                final Integer charStart = getCharStart(lineNumber, columnNumber);
-                if (charStart != null) {
-                    MarkerUtilities.setCharStart(map, charStart);
-                    MarkerUtilities.setCharEnd(map, charStart);
-                }
+                MarkerUtilities.setCharStart(map, charIndex);
+                MarkerUtilities.setCharEnd(map, charIndex);
 
                 map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
                 markerAttributes.put(lineNumber, map);
             }
             super.reportError(e);
-        }
-
-        private int getCharEnd(final int lineNumber, final int columnNumber) {
-            return columnNumber;
-        }
-
-        private int getCharStart(final int lineNumber, final int columnNumber) {
-            return columnNumber;
         }
 
         private IProblem createProblem(final Exception exception, final int offset, final int length, final int lineNumber,
