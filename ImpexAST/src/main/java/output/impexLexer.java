@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g 2012-09-27 07:46:26
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/impex.g 2012-09-28 18:03:48
 
  package output;
 
@@ -17,45 +17,44 @@ public class impexLexer extends Lexer {
     public static final int Alias=7;
     public static final int AllowNull=8;
     public static final int BatchMode=9;
-    public static final int BlankLine=10;
-    public static final int COMMENTS=11;
-    public static final int COMPLEX_ATTRIBUTE=12;
-    public static final int CacheUnique=13;
-    public static final int Comma=14;
-    public static final int Comment=15;
-    public static final int Dollar=16;
-    public static final int Equals=17;
-    public static final int ForceWrite=18;
-    public static final int HEADER=19;
-    public static final int HEADER_PREFIX=20;
-    public static final int HEADER_TYPE=21;
-    public static final int Hash=22;
-    public static final int IMPEX=23;
-    public static final int IMPEX_BLOCK=24;
-    public static final int IMPEX_BLOCKS=25;
-    public static final int IgnoreKeyCase=26;
-    public static final int IgnoreNull=27;
-    public static final int Insert=28;
-    public static final int InsertUpdate=29;
-    public static final int LeftBracket=30;
-    public static final int LeftParenthesis=31;
-    public static final int LineBreak=32;
-    public static final int LineContinuation=33;
-    public static final int MACRO=34;
-    public static final int Pos=35;
-    public static final int Processor=36;
-    public static final int ROW=37;
-    public static final int ROWS=38;
-    public static final int Remove=39;
-    public static final int RightBracket=40;
-    public static final int RightParenthesis=41;
-    public static final int SIMPLE_ATTRIBUTE=42;
-    public static final int Semicolon=43;
-    public static final int Underscore=44;
-    public static final int Unique=45;
-    public static final int Update=46;
-    public static final int Virtual=47;
-    public static final int Ws=48;
+    public static final int COMMENTS=10;
+    public static final int COMPLEX_ATTRIBUTE=11;
+    public static final int CacheUnique=12;
+    public static final int Comma=13;
+    public static final int Comment=14;
+    public static final int Dollar=15;
+    public static final int Equals=16;
+    public static final int ForceWrite=17;
+    public static final int HEADER=18;
+    public static final int HEADER_PREFIX=19;
+    public static final int HEADER_TYPE=20;
+    public static final int Hash=21;
+    public static final int IMPEX=22;
+    public static final int IMPEX_BLOCK=23;
+    public static final int IMPEX_BLOCKS=24;
+    public static final int IgnoreKeyCase=25;
+    public static final int IgnoreNull=26;
+    public static final int Insert=27;
+    public static final int InsertUpdate=28;
+    public static final int LeftBracket=29;
+    public static final int LeftParenthesis=30;
+    public static final int LineBreak=31;
+    public static final int LineContinuation=32;
+    public static final int MACRO=33;
+    public static final int Pos=34;
+    public static final int Processor=35;
+    public static final int ROW=36;
+    public static final int ROWS=37;
+    public static final int Remove=38;
+    public static final int RightBracket=39;
+    public static final int RightParenthesis=40;
+    public static final int SIMPLE_ATTRIBUTE=41;
+    public static final int Semicolon=42;
+    public static final int Underscore=43;
+    public static final int Unique=44;
+    public static final int Update=45;
+    public static final int Virtual=46;
+    public static final int Ws=47;
 
     // delegates
     // delegators
@@ -70,15 +69,15 @@ public class impexLexer extends Lexer {
     public impexLexer(CharStream input, RecognizerSharedState state) {
         super(input,state);
     }
-    public String getGrammarFileName() { return "/home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g"; }
+    public String getGrammarFileName() { return "/work/projects/yeclipse/ImpexAST/src/main/java/impex.g"; }
 
     // $ANTLR start "Insert"
     public final void mInsert() throws RecognitionException {
         try {
             int _type = Insert;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:48:9: ( 'INSERT' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:48:10: 'INSERT'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:48:9: ( 'INSERT' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:48:10: 'INSERT'
             {
             match("INSERT"); 
 
@@ -100,8 +99,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = InsertUpdate;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:49:15: ( 'INSERT_UPDATE' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:49:16: 'INSERT_UPDATE'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:49:15: ( 'INSERT_UPDATE' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:49:16: 'INSERT_UPDATE'
             {
             match("INSERT_UPDATE"); 
 
@@ -123,8 +122,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Update;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:50:9: ( 'UPDATE' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:50:10: 'UPDATE'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:50:9: ( 'UPDATE' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:50:10: 'UPDATE'
             {
             match("UPDATE"); 
 
@@ -146,8 +145,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Remove;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:51:9: ( 'REMOVE' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:51:10: 'REMOVE'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:51:9: ( 'REMOVE' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:51:10: 'REMOVE'
             {
             match("REMOVE"); 
 
@@ -169,8 +168,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = BatchMode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:53:12: ( 'batchmode' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:53:13: 'batchmode'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:53:12: ( 'batchmode' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:53:13: 'batchmode'
             {
             match("batchmode"); 
 
@@ -192,8 +191,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = CacheUnique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:54:14: ( 'cacheUnique' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:54:15: 'cacheUnique'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:54:14: ( 'cacheUnique' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:54:15: 'cacheUnique'
             {
             match("cacheUnique"); 
 
@@ -215,8 +214,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Processor;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:55:12: ( 'processor' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:55:13: 'processor'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:55:12: ( 'processor' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:55:13: 'processor'
             {
             match("processor"); 
 
@@ -238,8 +237,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Alias;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:57:8: ( 'alias' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:57:9: 'alias'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:57:8: ( 'alias' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:57:9: 'alias'
             {
             match("alias"); 
 
@@ -261,8 +260,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = AllowNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:58:12: ( 'allownull' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:58:13: 'allownull'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:58:12: ( 'allownull' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:58:13: 'allownull'
             {
             match("allownull"); 
 
@@ -284,8 +283,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = ForceWrite;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:59:13: ( 'forceWrite' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:59:14: 'forceWrite'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:59:13: ( 'forceWrite' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:59:14: 'forceWrite'
             {
             match("forceWrite"); 
 
@@ -307,8 +306,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = IgnoreKeyCase;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:60:15: ( 'ignoreKeyCase' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:60:16: 'ignoreKeyCase'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:60:15: ( 'ignoreKeyCase' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:60:16: 'ignoreKeyCase'
             {
             match("ignoreKeyCase"); 
 
@@ -330,8 +329,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = IgnoreNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:61:13: ( 'ignorenull' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:61:14: 'ignorenull'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:61:13: ( 'ignorenull' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:61:14: 'ignorenull'
             {
             match("ignorenull"); 
 
@@ -353,8 +352,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Unique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:62:9: ( 'unique' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:62:10: 'unique'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:62:9: ( 'unique' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:62:10: 'unique'
             {
             match("unique"); 
 
@@ -376,8 +375,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Virtual;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:63:10: ( 'virtual' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:63:11: 'virtual'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:63:10: ( 'virtual' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:63:11: 'virtual'
             {
             match("virtual"); 
 
@@ -399,8 +398,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Pos;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:64:6: ( 'pos' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:64:7: 'pos'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:64:6: ( 'pos' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:64:7: 'pos'
             {
             match("pos"); 
 
@@ -422,8 +421,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Dollar;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:66:9: ( '$' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:66:10: '$'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:66:9: ( '$' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:66:10: '$'
             {
             match('$'); 
 
@@ -443,8 +442,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Semicolon;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:67:12: ( ';' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:67:13: ';'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:67:12: ( ';' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:67:13: ';'
             {
             match(';'); 
 
@@ -464,8 +463,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = RightBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:68:15: ( ']' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:68:16: ']'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:68:15: ( ']' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:68:16: ']'
             {
             match(']'); 
 
@@ -485,8 +484,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = LeftBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:69:14: ( '[' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:69:15: '['
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:69:14: ( '[' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:69:15: '['
             {
             match('['); 
 
@@ -506,8 +505,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = LeftParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:70:18: ( '(' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:70:19: '('
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:70:18: ( '(' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:70:19: '('
             {
             match('('); 
 
@@ -527,8 +526,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = RightParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:71:18: ( ')' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:71:19: ')'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:71:18: ( ')' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:71:19: ')'
             {
             match(')'); 
 
@@ -548,8 +547,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Equals;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:72:9: ( '=' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:72:10: '='
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:72:9: ( '=' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:72:10: '='
             {
             match('='); 
 
@@ -569,8 +568,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Comma;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:73:8: ( ',' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:73:10: ','
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:73:8: ( ',' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:73:10: ','
             {
             match(','); 
 
@@ -590,8 +589,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Underscore;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:74:13: ( '_' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:74:14: '_'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:74:13: ( '_' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:74:14: '_'
             {
             match('_'); 
 
@@ -611,8 +610,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = Hash;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:75:7: ( '#' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:75:8: '#'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:75:7: ( '#' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:75:8: '#'
             {
             match('#'); 
 
@@ -632,8 +631,8 @@ public class impexLexer extends Lexer {
         try {
             int _type = LineContinuation;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:76:18: ( '\\\\\\\\' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:76:19: '\\\\\\\\'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:76:18: ( '\\\\\\\\' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:76:19: '\\\\\\\\'
             {
             match("\\\\"); 
 
@@ -655,13 +654,13 @@ public class impexLexer extends Lexer {
         try {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:79:2: ( Hash (~ ( '\\u000d' | '\\u000a' ) )* )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:79:4: Hash (~ ( '\\u000d' | '\\u000a' ) )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:79:2: ( Hash (~ ( '\\u000d' | '\\u000a' ) )* )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:79:4: Hash (~ ( '\\u000d' | '\\u000a' ) )*
             {
             mHash(); 
 
 
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:79:9: (~ ( '\\u000d' | '\\u000a' ) )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:79:9: (~ ( '\\u000d' | '\\u000a' ) )*
             loop1:
             do {
                 int alt1=2;
@@ -674,7 +673,7 @@ public class impexLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:
             	    {
             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
             	        input.consume();
@@ -711,7 +710,7 @@ public class impexLexer extends Lexer {
         try {
             int _type = LineBreak;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:83:2: ( ( '\\u000d' )? '\\u000a' | '\\u000d' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:83:2: ( ( '\\u000d' )? '\\u000a' | '\\u000d' )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -737,9 +736,9 @@ public class impexLexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:83:4: ( '\\u000d' )? '\\u000a'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:83:4: ( '\\u000d' )? '\\u000a'
                     {
-                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:83:4: ( '\\u000d' )?
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:83:4: ( '\\u000d' )?
                     int alt2=2;
                     int LA2_0 = input.LA(1);
 
@@ -748,7 +747,7 @@ public class impexLexer extends Lexer {
                     }
                     switch (alt2) {
                         case 1 :
-                            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:83:4: '\\u000d'
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:83:4: '\\u000d'
                             {
                             match('\r'); 
 
@@ -763,7 +762,7 @@ public class impexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:84:4: '\\u000d'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:84:4: '\\u000d'
                     {
                     match('\r'); 
 
@@ -780,84 +779,13 @@ public class impexLexer extends Lexer {
     }
     // $ANTLR end "LineBreak"
 
-    // $ANTLR start "BlankLine"
-    public final void mBlankLine() throws RecognitionException {
-        try {
-            int _type = BlankLine;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:88:2: ( ( Ws )* ( LineBreak )? )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:88:4: ( Ws )* ( LineBreak )?
-            {
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:88:4: ( Ws )*
-            loop4:
-            do {
-                int alt4=2;
-                int LA4_0 = input.LA(1);
-
-                if ( (LA4_0=='\t'||LA4_0==' ') ) {
-                    alt4=1;
-                }
-
-
-                switch (alt4) {
-            	case 1 :
-            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:
-            	    {
-            	    if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
-            	        input.consume();
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;
-            	    }
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop4;
-                }
-            } while (true);
-
-
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:88:8: ( LineBreak )?
-            int alt5=2;
-            int LA5_0 = input.LA(1);
-
-            if ( (LA5_0=='\n'||LA5_0=='\r') ) {
-                alt5=1;
-            }
-            switch (alt5) {
-                case 1 :
-                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:88:8: LineBreak
-                    {
-                    mLineBreak(); 
-
-
-                    }
-                    break;
-
-            }
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "BlankLine"
-
     // $ANTLR start "Ws"
     public final void mWs() throws RecognitionException {
         try {
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:92:2: ( '\\u0020' | '\\u0009' )
-            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:
+            int _type = Ws;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:88:2: ( '\\u0020' | '\\u0009' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:
             {
             if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
                 input.consume();
@@ -871,7 +799,8 @@ public class impexLexer extends Lexer {
 
             }
 
-
+            state.type = _type;
+            state.channel = _channel;
         }
         finally {
         	// do for sure before leaving
@@ -880,38 +809,38 @@ public class impexLexer extends Lexer {
     // $ANTLR end "Ws"
 
     public void mTokens() throws RecognitionException {
-        // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:8: ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Dollar | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | Underscore | Hash | LineContinuation | Comment | LineBreak | BlankLine )
-        int alt6=29;
+        // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:8: ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Dollar | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | Underscore | Hash | LineContinuation | Comment | LineBreak | Ws )
+        int alt4=29;
         switch ( input.LA(1) ) {
         case 'I':
             {
-            int LA6_1 = input.LA(2);
+            int LA4_1 = input.LA(2);
 
-            if ( (LA6_1=='N') ) {
-                int LA6_26 = input.LA(3);
+            if ( (LA4_1=='N') ) {
+                int LA4_25 = input.LA(3);
 
-                if ( (LA6_26=='S') ) {
-                    int LA6_34 = input.LA(4);
+                if ( (LA4_25=='S') ) {
+                    int LA4_32 = input.LA(4);
 
-                    if ( (LA6_34=='E') ) {
-                        int LA6_38 = input.LA(5);
+                    if ( (LA4_32=='E') ) {
+                        int LA4_36 = input.LA(5);
 
-                        if ( (LA6_38=='R') ) {
-                            int LA6_40 = input.LA(6);
+                        if ( (LA4_36=='R') ) {
+                            int LA4_38 = input.LA(6);
 
-                            if ( (LA6_40=='T') ) {
-                                int LA6_42 = input.LA(7);
+                            if ( (LA4_38=='T') ) {
+                                int LA4_40 = input.LA(7);
 
-                                if ( (LA6_42=='_') ) {
-                                    alt6=2;
+                                if ( (LA4_40=='_') ) {
+                                    alt4=2;
                                 }
                                 else {
-                                    alt6=1;
+                                    alt4=1;
                                 }
                             }
                             else {
                                 NoViableAltException nvae =
-                                    new NoViableAltException("", 6, 40, input);
+                                    new NoViableAltException("", 4, 38, input);
 
                                 throw nvae;
 
@@ -919,7 +848,7 @@ public class impexLexer extends Lexer {
                         }
                         else {
                             NoViableAltException nvae =
-                                new NoViableAltException("", 6, 38, input);
+                                new NoViableAltException("", 4, 36, input);
 
                             throw nvae;
 
@@ -927,7 +856,7 @@ public class impexLexer extends Lexer {
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 6, 34, input);
+                            new NoViableAltException("", 4, 32, input);
 
                         throw nvae;
 
@@ -935,7 +864,7 @@ public class impexLexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 6, 26, input);
+                        new NoViableAltException("", 4, 25, input);
 
                     throw nvae;
 
@@ -943,7 +872,7 @@ public class impexLexer extends Lexer {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 1, input);
+                    new NoViableAltException("", 4, 1, input);
 
                 throw nvae;
 
@@ -952,37 +881,37 @@ public class impexLexer extends Lexer {
             break;
         case 'U':
             {
-            alt6=3;
+            alt4=3;
             }
             break;
         case 'R':
             {
-            alt6=4;
+            alt4=4;
             }
             break;
         case 'b':
             {
-            alt6=5;
+            alt4=5;
             }
             break;
         case 'c':
             {
-            alt6=6;
+            alt4=6;
             }
             break;
         case 'p':
             {
-            int LA6_6 = input.LA(2);
+            int LA4_6 = input.LA(2);
 
-            if ( (LA6_6=='r') ) {
-                alt6=7;
+            if ( (LA4_6=='r') ) {
+                alt4=7;
             }
-            else if ( (LA6_6=='o') ) {
-                alt6=15;
+            else if ( (LA4_6=='o') ) {
+                alt4=15;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 6, input);
+                    new NoViableAltException("", 4, 6, input);
 
                 throw nvae;
 
@@ -991,20 +920,20 @@ public class impexLexer extends Lexer {
             break;
         case 'a':
             {
-            int LA6_7 = input.LA(2);
+            int LA4_7 = input.LA(2);
 
-            if ( (LA6_7=='l') ) {
-                int LA6_29 = input.LA(3);
+            if ( (LA4_7=='l') ) {
+                int LA4_28 = input.LA(3);
 
-                if ( (LA6_29=='i') ) {
-                    alt6=8;
+                if ( (LA4_28=='i') ) {
+                    alt4=8;
                 }
-                else if ( (LA6_29=='l') ) {
-                    alt6=9;
+                else if ( (LA4_28=='l') ) {
+                    alt4=9;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 6, 29, input);
+                        new NoViableAltException("", 4, 28, input);
 
                     throw nvae;
 
@@ -1012,7 +941,7 @@ public class impexLexer extends Lexer {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 7, input);
+                    new NoViableAltException("", 4, 7, input);
 
                 throw nvae;
 
@@ -1021,37 +950,37 @@ public class impexLexer extends Lexer {
             break;
         case 'f':
             {
-            alt6=10;
+            alt4=10;
             }
             break;
         case 'i':
             {
-            int LA6_9 = input.LA(2);
+            int LA4_9 = input.LA(2);
 
-            if ( (LA6_9=='g') ) {
-                int LA6_30 = input.LA(3);
+            if ( (LA4_9=='g') ) {
+                int LA4_29 = input.LA(3);
 
-                if ( (LA6_30=='n') ) {
-                    int LA6_37 = input.LA(4);
+                if ( (LA4_29=='n') ) {
+                    int LA4_35 = input.LA(4);
 
-                    if ( (LA6_37=='o') ) {
-                        int LA6_39 = input.LA(5);
+                    if ( (LA4_35=='o') ) {
+                        int LA4_37 = input.LA(5);
 
-                        if ( (LA6_39=='r') ) {
-                            int LA6_41 = input.LA(6);
+                        if ( (LA4_37=='r') ) {
+                            int LA4_39 = input.LA(6);
 
-                            if ( (LA6_41=='e') ) {
-                                int LA6_43 = input.LA(7);
+                            if ( (LA4_39=='e') ) {
+                                int LA4_41 = input.LA(7);
 
-                                if ( (LA6_43=='K') ) {
-                                    alt6=11;
+                                if ( (LA4_41=='K') ) {
+                                    alt4=11;
                                 }
-                                else if ( (LA6_43=='n') ) {
-                                    alt6=12;
+                                else if ( (LA4_41=='n') ) {
+                                    alt4=12;
                                 }
                                 else {
                                     NoViableAltException nvae =
-                                        new NoViableAltException("", 6, 43, input);
+                                        new NoViableAltException("", 4, 41, input);
 
                                     throw nvae;
 
@@ -1059,7 +988,7 @@ public class impexLexer extends Lexer {
                             }
                             else {
                                 NoViableAltException nvae =
-                                    new NoViableAltException("", 6, 41, input);
+                                    new NoViableAltException("", 4, 39, input);
 
                                 throw nvae;
 
@@ -1067,7 +996,7 @@ public class impexLexer extends Lexer {
                         }
                         else {
                             NoViableAltException nvae =
-                                new NoViableAltException("", 6, 39, input);
+                                new NoViableAltException("", 4, 37, input);
 
                             throw nvae;
 
@@ -1075,7 +1004,7 @@ public class impexLexer extends Lexer {
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 6, 37, input);
+                            new NoViableAltException("", 4, 35, input);
 
                         throw nvae;
 
@@ -1083,7 +1012,7 @@ public class impexLexer extends Lexer {
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 6, 30, input);
+                        new NoViableAltException("", 4, 29, input);
 
                     throw nvae;
 
@@ -1091,7 +1020,7 @@ public class impexLexer extends Lexer {
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 6, 9, input);
+                    new NoViableAltException("", 4, 9, input);
 
                 throw nvae;
 
@@ -1100,100 +1029,99 @@ public class impexLexer extends Lexer {
             break;
         case 'u':
             {
-            alt6=13;
+            alt4=13;
             }
             break;
         case 'v':
             {
-            alt6=14;
+            alt4=14;
             }
             break;
         case '$':
             {
-            alt6=16;
+            alt4=16;
             }
             break;
         case ';':
             {
-            alt6=17;
+            alt4=17;
             }
             break;
         case ']':
             {
-            alt6=18;
+            alt4=18;
             }
             break;
         case '[':
             {
-            alt6=19;
+            alt4=19;
             }
             break;
         case '(':
             {
-            alt6=20;
+            alt4=20;
             }
             break;
         case ')':
             {
-            alt6=21;
+            alt4=21;
             }
             break;
         case '=':
             {
-            alt6=22;
+            alt4=22;
             }
             break;
         case ',':
             {
-            alt6=23;
+            alt4=23;
             }
             break;
         case '_':
             {
-            alt6=24;
+            alt4=24;
             }
             break;
         case '#':
             {
-            int LA6_21 = input.LA(2);
+            int LA4_21 = input.LA(2);
 
-            if ( ((LA6_21 >= '\u0000' && LA6_21 <= '\t')||(LA6_21 >= '\u000B' && LA6_21 <= '\f')||(LA6_21 >= '\u000E' && LA6_21 <= '\uFFFF')) ) {
-                alt6=27;
+            if ( ((LA4_21 >= '\u0000' && LA4_21 <= '\t')||(LA4_21 >= '\u000B' && LA4_21 <= '\f')||(LA4_21 >= '\u000E' && LA4_21 <= '\uFFFF')) ) {
+                alt4=27;
             }
             else {
-                alt6=25;
+                alt4=25;
             }
             }
             break;
         case '\\':
             {
-            alt6=26;
-            }
-            break;
-        case '\r':
-            {
-            int LA6_23 = input.LA(2);
-
-            if ( (LA6_23=='\n') ) {
-                alt6=28;
-            }
-            else {
-                alt6=28;
-            }
+            alt4=26;
             }
             break;
         case '\n':
+        case '\r':
             {
-            alt6=28;
+            alt4=28;
+            }
+            break;
+        case '\t':
+        case ' ':
+            {
+            alt4=29;
             }
             break;
         default:
-            alt6=29;
+            NoViableAltException nvae =
+                new NoViableAltException("", 4, 0, input);
+
+            throw nvae;
+
         }
 
-        switch (alt6) {
+        switch (alt4) {
             case 1 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:10: Insert
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:10: Insert
                 {
                 mInsert(); 
 
@@ -1201,7 +1129,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 2 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:17: InsertUpdate
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:17: InsertUpdate
                 {
                 mInsertUpdate(); 
 
@@ -1209,7 +1137,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 3 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:30: Update
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:30: Update
                 {
                 mUpdate(); 
 
@@ -1217,7 +1145,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 4 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:37: Remove
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:37: Remove
                 {
                 mRemove(); 
 
@@ -1225,7 +1153,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 5 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:44: BatchMode
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:44: BatchMode
                 {
                 mBatchMode(); 
 
@@ -1233,7 +1161,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 6 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:54: CacheUnique
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:54: CacheUnique
                 {
                 mCacheUnique(); 
 
@@ -1241,7 +1169,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 7 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:66: Processor
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:66: Processor
                 {
                 mProcessor(); 
 
@@ -1249,7 +1177,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 8 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:76: Alias
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:76: Alias
                 {
                 mAlias(); 
 
@@ -1257,7 +1185,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 9 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:82: AllowNull
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:82: AllowNull
                 {
                 mAllowNull(); 
 
@@ -1265,7 +1193,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 10 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:92: ForceWrite
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:92: ForceWrite
                 {
                 mForceWrite(); 
 
@@ -1273,7 +1201,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 11 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:103: IgnoreKeyCase
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:103: IgnoreKeyCase
                 {
                 mIgnoreKeyCase(); 
 
@@ -1281,7 +1209,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 12 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:117: IgnoreNull
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:117: IgnoreNull
                 {
                 mIgnoreNull(); 
 
@@ -1289,7 +1217,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 13 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:128: Unique
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:128: Unique
                 {
                 mUnique(); 
 
@@ -1297,7 +1225,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 14 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:135: Virtual
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:135: Virtual
                 {
                 mVirtual(); 
 
@@ -1305,7 +1233,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 15 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:143: Pos
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:143: Pos
                 {
                 mPos(); 
 
@@ -1313,7 +1241,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 16 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:147: Dollar
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:147: Dollar
                 {
                 mDollar(); 
 
@@ -1321,7 +1249,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 17 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:154: Semicolon
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:154: Semicolon
                 {
                 mSemicolon(); 
 
@@ -1329,7 +1257,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 18 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:164: RightBracket
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:164: RightBracket
                 {
                 mRightBracket(); 
 
@@ -1337,7 +1265,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 19 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:177: LeftBracket
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:177: LeftBracket
                 {
                 mLeftBracket(); 
 
@@ -1345,7 +1273,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 20 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:189: LeftParenthesis
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:189: LeftParenthesis
                 {
                 mLeftParenthesis(); 
 
@@ -1353,7 +1281,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 21 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:205: RightParenthesis
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:205: RightParenthesis
                 {
                 mRightParenthesis(); 
 
@@ -1361,7 +1289,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 22 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:222: Equals
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:222: Equals
                 {
                 mEquals(); 
 
@@ -1369,7 +1297,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 23 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:229: Comma
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:229: Comma
                 {
                 mComma(); 
 
@@ -1377,7 +1305,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 24 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:235: Underscore
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:235: Underscore
                 {
                 mUnderscore(); 
 
@@ -1385,7 +1313,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 25 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:246: Hash
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:246: Hash
                 {
                 mHash(); 
 
@@ -1393,7 +1321,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 26 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:251: LineContinuation
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:251: LineContinuation
                 {
                 mLineContinuation(); 
 
@@ -1401,7 +1329,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 27 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:268: Comment
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:268: Comment
                 {
                 mComment(); 
 
@@ -1409,7 +1337,7 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 28 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:276: LineBreak
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:276: LineBreak
                 {
                 mLineBreak(); 
 
@@ -1417,9 +1345,9 @@ public class impexLexer extends Lexer {
                 }
                 break;
             case 29 :
-                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/impex.g:1:286: BlankLine
+                // /work/projects/yeclipse/ImpexAST/src/main/java/impex.g:1:286: Ws
                 {
-                mBlankLine(); 
+                mWs(); 
 
 
                 }
