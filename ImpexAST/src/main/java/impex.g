@@ -44,9 +44,9 @@ impex
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
-macroAssignement
-	:	MacroDefinition Equals MacroExpression  -> ^(ASSIGNEMENT MacroDefinition MacroExpression)
-	;			
+//macroAssignement
+//	:	MacroDefinition Equals MacroExpression  -> ^(ASSIGNEMENT MacroDefinition MacroExpression)
+//	;			
 
 Insert		:'INSERT';
 InsertUpdate		:'INSERT_UPDATE';
@@ -66,54 +66,64 @@ Unique		:'unique';
 Virtual		:'virtual';
 Pos		:'pos';
 
-Dollar		:'$';
+//Dollar		:'$';
 Semicolon		:';';
 RightBracket		:']';
 LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
 Equals		:'=';
-Comma		: ',';
-Underscore		:'_';
-Hash		:'#';
+Comma		:',';
+//Underscore		:'_';
+//Hash		:'#';
 LineContinuation	:'\\\\';
 
-MacroDefinition
-	:	Dollar MacroIdentifier
+Macrodef
+	:	'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
 
-fragment MacroIdentifier
-	:	(Letter | Underscore)(Digit | Letter | Underscore)*
-	;	
+//fragment MacroIdentifier
+//	:	(Letter | Underscore)(Digit | Letter | Underscore)*
+//	;	
 
 Comment	
-	:	Hash ~('\u000d' | '\u000a')*
+	@after {
+  		setText(getText().substring(1, getText().length()));
+	}
+	:	'#' ~('\u000d' | '\u000a')*
 	;
 
 LineBreak
-	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix)
-	|	'\u000d'		// \r (MacOS)
+	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix) 
+	|	'\u000d' 	// \r (MacOS)
    	;
+   	
 Ws
-	:	'\u0020' | '\u0009'
+	:	'\u0020' | '\u0009' {skip();}
 	;
 
-fragment Letter
-	:	'a' .. 'z' | 'A' .. 'Z';
-
-fragment Digit   
-  	:  	'0'..'9'  
- 	;
-
-fragment MacroExpression
-	:	Char+
+Macroval
+	:	~('\u0020' | '\u0009' | '\u000d' | '\u000a') ~('\u000d' | '\u000a')*
 	;
+	
 
-fragment Char
-	:	'\u0000' .. '\u0009'	//without \r \n " ; $
-	|	'\u000b' .. '\u000c'
-	|	'\u000e' .. '\u0021'
-	|	'\u0023'
-	|	'\u0025' .. '\u003a'	
-	|	'\u003c' .. '\uffff'
-	;
+
+//fragment Letter
+//	:	'a' .. 'z' | 'A' .. 'Z';
+
+//fragment Digit   
+//  	:  	'0'..'9'  
+// 	;
+
+//fragment MacroExpression
+//	:	Char+
+//	;
+
+//fragment Char
+//	:	'\u0000' .. '\u0009'	//without \r \n " ; $
+//	|	'\u000b' .. '\u000c'
+//	|	'\u000e' .. '\u0021'
+//	|	'\u0023'
+//	|	'\u0025' .. '\u003a'	
+//	|	'\u003c' .. '\uffff'
+//	;

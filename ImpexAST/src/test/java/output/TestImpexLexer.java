@@ -3,7 +3,7 @@ package output;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.RecognitionException;
 
-public class TestImpexLexer extends impexLexer {
+public class TestImpexLexer extends ImpexLexer {
 
     public TestImpexLexer(final CharStream antlrStringStream) {
         super(antlrStringStream);

@@ -2,7 +2,7 @@
 # Import Sample Customers
 # 
 $regulargroup=regulargroup
-$customergroup=customergroup
+$customergroup = customergroup
 
 # Create Customer Group
 INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
