@@ -20,8 +20,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
-import output.impexLexer;
-
 import com.lambda.plugin.YPlugin;
 
 public class ImpexModel implements IImpexModel {
@@ -69,7 +67,7 @@ public class ImpexModel implements IImpexModel {
         }
     }
 
-    private class ImpexLexer extends impexLexer {
+    private class ImpexLexer extends output.ImpexLexer {
 
         private final Map<Integer, Map<String, Object>> markerAttributes = new HashMap<Integer, Map<String, Object>>();
 
@@ -124,17 +122,16 @@ public class ImpexModel implements IImpexModel {
             final int lineNumber = getLine();
             Map<String, Object> map = markerAttributes.get(lineNumber);
             final int charIndex = getCharIndex();
-            if (map != null) {
-                MarkerUtilities.setCharEnd(map, charIndex);
-            } else {
+            if (map == null) {
                 map = new HashMap<String, Object>();
                 MarkerUtilities.setLineNumber(map, lineNumber);
                 MarkerUtilities.setMessage(map, "Syntax error");
                 MarkerUtilities.setCharStart(map, charIndex);
-                MarkerUtilities.setCharEnd(map, charIndex);
-
+                MarkerUtilities.setCharEnd(map, charIndex + 1);
                 map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
                 markerAttributes.put(lineNumber, map);
+            } else {
+                MarkerUtilities.setCharEnd(map, charIndex + 1);
             }
             super.reportError(e);
         }
