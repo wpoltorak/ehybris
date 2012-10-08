@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-10-07 22:55:01
+// $ANTLR 3.4 /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g 2012-10-08 10:43:19
 
  package output;
 
@@ -30,30 +30,31 @@ public class ImpexLexer extends Lexer {
     public static final int IMPEX=20;
     public static final int IMPEX_BLOCK=21;
     public static final int IMPEX_BLOCKS=22;
-    public static final int IgnoreKeyCase=23;
-    public static final int IgnoreNull=24;
-    public static final int Insert=25;
-    public static final int InsertUpdate=26;
-    public static final int LeftBracket=27;
-    public static final int LeftParenthesis=28;
-    public static final int LineBreak=29;
-    public static final int LineContinuation=30;
-    public static final int MACRO=31;
-    public static final int Macrodef=32;
-    public static final int Macroval=33;
-    public static final int Pos=34;
-    public static final int Processor=35;
-    public static final int ROW=36;
-    public static final int ROWS=37;
-    public static final int Remove=38;
-    public static final int RightBracket=39;
-    public static final int RightParenthesis=40;
-    public static final int SIMPLE_ATTRIBUTE=41;
-    public static final int Semicolon=42;
-    public static final int Unique=43;
-    public static final int Update=44;
-    public static final int Virtual=45;
-    public static final int Ws=46;
+    public static final int Identifier=23;
+    public static final int IgnoreKeyCase=24;
+    public static final int IgnoreNull=25;
+    public static final int Insert=26;
+    public static final int InsertUpdate=27;
+    public static final int LeftBracket=28;
+    public static final int LeftParenthesis=29;
+    public static final int LineBreak=30;
+    public static final int LineContinuation=31;
+    public static final int MACRO=32;
+    public static final int Macrodef=33;
+    public static final int Macroval=34;
+    public static final int Pos=35;
+    public static final int Processor=36;
+    public static final int ROW=37;
+    public static final int ROWS=38;
+    public static final int Remove=39;
+    public static final int RightBracket=40;
+    public static final int RightParenthesis=41;
+    public static final int SIMPLE_ATTRIBUTE=42;
+    public static final int Semicolon=43;
+    public static final int Unique=44;
+    public static final int Update=45;
+    public static final int Virtual=46;
+    public static final int Ws=47;
 
     // delegates
     // delegators
@@ -68,15 +69,15 @@ public class ImpexLexer extends Lexer {
     public ImpexLexer(CharStream input, RecognizerSharedState state) {
         super(input,state);
     }
-    public String getGrammarFileName() { return "/work/projects/yeclipse/ImpexAST/src/main/java/Impex.g"; }
+    public String getGrammarFileName() { return "/home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g"; }
 
     // $ANTLR start "Insert"
     public final void mInsert() throws RecognitionException {
         try {
             int _type = Insert;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:52:9: ( 'INSERT' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:52:10: 'INSERT'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:89:9: ( 'INSERT' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:89:10: 'INSERT'
             {
             match("INSERT"); 
 
@@ -98,8 +99,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = InsertUpdate;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:53:15: ( 'INSERT_UPDATE' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:53:16: 'INSERT_UPDATE'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:90:14: ( 'INSERT_UPDATE' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:90:15: 'INSERT_UPDATE'
             {
             match("INSERT_UPDATE"); 
 
@@ -121,8 +122,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Update;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:54:9: ( 'UPDATE' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:54:10: 'UPDATE'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:91:9: ( 'UPDATE' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:91:10: 'UPDATE'
             {
             match("UPDATE"); 
 
@@ -144,8 +145,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Remove;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:55:9: ( 'REMOVE' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:55:10: 'REMOVE'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:92:9: ( 'REMOVE' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:92:10: 'REMOVE'
             {
             match("REMOVE"); 
 
@@ -167,8 +168,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = BatchMode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:57:12: ( 'batchmode' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:57:13: 'batchmode'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:94:12: ( 'batchmode' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:94:13: 'batchmode'
             {
             match("batchmode"); 
 
@@ -190,8 +191,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CacheUnique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:14: ( 'cacheUnique' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:15: 'cacheUnique'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:95:14: ( 'cacheUnique' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:95:15: 'cacheUnique'
             {
             match("cacheUnique"); 
 
@@ -213,8 +214,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Processor;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:59:12: ( 'processor' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:59:13: 'processor'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:96:12: ( 'processor' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:96:13: 'processor'
             {
             match("processor"); 
 
@@ -236,8 +237,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Alias;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:61:8: ( 'alias' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:61:9: 'alias'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:98:8: ( 'alias' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:98:9: 'alias'
             {
             match("alias"); 
 
@@ -259,8 +260,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = AllowNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:62:12: ( 'allownull' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:62:13: 'allownull'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:99:12: ( 'allownull' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:99:13: 'allownull'
             {
             match("allownull"); 
 
@@ -282,8 +283,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = ForceWrite;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:13: ( 'forceWrite' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:14: 'forceWrite'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:100:13: ( 'forceWrite' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:100:14: 'forceWrite'
             {
             match("forceWrite"); 
 
@@ -305,8 +306,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreKeyCase;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:64:15: ( 'ignoreKeyCase' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:64:16: 'ignoreKeyCase'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:101:15: ( 'ignoreKeyCase' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:101:16: 'ignoreKeyCase'
             {
             match("ignoreKeyCase"); 
 
@@ -328,8 +329,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:65:13: ( 'ignorenull' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:65:14: 'ignorenull'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:102:13: ( 'ignorenull' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:102:14: 'ignorenull'
             {
             match("ignorenull"); 
 
@@ -351,8 +352,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Unique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:66:9: ( 'unique' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:66:10: 'unique'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:103:9: ( 'unique' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:103:10: 'unique'
             {
             match("unique"); 
 
@@ -374,8 +375,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Virtual;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:67:10: ( 'virtual' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:67:11: 'virtual'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:104:10: ( 'virtual' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:104:11: 'virtual'
             {
             match("virtual"); 
 
@@ -397,8 +398,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Pos;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:68:6: ( 'pos' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:68:7: 'pos'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:105:6: ( 'pos' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:105:7: 'pos'
             {
             match("pos"); 
 
@@ -420,8 +421,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Semicolon;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:71:12: ( ';' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:71:13: ';'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:108:12: ( ';' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:108:13: ';'
             {
             match(';'); 
 
@@ -441,8 +442,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RightBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:72:15: ( ']' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:72:16: ']'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:109:15: ( ']' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:109:16: ']'
             {
             match(']'); 
 
@@ -462,8 +463,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LeftBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:73:14: ( '[' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:73:15: '['
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:110:14: ( '[' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:110:15: '['
             {
             match('['); 
 
@@ -483,8 +484,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LeftParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:74:18: ( '(' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:74:19: '('
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:111:18: ( '(' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:111:19: '('
             {
             match('('); 
 
@@ -504,8 +505,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RightParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:75:18: ( ')' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:75:19: ')'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:112:18: ( ')' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:112:19: ')'
             {
             match(')'); 
 
@@ -525,8 +526,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Equals;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:76:9: ( '=' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:76:10: '='
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:113:9: ( '=' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:113:10: '='
             {
             match('='); 
 
@@ -546,8 +547,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Comma;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:77:8: ( ',' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:77:9: ','
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:114:8: ( ',' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:114:9: ','
             {
             match(','); 
 
@@ -567,8 +568,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LineContinuation;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:80:18: ( '\\\\\\\\' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:80:19: '\\\\\\\\'
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:117:18: ( '\\\\\\\\' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:117:19: '\\\\\\\\'
             {
             match("\\\\"); 
 
@@ -590,11 +591,33 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Macrodef;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:83:2: ( '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:83:4: '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:120:2: ( '$' Identifier )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:120:4: '$' Identifier
             {
             match('$'); 
 
+            mIdentifier(); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "Macrodef"
+
+    // $ANTLR start "Identifier"
+    public final void mIdentifier() throws RecognitionException {
+        try {
+            int _type = Identifier;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:124:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:124:4: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
                 input.consume();
             }
@@ -605,7 +628,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:83:40: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:124:36: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop1:
             do {
                 int alt1=2;
@@ -618,7 +641,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:
             	    {
             	    if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
             	        input.consume();
@@ -648,19 +671,19 @@ public class ImpexLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "Macrodef"
+    // $ANTLR end "Identifier"
 
     // $ANTLR start "Comment"
     public final void mComment() throws RecognitionException {
         try {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:94:2: ( '#' (~ ( '\\u000d' | '\\u000a' ) )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:94:4: '#' (~ ( '\\u000d' | '\\u000a' ) )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:135:2: ( '#' (~ ( '\\u000d' | '\\u000a' ) )* )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:135:4: '#' (~ ( '\\u000d' | '\\u000a' ) )*
             {
             match('#'); 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:94:8: (~ ( '\\u000d' | '\\u000a' ) )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:135:8: (~ ( '\\u000d' | '\\u000a' ) )*
             loop2:
             do {
                 int alt2=2;
@@ -673,7 +696,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:
             	    {
             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
             	        input.consume();
@@ -713,7 +736,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LineBreak;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:98:2: ( ( '\\u000d' )? '\\u000a' | '\\u000d' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:139:2: ( ( '\\u000d' )? '\\u000a' | '\\u000d' )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -739,9 +762,9 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:98:4: ( '\\u000d' )? '\\u000a'
+                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:139:4: ( '\\u000d' )? '\\u000a'
                     {
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:98:4: ( '\\u000d' )?
+                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:139:4: ( '\\u000d' )?
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -750,7 +773,7 @@ public class ImpexLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:98:4: '\\u000d'
+                            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:139:4: '\\u000d'
                             {
                             match('\r'); 
 
@@ -765,7 +788,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:99:4: '\\u000d'
+                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:140:4: '\\u000d'
                     {
                     match('\r'); 
 
@@ -787,7 +810,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Ws;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:104:2: ( '\\u0020' | '\\u0009' )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:145:2: ( '\\u0020' | '\\u0009' )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -806,14 +829,14 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:104:4: '\\u0020'
+                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:145:4: '\\u0020'
                     {
                     match(' '); 
 
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:104:15: '\\u0009'
+                    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:145:15: '\\u0009'
                     {
                     match('\t'); 
 
@@ -837,33 +860,34 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Macroval;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:108:2: ( (~ ( '\\u000d' | '\\u000a' ) )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:108:4: (~ ( '\\u000d' | '\\u000a' ) )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:160:2: ( Equals ( options {greedy=false; } : . )* LineBreak )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:160:4: Equals ( options {greedy=false; } : . )* LineBreak
             {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:108:4: (~ ( '\\u000d' | '\\u000a' ) )*
+            mEquals(); 
+
+
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:160:11: ( options {greedy=false; } : . )*
             loop6:
             do {
                 int alt6=2;
                 int LA6_0 = input.LA(1);
 
-                if ( ((LA6_0 >= '\u0000' && LA6_0 <= '\t')||(LA6_0 >= '\u000B' && LA6_0 <= '\f')||(LA6_0 >= '\u000E' && LA6_0 <= '\uFFFF')) ) {
+                if ( (LA6_0=='\r') ) {
+                    alt6=2;
+                }
+                else if ( (LA6_0=='\n') ) {
+                    alt6=2;
+                }
+                else if ( ((LA6_0 >= '\u0000' && LA6_0 <= '\t')||(LA6_0 >= '\u000B' && LA6_0 <= '\f')||(LA6_0 >= '\u000E' && LA6_0 <= '\uFFFF')) ) {
                     alt6=1;
                 }
 
 
                 switch (alt6) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:160:37: .
             	    {
-            	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
-            	        input.consume();
-            	    }
-            	    else {
-            	        MismatchedSetException mse = new MismatchedSetException(null,input);
-            	        recover(mse);
-            	        throw mse;
-            	    }
-
+            	    matchAny(); 
 
             	    }
             	    break;
@@ -874,10 +898,24 @@ public class ImpexLexer extends Lexer {
             } while (true);
 
 
+            mLineBreak(); 
+
+
             }
 
             state.type = _type;
             state.channel = _channel;
+
+            //		int last = getText().length();
+            //		int lastn = getText().lastIndexOf('\n');
+            //		int lastr = getText().lastIndexOf('\r');
+            //		
+            //		last = lastn > 0 ? lastn : last;
+            //		last = lastr > 0 ? lastr : last;
+            		//to strip '=' prefix and LineBreak suffix
+            //  		setText(getText().substring(1, last));
+              		setText(getText().substring(1, getText().length()).trim());
+            	
         }
         finally {
         	// do for sure before leaving
@@ -886,12 +924,12 @@ public class ImpexLexer extends Lexer {
     // $ANTLR end "Macroval"
 
     public void mTokens() throws RecognitionException {
-        // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:8: ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | LineContinuation | Macrodef | Comment | LineBreak | Ws | Macroval )
-        int alt7=28;
+        // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:8: ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | LineContinuation | Macrodef | Identifier | Comment | LineBreak | Ws | Macroval )
+        int alt7=29;
         alt7 = dfa7.predict(input);
         switch (alt7) {
             case 1 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:10: Insert
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:10: Insert
                 {
                 mInsert(); 
 
@@ -899,7 +937,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 2 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:17: InsertUpdate
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:17: InsertUpdate
                 {
                 mInsertUpdate(); 
 
@@ -907,7 +945,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 3 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:30: Update
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:30: Update
                 {
                 mUpdate(); 
 
@@ -915,7 +953,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 4 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:37: Remove
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:37: Remove
                 {
                 mRemove(); 
 
@@ -923,7 +961,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 5 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:44: BatchMode
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:44: BatchMode
                 {
                 mBatchMode(); 
 
@@ -931,7 +969,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 6 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:54: CacheUnique
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:54: CacheUnique
                 {
                 mCacheUnique(); 
 
@@ -939,7 +977,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 7 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:66: Processor
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:66: Processor
                 {
                 mProcessor(); 
 
@@ -947,7 +985,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 8 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:76: Alias
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:76: Alias
                 {
                 mAlias(); 
 
@@ -955,7 +993,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 9 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:82: AllowNull
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:82: AllowNull
                 {
                 mAllowNull(); 
 
@@ -963,7 +1001,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 10 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:92: ForceWrite
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:92: ForceWrite
                 {
                 mForceWrite(); 
 
@@ -971,7 +1009,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 11 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:103: IgnoreKeyCase
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:103: IgnoreKeyCase
                 {
                 mIgnoreKeyCase(); 
 
@@ -979,7 +1017,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 12 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:117: IgnoreNull
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:117: IgnoreNull
                 {
                 mIgnoreNull(); 
 
@@ -987,7 +1025,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 13 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:128: Unique
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:128: Unique
                 {
                 mUnique(); 
 
@@ -995,7 +1033,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 14 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:135: Virtual
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:135: Virtual
                 {
                 mVirtual(); 
 
@@ -1003,7 +1041,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 15 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:143: Pos
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:143: Pos
                 {
                 mPos(); 
 
@@ -1011,7 +1049,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 16 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:147: Semicolon
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:147: Semicolon
                 {
                 mSemicolon(); 
 
@@ -1019,7 +1057,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 17 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:157: RightBracket
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:157: RightBracket
                 {
                 mRightBracket(); 
 
@@ -1027,7 +1065,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 18 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:170: LeftBracket
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:170: LeftBracket
                 {
                 mLeftBracket(); 
 
@@ -1035,7 +1073,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 19 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:182: LeftParenthesis
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:182: LeftParenthesis
                 {
                 mLeftParenthesis(); 
 
@@ -1043,7 +1081,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 20 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:198: RightParenthesis
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:198: RightParenthesis
                 {
                 mRightParenthesis(); 
 
@@ -1051,7 +1089,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 21 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:215: Equals
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:215: Equals
                 {
                 mEquals(); 
 
@@ -1059,7 +1097,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 22 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:222: Comma
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:222: Comma
                 {
                 mComma(); 
 
@@ -1067,7 +1105,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 23 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:228: LineContinuation
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:228: LineContinuation
                 {
                 mLineContinuation(); 
 
@@ -1075,7 +1113,7 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 24 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:245: Macrodef
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:245: Macrodef
                 {
                 mMacrodef(); 
 
@@ -1083,31 +1121,39 @@ public class ImpexLexer extends Lexer {
                 }
                 break;
             case 25 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:254: Comment
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:254: Identifier
+                {
+                mIdentifier(); 
+
+
+                }
+                break;
+            case 26 :
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:265: Comment
                 {
                 mComment(); 
 
 
                 }
                 break;
-            case 26 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:262: LineBreak
+            case 27 :
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:273: LineBreak
                 {
                 mLineBreak(); 
 
 
                 }
                 break;
-            case 27 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:272: Ws
+            case 28 :
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:283: Ws
                 {
                 mWs(); 
 
 
                 }
                 break;
-            case 28 :
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:1:275: Macroval
+            case 29 :
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:1:286: Macroval
                 {
                 mMacroval(); 
 
@@ -1122,212 +1168,188 @@ public class ImpexLexer extends Lexer {
 
     protected DFA7 dfa7 = new DFA7(this);
     static final String DFA7_eotS =
-        "\14\31\1\46\1\47\1\50\1\51\1\52\1\53\1\54\2\31\1\60\1\uffff\2\61"+
-        "\1\uffff\14\31\7\uffff\1\77\1\101\1\60\2\uffff\6\31\1\110\6\31\1"+
-        "\uffff\1\101\1\uffff\6\31\1\uffff\14\31\1\141\5\31\1\150\1\151\1"+
-        "\152\3\31\1\uffff\3\31\1\162\2\31\3\uffff\7\31\1\uffff\1\174\10"+
-        "\31\1\uffff\1\31\1\u0086\1\31\1\u0088\1\u0089\4\31\1\uffff\1\31"+
-        "\2\uffff\1\u008f\1\31\1\u0091\1\31\1\u0093\1\uffff\1\31\1\uffff"+
-        "\1\31\1\uffff\1\31\1\u0097\1\u0098\2\uffff";
+        "\1\uffff\13\25\5\uffff\1\45\7\uffff\14\25\2\uffff\6\25\1\72\14\25"+
+        "\1\uffff\14\25\1\123\5\25\1\132\1\133\1\134\3\25\1\uffff\3\25\1"+
+        "\144\2\25\3\uffff\7\25\1\uffff\1\156\10\25\1\uffff\1\25\1\170\1"+
+        "\25\1\172\1\173\4\25\1\uffff\1\25\2\uffff\1\u0081\1\25\1\u0083\1"+
+        "\25\1\u0085\1\uffff\1\25\1\uffff\1\25\1\uffff\1\25\1\u0089\1\u008a"+
+        "\2\uffff";
     static final String DFA7_eofS =
-        "\u0099\uffff";
+        "\u008b\uffff";
     static final String DFA7_minS =
         "\1\11\1\116\1\120\1\105\2\141\1\157\1\154\1\157\1\147\1\156\1\151"+
-        "\7\0\1\134\1\101\1\0\1\uffff\2\0\1\uffff\1\123\1\104\1\115\1\164"+
-        "\1\143\1\157\1\163\1\151\1\162\1\156\1\151\1\162\7\uffff\3\0\2\uffff"+
-        "\1\105\1\101\1\117\1\143\1\150\1\143\1\0\1\141\1\157\1\143\1\157"+
-        "\1\161\1\164\1\uffff\1\0\1\uffff\1\122\1\124\1\126\1\150\2\145\1"+
-        "\uffff\1\163\1\167\1\145\1\162\2\165\1\124\2\105\1\155\1\125\1\163"+
-        "\1\0\1\156\1\127\2\145\1\141\3\0\1\157\1\156\1\163\1\uffff\1\165"+
-        "\1\162\1\113\1\0\1\154\1\125\3\uffff\1\144\1\151\1\157\1\154\1\151"+
-        "\1\145\1\165\1\uffff\1\0\1\120\1\145\1\161\1\162\1\154\1\164\1\171"+
-        "\1\154\1\uffff\1\104\1\0\1\165\2\0\1\145\1\103\1\154\1\101\1\uffff"+
-        "\1\145\2\uffff\1\0\1\141\1\0\1\124\1\0\1\uffff\1\163\1\uffff\1\105"+
-        "\1\uffff\1\145\2\0\2\uffff";
+        "\5\uffff\1\0\7\uffff\1\123\1\104\1\115\1\164\1\143\1\157\1\163\1"+
+        "\151\1\162\1\156\1\151\1\162\2\uffff\1\105\1\101\1\117\1\143\1\150"+
+        "\1\143\1\60\1\141\1\157\1\143\1\157\1\161\1\164\1\122\1\124\1\126"+
+        "\1\150\2\145\1\uffff\1\163\1\167\1\145\1\162\2\165\1\124\2\105\1"+
+        "\155\1\125\1\163\1\60\1\156\1\127\2\145\1\141\3\60\1\157\1\156\1"+
+        "\163\1\uffff\1\165\1\162\1\113\1\60\1\154\1\125\3\uffff\1\144\1"+
+        "\151\1\157\1\154\1\151\1\145\1\165\1\uffff\1\60\1\120\1\145\1\161"+
+        "\1\162\1\154\1\164\1\171\1\154\1\uffff\1\104\1\60\1\165\2\60\1\145"+
+        "\1\103\1\154\1\101\1\uffff\1\145\2\uffff\1\60\1\141\1\60\1\124\1"+
+        "\60\1\uffff\1\163\1\uffff\1\105\1\uffff\1\145\2\60\2\uffff";
     static final String DFA7_maxS =
-        "\1\166\1\116\1\120\1\105\2\141\1\162\1\154\1\157\1\147\1\156\1\151"+
-        "\7\uffff\1\134\1\172\1\uffff\1\uffff\2\uffff\1\uffff\1\123\1\104"+
-        "\1\115\1\164\1\143\1\157\1\163\1\154\1\162\1\156\1\151\1\162\7\uffff"+
-        "\3\uffff\2\uffff\1\105\1\101\1\117\1\143\1\150\1\143\1\uffff\1\141"+
-        "\1\157\1\143\1\157\1\161\1\164\1\uffff\1\uffff\1\uffff\1\122\1\124"+
+        "\1\172\1\116\1\120\1\105\2\141\1\162\1\154\1\157\1\147\1\156\1\151"+
+        "\5\uffff\1\uffff\7\uffff\1\123\1\104\1\115\1\164\1\143\1\157\1\163"+
+        "\1\154\1\162\1\156\1\151\1\162\2\uffff\1\105\1\101\1\117\1\143\1"+
+        "\150\1\143\1\172\1\141\1\157\1\143\1\157\1\161\1\164\1\122\1\124"+
         "\1\126\1\150\2\145\1\uffff\1\163\1\167\1\145\1\162\2\165\1\124\2"+
-        "\105\1\155\1\125\1\163\1\uffff\1\156\1\127\2\145\1\141\3\uffff\1"+
-        "\157\1\156\1\163\1\uffff\1\165\1\162\1\156\1\uffff\1\154\1\125\3"+
-        "\uffff\1\144\1\151\1\157\1\154\1\151\1\145\1\165\1\uffff\1\uffff"+
-        "\1\120\1\145\1\161\1\162\1\154\1\164\1\171\1\154\1\uffff\1\104\1"+
-        "\uffff\1\165\2\uffff\1\145\1\103\1\154\1\101\1\uffff\1\145\2\uffff"+
-        "\1\uffff\1\141\1\uffff\1\124\1\uffff\1\uffff\1\163\1\uffff\1\105"+
-        "\1\uffff\1\145\2\uffff\2\uffff";
+        "\105\1\155\1\125\1\163\1\172\1\156\1\127\2\145\1\141\3\172\1\157"+
+        "\1\156\1\163\1\uffff\1\165\1\162\1\156\1\172\1\154\1\125\3\uffff"+
+        "\1\144\1\151\1\157\1\154\1\151\1\145\1\165\1\uffff\1\172\1\120\1"+
+        "\145\1\161\1\162\1\154\1\164\1\171\1\154\1\uffff\1\104\1\172\1\165"+
+        "\2\172\1\145\1\103\1\154\1\101\1\uffff\1\145\2\uffff\1\172\1\141"+
+        "\1\172\1\124\1\172\1\uffff\1\163\1\uffff\1\105\1\uffff\1\145\2\172"+
+        "\2\uffff";
     static final String DFA7_acceptS =
-        "\26\uffff\1\32\2\uffff\1\34\14\uffff\1\20\1\21\1\22\1\23\1\24\1"+
-        "\25\1\26\3\uffff\1\31\1\33\15\uffff\1\27\1\uffff\1\30\6\uffff\1"+
-        "\17\30\uffff\1\10\6\uffff\1\1\1\3\1\4\7\uffff\1\15\11\uffff\1\16"+
-        "\11\uffff\1\5\1\uffff\1\7\1\11\5\uffff\1\12\1\uffff\1\14\1\uffff"+
-        "\1\6\3\uffff\1\2\1\13";
+        "\14\uffff\1\20\1\21\1\22\1\23\1\24\1\uffff\1\26\1\27\1\30\1\31\1"+
+        "\32\1\33\1\34\14\uffff\1\25\1\35\23\uffff\1\17\30\uffff\1\10\6\uffff"+
+        "\1\1\1\3\1\4\7\uffff\1\15\11\uffff\1\16\11\uffff\1\5\1\uffff\1\7"+
+        "\1\11\5\uffff\1\12\1\uffff\1\14\1\uffff\1\6\3\uffff\1\2\1\13";
     static final String DFA7_specialS =
-        "\14\uffff\1\26\1\14\1\12\1\21\1\22\1\16\1\3\2\uffff\1\15\1\uffff"+
-        "\1\30\1\24\24\uffff\1\1\1\2\1\4\10\uffff\1\27\7\uffff\1\6\24\uffff"+
-        "\1\11\5\uffff\1\0\1\7\1\10\7\uffff\1\23\15\uffff\1\31\12\uffff\1"+
-        "\5\1\uffff\1\20\1\13\10\uffff\1\32\1\uffff\1\25\1\uffff\1\17\6\uffff"+
-        "\1\33\1\34\2\uffff}>";
+        "\21\uffff\1\0\171\uffff}>";
     static final String[] DFA7_transitionS = {
-            "\1\30\1\26\2\uffff\1\26\22\uffff\1\27\2\uffff\1\25\1\24\3\uffff"+
-            "\1\17\1\20\2\uffff\1\22\16\uffff\1\14\1\uffff\1\21\13\uffff"+
-            "\1\1\10\uffff\1\3\2\uffff\1\2\5\uffff\1\16\1\23\1\15\3\uffff"+
-            "\1\7\1\4\1\5\2\uffff\1\10\2\uffff\1\11\6\uffff\1\6\4\uffff\1"+
-            "\12\1\13",
+            "\1\30\1\27\2\uffff\1\27\22\uffff\1\30\2\uffff\1\26\1\24\3\uffff"+
+            "\1\17\1\20\2\uffff\1\22\16\uffff\1\14\1\uffff\1\21\3\uffff\10"+
+            "\25\1\1\10\25\1\3\2\25\1\2\5\25\1\16\1\23\1\15\1\uffff\1\25"+
+            "\1\uffff\1\7\1\4\1\5\2\25\1\10\2\25\1\11\6\25\1\6\4\25\1\12"+
+            "\1\13\4\25",
+            "\1\31",
             "\1\32",
             "\1\33",
             "\1\34",
             "\1\35",
-            "\1\36",
-            "\1\40\2\uffff\1\37",
+            "\1\37\2\uffff\1\36",
+            "\1\40",
             "\1\41",
             "\1\42",
             "\1\43",
             "\1\44",
-            "\1\45",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\0\46",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\1\47",
+            "\1\50",
+            "\1\51",
+            "\1\52",
+            "\1\53",
+            "\1\54",
             "\1\55",
-            "\32\56\4\uffff\1\56\1\uffff\32\56",
-            "\12\57\1\uffff\2\57\1\uffff\ufff2\57",
-            "",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "",
+            "\1\56\2\uffff\1\57",
+            "\1\60",
+            "\1\61",
             "\1\62",
             "\1\63",
+            "",
+            "",
             "\1\64",
             "\1\65",
             "\1\66",
             "\1\67",
             "\1\70",
-            "\1\71\2\uffff\1\72",
+            "\1\71",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\73",
             "\1\74",
             "\1\75",
             "\1\76",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\42\31\12\100\7\31\32\100\4\31\1"+
-            "\100\1\31\32\100\uff85\31",
-            "\12\57\1\uffff\2\57\1\uffff\ufff2\57",
-            "",
-            "",
+            "\1\77",
+            "\1\100",
+            "\1\101",
             "\1\102",
             "\1\103",
             "\1\104",
             "\1\105",
             "\1\106",
+            "",
             "\1\107",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "\1\110",
             "\1\111",
             "\1\112",
             "\1\113",
             "\1\114",
             "\1\115",
             "\1\116",
-            "",
-            "\12\31\1\uffff\2\31\1\uffff\42\31\12\100\7\31\32\100\4\31\1"+
-            "\100\1\31\32\100\uff85\31",
-            "",
             "\1\117",
             "\1\120",
             "\1\121",
             "\1\122",
-            "\1\123",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\124",
-            "",
             "\1\125",
             "\1\126",
             "\1\127",
             "\1\130",
-            "\1\131",
-            "\1\132",
-            "\1\133",
-            "\1\134",
+            "\12\25\7\uffff\32\25\4\uffff\1\131\1\uffff\32\25",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\135",
             "\1\136",
             "\1\137",
+            "",
             "\1\140",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\1\142",
-            "\1\143",
-            "\1\144",
+            "\1\141",
+            "\1\142\42\uffff\1\143",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\145",
             "\1\146",
-            "\12\31\1\uffff\2\31\1\uffff\121\31\1\147\uffa0\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "",
+            "",
+            "",
+            "\1\147",
+            "\1\150",
+            "\1\151",
+            "\1\152",
             "\1\153",
             "\1\154",
             "\1\155",
             "",
-            "\1\156",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\157",
-            "\1\160\42\uffff\1\161",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "\1\160",
+            "\1\161",
+            "\1\162",
             "\1\163",
             "\1\164",
-            "",
-            "",
-            "",
             "\1\165",
             "\1\166",
-            "\1\167",
-            "\1\170",
-            "\1\171",
-            "\1\172",
-            "\1\173",
             "",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "\1\167",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\171",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\1\174",
             "\1\175",
             "\1\176",
             "\1\177",
+            "",
             "\1\u0080",
-            "\1\u0081",
+            "",
+            "",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\u0082",
-            "\1\u0083",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "\1\u0084",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "",
-            "\1\u0085",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "\1\u0086",
+            "",
             "\1\u0087",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\1\u008a",
-            "\1\u008b",
-            "\1\u008c",
-            "\1\u008d",
             "",
-            "\1\u008e",
-            "",
-            "",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\1\u0090",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\1\u0092",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "",
-            "\1\u0094",
-            "",
-            "\1\u0095",
-            "",
-            "\1\u0096",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
-            "\12\31\1\uffff\2\31\1\uffff\ufff2\31",
+            "\1\u0088",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
+            "\12\25\7\uffff\32\25\4\uffff\1\25\1\uffff\32\25",
             "",
             ""
     };
@@ -1362,333 +1384,19 @@ public class ImpexLexer extends Lexer {
             this.transition = DFA7_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | LineContinuation | Macrodef | Comment | LineBreak | Ws | Macroval );";
+            return "1:1: Tokens : ( Insert | InsertUpdate | Update | Remove | BatchMode | CacheUnique | Processor | Alias | AllowNull | ForceWrite | IgnoreKeyCase | IgnoreNull | Unique | Virtual | Pos | Semicolon | RightBracket | LeftBracket | LeftParenthesis | RightParenthesis | Equals | Comma | LineContinuation | Macrodef | Identifier | Comment | LineBreak | Ws | Macroval );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA7_91 = input.LA(1);
-
-                        s = -1;
-                        if ( (LA7_91=='_') ) {s = 103;}
-
-                        else if ( ((LA7_91 >= '\u0000' && LA7_91 <= '\t')||(LA7_91 >= '\u000B' && LA7_91 <= '\f')||(LA7_91 >= '\u000E' && LA7_91 <= '^')||(LA7_91 >= '`' && LA7_91 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 104;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 1 : 
-                        int LA7_45 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_45 >= '\u0000' && LA7_45 <= '\t')||(LA7_45 >= '\u000B' && LA7_45 <= '\f')||(LA7_45 >= '\u000E' && LA7_45 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 63;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 2 : 
-                        int LA7_46 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_46 >= '0' && LA7_46 <= '9')||(LA7_46 >= 'A' && LA7_46 <= 'Z')||LA7_46=='_'||(LA7_46 >= 'a' && LA7_46 <= 'z')) ) {s = 64;}
-
-                        else if ( ((LA7_46 >= '\u0000' && LA7_46 <= '\t')||(LA7_46 >= '\u000B' && LA7_46 <= '\f')||(LA7_46 >= '\u000E' && LA7_46 <= '/')||(LA7_46 >= ':' && LA7_46 <= '@')||(LA7_46 >= '[' && LA7_46 <= '^')||LA7_46=='`'||(LA7_46 >= '{' && LA7_46 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 65;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 3 : 
-                        int LA7_18 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_18 >= '\u0000' && LA7_18 <= '\t')||(LA7_18 >= '\u000B' && LA7_18 <= '\f')||(LA7_18 >= '\u000E' && LA7_18 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 44;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 4 : 
-                        int LA7_47 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_47 >= '\u0000' && LA7_47 <= '\t')||(LA7_47 >= '\u000B' && LA7_47 <= '\f')||(LA7_47 >= '\u000E' && LA7_47 <= '\uFFFF')) ) {s = 47;}
-
-                        else s = 48;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 5 : 
-                        int LA7_126 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_126 >= '\u0000' && LA7_126 <= '\t')||(LA7_126 >= '\u000B' && LA7_126 <= '\f')||(LA7_126 >= '\u000E' && LA7_126 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 134;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 6 : 
-                        int LA7_64 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_64 >= '0' && LA7_64 <= '9')||(LA7_64 >= 'A' && LA7_64 <= 'Z')||LA7_64=='_'||(LA7_64 >= 'a' && LA7_64 <= 'z')) ) {s = 64;}
-
-                        else if ( ((LA7_64 >= '\u0000' && LA7_64 <= '\t')||(LA7_64 >= '\u000B' && LA7_64 <= '\f')||(LA7_64 >= '\u000E' && LA7_64 <= '/')||(LA7_64 >= ':' && LA7_64 <= '@')||(LA7_64 >= '[' && LA7_64 <= '^')||LA7_64=='`'||(LA7_64 >= '{' && LA7_64 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 65;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 7 : 
-                        int LA7_92 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_92 >= '\u0000' && LA7_92 <= '\t')||(LA7_92 >= '\u000B' && LA7_92 <= '\f')||(LA7_92 >= '\u000E' && LA7_92 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 105;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 8 : 
-                        int LA7_93 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_93 >= '\u0000' && LA7_93 <= '\t')||(LA7_93 >= '\u000B' && LA7_93 <= '\f')||(LA7_93 >= '\u000E' && LA7_93 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 106;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 9 : 
-                        int LA7_85 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_85 >= '\u0000' && LA7_85 <= '\t')||(LA7_85 >= '\u000B' && LA7_85 <= '\f')||(LA7_85 >= '\u000E' && LA7_85 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 97;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 10 : 
-                        int LA7_14 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_14 >= '\u0000' && LA7_14 <= '\t')||(LA7_14 >= '\u000B' && LA7_14 <= '\f')||(LA7_14 >= '\u000E' && LA7_14 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 40;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 11 : 
-                        int LA7_129 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_129 >= '\u0000' && LA7_129 <= '\t')||(LA7_129 >= '\u000B' && LA7_129 <= '\f')||(LA7_129 >= '\u000E' && LA7_129 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 137;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 12 : 
-                        int LA7_13 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_13 >= '\u0000' && LA7_13 <= '\t')||(LA7_13 >= '\u000B' && LA7_13 <= '\f')||(LA7_13 >= '\u000E' && LA7_13 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 39;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 13 : 
-                        int LA7_21 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_21 >= '\u0000' && LA7_21 <= '\t')||(LA7_21 >= '\u000B' && LA7_21 <= '\f')||(LA7_21 >= '\u000E' && LA7_21 <= '\uFFFF')) ) {s = 47;}
-
-                        else s = 48;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 14 : 
                         int LA7_17 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA7_17 >= '\u0000' && LA7_17 <= '\t')||(LA7_17 >= '\u000B' && LA7_17 <= '\f')||(LA7_17 >= '\u000E' && LA7_17 <= '\uFFFF')) ) {s = 25;}
+                        if ( ((LA7_17 >= '\u0000' && LA7_17 <= '\uFFFF')) ) {s = 38;}
 
-                        else s = 43;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 15 : 
-                        int LA7_142 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_142 >= '\u0000' && LA7_142 <= '\t')||(LA7_142 >= '\u000B' && LA7_142 <= '\f')||(LA7_142 >= '\u000E' && LA7_142 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 147;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 16 : 
-                        int LA7_128 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_128 >= '\u0000' && LA7_128 <= '\t')||(LA7_128 >= '\u000B' && LA7_128 <= '\f')||(LA7_128 >= '\u000E' && LA7_128 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 136;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 17 : 
-                        int LA7_15 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_15 >= '\u0000' && LA7_15 <= '\t')||(LA7_15 >= '\u000B' && LA7_15 <= '\f')||(LA7_15 >= '\u000E' && LA7_15 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 41;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 18 : 
-                        int LA7_16 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_16 >= '\u0000' && LA7_16 <= '\t')||(LA7_16 >= '\u000B' && LA7_16 <= '\f')||(LA7_16 >= '\u000E' && LA7_16 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 42;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 19 : 
-                        int LA7_101 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_101 >= '\u0000' && LA7_101 <= '\t')||(LA7_101 >= '\u000B' && LA7_101 <= '\f')||(LA7_101 >= '\u000E' && LA7_101 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 114;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 20 : 
-                        int LA7_24 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_24 >= '\u0000' && LA7_24 <= '\t')||(LA7_24 >= '\u000B' && LA7_24 <= '\f')||(LA7_24 >= '\u000E' && LA7_24 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 49;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 21 : 
-                        int LA7_140 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_140 >= '\u0000' && LA7_140 <= '\t')||(LA7_140 >= '\u000B' && LA7_140 <= '\f')||(LA7_140 >= '\u000E' && LA7_140 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 145;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 22 : 
-                        int LA7_12 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_12 >= '\u0000' && LA7_12 <= '\t')||(LA7_12 >= '\u000B' && LA7_12 <= '\f')||(LA7_12 >= '\u000E' && LA7_12 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 38;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 23 : 
-                        int LA7_56 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_56 >= '\u0000' && LA7_56 <= '\t')||(LA7_56 >= '\u000B' && LA7_56 <= '\f')||(LA7_56 >= '\u000E' && LA7_56 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 72;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 24 : 
-                        int LA7_23 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_23 >= '\u0000' && LA7_23 <= '\t')||(LA7_23 >= '\u000B' && LA7_23 <= '\f')||(LA7_23 >= '\u000E' && LA7_23 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 49;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 25 : 
-                        int LA7_115 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_115 >= '\u0000' && LA7_115 <= '\t')||(LA7_115 >= '\u000B' && LA7_115 <= '\f')||(LA7_115 >= '\u000E' && LA7_115 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 124;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 26 : 
-                        int LA7_138 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_138 >= '\u0000' && LA7_138 <= '\t')||(LA7_138 >= '\u000B' && LA7_138 <= '\f')||(LA7_138 >= '\u000E' && LA7_138 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 143;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 27 : 
-                        int LA7_149 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_149 >= '\u0000' && LA7_149 <= '\t')||(LA7_149 >= '\u000B' && LA7_149 <= '\f')||(LA7_149 >= '\u000E' && LA7_149 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 151;
-
-                        if ( s>=0 ) return s;
-                        break;
-
-                    case 28 : 
-                        int LA7_150 = input.LA(1);
-
-                        s = -1;
-                        if ( ((LA7_150 >= '\u0000' && LA7_150 <= '\t')||(LA7_150 >= '\u000B' && LA7_150 <= '\f')||(LA7_150 >= '\u000E' && LA7_150 <= '\uFFFF')) ) {s = 25;}
-
-                        else s = 152;
+                        else s = 37;
 
                         if ( s>=0 ) return s;
                         break;

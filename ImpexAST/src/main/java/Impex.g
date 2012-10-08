@@ -39,18 +39,55 @@ tokens{
   package output;
 }
 
+//@parser::members {
+//  private boolean flag = true;
+//}
 impex	
-	:	(Comment | Ws | LineBreak | macroAssignement)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macroAssignement*))
+	: (Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
+	| Ws {System.out.printf("Ws    :: '\%s'\n", $Ws.text);}
+	| LineBreak {System.out.printf("LineBreak    :: '\%s'\n", $LineBreak.text);}
+	| macroAssignement
+//	| header -> ^(HEADER header)
+	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macroAssignement*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
 macroAssignement
-	:	Macrodef Equals Macroval -> ^(ASSIGNEMENT Macrodef Macroval)
+	:
+	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
+	Ws*
+	Macroval {System.out.printf("Macroval    :: '\%s'\n", $Macroval.text);}
+	-> ^(ASSIGNEMENT Macrodef Macroval)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
+
+//block
+//	: header  (
+//	            options {
+//	                greedy=false;
+//	            } :   '\r' ('\n')? {newline();}
+//	               |   '\n'         {newline();}
+//	             )*
+//	;
+	
+//header
+//	:
+//	(Insert | InsertUpdate | Update | Remove)! Ws* Identifier!
+//	;
+	
+
+//row
+//	:value*
+//	;
+	
+//value
+//	:
+//	';'.*';'
+//	;	
+
 Insert		:'INSERT';
-InsertUpdate		:'INSERT_UPDATE';
+InsertUpdate	:'INSERT_UPDATE';
 Update		:'UPDATE';
 Remove		:'REMOVE';
 
@@ -80,7 +117,11 @@ Comma		:',';
 LineContinuation	:'\\\\';
 
 Macrodef
-	:	'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
+	:	'$' Identifier
+	;
+
+Identifier
+	:	('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
 
 //fragment MacroIdentifier
@@ -105,9 +146,33 @@ Ws
 	;
 
 Macroval
-	:	~('\u000d' | '\u000a')*
+	@after {
+//		int last = getText().length();
+//		int lastn = getText().lastIndexOf('\n');
+//		int lastr = getText().lastIndexOf('\r');
+//		
+//		last = lastn > 0 ? lastn : last;
+//		last = lastr > 0 ? lastr : last;
+		//to strip '=' prefix and LineBreak suffix
+//  		setText(getText().substring(1, last));
+  		setText(getText().substring(1, getText().length()).trim());
+	}
+	:	Equals (options {greedy=false;}: .)* LineBreak
 	;
-	
+
+//Block
+//CURLY_BLOCK_SCARF
+//    :   '{'
+//        (
+//            options {
+//                greedy=false;
+//            }
+//        :   '\r' ('\n')? {newline();}
+//        |   '\n'         {newline();}
+//        |   .
+//        )*
+//        '}'
+//    ;	
 
 
 //fragment Letter
