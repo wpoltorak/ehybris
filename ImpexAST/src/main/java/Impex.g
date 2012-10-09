@@ -47,11 +47,7 @@ tokens{
 //	.* EOF	
 //
 parse
-  :  (t=. 
-          {System.out.printf("text: \%-7s  type: \%s \n", 
-           $t.text, tokenNames[$t.type]);}
-     )* 
-     EOF
+  :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF
   ;
   	
 impex	
@@ -104,21 +100,33 @@ Update		:'UPDATE';
 Remove		:'REMOVE';
 
 BatchMode		:'batchmode';
-CacheUnique		:'cacheUnique';
+CacheUnique	:'cacheUnique';
 Processor		:'processor';
 
 Alias		:'alias';
 AllowNull		:'allownull';
+CellDecorator	:'cellDecorator';
+CollectionDelimiter 	:'collection-delimiter';
+Dateformat		:'dateformat';
+Default		:'default';
 ForceWrite		:'forceWrite';
 IgnoreKeyCase	:'ignoreKeyCase';
 IgnoreNull		:'ignorenull';
+KeyToValueDelimiter	:'key2value-delimiter';
+Lang		:'lang';
+MapDelimiter	:'map-delimiter';
+Mode		:'mode';
+Numberformat	:'numberformat';
+PathDelimiter	:'path-delimiter';
+Pos		:'pos';
+Translator		:'translator';
 Unique		:'unique';
 Virtual		:'virtual';
-Pos		:'pos';
+
 
 //Dollar		:'$';
 Semicolon		:';';
-RightBracket		:']';
+RightBracket	:']';
 LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
@@ -127,6 +135,7 @@ Comma		:',';
 //Underscore		:'_';
 //Hash		:'#';
 LineContinuation	:'\\\\';
+Bool		:'true' | 'false';
 
 Macrodef
 	:	'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
@@ -166,8 +175,8 @@ Ws
 //	:	'=' (options {greedy=false;}: .)* LineBreak
 //	;
 
-Text 	
-	:	(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
+fragment Text 	
+	:	(options {greedy=false;}: ~('\n' | '\r'))* ('\r'? '\n' | '\r')
 	;
 //Block
 //CURLY_BLOCK_SCARF

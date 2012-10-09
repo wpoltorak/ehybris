@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-10-08 23:09:21
+// $ANTLR 3.4 /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g 2012-10-09 11:41:03
 
   package output;
 
@@ -14,7 +14,7 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ASSIGNEMENT", "ASSIGNEMENTS", "ATTRIBUTES", "Alias", "AllowNull", "BatchMode", "COMMENTS", "COMPLEX_ATTRIBUTE", "CacheUnique", "Comma", "Comment", "Equals", "ForceWrite", "HEADER", "HEADER_PREFIX", "HEADER_TYPE", "IMPEX", "IMPEX_BLOCK", "IMPEX_BLOCKS", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "LeftBracket", "LeftParenthesis", "LineBreak", "LineContinuation", "MACRO", "Macrodef", "Pos", "Processor", "ROW", "ROWS", "Remove", "RightBracket", "RightParenthesis", "SIMPLE_ATTRIBUTE", "Semicolon", "Text", "Unique", "Update", "Virtual", "Ws"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ASSIGNEMENT", "ASSIGNEMENTS", "ATTRIBUTES", "Alias", "AllowNull", "BatchMode", "Bool", "COMMENTS", "COMPLEX_ATTRIBUTE", "CacheUnique", "CellDecorator", "CollectionDelimiter", "Comma", "Comment", "Dateformat", "Default", "Equals", "ForceWrite", "HEADER", "HEADER_PREFIX", "HEADER_TYPE", "IMPEX", "IMPEX_BLOCK", "IMPEX_BLOCKS", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "Lang", "LeftBracket", "LeftParenthesis", "LineBreak", "LineContinuation", "MACRO", "Macrodef", "MapDelimiter", "Mode", "Numberformat", "PathDelimiter", "Pos", "Processor", "ROW", "ROWS", "Remove", "RightBracket", "RightParenthesis", "SIMPLE_ATTRIBUTE", "Semicolon", "Text", "Translator", "Unique", "Update", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
@@ -24,44 +24,56 @@ public class ImpexParser extends Parser {
     public static final int Alias=7;
     public static final int AllowNull=8;
     public static final int BatchMode=9;
-    public static final int COMMENTS=10;
-    public static final int COMPLEX_ATTRIBUTE=11;
-    public static final int CacheUnique=12;
-    public static final int Comma=13;
-    public static final int Comment=14;
-    public static final int Equals=15;
-    public static final int ForceWrite=16;
-    public static final int HEADER=17;
-    public static final int HEADER_PREFIX=18;
-    public static final int HEADER_TYPE=19;
-    public static final int IMPEX=20;
-    public static final int IMPEX_BLOCK=21;
-    public static final int IMPEX_BLOCKS=22;
-    public static final int Identifier=23;
-    public static final int IgnoreKeyCase=24;
-    public static final int IgnoreNull=25;
-    public static final int Insert=26;
-    public static final int InsertUpdate=27;
-    public static final int LeftBracket=28;
-    public static final int LeftParenthesis=29;
-    public static final int LineBreak=30;
-    public static final int LineContinuation=31;
-    public static final int MACRO=32;
-    public static final int Macrodef=33;
-    public static final int Pos=34;
-    public static final int Processor=35;
-    public static final int ROW=36;
-    public static final int ROWS=37;
-    public static final int Remove=38;
-    public static final int RightBracket=39;
-    public static final int RightParenthesis=40;
-    public static final int SIMPLE_ATTRIBUTE=41;
-    public static final int Semicolon=42;
-    public static final int Text=43;
-    public static final int Unique=44;
-    public static final int Update=45;
-    public static final int Virtual=46;
-    public static final int Ws=47;
+    public static final int Bool=10;
+    public static final int COMMENTS=11;
+    public static final int COMPLEX_ATTRIBUTE=12;
+    public static final int CacheUnique=13;
+    public static final int CellDecorator=14;
+    public static final int CollectionDelimiter=15;
+    public static final int Comma=16;
+    public static final int Comment=17;
+    public static final int Dateformat=18;
+    public static final int Default=19;
+    public static final int Equals=20;
+    public static final int ForceWrite=21;
+    public static final int HEADER=22;
+    public static final int HEADER_PREFIX=23;
+    public static final int HEADER_TYPE=24;
+    public static final int IMPEX=25;
+    public static final int IMPEX_BLOCK=26;
+    public static final int IMPEX_BLOCKS=27;
+    public static final int Identifier=28;
+    public static final int IgnoreKeyCase=29;
+    public static final int IgnoreNull=30;
+    public static final int Insert=31;
+    public static final int InsertUpdate=32;
+    public static final int KeyToValueDelimiter=33;
+    public static final int Lang=34;
+    public static final int LeftBracket=35;
+    public static final int LeftParenthesis=36;
+    public static final int LineBreak=37;
+    public static final int LineContinuation=38;
+    public static final int MACRO=39;
+    public static final int Macrodef=40;
+    public static final int MapDelimiter=41;
+    public static final int Mode=42;
+    public static final int Numberformat=43;
+    public static final int PathDelimiter=44;
+    public static final int Pos=45;
+    public static final int Processor=46;
+    public static final int ROW=47;
+    public static final int ROWS=48;
+    public static final int Remove=49;
+    public static final int RightBracket=50;
+    public static final int RightParenthesis=51;
+    public static final int SIMPLE_ATTRIBUTE=52;
+    public static final int Semicolon=53;
+    public static final int Text=54;
+    public static final int Translator=55;
+    public static final int Unique=56;
+    public static final int Update=57;
+    public static final int Virtual=58;
+    public static final int Ws=59;
 
     // delegates
     public Parser[] getDelegates() {
@@ -87,7 +99,7 @@ public TreeAdaptor getTreeAdaptor() {
     return adaptor;
 }
     public String[] getTokenNames() { return ImpexParser.tokenNames; }
-    public String getGrammarFileName() { return "/work/projects/yeclipse/ImpexAST/src/main/java/Impex.g"; }
+    public String getGrammarFileName() { return "/home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g"; }
 
 
     public static class parse_return extends ParserRuleReturnScope {
@@ -97,7 +109,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "parse"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:49:1: parse : (t= . )* EOF ;
+    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:49:1: parse : (t= . )* EOF ;
     public final ImpexParser.parse_return parse() throws RecognitionException {
         ImpexParser.parse_return retval = new ImpexParser.parse_return();
         retval.start = input.LT(1);
@@ -112,13 +124,13 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree EOF1_tree=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:50:3: ( (t= . )* EOF )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:50:6: (t= . )* EOF
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:50:3: ( (t= . )* EOF )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:50:6: (t= . )* EOF
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:50:6: (t= . )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:50:6: (t= . )*
             loop1:
             do {
                 int alt1=2;
@@ -131,7 +143,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt1) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:50:7: t= .
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:50:7: t= .
             	    {
             	    t=(Token)input.LT(1);
 
@@ -140,8 +152,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    adaptor.addChild(root_0, t_tree);
 
 
-            	    System.out.printf("text: %-7s  type: %s \n", 
-            	               (t!=null?t.getText():null), tokenNames[(t!=null?t.getType():0)]);
+            	    System.out.printf("%s: %-7s \n", tokenNames[(t!=null?t.getType():0)], (t!=null?t.getText():null));
 
             	    }
             	    break;
@@ -152,7 +163,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            EOF1=(Token)match(input,EOF,FOLLOW_EOF_in_parse179); 
+            EOF1=(Token)match(input,EOF,FOLLOW_EOF_in_parse155); 
             EOF1_tree = 
             (CommonTree)adaptor.create(EOF1)
             ;
@@ -190,7 +201,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "impex"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:57:1: impex : ( Comment | Ws | LineBreak | macroAssignement )* EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) ) ;
+    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:53:1: impex : ( Comment | Ws | LineBreak | macroAssignement )* EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) ) ;
     public final ImpexParser.impex_return impex() throws RecognitionException {
         ImpexParser.impex_return retval = new ImpexParser.impex_return();
         retval.start = input.LT(1);
@@ -215,10 +226,10 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleTokenStream stream_EOF=new RewriteRuleTokenStream(adaptor,"token EOF");
         RewriteRuleSubtreeStream stream_macroAssignement=new RewriteRuleSubtreeStream(adaptor,"rule macroAssignement");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:2: ( ( Comment | Ws | LineBreak | macroAssignement )* EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:4: ( Comment | Ws | LineBreak | macroAssignement )* EOF
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:54:2: ( ( Comment | Ws | LineBreak | macroAssignement )* EOF -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) ) )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:54:4: ( Comment | Ws | LineBreak | macroAssignement )* EOF
             {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:4: ( Comment | Ws | LineBreak | macroAssignement )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:54:4: ( Comment | Ws | LineBreak | macroAssignement )*
             loop2:
             do {
                 int alt2=5;
@@ -248,9 +259,9 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt2) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:58:5: Comment
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:54:5: Comment
             	    {
-            	    Comment2=(Token)match(input,Comment,FOLLOW_Comment_in_impex196);  
+            	    Comment2=(Token)match(input,Comment,FOLLOW_Comment_in_impex172);  
             	    stream_Comment.add(Comment2);
 
 
@@ -259,9 +270,9 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
             	    break;
             	case 2 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:59:4: Ws
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:55:4: Ws
             	    {
-            	    Ws3=(Token)match(input,Ws,FOLLOW_Ws_in_impex203);  
+            	    Ws3=(Token)match(input,Ws,FOLLOW_Ws_in_impex179);  
             	    stream_Ws.add(Ws3);
 
 
@@ -270,9 +281,9 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
             	    break;
             	case 3 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:60:4: LineBreak
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:56:4: LineBreak
             	    {
-            	    LineBreak4=(Token)match(input,LineBreak,FOLLOW_LineBreak_in_impex210);  
+            	    LineBreak4=(Token)match(input,LineBreak,FOLLOW_LineBreak_in_impex186);  
             	    stream_LineBreak.add(LineBreak4);
 
 
@@ -281,9 +292,9 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
             	    break;
             	case 4 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:61:4: macroAssignement
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:57:4: macroAssignement
             	    {
-            	    pushFollow(FOLLOW_macroAssignement_in_impex217);
+            	    pushFollow(FOLLOW_macroAssignement_in_impex193);
             	    macroAssignement5=macroAssignement();
 
             	    state._fsp--;
@@ -299,7 +310,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            EOF6=(Token)match(input,EOF,FOLLOW_EOF_in_impex224);  
+            EOF6=(Token)match(input,EOF,FOLLOW_EOF_in_impex200);  
             stream_EOF.add(EOF6);
 
 
@@ -314,23 +325,23 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 63:9: -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) )
+            // 59:9: -> ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:12: ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) )
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:59:12: ^( IMPEX ^( COMMENTS ( Comment )* ) ^( ASSIGNEMENTS ( macroAssignement )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(IMPEX, "IMPEX")
                 , root_1);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:21: ^( COMMENTS ( Comment )* )
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:59:21: ^( COMMENTS ( Comment )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(COMMENTS, "COMMENTS")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:32: ( Comment )*
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:59:32: ( Comment )*
                 while ( stream_Comment.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_Comment.nextNode()
@@ -342,14 +353,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:42: ^( ASSIGNEMENTS ( macroAssignement )* )
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:59:42: ^( ASSIGNEMENTS ( macroAssignement )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(ASSIGNEMENTS, "ASSIGNEMENTS")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:63:57: ( macroAssignement )*
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:59:57: ( macroAssignement )*
                 while ( stream_macroAssignement.hasNext() ) {
                     adaptor.addChild(root_2, stream_macroAssignement.nextTree());
 
@@ -398,7 +409,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "macroAssignement"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:67:1: macroAssignement : Macrodef ( Ws )* Text -> ^( ASSIGNEMENT Macrodef Text ) ;
+    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:63:1: macroAssignement : Macrodef ( Ws )* Text -> ^( ASSIGNEMENT Macrodef Text ) ;
     public final ImpexParser.macroAssignement_return macroAssignement() throws RecognitionException {
         ImpexParser.macroAssignement_return retval = new ImpexParser.macroAssignement_return();
         retval.start = input.LT(1);
@@ -418,16 +429,16 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleTokenStream stream_Macrodef=new RewriteRuleTokenStream(adaptor,"token Macrodef");
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:68:2: ( Macrodef ( Ws )* Text -> ^( ASSIGNEMENT Macrodef Text ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:69:2: Macrodef ( Ws )* Text
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:64:2: ( Macrodef ( Ws )* Text -> ^( ASSIGNEMENT Macrodef Text ) )
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:65:2: Macrodef ( Ws )* Text
             {
-            Macrodef7=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macroAssignement258);  
+            Macrodef7=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macroAssignement234);  
             stream_Macrodef.add(Macrodef7);
 
 
             System.out.printf("Macrodef    :: '%s'\n", (Macrodef7!=null?Macrodef7.getText():null));
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:70:2: ( Ws )*
+            // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:66:2: ( Ws )*
             loop3:
             do {
                 int alt3=2;
@@ -440,9 +451,9 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt3) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:70:2: Ws
+            	    // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:66:2: Ws
             	    {
-            	    Ws8=(Token)match(input,Ws,FOLLOW_Ws_in_macroAssignement263);  
+            	    Ws8=(Token)match(input,Ws,FOLLOW_Ws_in_macroAssignement239);  
             	    stream_Ws.add(Ws8);
 
 
@@ -455,7 +466,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            Text9=(Token)match(input,Text,FOLLOW_Text_in_macroAssignement267);  
+            Text9=(Token)match(input,Text,FOLLOW_Text_in_macroAssignement243);  
             stream_Text.add(Text9);
 
 
@@ -472,9 +483,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 72:2: -> ^( ASSIGNEMENT Macrodef Text )
+            // 68:2: -> ^( ASSIGNEMENT Macrodef Text )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:72:5: ^( ASSIGNEMENT Macrodef Text )
+                // /home/wojtuch/projects/ehybris/ImpexAST/src/main/java/Impex.g:68:5: ^( ASSIGNEMENT Macrodef Text )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -525,14 +536,14 @@ public TreeAdaptor getTreeAdaptor() {
 
  
 
-    public static final BitSet FOLLOW_EOF_in_parse179 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Comment_in_impex196 = new BitSet(new long[]{0x0000800240004000L});
-    public static final BitSet FOLLOW_Ws_in_impex203 = new BitSet(new long[]{0x0000800240004000L});
-    public static final BitSet FOLLOW_LineBreak_in_impex210 = new BitSet(new long[]{0x0000800240004000L});
-    public static final BitSet FOLLOW_macroAssignement_in_impex217 = new BitSet(new long[]{0x0000800240004000L});
-    public static final BitSet FOLLOW_EOF_in_impex224 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Macrodef_in_macroAssignement258 = new BitSet(new long[]{0x0000880000000000L});
-    public static final BitSet FOLLOW_Ws_in_macroAssignement263 = new BitSet(new long[]{0x0000880000000000L});
-    public static final BitSet FOLLOW_Text_in_macroAssignement267 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EOF_in_parse155 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Comment_in_impex172 = new BitSet(new long[]{0x0800012000020000L});
+    public static final BitSet FOLLOW_Ws_in_impex179 = new BitSet(new long[]{0x0800012000020000L});
+    public static final BitSet FOLLOW_LineBreak_in_impex186 = new BitSet(new long[]{0x0800012000020000L});
+    public static final BitSet FOLLOW_macroAssignement_in_impex193 = new BitSet(new long[]{0x0800012000020000L});
+    public static final BitSet FOLLOW_EOF_in_impex200 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Macrodef_in_macroAssignement234 = new BitSet(new long[]{0x0840000000000000L});
+    public static final BitSet FOLLOW_Ws_in_macroAssignement239 = new BitSet(new long[]{0x0840000000000000L});
+    public static final BitSet FOLLOW_Text_in_macroAssignement243 = new BitSet(new long[]{0x0000000000000002L});
 
 }
