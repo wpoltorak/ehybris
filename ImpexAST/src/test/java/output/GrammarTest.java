@@ -90,9 +90,20 @@ public class GrammarTest {
         // assertTrue(comments.getChild(0).getText().contains("\t"));
     }
 
+    @Test
+    public void yy() throws Exception {
+        final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
+        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
+        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        printTokens(tokens);
+        System.out.println("__________________________");
+        final ImpexParser parser = new ImpexParser(tokens);
+        parser.parse().getTree();
+    }
+
     private void checkGrammar(final File directory) {
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
-            File file = it.next();
+            final File file = it.next();
             try {
                 final String impex = FileUtils.readFileToString(file);
                 final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex)) {

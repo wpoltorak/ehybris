@@ -42,6 +42,18 @@ tokens{
 //@parser::members {
 //  private boolean flag = true;
 //}
+
+//impex 	:
+//	.* EOF	
+//
+parse
+  :  (t=. 
+          {System.out.printf("text: \%-7s  type: \%s \n", 
+           $t.text, tokenNames[$t.type]);}
+     )* 
+     EOF
+  ;
+  	
 impex	
 	: (Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
 	| Ws {System.out.printf("Ws    :: '\%s'\n", $Ws.text);}
@@ -56,8 +68,8 @@ macroAssignement
 	:
 	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
 	Ws*
-	Macroval {System.out.printf("Macroval    :: '\%s'\n", $Macroval.text);}
-	-> ^(ASSIGNEMENT Macrodef Macroval)
+	Text {System.out.printf("Macroval    :: '\%s'\n", $Text.text);}
+	-> ^(ASSIGNEMENT Macrodef Text)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
@@ -117,7 +129,7 @@ Comma		:',';
 LineContinuation	:'\\\\';
 
 Macrodef
-	:	'$' Identifier
+	:	'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
 
 Identifier
@@ -132,7 +144,9 @@ Comment
 	@after {
   		setText(getText().substring(1, getText().length()));
 	}
-	:	'#' ~('\u000d' | '\u000a')*
+//	:	'#' ~('\u000d' | '\u000a')* //{Skip();}
+	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
+
 	;
 
 LineBreak
@@ -145,21 +159,16 @@ Ws
 	:	'\u0020' | '\u0009' {$channel=HIDDEN; }
 	;
 
-Macroval
-	@after {
-//		int last = getText().length();
-//		int lastn = getText().lastIndexOf('\n');
-//		int lastr = getText().lastIndexOf('\r');
-//		
-//		last = lastn > 0 ? lastn : last;
-//		last = lastr > 0 ? lastr : last;
-		//to strip '=' prefix and LineBreak suffix
-//  		setText(getText().substring(1, last));
-  		setText(getText().substring(1, getText().length()).trim());
-	}
-	:	Equals (options {greedy=false;}: .)* LineBreak
-	;
+//Macroval
+//	@after {
+// 		setText(getText().substring(1, getText().length()).trim());
+//	}
+//	:	'=' (options {greedy=false;}: .)* LineBreak
+//	;
 
+Text 	
+	:	(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
+	;
 //Block
 //CURLY_BLOCK_SCARF
 //    :   '{'
