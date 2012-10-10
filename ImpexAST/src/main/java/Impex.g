@@ -50,26 +50,47 @@ parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF
   ;
   	
-impex	
-	: (Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
+impex	: 
+//	  ( record 
+	( macro
+	| Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
 	| Ws {System.out.printf("Ws    :: '\%s'\n", $Ws.text);}
 	| LineBreak {System.out.printf("LineBreak    :: '\%s'\n", $LineBreak.text);}
-	| macroAssignement
 //	| header -> ^(HEADER header)
-	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macroAssignement*))
+	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) )//^(ASSIGNEMENTS macroAssignement*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
-macroAssignement
+macro
 	:
-	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
-	Ws*
-	Text {System.out.printf("Macroval    :: '\%s'\n", $Text.text);}
-	-> ^(ASSIGNEMENT Macrodef Text)
+	Macrodef //{System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
+	Equals
+	(field | Identifier)
+	//Char*
+//	unquoted_field  //{System.out.printf("Macroval    :: '\%s'\n", $text.text);}
+//	-> ^(ASSIGNEMENT Macrodef )//macroText*)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
 
+//record
+//    : (quoted_field | unquoted_field) (Semicolon (quoted_field | unquoted_field))*
+//    ;
+    
+//quoted_field
+ //   : DoubleQuote
+//    ( Char
+//    | Semicolon
+//    | DoubleQuote
+//    | LineBreak
+ //   )* 
+ //   ;
+
+field
+//    	: (options {greedy=false;}:Char)*
+	:Char*
+   	;
+    
 //block
 //	: header  (
 //	            options {
@@ -125,6 +146,7 @@ Virtual		:'virtual';
 
 
 //Dollar		:'$';
+DoubleQuote		:'"';
 Semicolon		:';';
 RightBracket	:']';
 LeftBracket		:'[';
@@ -145,16 +167,12 @@ Identifier
 	:	('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
 
-//fragment MacroIdentifier
-//	:	(Letter | Underscore)(Digit | Letter | Underscore)*
-//	;	
-
 Comment	
 	@after {
   		setText(getText().substring(1, getText().length()));
 	}
-//	:	'#' ~('\u000d' | '\u000a')* //{Skip();}
-	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
+	:	'#' ~('\u000d' | '\u000a')* //{Skip();}
+//	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
 
 	;
 
@@ -165,7 +183,7 @@ LineBreak
    	
 Ws
 	//:	'\u0020' | '\u0009' {$channel=HIDDEN; }
-	:	'\u0020' | '\u0009' {$channel=HIDDEN; }
+	:	' ' | '\t' {$channel=HIDDEN; }//{skip();}
 	;
 
 //Macroval
@@ -175,9 +193,6 @@ Ws
 //	:	'=' (options {greedy=false;}: .)* LineBreak
 //	;
 
-fragment Text 	
-	:	(options {greedy=false;}: ~('\n' | '\r'))* ('\r'? '\n' | '\r')
-	;
 //Block
 //CURLY_BLOCK_SCARF
 //    :   '{'
@@ -204,11 +219,13 @@ fragment Text
 //	:	Char+
 //	;
 
-//fragment Char
-//	:	'\u0000' .. '\u0009'	//without \r \n " ; $
-//	|	'\u000b' .. '\u000c'
-//	|	'\u000e' .. '\u0021'
-//	|	'\u0023'
-//	|	'\u0025' .. '\u003a'	
-//	|	'\u003c' .. '\uffff'
+Char
+    : '\u0000' .. '\u0009'
+   | '\u000b' .. '\u000c'
+    | '\u000e' .. '\u0021'
+    | '\u0023' .. '\u002b'
+   | '\u002d' .. '\uffff'
+    ;
+//Char
+//	:	~('\r' | '\n' | '"' | ';')
 //	;
