@@ -95,7 +95,7 @@ public class GrammarTest {
         final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
         final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        printTokens(tokens);
+        //printTokens(tokens);
         System.out.println("__________________________");
         final ImpexParser parser = new ImpexParser(tokens);
         parser.parse().getTree();
@@ -105,6 +105,7 @@ public class GrammarTest {
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
             final File file = it.next();
             try {
+                System.out.println("Testing grammar against '" + file.getName() + "'...\n");
                 final String impex = FileUtils.readFileToString(file);
                 final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex)) {
 
@@ -127,6 +128,9 @@ public class GrammarTest {
                 parser.impex().getTree();
             } catch (final Exception e) {
                 fail("Error parsing '" + file.getName() + "': " + e.getMessage());
+            } finally {
+                System.out.println("Testing grammar done.");
+                System.out.println("_____________________");
             }
         }
         // create the parser
@@ -150,7 +154,7 @@ public class GrammarTest {
     }
 
     private void printTokens(final CommonTokenStream tokens) {
-        tokens.fill();
+        //        tokens.fill();
         int n = 1;
         for (final Object o : tokens.getTokens()) {
             final CommonToken token = (CommonToken) o;

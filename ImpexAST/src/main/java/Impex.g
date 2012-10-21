@@ -52,45 +52,43 @@ parse
   	
 impex	: 
 //	  ( record 
-	( macro
+	( 
+	//record 
+	//| 
+	macro
 	| Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
-	| Ws {System.out.printf("Ws    :: '\%s'\n", $Ws.text);}
 	| LineBreak {System.out.printf("LineBreak    :: '\%s'\n", $LineBreak.text);}
+	
 //	| header -> ^(HEADER header)
-	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) )//^(ASSIGNEMENTS macroAssignement*))
+	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macro*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
 
 macro
 	:
-	Macrodef //{System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
-	Equals
-	(field | Identifier)
+	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
+	MacroVal {System.out.printf("macroVal    :: '\%s\n'", $MacroVal.text);}
+	//LineBreak? {System.out.printf("LineBreak    :: '\%s'", $LineBreak.text);}
 	//Char*
 //	unquoted_field  //{System.out.printf("Macroval    :: '\%s'\n", $text.text);}
-//	-> ^(ASSIGNEMENT Macrodef )//macroText*)
+	-> ^(ASSIGNEMENT Macrodef MacroVal)//macroText*)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
 
 //record
-//    : (quoted_field | unquoted_field) (Semicolon (quoted_field | unquoted_field))*
-//    ;
+//    : (Semicolon (quoted_field | field))+  LineBreak?
+ //   ;
     
 //quoted_field
- //   : DoubleQuote
-//    ( Char
-//    | Semicolon
-//    | DoubleQuote
-//    | LineBreak
- //   )* 
- //   ;
+//	: DoubleQuote ( Char | Semicolon | DoubleQuote DoubleQuote | Macrodef | LineBreak)*  DoubleQuote
+//	;
 
-field
+//field
 //    	: (options {greedy=false;}:Char)*
-	:Char*
-   	;
-    
+//	:(Char | Macrodef)*
+ //  	;
+   	
 //block
 //	: header  (
 //	            options {
@@ -163,6 +161,7 @@ Macrodef
 	:	'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
 
+	
 Identifier
 	:	('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*
 	;
@@ -171,19 +170,34 @@ Comment
 	@after {
   		setText(getText().substring(1, getText().length()));
 	}
-	:	'#' ~('\u000d' | '\u000a')* //{Skip();}
+	:	'#' ~('\r' | '\n')* 
+		//LineBreak?//{Skip();}
 //	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
 
 	;
 
+MacroVal	
+	@after {
+  		setText(getText().substring(1, getText().length()));
+	}
+	:	'='  ~('\r' | '\n')*
+	;
+
+
 LineBreak
-	:	'\u000d'? '\u000a'	// \r\n (Windows) or only \n (Unix) 
-	|	'\u000d' 	// \r (MacOS)
+	:	'\r'? '\n'	// \r\n (Windows) or only \n (Unix) 
+	|	'\r' 	// \r (MacOS)
+//	{
+//		$channel=HIDDEN;
+//	}  //{skip();} 
    	;
    	
 Ws
-	//:	'\u0020' | '\u0009' {$channel=HIDDEN; }
-	:	' ' | '\t' {$channel=HIDDEN; }//{skip();}
+//	:	'\u0020' | '\u0009' {skip(); }
+	:	' ' | '\t' 
+	{
+		$channel=HIDDEN;
+	}  //{skip();} 
 	;
 
 //Macroval
@@ -219,13 +233,13 @@ Ws
 //	:	Char+
 //	;
 
-Char
-    : '\u0000' .. '\u0009'
-   | '\u000b' .. '\u000c'
-    | '\u000e' .. '\u0021'
-    | '\u0023' .. '\u002b'
-   | '\u002d' .. '\uffff'
-    ;
 //Char
-//	:	~('\r' | '\n' | '"' | ';')
-//	;
+//    : '\u0000' .. '\u0009'
+///   | '\u000b' .. '\u000c'
+//    | '\u000e' .. '\u0021'
+ //   | '\u0023' .. '\u002b'
+//   | '\u002d' .. '\uffff'
+//    ;
+Char
+	:	~('\r' | '\n' | '"' | ';')
+	;

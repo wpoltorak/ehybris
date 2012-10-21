@@ -1,3 +1,4 @@
 #single comment		
 #another comment with more content i it and with #non comment example
+	# comment with inlined $macro=definition 
 #												Comment in the middle \n \t
