@@ -67,11 +67,13 @@ impex	:
 macro
 	:
 	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
-	MacroVal {System.out.printf("macroVal    :: '\%s\n'", $MacroVal.text);}
+	Equals
+	macroval=(.*)
+	//MacroVal {System.out.printf("macroVal    :: '\%s\n'", $MacroVal.text);}
 	//LineBreak? {System.out.printf("LineBreak    :: '\%s'", $LineBreak.text);}
 	//Char*
 //	unquoted_field  //{System.out.printf("Macroval    :: '\%s'\n", $text.text);}
-	-> ^(ASSIGNEMENT Macrodef MacroVal)//macroText*)
+	-> ^(ASSIGNEMENT Macrodef $macroval?)//macroText*)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
@@ -175,14 +177,6 @@ Comment
 //	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
 
 	;
-
-MacroVal	
-	@after {
-  		setText(getText().substring(1, getText().length()));
-	}
-	:	'='  ~('\r' | '\n')*
-	;
-
 
 LineBreak
 	:	'\r'? '\n'	// \r\n (Windows) or only \n (Unix) 
