@@ -18,15 +18,14 @@ tokens{
 	SIMPLE_ATTRIBUTE;
 	COMPLEX_ATTRIBUTE;
 	ATTRIBUTES;
-	ROW;
-	MACRO;
 	HEADER;
 	HEADER_PREFIX;
 	HEADER_TYPE;
 	IMPEX;
-	IMPEX_BLOCKS;
 	IMPEX_BLOCK;
+	IMPEX_BLOCKS;
 	COMMENTS;
+	ROW;
 	ROWS;
 }
 
@@ -46,51 +45,57 @@ tokens{
 //impex 	:
 //	.* EOF	
 //
-parse
-  :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF
-  ;
+//parse
+//  :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF
+//  ;
   	
 impex	: 
 //	  ( record 
 	( 
 	//record 
 	//| 
-	macro
+	macro {System.out.printf("macro    :: '\%s'\n", $macro.text);}
+	//| record {System.out.printf("record    :: '\%s'\n", $record.text);}
 	| Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
-	| LineBreak {System.out.printf("LineBreak    :: '\%s'\n", $LineBreak.text);}
-	
 //	| header -> ^(HEADER header)
-	)* EOF -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macro*))
+	)*
+	EOF
+	 -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macro*) )//^(ROWS record*))
 //	:	( macroAssignement | impexBlock)* EOF
 	;
-
+	
+//record
+//    	:
+ //   	(Semicolon (quoted_field | Field))+ 
+ //   	-> ^(ROW quoted_field+ Field+)
+ //   	;  
+    	
 macro
 	:
-	Macrodef {System.out.printf("Macrodef    :: '\%s'\n", $Macrodef.text);}
+	Macrodef
 	Equals
-	macroval=(.*)
+	 (Semicolon | DoubleQuote | Identifier | Char | Ws)*
+	
 	//MacroVal {System.out.printf("macroVal    :: '\%s\n'", $MacroVal.text);}
 	//LineBreak? {System.out.printf("LineBreak    :: '\%s'", $LineBreak.text);}
 	//Char*
 //	unquoted_field  //{System.out.printf("Macroval    :: '\%s'\n", $text.text);}
-	-> ^(ASSIGNEMENT Macrodef $macroval?)//macroText*)
+	-> ^(ASSIGNEMENT Macrodef Char*)//macroText*)
 //	:	Macrodef Equals  -> ^(ASSIGNEMENT Macrodef )
 	;			
 
 
-//record
-//    : (Semicolon (quoted_field | field))+  LineBreak?
- //   ;
+
     
 //quoted_field
-//	: DoubleQuote ( Char | Semicolon | DoubleQuote DoubleQuote | Macrodef | LineBreak)*  DoubleQuote
-//	;
+//	: DoubleQuote (Field  DoubleQuote DoubleQuote)*  DoubleQuote
+///	;
 
 //field
 //    	: (options {greedy=false;}:Char)*
-//	:(Char | Macrodef)*
- //  	;
-   	
+//	: ~('\r' | '\n' | '"' | ';')*
+  //	;
+ 	
 //block
 //	: header  (
 //	            options {
@@ -116,17 +121,20 @@ macro
 //	;	
 
 Insert		:'INSERT';
-InsertUpdate	:'INSERT_UPDATE';
+InsertUpdate		:'INSERT_UPDATE';
 Update		:'UPDATE';
 Remove		:'REMOVE';
+//Oper		:'INSERT' | 'INSERT_UPDATE' | 'UPDATE' | 'REMOVE';
 
 BatchMode		:'batchmode';
-CacheUnique	:'cacheUnique';
+CacheUnique		:'cacheUnique';
 Processor		:'processor';
+//TypeModifier		:'batchmode' | 'cacheUnique' | 'processor';
+		
 
 Alias		:'alias';
 AllowNull		:'allownull';
-CellDecorator	:'cellDecorator';
+CellDecorator		:'cellDecorator';
 CollectionDelimiter 	:'collection-delimiter';
 Dateformat		:'dateformat';
 Default		:'default';
@@ -135,20 +143,24 @@ IgnoreKeyCase	:'ignoreKeyCase';
 IgnoreNull		:'ignorenull';
 KeyToValueDelimiter	:'key2value-delimiter';
 Lang		:'lang';
-MapDelimiter	:'map-delimiter';
+MapDelimiter		:'map-delimiter';
 Mode		:'mode';
 Numberformat	:'numberformat';
-PathDelimiter	:'path-delimiter';
+PathDelimiter		:'path-delimiter';
 Pos		:'pos';
 Translator		:'translator';
 Unique		:'unique';
 Virtual		:'virtual';
 
+//AttribModifier	: 'alias' | 'allownull' | 'cellDecorator' | 'collection-delimiter' | 'dateformat' | 'default' | 'forceWrite' | 'ignoreKeyCase' | 'ignorenull' 
+//		| 'key2value-delimiter' | 'lang' | 'map-delimiter' | 'mode' | 'numberformat' | 'path-delimiter' | 'pos' | 'translator' | 'unique' | 'virtual';
+
+
 
 //Dollar		:'$';
 DoubleQuote		:'"';
 Semicolon		:';';
-RightBracket	:']';
+RightBracket		:']';
 LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
@@ -178,21 +190,20 @@ Comment
 
 	;
 
-LineBreak
-	:	'\r'? '\n'	// \r\n (Windows) or only \n (Unix) 
-	|	'\r' 	// \r (MacOS)
+//BeanShell	
+//	:	'#$' ~('\r' | '\n')* 
+		//LineBreak?//{Skip();}
+//	:	'#'(options {greedy=false;}: .)* ('\r'? '\n' | '\r')
+//	;
+
+//LineBreak
+//	:	'\r'? '\n'	// \r\n (Windows) or only \n (Unix) 
+//	|	'\r' 	// \r (MacOS)
 //	{
 //		$channel=HIDDEN;
 //	}  //{skip();} 
-   	;
+// 	;
    	
-Ws
-//	:	'\u0020' | '\u0009' {skip(); }
-	:	' ' | '\t' 
-	{
-		$channel=HIDDEN;
-	}  //{skip();} 
-	;
 
 //Macroval
 //	@after {
@@ -215,18 +226,6 @@ Ws
 //        '}'
 //    ;	
 
-
-//fragment Letter
-//	:	'a' .. 'z' | 'A' .. 'Z';
-
-//fragment Digit   
-//  	:  	'0'..'9'  
-// 	;
-
-//fragment MacroExpression
-//	:	Char+
-//	;
-
 //Char
 //    : '\u0000' .. '\u0009'
 ///   | '\u000b' .. '\u000c'
@@ -234,6 +233,24 @@ Ws
  //   | '\u0023' .. '\u002b'
 //   | '\u002d' .. '\uffff'
 //    ;
+
+
+
+
 Char
-	:	~('\r' | '\n' | '"' | ';')
+  //  	: (options {greedy=false;}:Char)*
+	: ~('\r' | '\n' | '"' | ';' | ' ' | '\t')
+  ;
+ 
+ Ws
+//	:	'\u0020' | '\u0009' {skip(); }
+	:
+	(	' ' | '\t'  
+	| '\r'? '\n' 
+	| '\r' )
+	{
+		//$channel=HIDDEN;
+		skip();
+	}  //{skip();} 
 	;
+//  Field	:Char*;	
