@@ -76,12 +76,11 @@ public class GrammarTest {
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         printTokens(tokens);
         System.out.println("__________________________");
-        final ImpexParser parser = new ImpexParser(tokens);
-        // parser.parse().getTree();
-        final CommonTree tree = (CommonTree) parser.impex().getTree();
+        //        new ImpexParser(tokens).parse().getTree();
+        //        System.out.println("__________________________");
+        final CommonTree tree = (CommonTree) new ImpexParser(tokens).impex().getTree();
         final DOTTreeGenerator gen = new DOTTreeGenerator();
         final StringTemplate st = gen.toDOT(tree);
-        System.out.println("__________________________");
         System.out.println(st);
         //
         // final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
@@ -154,7 +153,6 @@ public class GrammarTest {
     }
 
     private void printTokens(final CommonTokenStream tokens) {
-        //        tokens.fill();
         int n = 1;
         for (final Object o : tokens.getTokens()) {
             final CommonToken token = (CommonToken) o;
