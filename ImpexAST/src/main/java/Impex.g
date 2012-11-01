@@ -22,8 +22,11 @@ tokens{
 	BLOCK;
 	BLOCKS;
 	MODIFIER;
-	ROW;
-	ROWS;
+	RECORD;
+	RECORDS;
+	TYPE;
+	SUBTYPE;
+	FIELDS;
 }
 
 
@@ -33,20 +36,6 @@ tokens{
  
 @parser::header {
   package output;
-}
-
-@parser::members{
-    private boolean lineBreakNotFound() {
-        int index = ((CommonTokenStream)input).LT(-1).getTokenIndex();
-        int current  = ((CommonTokenStream)input).index();
-        for (int i = index + 1; i < current; i++){
-            if (input.get(i).getType() == Lb){
-                return false;
-            }
-        }
-     return true; 	
-    }
-
 }
 
 @lexer::members {
@@ -112,56 +101,41 @@ private Token getToken(int num) {
 }
 }
 
-
-//impex 	:
-//	.* EOF	
-//
 parse
-  :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF
-  ;
+  :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
   	
-impex	: ( 
-	 block// {System.out.printf("macro    :: '\%s'\n", $macro.text);}
-	| macro //{System.out.printf("macro    :: '\%s'\n", $macro.text);}
-	//| Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
-	)*
-	EOF
+impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX  
 	// ^(COMMENTS Comment*) 
-	 ^(ASSIGNEMENTS macro*) 
-	 ^(BLOCKS block*)  
-	 //^(HEADERS header*)
-	 )//^(ROWS record*))
-	;
+	 ^(ASSIGNEMENTS macro*)  ^(BLOCKS block*));
 //if(input.LA(1) != ']') return true;
 
-block	: header Lb (record)+
-	-> ^(BLOCK header ^(ROWS record+));
+block	: header (Lb | Lb record)+
+	-> ^(BLOCK header ^(RECORDS record+));
 
 header
 	: headerMode  Identifier ('[' headerModifier '=' (hmValue=Bool | hmValue=Identifier) ']')?  (';' attribute)*
-	-> ^(HEADER headerMode Identifier ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute*)) ;
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute*)) ;
 
 record
-   	:(QuotedField | Field)+ ((('\r'? '\n' | '\r' )) | EOF)// ( Lb | (LineContinuation {newline();} record))
-//   	:(quoted_field | field) (Semicolon (quoted_field | field))* 
-    	-> ^(ROW QuotedField+ Field+);
+   	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
+    	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField+ Field+));
     	
-//attributes	:{lineBreakNotFound() }?=> (';' attribute)*
-//	-> attribute*;	
-	
 attribute	: identifier ('[' attributeModifier '=' (amValue=Bool |amValue=Identifier) ']')?
-	-> ^(ATTRIBUTE identifier ^(MODIFIER attributeModifier $amValue)?);//^(ARGUMENTS)) ;
+	-> ^(ATTRIBUTE identifier ^(MODIFIER attributeModifier $amValue)?);
 
 identifier	:Identifier ('.' Identifier |  ('(' identifier (',' identifier)* ')'))?;
 
-    	
-//(quoted_field | field) (Semicolon (quoted_field | field))* 	    	
 macro
 	:Macrodef Macroval
 	-> ^(ASSIGNEMENT Macrodef Macroval);
 
+attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
+headerModifier		:BatchMode | CacheUnique | Processor;
+
+headerMode		:Insert | InsertUpdate | Update | Remove;
 //block
 //	: header  (
 //	            options {
@@ -171,30 +145,14 @@ macro
 //	             )*
 //	;
 	
-	
-
-//row
-//	:value*
-//	;
-	
-//value
-//	:
-//	';'.*';'
-//	;	
-
  Insert		:'INSERT';
  InsertUpdate		:'INSERT_UPDATE';
  Update		:'UPDATE';
  Remove		:'REMOVE';
-//Mode		:'INSERT' | 'INSERT_UPDATE' | 'UPDATE' | 'REMOVE';
-headerMode		:Insert | InsertUpdate | Update | Remove;
 
  BatchMode		:'batchmode';
  CacheUnique		:'cacheUnique';
  Processor		:'processor';
-//HeaerdModifier		:'batchmode' | 'cacheUnique' | 'processor';
-headerModifier		:BatchMode | CacheUnique | Processor;
-		
 
  Alias			:'alias';
  AllowNull		:'allownull';
@@ -216,14 +174,6 @@ headerModifier		:BatchMode | CacheUnique | Processor;
  Unique		:'unique';
  Virtual		:'virtual';
 
-//AttribModifier	: 'alias' | 'allownull' | 'cellDecorator' | 'collection-delimiter' | 'dateformat' | 'default' | 'forceWrite' | 'ignoreKeyCase' | 'ignorenull' 
-//		| 'key2value-delimiter' | 'lang' | 'map-delimiter' | 'mode' | 'numberformat' | 'path-delimiter' | 'pos' | 'translator' | 'unique' | 'virtual';
-attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
-
-
-
-//Dollar		:'$';
 DoubleQuote		:'"';
 Semicolon		:';';
 RightBracket		:']';
@@ -231,9 +181,7 @@ LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
 Equals		:'=';
-//Comma		:',';
-//Underscore		:'_';
-//Hash		:'#';
+
 LineContinuation	:'\\\\';
 Bool		:'true' | 'false';
 
@@ -246,15 +194,14 @@ Macroval
 	:{isMacroAssignement()}?=> '='~('\r' | '\n')* ;
 	
 Identifier
-	://{isHeader()}?=>
-	 ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
+	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
 //Classname
 //	:(('a' .. 'z' | 'A' .. 'Z' | '$') ('0' .. '9' | '_' | '.' | '$')?)*  ('a' .. 'z' | 'A' .. 'Z' | '$') '0' .. '9' | '_' | '$')*;
 
 Comment	
 	@after { setText(getText().substring(1, getText().length())); }
-	:'#' ~('\r' | '\n')* {$channel=HIDDEN;};
+	:'#' ~('\r' | '\n')* Lb? {$channel=HIDDEN;};
 
 QuotedField 	
 	@after { setText(getText().substring(1, getText().length())); }
@@ -280,18 +227,7 @@ Field
 //        )*
 //        '}'
 //    ;	
-//Id_or_field 
-//	:	{isHeader()}?=>Identifier
-//		| Field;
-//Char
-//    : '\u0000' .. '\u0009'
-///   | '\u000b' .. '\u000c'
-//    | '\u000e' .. '\u0021'
- //   | '\u0023' .. '\u002b'
-//   | '\u002d' .. '\uffff'
-//    ;
 
-// Ws	:(' ' | '\t' | '\r'? '\n' | '\r' ) {$channel=HIDDEN;};
  Ws	:(' ' | '\t') {$channel=HIDDEN;};
-  Lb	:('\r'? '\n' | '\r' ){$channel=HIDDEN;};  //{skip();} 
+  Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
 Char	: ~('\r' | '\n' | '"' | ';') ;
