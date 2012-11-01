@@ -1,0 +1,14 @@
+# Tests type name
+
+INSERT_UPDATE UserGroup;uid
+;admin
+INSERT_UPDATE Usergroup_123;uid
+;admin
+INSERT_UPDATE Insert;uid
+;admin
+INSERT_UPDATE insert;uid
+;admin
+INSERT_UPDATE mode;uid
+;admin
+
+

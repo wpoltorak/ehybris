@@ -1,0 +1,11 @@
+# Tests no separator between impex blocks
+
+INSERT_UPDATE Usergroup;uid;name
+;admin;Administrator Group
+REMOVE Usergroup;uid;name
+;admin;Administrator
+;user;Name Surname
+#one more...
+INSERT_UPDATE Usergroup;uid;name
+;admin;Administrator Group
+

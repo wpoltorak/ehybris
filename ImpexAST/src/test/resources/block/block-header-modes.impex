@@ -1,0 +1,16 @@
+# Tests INSERT, INSERT_UPDATE, UPDATE and REMOVE modes
+
+INSERT_UPDATE Usergroup;uid;name
+;admin;Administrator Group
+
+UPDATE User;uid;name
+;admin;Administrator
+;user;Name Surname
+
+INSERT User;uid;name
+;admin;Administrator
+
+REMOVE User;uid;name
+;admin;Administrator
+;user1;User 1
+;userX;Some other user

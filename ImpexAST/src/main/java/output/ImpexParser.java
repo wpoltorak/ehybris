@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-11-01 17:02:56
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-11-01 19:53:50
 
   package output;
 
@@ -205,7 +205,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "impex"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:1: impex : ( Lb | block | macro )* EOF -> ^( IMPEX ^( ASSIGNEMENTS ( macro )* ) ^( BLOCKS ( block )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:1: impex : ( Lb | block | macro )* EOF -> ^( IMPEX ( ^( ASSIGNEMENTS macro ) )* ( ^( BLOCKS block ) )* ) ;
     public final ImpexParser.impex_return impex() throws RecognitionException {
         ImpexParser.impex_return retval = new ImpexParser.impex_return();
         retval.start = input.LT(1);
@@ -227,7 +227,7 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleSubtreeStream stream_macro=new RewriteRuleSubtreeStream(adaptor,"rule macro");
         RewriteRuleSubtreeStream stream_block=new RewriteRuleSubtreeStream(adaptor,"rule block");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:7: ( ( Lb | block | macro )* EOF -> ^( IMPEX ^( ASSIGNEMENTS ( macro )* ) ^( BLOCKS ( block )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:7: ( ( Lb | block | macro )* EOF -> ^( IMPEX ( ^( ASSIGNEMENTS macro ) )* ( ^( BLOCKS block ) )* ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:9: ( Lb | block | macro )* EOF
             {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:107:9: ( Lb | block | macro )*
@@ -302,7 +302,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: block, macro
+            // elements: macro, block
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -312,48 +312,48 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 108:3: -> ^( IMPEX ^( ASSIGNEMENTS ( macro )* ) ^( BLOCKS ( block )* ) )
+            // 108:3: -> ^( IMPEX ( ^( ASSIGNEMENTS macro ) )* ( ^( BLOCKS block ) )* )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:108:6: ^( IMPEX ^( ASSIGNEMENTS ( macro )* ) ^( BLOCKS ( block )* ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:108:6: ^( IMPEX ( ^( ASSIGNEMENTS macro ) )* ( ^( BLOCKS block ) )* )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(IMPEX, "IMPEX")
                 , root_1);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:3: ^( ASSIGNEMENTS ( macro )* )
-                {
-                CommonTree root_2 = (CommonTree)adaptor.nil();
-                root_2 = (CommonTree)adaptor.becomeRoot(
-                (CommonTree)adaptor.create(ASSIGNEMENTS, "ASSIGNEMENTS")
-                , root_2);
-
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:18: ( macro )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:3: ( ^( ASSIGNEMENTS macro ) )*
                 while ( stream_macro.hasNext() ) {
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:3: ^( ASSIGNEMENTS macro )
+                    {
+                    CommonTree root_2 = (CommonTree)adaptor.nil();
+                    root_2 = (CommonTree)adaptor.becomeRoot(
+                    (CommonTree)adaptor.create(ASSIGNEMENTS, "ASSIGNEMENTS")
+                    , root_2);
+
                     adaptor.addChild(root_2, stream_macro.nextTree());
+
+                    adaptor.addChild(root_1, root_2);
+                    }
 
                 }
                 stream_macro.reset();
 
-                adaptor.addChild(root_1, root_2);
-                }
-
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:27: ^( BLOCKS ( block )* )
-                {
-                CommonTree root_2 = (CommonTree)adaptor.nil();
-                root_2 = (CommonTree)adaptor.becomeRoot(
-                (CommonTree)adaptor.create(BLOCKS, "BLOCKS")
-                , root_2);
-
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:36: ( block )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:27: ( ^( BLOCKS block ) )*
                 while ( stream_block.hasNext() ) {
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:110:27: ^( BLOCKS block )
+                    {
+                    CommonTree root_2 = (CommonTree)adaptor.nil();
+                    root_2 = (CommonTree)adaptor.becomeRoot(
+                    (CommonTree)adaptor.create(BLOCKS, "BLOCKS")
+                    , root_2);
+
                     adaptor.addChild(root_2, stream_block.nextTree());
+
+                    adaptor.addChild(root_1, root_2);
+                    }
 
                 }
                 stream_block.reset();
-
-                adaptor.addChild(root_1, root_2);
-                }
 
                 adaptor.addChild(root_0, root_1);
                 }
@@ -394,7 +394,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "block"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:1: block : header ( Lb | Lb record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:1: block : header ( ( Lb )+ record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) ;
     public final ImpexParser.block_return block() throws RecognitionException {
         ImpexParser.block_return retval = new ImpexParser.block_return();
         retval.start = input.LT(1);
@@ -403,20 +403,18 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree root_0 = null;
 
         Token Lb7=null;
-        Token Lb8=null;
         ImpexParser.header_return header6 =null;
 
-        ImpexParser.record_return record9 =null;
+        ImpexParser.record_return record8 =null;
 
 
         CommonTree Lb7_tree=null;
-        CommonTree Lb8_tree=null;
         RewriteRuleTokenStream stream_Lb=new RewriteRuleTokenStream(adaptor,"token Lb");
         RewriteRuleSubtreeStream stream_record=new RewriteRuleSubtreeStream(adaptor,"rule record");
         RewriteRuleSubtreeStream stream_header=new RewriteRuleSubtreeStream(adaptor,"rule header");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:7: ( header ( Lb | Lb record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:9: header ( Lb | Lb record )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:7: ( header ( ( Lb )+ record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:9: header ( ( Lb )+ record )+
             {
             pushFollow(FOLLOW_header_in_block216);
             header6=header();
@@ -425,66 +423,71 @@ public TreeAdaptor getTreeAdaptor() {
 
             stream_header.add(header6.getTree());
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:16: ( Lb | Lb record )+
-            int cnt3=0;
-            loop3:
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:16: ( ( Lb )+ record )+
+            int cnt4=0;
+            loop4:
             do {
-                int alt3=3;
-                int LA3_0 = input.LA(1);
-
-                if ( (LA3_0==Lb) ) {
-                    int LA3_2 = input.LA(2);
-
-                    if ( (LA3_2==EOF||(LA3_2 >= Insert && LA3_2 <= InsertUpdate)||LA3_2==Lb||LA3_2==Macrodef||LA3_2==Remove||LA3_2==Update) ) {
-                        alt3=1;
-                    }
-                    else if ( (LA3_2==Field||LA3_2==Identifier||LA3_2==QuotedField) ) {
-                        alt3=2;
-                    }
-
-
-                }
-
-
-                switch (alt3) {
+                int alt4=2;
+                alt4 = dfa4.predict(input);
+                switch (alt4) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:17: Lb
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:17: ( Lb )+ record
             	    {
-            	    Lb7=(Token)match(input,Lb,FOLLOW_Lb_in_block219);  
-            	    stream_Lb.add(Lb7);
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:17: ( Lb )+
+            	    int cnt3=0;
+            	    loop3:
+            	    do {
+            	        int alt3=2;
+            	        int LA3_0 = input.LA(1);
+
+            	        if ( (LA3_0==Lb) ) {
+            	            alt3=1;
+            	        }
 
 
-            	    }
-            	    break;
-            	case 2 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:22: Lb record
-            	    {
-            	    Lb8=(Token)match(input,Lb,FOLLOW_Lb_in_block223);  
-            	    stream_Lb.add(Lb8);
+            	        switch (alt3) {
+            	    	case 1 :
+            	    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:113:17: Lb
+            	    	    {
+            	    	    Lb7=(Token)match(input,Lb,FOLLOW_Lb_in_block219);  
+            	    	    stream_Lb.add(Lb7);
 
 
-            	    pushFollow(FOLLOW_record_in_block225);
-            	    record9=record();
+            	    	    }
+            	    	    break;
+
+            	    	default :
+            	    	    if ( cnt3 >= 1 ) break loop3;
+            	                EarlyExitException eee =
+            	                    new EarlyExitException(3, input);
+            	                throw eee;
+            	        }
+            	        cnt3++;
+            	    } while (true);
+
+
+            	    pushFollow(FOLLOW_record_in_block223);
+            	    record8=record();
 
             	    state._fsp--;
 
-            	    stream_record.add(record9.getTree());
+            	    stream_record.add(record8.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt3 >= 1 ) break loop3;
+            	    if ( cnt4 >= 1 ) break loop4;
                         EarlyExitException eee =
-                            new EarlyExitException(3, input);
+                            new EarlyExitException(4, input);
                         throw eee;
                 }
-                cnt3++;
+                cnt4++;
             } while (true);
 
 
             // AST REWRITE
-            // elements: record, header
+            // elements: header, record
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -563,7 +566,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "header"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:116:1: header : headerMode Identifier ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )? ( ';' attribute )* -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ^( ATTRIBUTES ( attribute )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:116:1: header : headerMode Identifier ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )? ( ';' attribute )* -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ( ^( ATTRIBUTES attribute ) )* ) ;
     public final ImpexParser.header_return header() throws RecognitionException {
         ImpexParser.header_return retval = new ImpexParser.header_return();
         retval.start = input.LT(1);
@@ -572,24 +575,24 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree root_0 = null;
 
         Token hmValue=null;
-        Token Identifier11=null;
-        Token char_literal12=null;
+        Token Identifier10=null;
+        Token char_literal11=null;
+        Token char_literal13=null;
         Token char_literal14=null;
         Token char_literal15=null;
-        Token char_literal16=null;
-        ImpexParser.headerMode_return headerMode10 =null;
+        ImpexParser.headerMode_return headerMode9 =null;
 
-        ImpexParser.headerModifier_return headerModifier13 =null;
+        ImpexParser.headerModifier_return headerModifier12 =null;
 
-        ImpexParser.attribute_return attribute17 =null;
+        ImpexParser.attribute_return attribute16 =null;
 
 
         CommonTree hmValue_tree=null;
-        CommonTree Identifier11_tree=null;
-        CommonTree char_literal12_tree=null;
+        CommonTree Identifier10_tree=null;
+        CommonTree char_literal11_tree=null;
+        CommonTree char_literal13_tree=null;
         CommonTree char_literal14_tree=null;
         CommonTree char_literal15_tree=null;
-        CommonTree char_literal16_tree=null;
         RewriteRuleTokenStream stream_LeftBracket=new RewriteRuleTokenStream(adaptor,"token LeftBracket");
         RewriteRuleTokenStream stream_Bool=new RewriteRuleTokenStream(adaptor,"token Bool");
         RewriteRuleTokenStream stream_RightBracket=new RewriteRuleTokenStream(adaptor,"token RightBracket");
@@ -600,68 +603,68 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleSubtreeStream stream_attribute=new RewriteRuleSubtreeStream(adaptor,"rule attribute");
         RewriteRuleSubtreeStream stream_headerModifier=new RewriteRuleSubtreeStream(adaptor,"rule headerModifier");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:2: ( headerMode Identifier ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )? ( ';' attribute )* -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ^( ATTRIBUTES ( attribute )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:2: ( headerMode Identifier ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )? ( ';' attribute )* -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ( ^( ATTRIBUTES attribute ) )* ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:4: headerMode Identifier ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )? ( ';' attribute )*
             {
-            pushFollow(FOLLOW_headerMode_in_header252);
-            headerMode10=headerMode();
+            pushFollow(FOLLOW_headerMode_in_header250);
+            headerMode9=headerMode();
 
             state._fsp--;
 
-            stream_headerMode.add(headerMode10.getTree());
+            stream_headerMode.add(headerMode9.getTree());
 
-            Identifier11=(Token)match(input,Identifier,FOLLOW_Identifier_in_header255);  
-            stream_Identifier.add(Identifier11);
+            Identifier10=(Token)match(input,Identifier,FOLLOW_Identifier_in_header253);  
+            stream_Identifier.add(Identifier10);
 
 
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:27: ( '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']' )?
-            int alt5=2;
-            int LA5_0 = input.LA(1);
+            int alt6=2;
+            int LA6_0 = input.LA(1);
 
-            if ( (LA5_0==LeftBracket) ) {
-                alt5=1;
+            if ( (LA6_0==LeftBracket) ) {
+                alt6=1;
             }
-            switch (alt5) {
+            switch (alt6) {
                 case 1 :
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:28: '[' headerModifier '=' (hmValue= Bool |hmValue= Identifier ) ']'
                     {
-                    char_literal12=(Token)match(input,LeftBracket,FOLLOW_LeftBracket_in_header258);  
-                    stream_LeftBracket.add(char_literal12);
+                    char_literal11=(Token)match(input,LeftBracket,FOLLOW_LeftBracket_in_header256);  
+                    stream_LeftBracket.add(char_literal11);
 
 
-                    pushFollow(FOLLOW_headerModifier_in_header260);
-                    headerModifier13=headerModifier();
+                    pushFollow(FOLLOW_headerModifier_in_header258);
+                    headerModifier12=headerModifier();
 
                     state._fsp--;
 
-                    stream_headerModifier.add(headerModifier13.getTree());
+                    stream_headerModifier.add(headerModifier12.getTree());
 
-                    char_literal14=(Token)match(input,Equals,FOLLOW_Equals_in_header262);  
-                    stream_Equals.add(char_literal14);
+                    char_literal13=(Token)match(input,Equals,FOLLOW_Equals_in_header260);  
+                    stream_Equals.add(char_literal13);
 
 
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:51: (hmValue= Bool |hmValue= Identifier )
-                    int alt4=2;
-                    int LA4_0 = input.LA(1);
+                    int alt5=2;
+                    int LA5_0 = input.LA(1);
 
-                    if ( (LA4_0==Bool) ) {
-                        alt4=1;
+                    if ( (LA5_0==Bool) ) {
+                        alt5=1;
                     }
-                    else if ( (LA4_0==Identifier) ) {
-                        alt4=2;
+                    else if ( (LA5_0==Identifier) ) {
+                        alt5=2;
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 4, 0, input);
+                            new NoViableAltException("", 5, 0, input);
 
                         throw nvae;
 
                     }
-                    switch (alt4) {
+                    switch (alt5) {
                         case 1 :
                             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:52: hmValue= Bool
                             {
-                            hmValue=(Token)match(input,Bool,FOLLOW_Bool_in_header267);  
+                            hmValue=(Token)match(input,Bool,FOLLOW_Bool_in_header265);  
                             stream_Bool.add(hmValue);
 
 
@@ -670,7 +673,7 @@ public TreeAdaptor getTreeAdaptor() {
                         case 2 :
                             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:67: hmValue= Identifier
                             {
-                            hmValue=(Token)match(input,Identifier,FOLLOW_Identifier_in_header273);  
+                            hmValue=(Token)match(input,Identifier,FOLLOW_Identifier_in_header271);  
                             stream_Identifier.add(hmValue);
 
 
@@ -680,8 +683,8 @@ public TreeAdaptor getTreeAdaptor() {
                     }
 
 
-                    char_literal15=(Token)match(input,RightBracket,FOLLOW_RightBracket_in_header276);  
-                    stream_RightBracket.add(char_literal15);
+                    char_literal14=(Token)match(input,RightBracket,FOLLOW_RightBracket_in_header274);  
+                    stream_RightBracket.add(char_literal14);
 
 
                     }
@@ -691,42 +694,42 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:94: ( ';' attribute )*
-            loop6:
+            loop7:
             do {
-                int alt6=2;
-                int LA6_0 = input.LA(1);
+                int alt7=2;
+                int LA7_0 = input.LA(1);
 
-                if ( (LA6_0==Semicolon) ) {
-                    alt6=1;
+                if ( (LA7_0==Semicolon) ) {
+                    alt7=1;
                 }
 
 
-                switch (alt6) {
+                switch (alt7) {
             	case 1 :
             	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:117:95: ';' attribute
             	    {
-            	    char_literal16=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header282);  
-            	    stream_Semicolon.add(char_literal16);
+            	    char_literal15=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header280);  
+            	    stream_Semicolon.add(char_literal15);
 
 
-            	    pushFollow(FOLLOW_attribute_in_header284);
-            	    attribute17=attribute();
+            	    pushFollow(FOLLOW_attribute_in_header282);
+            	    attribute16=attribute();
 
             	    state._fsp--;
 
-            	    stream_attribute.add(attribute17.getTree());
+            	    stream_attribute.add(attribute16.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop6;
+            	    break loop7;
                 }
             } while (true);
 
 
             // AST REWRITE
-            // elements: Identifier, attribute, headerModifier, headerMode, hmValue
+            // elements: headerModifier, attribute, Identifier, hmValue, headerMode
             // token labels: hmValue
             // rule labels: retval
             // token list labels: 
@@ -737,9 +740,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 118:2: -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ^( ATTRIBUTES ( attribute )* ) )
+            // 118:2: -> ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ( ^( ATTRIBUTES attribute ) )* )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:5: ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ^( ATTRIBUTES ( attribute )* ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:5: ^( HEADER headerMode ^( TYPE Identifier ) ( ^( MODIFIER headerModifier $hmValue) )? ( ^( ATTRIBUTES attribute ) )* )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -782,22 +785,22 @@ public TreeAdaptor getTreeAdaptor() {
                 stream_headerModifier.reset();
                 stream_hmValue.reset();
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:81: ^( ATTRIBUTES ( attribute )* )
-                {
-                CommonTree root_2 = (CommonTree)adaptor.nil();
-                root_2 = (CommonTree)adaptor.becomeRoot(
-                (CommonTree)adaptor.create(ATTRIBUTES, "ATTRIBUTES")
-                , root_2);
-
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:94: ( attribute )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:81: ( ^( ATTRIBUTES attribute ) )*
                 while ( stream_attribute.hasNext() ) {
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:118:81: ^( ATTRIBUTES attribute )
+                    {
+                    CommonTree root_2 = (CommonTree)adaptor.nil();
+                    root_2 = (CommonTree)adaptor.becomeRoot(
+                    (CommonTree)adaptor.create(ATTRIBUTES, "ATTRIBUTES")
+                    , root_2);
+
                     adaptor.addChild(root_2, stream_attribute.nextTree());
+
+                    adaptor.addChild(root_1, root_2);
+                    }
 
                 }
                 stream_attribute.reset();
-
-                adaptor.addChild(root_1, root_2);
-                }
 
                 adaptor.addChild(root_0, root_1);
                 }
@@ -838,7 +841,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "record"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:120:1: record : ( Identifier )? ( QuotedField | Field )+ -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )+ ( Field )+ ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:120:1: record : ( Identifier )? ( QuotedField | Field )+ -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )* ( Field )* ) ) ;
     public final ImpexParser.record_return record() throws RecognitionException {
         ImpexParser.record_return retval = new ImpexParser.record_return();
         retval.start = input.LT(1);
@@ -846,34 +849,34 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Identifier18=null;
-        Token QuotedField19=null;
-        Token Field20=null;
+        Token Identifier17=null;
+        Token QuotedField18=null;
+        Token Field19=null;
 
-        CommonTree Identifier18_tree=null;
-        CommonTree QuotedField19_tree=null;
-        CommonTree Field20_tree=null;
+        CommonTree Identifier17_tree=null;
+        CommonTree QuotedField18_tree=null;
+        CommonTree Field19_tree=null;
         RewriteRuleTokenStream stream_Field=new RewriteRuleTokenStream(adaptor,"token Field");
         RewriteRuleTokenStream stream_Identifier=new RewriteRuleTokenStream(adaptor,"token Identifier");
         RewriteRuleTokenStream stream_QuotedField=new RewriteRuleTokenStream(adaptor,"token QuotedField");
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:5: ( ( Identifier )? ( QuotedField | Field )+ -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )+ ( Field )+ ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:5: ( ( Identifier )? ( QuotedField | Field )+ -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )* ( Field )* ) ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:7: ( Identifier )? ( QuotedField | Field )+
             {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:7: ( Identifier )?
-            int alt7=2;
-            int LA7_0 = input.LA(1);
+            int alt8=2;
+            int LA8_0 = input.LA(1);
 
-            if ( (LA7_0==Identifier) ) {
-                alt7=1;
+            if ( (LA8_0==Identifier) ) {
+                alt8=1;
             }
-            switch (alt7) {
+            switch (alt8) {
                 case 1 :
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:7: Identifier
                     {
-                    Identifier18=(Token)match(input,Identifier,FOLLOW_Identifier_in_record331);  
-                    stream_Identifier.add(Identifier18);
+                    Identifier17=(Token)match(input,Identifier,FOLLOW_Identifier_in_record329);  
+                    stream_Identifier.add(Identifier17);
 
 
                     }
@@ -883,26 +886,26 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:19: ( QuotedField | Field )+
-            int cnt8=0;
-            loop8:
+            int cnt9=0;
+            loop9:
             do {
-                int alt8=3;
-                int LA8_0 = input.LA(1);
+                int alt9=3;
+                int LA9_0 = input.LA(1);
 
-                if ( (LA8_0==QuotedField) ) {
-                    alt8=1;
+                if ( (LA9_0==QuotedField) ) {
+                    alt9=1;
                 }
-                else if ( (LA8_0==Field) ) {
-                    alt8=2;
+                else if ( (LA9_0==Field) ) {
+                    alt9=2;
                 }
 
 
-                switch (alt8) {
+                switch (alt9) {
             	case 1 :
             	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:20: QuotedField
             	    {
-            	    QuotedField19=(Token)match(input,QuotedField,FOLLOW_QuotedField_in_record335);  
-            	    stream_QuotedField.add(QuotedField19);
+            	    QuotedField18=(Token)match(input,QuotedField,FOLLOW_QuotedField_in_record333);  
+            	    stream_QuotedField.add(QuotedField18);
 
 
             	    }
@@ -910,25 +913,25 @@ public TreeAdaptor getTreeAdaptor() {
             	case 2 :
             	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:121:34: Field
             	    {
-            	    Field20=(Token)match(input,Field,FOLLOW_Field_in_record339);  
-            	    stream_Field.add(Field20);
+            	    Field19=(Token)match(input,Field,FOLLOW_Field_in_record337);  
+            	    stream_Field.add(Field19);
 
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt8 >= 1 ) break loop8;
+            	    if ( cnt9 >= 1 ) break loop9;
                         EarlyExitException eee =
-                            new EarlyExitException(8, input);
+                            new EarlyExitException(9, input);
                         throw eee;
                 }
-                cnt8++;
+                cnt9++;
             } while (true);
 
 
             // AST REWRITE
-            // elements: Field, Identifier, QuotedField
+            // elements: QuotedField, Identifier, Field
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -938,9 +941,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 122:6: -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )+ ( Field )+ ) )
+            // 122:6: -> ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )* ( Field )* ) )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:9: ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )+ ( Field )+ ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:9: ^( RECORD ( ^( SUBTYPE Identifier ) )? ^( FIELDS ( QuotedField )* ( Field )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -966,16 +969,14 @@ public TreeAdaptor getTreeAdaptor() {
                 }
                 stream_Identifier.reset();
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:41: ^( FIELDS ( QuotedField )+ ( Field )+ )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:41: ^( FIELDS ( QuotedField )* ( Field )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(FIELDS, "FIELDS")
                 , root_2);
 
-                if ( !(stream_QuotedField.hasNext()) ) {
-                    throw new RewriteEarlyExitException();
-                }
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:50: ( QuotedField )*
                 while ( stream_QuotedField.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_QuotedField.nextNode()
@@ -984,9 +985,7 @@ public TreeAdaptor getTreeAdaptor() {
                 }
                 stream_QuotedField.reset();
 
-                if ( !(stream_Field.hasNext()) ) {
-                    throw new RewriteEarlyExitException();
-                }
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:122:63: ( Field )*
                 while ( stream_Field.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_Field.nextNode()
@@ -1046,18 +1045,18 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree root_0 = null;
 
         Token amValue=null;
-        Token char_literal22=null;
+        Token char_literal21=null;
+        Token char_literal23=null;
         Token char_literal24=null;
-        Token char_literal25=null;
-        ImpexParser.identifier_return identifier21 =null;
+        ImpexParser.identifier_return identifier20 =null;
 
-        ImpexParser.attributeModifier_return attributeModifier23 =null;
+        ImpexParser.attributeModifier_return attributeModifier22 =null;
 
 
         CommonTree amValue_tree=null;
-        CommonTree char_literal22_tree=null;
+        CommonTree char_literal21_tree=null;
+        CommonTree char_literal23_tree=null;
         CommonTree char_literal24_tree=null;
-        CommonTree char_literal25_tree=null;
         RewriteRuleTokenStream stream_LeftBracket=new RewriteRuleTokenStream(adaptor,"token LeftBracket");
         RewriteRuleTokenStream stream_Bool=new RewriteRuleTokenStream(adaptor,"token Bool");
         RewriteRuleTokenStream stream_RightBracket=new RewriteRuleTokenStream(adaptor,"token RightBracket");
@@ -1069,61 +1068,61 @@ public TreeAdaptor getTreeAdaptor() {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:11: ( identifier ( '[' attributeModifier '=' (amValue= Bool |amValue= Identifier ) ']' )? -> ^( ATTRIBUTE identifier ( ^( MODIFIER attributeModifier $amValue) )? ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:13: identifier ( '[' attributeModifier '=' (amValue= Bool |amValue= Identifier ) ']' )?
             {
-            pushFollow(FOLLOW_identifier_in_attribute383);
-            identifier21=identifier();
+            pushFollow(FOLLOW_identifier_in_attribute381);
+            identifier20=identifier();
 
             state._fsp--;
 
-            stream_identifier.add(identifier21.getTree());
+            stream_identifier.add(identifier20.getTree());
 
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:24: ( '[' attributeModifier '=' (amValue= Bool |amValue= Identifier ) ']' )?
-            int alt10=2;
-            int LA10_0 = input.LA(1);
+            int alt11=2;
+            int LA11_0 = input.LA(1);
 
-            if ( (LA10_0==LeftBracket) ) {
-                alt10=1;
+            if ( (LA11_0==LeftBracket) ) {
+                alt11=1;
             }
-            switch (alt10) {
+            switch (alt11) {
                 case 1 :
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:25: '[' attributeModifier '=' (amValue= Bool |amValue= Identifier ) ']'
                     {
-                    char_literal22=(Token)match(input,LeftBracket,FOLLOW_LeftBracket_in_attribute386);  
-                    stream_LeftBracket.add(char_literal22);
+                    char_literal21=(Token)match(input,LeftBracket,FOLLOW_LeftBracket_in_attribute384);  
+                    stream_LeftBracket.add(char_literal21);
 
 
-                    pushFollow(FOLLOW_attributeModifier_in_attribute388);
-                    attributeModifier23=attributeModifier();
+                    pushFollow(FOLLOW_attributeModifier_in_attribute386);
+                    attributeModifier22=attributeModifier();
 
                     state._fsp--;
 
-                    stream_attributeModifier.add(attributeModifier23.getTree());
+                    stream_attributeModifier.add(attributeModifier22.getTree());
 
-                    char_literal24=(Token)match(input,Equals,FOLLOW_Equals_in_attribute390);  
-                    stream_Equals.add(char_literal24);
+                    char_literal23=(Token)match(input,Equals,FOLLOW_Equals_in_attribute388);  
+                    stream_Equals.add(char_literal23);
 
 
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:51: (amValue= Bool |amValue= Identifier )
-                    int alt9=2;
-                    int LA9_0 = input.LA(1);
+                    int alt10=2;
+                    int LA10_0 = input.LA(1);
 
-                    if ( (LA9_0==Bool) ) {
-                        alt9=1;
+                    if ( (LA10_0==Bool) ) {
+                        alt10=1;
                     }
-                    else if ( (LA9_0==Identifier) ) {
-                        alt9=2;
+                    else if ( (LA10_0==Identifier) ) {
+                        alt10=2;
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 9, 0, input);
+                            new NoViableAltException("", 10, 0, input);
 
                         throw nvae;
 
                     }
-                    switch (alt9) {
+                    switch (alt10) {
                         case 1 :
                             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:52: amValue= Bool
                             {
-                            amValue=(Token)match(input,Bool,FOLLOW_Bool_in_attribute395);  
+                            amValue=(Token)match(input,Bool,FOLLOW_Bool_in_attribute393);  
                             stream_Bool.add(amValue);
 
 
@@ -1132,7 +1131,7 @@ public TreeAdaptor getTreeAdaptor() {
                         case 2 :
                             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:124:66: amValue= Identifier
                             {
-                            amValue=(Token)match(input,Identifier,FOLLOW_Identifier_in_attribute400);  
+                            amValue=(Token)match(input,Identifier,FOLLOW_Identifier_in_attribute398);  
                             stream_Identifier.add(amValue);
 
 
@@ -1142,8 +1141,8 @@ public TreeAdaptor getTreeAdaptor() {
                     }
 
 
-                    char_literal25=(Token)match(input,RightBracket,FOLLOW_RightBracket_in_attribute403);  
-                    stream_RightBracket.add(char_literal25);
+                    char_literal24=(Token)match(input,RightBracket,FOLLOW_RightBracket_in_attribute401);  
+                    stream_RightBracket.add(char_literal24);
 
 
                     }
@@ -1153,7 +1152,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: identifier, amValue, attributeModifier
+            // elements: attributeModifier, amValue, identifier
             // token labels: amValue
             // rule labels: retval
             // token list labels: 
@@ -1176,7 +1175,7 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, stream_identifier.nextTree());
 
                 // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:125:28: ( ^( MODIFIER attributeModifier $amValue) )?
-                if ( stream_amValue.hasNext()||stream_attributeModifier.hasNext() ) {
+                if ( stream_attributeModifier.hasNext()||stream_amValue.hasNext() ) {
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:125:28: ^( MODIFIER attributeModifier $amValue)
                     {
                     CommonTree root_2 = (CommonTree)adaptor.nil();
@@ -1192,8 +1191,8 @@ public TreeAdaptor getTreeAdaptor() {
                     }
 
                 }
-                stream_amValue.reset();
                 stream_attributeModifier.reset();
+                stream_amValue.reset();
 
                 adaptor.addChild(root_0, root_1);
                 }
@@ -1242,23 +1241,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Identifier26=null;
-        Token char_literal27=null;
-        Token Identifier28=null;
-        Token char_literal29=null;
-        Token char_literal31=null;
-        Token char_literal33=null;
-        ImpexParser.identifier_return identifier30 =null;
+        Token Identifier25=null;
+        Token char_literal26=null;
+        Token Identifier27=null;
+        Token char_literal28=null;
+        Token char_literal30=null;
+        Token char_literal32=null;
+        ImpexParser.identifier_return identifier29 =null;
 
-        ImpexParser.identifier_return identifier32 =null;
+        ImpexParser.identifier_return identifier31 =null;
 
 
-        CommonTree Identifier26_tree=null;
-        CommonTree char_literal27_tree=null;
-        CommonTree Identifier28_tree=null;
-        CommonTree char_literal29_tree=null;
-        CommonTree char_literal31_tree=null;
-        CommonTree char_literal33_tree=null;
+        CommonTree Identifier25_tree=null;
+        CommonTree char_literal26_tree=null;
+        CommonTree Identifier27_tree=null;
+        CommonTree char_literal28_tree=null;
+        CommonTree char_literal30_tree=null;
+        CommonTree char_literal32_tree=null;
 
         try {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:12: ( Identifier ( '.' Identifier | ( '(' identifier ( ',' identifier )* ')' ) )? )
@@ -1267,39 +1266,39 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            Identifier26=(Token)match(input,Identifier,FOLLOW_Identifier_in_identifier431); 
-            Identifier26_tree = 
-            (CommonTree)adaptor.create(Identifier26)
+            Identifier25=(Token)match(input,Identifier,FOLLOW_Identifier_in_identifier429); 
+            Identifier25_tree = 
+            (CommonTree)adaptor.create(Identifier25)
             ;
-            adaptor.addChild(root_0, Identifier26_tree);
+            adaptor.addChild(root_0, Identifier25_tree);
 
 
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:24: ( '.' Identifier | ( '(' identifier ( ',' identifier )* ')' ) )?
-            int alt12=3;
-            int LA12_0 = input.LA(1);
+            int alt13=3;
+            int LA13_0 = input.LA(1);
 
-            if ( (LA12_0==63) ) {
-                alt12=1;
+            if ( (LA13_0==63) ) {
+                alt13=1;
             }
-            else if ( (LA12_0==LeftParenthesis) ) {
-                alt12=2;
+            else if ( (LA13_0==LeftParenthesis) ) {
+                alt13=2;
             }
-            switch (alt12) {
+            switch (alt13) {
                 case 1 :
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:25: '.' Identifier
                     {
-                    char_literal27=(Token)match(input,63,FOLLOW_63_in_identifier434); 
-                    char_literal27_tree = 
-                    (CommonTree)adaptor.create(char_literal27)
+                    char_literal26=(Token)match(input,63,FOLLOW_63_in_identifier432); 
+                    char_literal26_tree = 
+                    (CommonTree)adaptor.create(char_literal26)
                     ;
-                    adaptor.addChild(root_0, char_literal27_tree);
+                    adaptor.addChild(root_0, char_literal26_tree);
 
 
-                    Identifier28=(Token)match(input,Identifier,FOLLOW_Identifier_in_identifier436); 
-                    Identifier28_tree = 
-                    (CommonTree)adaptor.create(Identifier28)
+                    Identifier27=(Token)match(input,Identifier,FOLLOW_Identifier_in_identifier434); 
+                    Identifier27_tree = 
+                    (CommonTree)adaptor.create(Identifier27)
                     ;
-                    adaptor.addChild(root_0, Identifier28_tree);
+                    adaptor.addChild(root_0, Identifier27_tree);
 
 
                     }
@@ -1310,63 +1309,63 @@ public TreeAdaptor getTreeAdaptor() {
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:43: ( '(' identifier ( ',' identifier )* ')' )
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:44: '(' identifier ( ',' identifier )* ')'
                     {
-                    char_literal29=(Token)match(input,LeftParenthesis,FOLLOW_LeftParenthesis_in_identifier442); 
-                    char_literal29_tree = 
-                    (CommonTree)adaptor.create(char_literal29)
+                    char_literal28=(Token)match(input,LeftParenthesis,FOLLOW_LeftParenthesis_in_identifier440); 
+                    char_literal28_tree = 
+                    (CommonTree)adaptor.create(char_literal28)
                     ;
-                    adaptor.addChild(root_0, char_literal29_tree);
+                    adaptor.addChild(root_0, char_literal28_tree);
 
 
-                    pushFollow(FOLLOW_identifier_in_identifier444);
-                    identifier30=identifier();
+                    pushFollow(FOLLOW_identifier_in_identifier442);
+                    identifier29=identifier();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, identifier30.getTree());
+                    adaptor.addChild(root_0, identifier29.getTree());
 
                     // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:59: ( ',' identifier )*
-                    loop11:
+                    loop12:
                     do {
-                        int alt11=2;
-                        int LA11_0 = input.LA(1);
+                        int alt12=2;
+                        int LA12_0 = input.LA(1);
 
-                        if ( (LA11_0==62) ) {
-                            alt11=1;
+                        if ( (LA12_0==62) ) {
+                            alt12=1;
                         }
 
 
-                        switch (alt11) {
+                        switch (alt12) {
                     	case 1 :
                     	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:127:60: ',' identifier
                     	    {
-                    	    char_literal31=(Token)match(input,62,FOLLOW_62_in_identifier447); 
-                    	    char_literal31_tree = 
-                    	    (CommonTree)adaptor.create(char_literal31)
+                    	    char_literal30=(Token)match(input,62,FOLLOW_62_in_identifier445); 
+                    	    char_literal30_tree = 
+                    	    (CommonTree)adaptor.create(char_literal30)
                     	    ;
-                    	    adaptor.addChild(root_0, char_literal31_tree);
+                    	    adaptor.addChild(root_0, char_literal30_tree);
 
 
-                    	    pushFollow(FOLLOW_identifier_in_identifier449);
-                    	    identifier32=identifier();
+                    	    pushFollow(FOLLOW_identifier_in_identifier447);
+                    	    identifier31=identifier();
 
                     	    state._fsp--;
 
-                    	    adaptor.addChild(root_0, identifier32.getTree());
+                    	    adaptor.addChild(root_0, identifier31.getTree());
 
                     	    }
                     	    break;
 
                     	default :
-                    	    break loop11;
+                    	    break loop12;
                         }
                     } while (true);
 
 
-                    char_literal33=(Token)match(input,RightParenthesis,FOLLOW_RightParenthesis_in_identifier453); 
-                    char_literal33_tree = 
-                    (CommonTree)adaptor.create(char_literal33)
+                    char_literal32=(Token)match(input,RightParenthesis,FOLLOW_RightParenthesis_in_identifier451); 
+                    char_literal32_tree = 
+                    (CommonTree)adaptor.create(char_literal32)
                     ;
-                    adaptor.addChild(root_0, char_literal33_tree);
+                    adaptor.addChild(root_0, char_literal32_tree);
 
 
                     }
@@ -1417,11 +1416,11 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Macrodef34=null;
-        Token Macroval35=null;
+        Token Macrodef33=null;
+        Token Macroval34=null;
 
-        CommonTree Macrodef34_tree=null;
-        CommonTree Macroval35_tree=null;
+        CommonTree Macrodef33_tree=null;
+        CommonTree Macroval34_tree=null;
         RewriteRuleTokenStream stream_Macroval=new RewriteRuleTokenStream(adaptor,"token Macroval");
         RewriteRuleTokenStream stream_Macrodef=new RewriteRuleTokenStream(adaptor,"token Macrodef");
 
@@ -1429,12 +1428,12 @@ public TreeAdaptor getTreeAdaptor() {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:130:2: ( Macrodef Macroval -> ^( ASSIGNEMENT Macrodef Macroval ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:130:3: Macrodef Macroval
             {
-            Macrodef34=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro464);  
-            stream_Macrodef.add(Macrodef34);
+            Macrodef33=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro462);  
+            stream_Macrodef.add(Macrodef33);
 
 
-            Macroval35=(Token)match(input,Macroval,FOLLOW_Macroval_in_macro466);  
-            stream_Macroval.add(Macroval35);
+            Macroval34=(Token)match(input,Macroval,FOLLOW_Macroval_in_macro464);  
+            stream_Macroval.add(Macroval34);
 
 
             // AST REWRITE
@@ -1512,9 +1511,9 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set36=null;
+        Token set35=null;
 
-        CommonTree set36_tree=null;
+        CommonTree set35_tree=null;
 
         try {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:133:19: ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
@@ -1523,12 +1522,12 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set36=(Token)input.LT(1);
+            set35=(Token)input.LT(1);
 
             if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||(input.LA(1) >= KeyToValueDelimiter && input.LA(1) <= Lang)||(input.LA(1) >= MapDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set36)
+                (CommonTree)adaptor.create(set35)
                 );
                 state.errorRecovery=false;
             }
@@ -1577,23 +1576,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set37=null;
+        Token set36=null;
 
-        CommonTree set37_tree=null;
+        CommonTree set36_tree=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:136:17: ( BatchMode | CacheUnique | Processor )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:136:16: ( BatchMode | CacheUnique | Processor )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set37=(Token)input.LT(1);
+            set36=(Token)input.LT(1);
 
             if ( input.LA(1)==BatchMode||input.LA(1)==CacheUnique||input.LA(1)==Processor ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set37)
+                (CommonTree)adaptor.create(set36)
                 );
                 state.errorRecovery=false;
             }
@@ -1642,9 +1641,9 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set38=null;
+        Token set37=null;
 
-        CommonTree set38_tree=null;
+        CommonTree set37_tree=null;
 
         try {
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:138:13: ( Insert | InsertUpdate | Update | Remove )
@@ -1653,12 +1652,12 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set38=(Token)input.LT(1);
+            set37=(Token)input.LT(1);
 
             if ( (input.LA(1) >= Insert && input.LA(1) <= InsertUpdate)||input.LA(1)==Remove||input.LA(1)==Update ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set38)
+                (CommonTree)adaptor.create(set37)
                 );
                 state.errorRecovery=false;
             }
@@ -1694,6 +1693,60 @@ public TreeAdaptor getTreeAdaptor() {
     // Delegated rules
 
 
+    protected DFA4 dfa4 = new DFA4(this);
+    static final String DFA4_eotS =
+        "\4\uffff";
+    static final String DFA4_eofS =
+        "\1\1\1\uffff\1\1\1\uffff";
+    static final String DFA4_minS =
+        "\1\37\1\uffff\1\30\1\uffff";
+    static final String DFA4_maxS =
+        "\1\73\1\uffff\1\73\1\uffff";
+    static final String DFA4_acceptS =
+        "\1\uffff\1\2\1\uffff\1\1";
+    static final String DFA4_specialS =
+        "\4\uffff}>";
+    static final String[] DFA4_transitionS = {
+            "\2\1\2\uffff\1\2\4\uffff\1\1\12\uffff\1\1\7\uffff\1\1",
+            "",
+            "\1\3\3\uffff\1\3\2\uffff\2\1\2\uffff\1\2\4\uffff\1\1\7\uffff"+
+            "\1\3\2\uffff\1\1\7\uffff\1\1",
+            ""
+    };
+
+    static final short[] DFA4_eot = DFA.unpackEncodedString(DFA4_eotS);
+    static final short[] DFA4_eof = DFA.unpackEncodedString(DFA4_eofS);
+    static final char[] DFA4_min = DFA.unpackEncodedStringToUnsignedChars(DFA4_minS);
+    static final char[] DFA4_max = DFA.unpackEncodedStringToUnsignedChars(DFA4_maxS);
+    static final short[] DFA4_accept = DFA.unpackEncodedString(DFA4_acceptS);
+    static final short[] DFA4_special = DFA.unpackEncodedString(DFA4_specialS);
+    static final short[][] DFA4_transition;
+
+    static {
+        int numStates = DFA4_transitionS.length;
+        DFA4_transition = new short[numStates][];
+        for (int i=0; i<numStates; i++) {
+            DFA4_transition[i] = DFA.unpackEncodedString(DFA4_transitionS[i]);
+        }
+    }
+
+    class DFA4 extends DFA {
+
+        public DFA4(BaseRecognizer recognizer) {
+            this.recognizer = recognizer;
+            this.decisionNumber = 4;
+            this.eot = DFA4_eot;
+            this.eof = DFA4_eof;
+            this.min = DFA4_min;
+            this.max = DFA4_max;
+            this.accept = DFA4_accept;
+            this.special = DFA4_special;
+            this.transition = DFA4_transition;
+        }
+        public String getDescription() {
+            return "()+ loopback of 113:16: ( ( Lb )+ record )+";
+        }
+    }
  
 
     public static final BitSet FOLLOW_EOF_in_parse153 = new BitSet(new long[]{0x0000000000000002L});
@@ -1702,38 +1755,37 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_macro_in_impex174 = new BitSet(new long[]{0x0808010980000000L});
     public static final BitSet FOLLOW_EOF_in_impex178 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_header_in_block216 = new BitSet(new long[]{0x0000000800000000L});
-    public static final BitSet FOLLOW_Lb_in_block219 = new BitSet(new long[]{0x0000000800000002L});
-    public static final BitSet FOLLOW_Lb_in_block223 = new BitSet(new long[]{0x0001000011000000L});
-    public static final BitSet FOLLOW_record_in_block225 = new BitSet(new long[]{0x0000000800000002L});
-    public static final BitSet FOLLOW_headerMode_in_header252 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_Identifier_in_header255 = new BitSet(new long[]{0x0080001000000002L});
-    public static final BitSet FOLLOW_LeftBracket_in_header258 = new BitSet(new long[]{0x0000800000005000L});
-    public static final BitSet FOLLOW_headerModifier_in_header260 = new BitSet(new long[]{0x0000000000400000L});
-    public static final BitSet FOLLOW_Equals_in_header262 = new BitSet(new long[]{0x0000000010002000L});
-    public static final BitSet FOLLOW_Bool_in_header267 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_header273 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_RightBracket_in_header276 = new BitSet(new long[]{0x0080000000000002L});
-    public static final BitSet FOLLOW_Semicolon_in_header282 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_attribute_in_header284 = new BitSet(new long[]{0x0080000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_record331 = new BitSet(new long[]{0x0001000001000000L});
-    public static final BitSet FOLLOW_QuotedField_in_record335 = new BitSet(new long[]{0x0001000001000002L});
-    public static final BitSet FOLLOW_Field_in_record339 = new BitSet(new long[]{0x0001000001000002L});
-    public static final BitSet FOLLOW_identifier_in_attribute383 = new BitSet(new long[]{0x0000001000000002L});
-    public static final BitSet FOLLOW_LeftBracket_in_attribute386 = new BitSet(new long[]{0x16007C06621A8300L});
-    public static final BitSet FOLLOW_attributeModifier_in_attribute388 = new BitSet(new long[]{0x0000000000400000L});
-    public static final BitSet FOLLOW_Equals_in_attribute390 = new BitSet(new long[]{0x0000000010002000L});
-    public static final BitSet FOLLOW_Bool_in_attribute395 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_Identifier_in_attribute400 = new BitSet(new long[]{0x0010000000000000L});
-    public static final BitSet FOLLOW_RightBracket_in_attribute403 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_identifier431 = new BitSet(new long[]{0x8000002000000002L});
-    public static final BitSet FOLLOW_63_in_identifier434 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_Identifier_in_identifier436 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LeftParenthesis_in_identifier442 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_identifier_in_identifier444 = new BitSet(new long[]{0x4020000000000000L});
-    public static final BitSet FOLLOW_62_in_identifier447 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_identifier_in_identifier449 = new BitSet(new long[]{0x4020000000000000L});
-    public static final BitSet FOLLOW_RightParenthesis_in_identifier453 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Macrodef_in_macro464 = new BitSet(new long[]{0x0000020000000000L});
-    public static final BitSet FOLLOW_Macroval_in_macro466 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Lb_in_block219 = new BitSet(new long[]{0x0001000811000000L});
+    public static final BitSet FOLLOW_record_in_block223 = new BitSet(new long[]{0x0000000800000002L});
+    public static final BitSet FOLLOW_headerMode_in_header250 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_Identifier_in_header253 = new BitSet(new long[]{0x0080001000000002L});
+    public static final BitSet FOLLOW_LeftBracket_in_header256 = new BitSet(new long[]{0x0000800000005000L});
+    public static final BitSet FOLLOW_headerModifier_in_header258 = new BitSet(new long[]{0x0000000000400000L});
+    public static final BitSet FOLLOW_Equals_in_header260 = new BitSet(new long[]{0x0000000010002000L});
+    public static final BitSet FOLLOW_Bool_in_header265 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_header271 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_RightBracket_in_header274 = new BitSet(new long[]{0x0080000000000002L});
+    public static final BitSet FOLLOW_Semicolon_in_header280 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_attribute_in_header282 = new BitSet(new long[]{0x0080000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_record329 = new BitSet(new long[]{0x0001000001000000L});
+    public static final BitSet FOLLOW_QuotedField_in_record333 = new BitSet(new long[]{0x0001000001000002L});
+    public static final BitSet FOLLOW_Field_in_record337 = new BitSet(new long[]{0x0001000001000002L});
+    public static final BitSet FOLLOW_identifier_in_attribute381 = new BitSet(new long[]{0x0000001000000002L});
+    public static final BitSet FOLLOW_LeftBracket_in_attribute384 = new BitSet(new long[]{0x16007C06621A8300L});
+    public static final BitSet FOLLOW_attributeModifier_in_attribute386 = new BitSet(new long[]{0x0000000000400000L});
+    public static final BitSet FOLLOW_Equals_in_attribute388 = new BitSet(new long[]{0x0000000010002000L});
+    public static final BitSet FOLLOW_Bool_in_attribute393 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_Identifier_in_attribute398 = new BitSet(new long[]{0x0010000000000000L});
+    public static final BitSet FOLLOW_RightBracket_in_attribute401 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_identifier429 = new BitSet(new long[]{0x8000002000000002L});
+    public static final BitSet FOLLOW_63_in_identifier432 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_Identifier_in_identifier434 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LeftParenthesis_in_identifier440 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_identifier_in_identifier442 = new BitSet(new long[]{0x4020000000000000L});
+    public static final BitSet FOLLOW_62_in_identifier445 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_identifier_in_identifier447 = new BitSet(new long[]{0x4020000000000000L});
+    public static final BitSet FOLLOW_RightParenthesis_in_identifier451 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Macrodef_in_macro462 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_Macroval_in_macro464 = new BitSet(new long[]{0x0000000000000002L});
 
 }

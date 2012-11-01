@@ -107,19 +107,19 @@ parse
 impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX  
 	// ^(COMMENTS Comment*) 
-	 ^(ASSIGNEMENTS macro*)  ^(BLOCKS block*));
+	 ^(ASSIGNEMENTS macro)*  ^(BLOCKS block)*);
 //if(input.LA(1) != ']') return true;
 
-block	: header (Lb | Lb record)+
+block	: header (Lb+  record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
 	: headerMode  Identifier ('[' headerModifier '=' (hmValue=Bool | hmValue=Identifier) ']')?  (';' attribute)*
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute*)) ;
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute)*) ;
 
 record
    	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
-    	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField+ Field+));
+    	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField* Field*));
     	
 attribute	: identifier ('[' attributeModifier '=' (amValue=Bool |amValue=Identifier) ']')?
 	-> ^(ATTRIBUTE identifier ^(MODIFIER attributeModifier $amValue)?);
@@ -133,7 +133,7 @@ macro
 attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
-headerModifier		:BatchMode | CacheUnique | Processor;
+headerModifier	:BatchMode | CacheUnique | Processor;
 
 headerMode		:Insert | InsertUpdate | Update | Remove;
 //block

@@ -1,0 +1,14 @@
+# Tests type name
+
+INSERT_UPDATE UserGroup[BatchMode=true];uid
+;admin
+INSERT_UPDATE Usergroup_123[CacheUnique=false];uid
+;admin
+INSERT_UPDATE Insert[Processor=com.lambda.yplugin.SomeProcessor];uid
+;admin
+INSERT_UPDATE insert;uid
+;admin
+INSERT_UPDATE mode;uid
+;admin
+
+

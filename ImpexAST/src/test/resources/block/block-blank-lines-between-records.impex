@@ -1,0 +1,16 @@
+# Tests blank lines between records
+
+INSERT_UPDATE Usergroup;uid;name
+;admin;Administrator Group
+		
+  			  
+  			  
+  	
+  	
+  
+
+;admin;Administrator
+;user;Name Surname
+ 
+;user1;User 1
+;userX;Some other user

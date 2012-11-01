@@ -1,0 +1,18 @@
+# Tests blank or empty lines within impex block 
+INSERT_UPDATE Usergroup;uid;name
+;admin;Administrator Group
+	
+UPDATE Usergroup;uid;name
+;admin;Administrator
+;user;Name Surname
+
+
+						
+        
+			
+
+
+	
+REMOVE Usergroup;uid;name
+;admin;Administrator
+;user;Name Surname			     		

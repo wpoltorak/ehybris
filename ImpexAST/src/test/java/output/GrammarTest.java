@@ -1,7 +1,5 @@
 package output;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -14,7 +12,6 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.DOTTreeGenerator;
-import org.antlr.runtime.tree.Tree;
 import org.antlr.stringtemplate.StringTemplate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -39,35 +36,42 @@ public class GrammarTest {
 
     @Test
     public void comments() throws Exception {
-        final File commentDir = new File(getClass().getResource("/comment").getFile());
-        assertTrue(commentDir.isDirectory());
-        checkGrammar(commentDir);
+        final File dir = new File(getClass().getResource("/comment").getFile());
+        assertTrue(dir.isDirectory());
+        checkGrammar(dir);
     }
 
     @Test
-    public void commentNodeContainsNoHashPrefix() throws Exception {
-        final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final ImpexParser parser = new ImpexParser(tokens);
-        final CommonTree tree = (CommonTree) parser.impex().getTree();
-        final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
-        assertEquals(1, comments.getChildCount());
-        assertFalse(comments.getChild(0).getText().startsWith("#"));
+    public void blocks() throws Exception {
+        final File dir = new File(getClass().getResource("/block").getFile());
+        assertTrue(dir.isDirectory());
+        checkGrammar(dir);
     }
 
-    @Test
-    public void commentNodeContainsWhitespaceCharacters() throws Exception {
-        final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final ImpexParser parser = new ImpexParser(tokens);
-        final CommonTree tree = (CommonTree) parser.impex().getTree();
-        final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
-        assertEquals(1, comments.getChildCount());
-        assertTrue(comments.getChild(0).getText().contains(" "));
-        assertTrue(comments.getChild(0).getText().contains("\t"));
-    }
+    //    @Test
+    //    public void commentNodeContainsNoHashPrefix() throws Exception {
+    //        final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
+    //        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
+    //        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+    //        final ImpexParser parser = new ImpexParser(tokens);
+    //        final CommonTree tree = (CommonTree) parser.impex().getTree();
+    //        final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
+    //        assertEquals(1, comments.getChildCount());
+    //        assertFalse(comments.getChild(0).getText().startsWith("#"));
+    //    }
+
+    //    @Test
+    //    public void commentNodeContainsWhitespaceCharacters() throws Exception {
+    //        final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
+    //        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
+    //        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+    //        final ImpexParser parser = new ImpexParser(tokens);
+    //        final CommonTree tree = (CommonTree) parser.impex().getTree();
+    //        final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
+    //        assertEquals(1, comments.getChildCount());
+    //        assertTrue(comments.getChild(0).getText().contains(" "));
+    //        assertTrue(comments.getChild(0).getText().contains("\t"));
+    //    }
 
     @Test
     public void xx() throws Exception {
@@ -111,7 +115,7 @@ public class GrammarTest {
                     @Override
                     public void reportError(final RecognitionException e) {
                         super.reportError(e);
-                        throw new IllegalStateException(e);
+                        throw new IllegalStateException("Error parsing '" + file.getName() + "': " + e);
                     }
                 };
                 final CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -121,12 +125,12 @@ public class GrammarTest {
                     @Override
                     public void emitErrorMessage(final String msg) {
                         super.emitErrorMessage(msg);
-                        throw new IllegalStateException(msg);
+                        throw new IllegalStateException("Error parsing '" + file.getName() + "': " + msg);
                     }
                 };
                 parser.impex().getTree();
             } catch (final Exception e) {
-                fail("Error parsing '" + file.getName() + "': " + e.getMessage());
+                fail("Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage());
             } finally {
                 System.out.println("Testing grammar done.");
                 System.out.println("_____________________");
