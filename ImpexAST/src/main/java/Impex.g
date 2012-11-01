@@ -15,17 +15,13 @@ options {
 tokens{
 	ASSIGNEMENT;
 	ASSIGNEMENTS;
-	SIMPLE_ATTRIBUTE;
-	COMPLEX_ATTRIBUTE;
 	ATTRIBUTES;
 	ATTRIBUTE;
 	HEADER;
-	HEADER_PREFIX;
-	HEADER_TYPE;
 	IMPEX;
-	IMPEX_BLOCK;
-	IMPEX_BLOCKS;
-	COMMENTS;
+	BLOCK;
+	BLOCKS;
+	MODIFIER;
 	ROW;
 	ROWS;
 }
@@ -39,27 +35,78 @@ tokens{
   package output;
 }
 
+@parser::members{
+    private boolean lineBreakNotFound() {
+        int index = ((CommonTokenStream)input).LT(-1).getTokenIndex();
+        int current  = ((CommonTokenStream)input).index();
+        for (int i = index + 1; i < current; i++){
+            if (input.get(i).getType() == Lb){
+                return false;
+            }
+        }
+     return true; 	
+    }
+
+}
+
 @lexer::members {
 
-private final output.TokenList tokens = new output.TokenList(1);
+
+public class TokenList {
+
+    private final ArrayList<Token> array;
+    private final int capacity;
+
+    public TokenList(final int capacity) {
+        this.capacity = capacity;
+        array = new ArrayList<Token>(capacity + 1);
+    }
+
+    public void add(final Token token) {
+        if (array.size() == capacity) {
+            array.remove(0);
+        }
+        array.add(token);
+    }
+
+    public Token get(final int num) {
+        if (num > capacity - 1) {
+            throw new IllegalArgumentException("Greater than list size");
+        }
+
+        return array.get(capacity - 1 - num);
+    }
+
+}
+private final TokenList tokens = new TokenList(1);
+private boolean isHeader = false;
 
 public void emit(Token token) {
     if(token.getChannel() == Token.DEFAULT_CHANNEL) {
         tokens.add(token);
     }
+    int t = token.getType();
+    if (t == Insert || t == InsertUpdate || t  == Update || t ==Remove){
+     isHeader = true;	
+    }
+    
+     
+     if (t == Lb){
+     isHeader = false;	
+    }
     super.emit(token);
 }
 
 private boolean isMacroAssignement() {
- //   final Token equalsToken = getToken(0);
-//    if(equalsToken != null && equalsToken.getType() != Equals){
-//    final Token macrodef = getToken(1);
         final Token macrodef = getToken(0);
         return macrodef != null && macrodef.getType() == Macrodef;
-//    }
-//    return false;
+//            return input.LA(-1) == Macrodef;
 }
 
+private boolean isHeader(){
+
+ return isHeader;
+}
 private Token getToken(int num) {
     return tokens.get(num);
 }
@@ -74,38 +121,46 @@ parse
   ;
   	
 impex	: ( 
-	record 
-	| 
-	macro {System.out.printf("macro    :: '\%s'\n", $macro.text);}
-	|
-	//| record {System.out.printf("record    :: '\%s'\n", $record.text);}
-	Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
-//	| header -> ^(HEADER header)
+	 block// {System.out.printf("macro    :: '\%s'\n", $macro.text);}
+	| macro //{System.out.printf("macro    :: '\%s'\n", $macro.text);}
+	//| Comment {System.out.printf("Comment    :: '\%s'\n", $Comment.text);}
 	)*
 	EOF
-	 -> ^(IMPEX  ^(COMMENTS Comment*) ^(ASSIGNEMENTS macro*) )//^(ROWS record*))
+	 -> ^(IMPEX  
+	// ^(COMMENTS Comment*) 
+	 ^(ASSIGNEMENTS macro*) 
+	 ^(BLOCKS block*)  
+	 //^(HEADERS header*)
+	 )//^(ROWS record*))
 	;
 //if(input.LA(1) != ']') return true;
 
+block	: header Lb (record)+
+	-> ^(BLOCK header ^(ROWS record+));
+
 header
-	: HeaderMode  Identifier (LeftBracket HeaderModifier Equals (Bool | Identifier) RightBracket)? Semicolon
-	-> ^(HEADER Identifier ^(ATTRIBUTE HeaderModifier Bool? Identifier?) );//^(ARGUMENTS)) ;
-	
-	
+	: headerMode  Identifier ('[' headerModifier '=' (hmValue=Bool | hmValue=Identifier) ']')?  (';' attribute)*
+	-> ^(HEADER headerMode Identifier ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute*)) ;
+
 record
-   	:(quoted_field | field) (Semicolon (quoted_field | field))* ( Lb | (LineContinuation {newLine();} record))
+   	:(QuotedField | Field)+ ((('\r'? '\n' | '\r' )) | EOF)// ( Lb | (LineContinuation {newline();} record))
 //   	:(quoted_field | field) (Semicolon (quoted_field | field))* 
-    	-> ^(ROW quoted_field* field*);
+    	-> ^(ROW QuotedField+ Field+);
+    	
+//attributes	:{lineBreakNotFound() }?=> (';' attribute)*
+//	-> attribute*;	
+	
+attribute	: identifier ('[' attributeModifier '=' (amValue=Bool |amValue=Identifier) ']')?
+	-> ^(ATTRIBUTE identifier ^(MODIFIER attributeModifier $amValue)?);//^(ARGUMENTS)) ;
+
+identifier	:Identifier ('.' Identifier |  ('(' identifier (',' identifier)* ')'))?;
+
+    	
 //(quoted_field | field) (Semicolon (quoted_field | field))* 	    	
 macro
 	:Macrodef Macroval
 	-> ^(ASSIGNEMENT Macrodef Macroval);
 
-quoted_field 	
-	:DoubleQuote (Char | DoubleQuote DoubleQuote | Semicolon)*  DoubleQuote;
-
-field 	
-	:Char*;
 
 //block
 //	: header  (
@@ -127,43 +182,43 @@ field
 //	';'.*';'
 //	;	
 
-fragment Insert		:'INSERT';
-fragment InsertUpdate		:'INSERT_UPDATE';
-fragment Update		:'UPDATE';
-fragment Remove		:'REMOVE';
+ Insert		:'INSERT';
+ InsertUpdate		:'INSERT_UPDATE';
+ Update		:'UPDATE';
+ Remove		:'REMOVE';
 //Mode		:'INSERT' | 'INSERT_UPDATE' | 'UPDATE' | 'REMOVE';
-HeaderMode		:Insert | InsertUpdate | Update | Remove;
+headerMode		:Insert | InsertUpdate | Update | Remove;
 
-fragment BatchMode		:'batchmode';
-fragment CacheUnique		:'cacheUnique';
-fragment Processor		:'processor';
+ BatchMode		:'batchmode';
+ CacheUnique		:'cacheUnique';
+ Processor		:'processor';
 //HeaerdModifier		:'batchmode' | 'cacheUnique' | 'processor';
-HeaderModifier		:BatchMode | CacheUnique | Processor;
+headerModifier		:BatchMode | CacheUnique | Processor;
 		
 
-fragment Alias		:'alias';
-fragment AllowNull		:'allownull';
-fragment CellDecorator		:'cellDecorator';
-fragment CollectionDelimiter 	:'collection-delimiter';
-fragment Dateformat		:'dateformat';
-fragment Default		:'default';
-fragment ForceWrite		:'forceWrite';
-fragment IgnoreKeyCase	:'ignoreKeyCase';
-fragment IgnoreNull		:'ignorenull';
-fragment KeyToValueDelimiter	:'key2value-delimiter';
-fragment Lang		:'lang';
-fragment MapDelimiter		:'map-delimiter';
-fragment Mode		:'mode';
-fragment NumberFormat	:'numberformat';
-fragment PathDelimiter		:'path-delimiter';
-fragment Pos		:'pos';
-fragment Translator		:'translator';
-fragment Unique		:'unique';
-fragment Virtual		:'virtual';
+ Alias			:'alias';
+ AllowNull		:'allownull';
+ CellDecorator		:'cellDecorator';
+ CollectionDelimiter 	:'collection-delimiter';
+ Dateformat		:'dateformat';
+ Default		:'default';
+ ForceWrite		:'forceWrite';
+ IgnoreKeyCase		:'ignoreKeyCase';
+ IgnoreNull		:'ignorenull';
+ KeyToValueDelimiter	:'key2value-delimiter';
+ Lang			:'lang';
+ MapDelimiter		:'map-delimiter';
+ Mode		:'mode';
+ NumberFormat		:'numberformat';
+ PathDelimiter		:'path-delimiter';
+ Pos			:'pos';
+ Translator		:'translator';
+ Unique		:'unique';
+ Virtual		:'virtual';
 
 //AttribModifier	: 'alias' | 'allownull' | 'cellDecorator' | 'collection-delimiter' | 'dateformat' | 'default' | 'forceWrite' | 'ignoreKeyCase' | 'ignorenull' 
 //		| 'key2value-delimiter' | 'lang' | 'map-delimiter' | 'mode' | 'numberformat' | 'path-delimiter' | 'pos' | 'translator' | 'unique' | 'virtual';
-AttribModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
 
@@ -176,7 +231,7 @@ LeftBracket		:'[';
 LeftParenthesis 	:'(';
 RightParenthesis	:')';
 Equals		:'=';
-Comma		:',';
+//Comma		:',';
 //Underscore		:'_';
 //Hash		:'#';
 LineContinuation	:'\\\\';
@@ -191,14 +246,23 @@ Macroval
 	:{isMacroAssignement()}?=> '='~('\r' | '\n')* ;
 	
 Identifier
-	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
+	://{isHeader()}?=>
+	 ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
 //Classname
 //	:(('a' .. 'z' | 'A' .. 'Z' | '$') ('0' .. '9' | '_' | '.' | '$')?)*  ('a' .. 'z' | 'A' .. 'Z' | '$') '0' .. '9' | '_' | '$')*;
 
 Comment	
 	@after { setText(getText().substring(1, getText().length())); }
-	:'#' ~('\r' | '\n')* ;
+	:'#' ~('\r' | '\n')* {$channel=HIDDEN;};
+
+QuotedField 	
+	@after { setText(getText().substring(1, getText().length())); }
+	:';' '"' (Char | '"' '"' | ';')*  '"';
+
+Field 	
+	@after { setText(getText().substring(1, getText().length())); }
+	:{isHeader() == false}?=> ';' Char*;
 
 //BeanShell	
 //	:'#$' ~('\r' | '\n')* ;
@@ -216,7 +280,9 @@ Comment
 //        )*
 //        '}'
 //    ;	
-
+//Id_or_field 
+//	:	{isHeader()}?=>Identifier
+//		| Field;
 //Char
 //    : '\u0000' .. '\u0009'
 ///   | '\u000b' .. '\u000c'
