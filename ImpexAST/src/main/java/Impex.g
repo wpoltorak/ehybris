@@ -21,6 +21,7 @@ tokens{
 	IMPEX;
 	BLOCK;
 	BLOCKS;
+	MODIFIERS;
 	MODIFIER;
 	RECORD;
 	RECORDS;
@@ -31,7 +32,7 @@ tokens{
 
 
 @lexer::header {
- package output;
+ package output;  
 }
  
 @parser::header {
@@ -114,16 +115,32 @@ block	: header (Lb+  record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier ('[' headerModifier '=' (hmValue=Bool | hmValue=Identifier) ']')?  (';' attribute)*
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIER headerModifier $hmValue)? ^(ATTRIBUTES attribute)*) ;
+	: headerMode  Identifier headerModifiers?  (';' attribute)*
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(ATTRIBUTES attribute)*) ;
+
+headerModifiers 
+	: ('[' headerModifierAssignment (','  headerModifierAssignment)*']')+
+	-> ^(MODIFIER headerModifierAssignment)+;
+
+headerModifierAssignment: headerModifier '=' (hmValue=Bool | hmValue=Classname)
+	-> headerModifier $hmValue;
+
+headerModifier	:BatchMode | CacheUnique | Processor;
 
 record
    	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
     	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField* Field*));
     	
-attribute	: identifier ('[' attributeModifier '=' (amValue=Bool |amValue=Identifier) ']')?
-	-> ^(ATTRIBUTE identifier ^(MODIFIER attributeModifier $amValue)?);
+attribute	: identifier  attributeModifiers?
+	-> ^(ATTRIBUTE identifier ^(MODIFIERS attributeModifiers)?);
 
+attributeModifiers
+	: ('[' attributeModifierAssignment (','  attributeModifierAssignment)*']')+
+	-> ^(MODIFIER attributeModifierAssignment)+;
+
+attributeModifierAssignment
+	: attributeModifier '=' (hmValue=Bool | hmValue=Identifier |  hmValue=Classname);
+	
 identifier	:Identifier ('.' Identifier |  ('(' identifier (',' identifier)* ')'))?;
 
 macro
@@ -133,7 +150,6 @@ macro
 attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
-headerModifier	:BatchMode | CacheUnique | Processor;
 
 headerMode		:Insert | InsertUpdate | Update | Remove;
 //block
@@ -144,32 +160,40 @@ headerMode		:Insert | InsertUpdate | Update | Remove;
 //	               |   '\n'         {newline();}
 //	             )*
 //	;
-	
- Insert		:'INSERT';
+
+ Insert		
+ 		//@init { ((ImpexANTLRStringStream)input).caseInsensitive(); }
+ 		//@after { ((ImpexANTLRStringStream)input).caseSensitive(); }
+ 		:'INSERT';
  InsertUpdate		:'INSERT_UPDATE';
  Update		:'UPDATE';
  Remove		:'REMOVE';
+	
+// Insert		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T' | 't');
+ //InsertUpdate		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T' | 't') '_' ('U' | 'u') ('P' | 'p') ('D' | 'd') ('A' | 'a') ('T' | 't') ('E' | 'e');
+// Update		:('U' | 'u') ('P' | 'p') ('D' | 'd') ('A' | 'a') ('T' | 't') ('E' | 'e');
+/// Remove		:('R' | 'r' ) ('E' | 'e') ('M' | 'm') ('O' | 'o') ('V' | 'v') ('E' | 'e');
 
  BatchMode		:'batchmode';
  CacheUnique		:'cacheUnique';
  Processor		:'processor';
 
- Alias			:'alias';
+ Alias		:'alias';
  AllowNull		:'allownull';
- CellDecorator		:'cellDecorator';
+ CellDecorator	:'cellDecorator';
  CollectionDelimiter 	:'collection-delimiter';
  Dateformat		:'dateformat';
  Default		:'default';
  ForceWrite		:'forceWrite';
- IgnoreKeyCase		:'ignoreKeyCase';
+ IgnoreKeyCase	:'ignoreKeyCase';
  IgnoreNull		:'ignorenull';
  KeyToValueDelimiter	:'key2value-delimiter';
- Lang			:'lang';
- MapDelimiter		:'map-delimiter';
+ Lang		:'lang';
+ MapDelimiter	:'map-delimiter';
  Mode		:'mode';
- NumberFormat		:'numberformat';
- PathDelimiter		:'path-delimiter';
- Pos			:'pos';
+ NumberFormat	:'numberformat';
+ PathDelimiter	:'path-delimiter';
+ Pos		:'pos';
  Translator		:'translator';
  Unique		:'unique';
  Virtual		:'virtual';
@@ -196,8 +220,8 @@ Macroval
 Identifier
 	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
-//Classname
-//	:(('a' .. 'z' | 'A' .. 'Z' | '$') ('0' .. '9' | '_' | '.' | '$')?)*  ('a' .. 'z' | 'A' .. 'Z' | '$') '0' .. '9' | '_' | '$')*;
+Classname
+	:(('a' .. 'z')+ '.')+ 'A' .. 'Z' ('A' .. 'Z' | 'a' .. 'z')+;
 
 Comment	
 	@after { setText(getText().substring(1, getText().length())); }
