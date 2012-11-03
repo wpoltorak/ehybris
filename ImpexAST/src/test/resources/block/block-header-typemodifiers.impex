@@ -1,14 +1,25 @@
 # Tests type name
 
-INSERT_UPDATE UserGroup[BatchMode=true];uid
-;admin
-INSERT_UPDATE Usergroup_123[CacheUnique=false];uid
-;admin
-INSERT_UPDATE Insert[Processor=com.lambda.yplugin.SomeProcessor];uid
-;admin
-INSERT_UPDATE insert;uid
-;admin
-INSERT_UPDATE mode;uid
-;admin
+$regulargroup=regulargroup
+$customergroup = customergroup
 
+INSERT_UPDATE Usergroup[cacheUnique=true];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
 
+INSERT_UPDATE Usergroup[ cacheUnique =true    ];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup[ cacheUnique =true   ,batchMode=false ];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup[ processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ,cacheUnique =true  	 ,batchMode=false];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup[ cacheUnique =true 	  ,batchMode=false][processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup	 [ batchMode= false][ cacheUnique =true  ]    [processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ]  ;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup	[batchMode=false][batchMode=true];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;

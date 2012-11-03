@@ -1,16 +1,16 @@
 # Tests INSERT, INSERT_UPDATE, UPDATE and REMOVE modes
 
-INSERT_UPDATE Usergroup;uid;name
-;admin;Administrator Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;regulargroup;customerGroup;
 
-UPDATE User;uid;name
+UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;regulargroup;customerGroup;
+;regulargroup;customerGroup;
+
+INSERT Usergroup;uid[unique=true];groups(uid)[mode=append]
 ;admin;Administrator
-;user;Name Surname
 
-INSERT User;uid;name
-;admin;Administrator
-
-REMOVE User;uid;name
+REMOVE Usergroup;uid[unique=true];groups(uid)[mode=append]
 ;admin;Administrator
 ;user1;User 1
 ;userX;Some other user
