@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.Iterator;
 
-import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -75,8 +74,8 @@ public class GrammarTest {
 
     @Test
     public void xx() throws Exception {
-        final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
+        final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream("/user-groups.impex"));
+        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex, impex.length));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         printTokens(tokens);
         System.out.println("__________________________");
@@ -96,7 +95,7 @@ public class GrammarTest {
     @Test
     public void yy() throws Exception {
         final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
+        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         //printTokens(tokens);
         System.out.println("__________________________");
@@ -105,12 +104,12 @@ public class GrammarTest {
     }
 
     private void checkGrammar(final File directory) {
+        String errors = "";
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
             final File file = it.next();
             try {
-                System.out.println("Testing grammar against '" + file.getName() + "'...\n");
                 final String impex = FileUtils.readFileToString(file);
-                final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex)) {
+                final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex)) {
 
                     @Override
                     public void reportError(final RecognitionException e) {
@@ -130,11 +129,14 @@ public class GrammarTest {
                 };
                 parser.impex().getTree();
             } catch (final Exception e) {
-                fail("Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage());
-            } finally {
-                System.out.println("Testing grammar done.");
-                System.out.println("_____________________");
+                errors += "Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage() + "\n";
             }
+
+        }
+
+        if (!errors.isEmpty()) {
+            System.err.println(errors);
+            fail(errors);
         }
         // create the parser
         // final impexParser parser = new impexParser(tokens);
