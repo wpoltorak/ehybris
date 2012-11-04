@@ -28,6 +28,7 @@ tokens{
 	TYPE;
 	SUBTYPE;
 	FIELDS;
+	DOCUMENTID;
 }
 
 
@@ -87,11 +88,40 @@ public void emit(Token token) {
     super.emit(token);
 }
 
-private boolean isMacroAssignement() {
-        final Token macrodef = getToken(0);
-        return macrodef != null && macrodef.getType() == Macrodef;
+private boolean isMacroAssignment() {
+        final Token token = getToken(0);
+        return token != null && token.getType() == Macrodef;
 //            return input.LA(-1) == Macrodef;
 }
+
+
+    private boolean isArgumentModifierAssignment() {
+        final Token token = getToken(0);
+
+        switch (token.getType()) {
+            case Alias:
+            case AllowNull:
+            case CellDecorator:
+            case CollectionDelimiter:
+            case Dateformat:
+            case Default:
+            case ForceWrite:
+            case IgnoreKeyCase:
+            case IgnoreNull:
+            case KeyToValueDelimiter:
+            case Lang:
+            case MapDelimiter:
+            case Mode:
+            case NumberFormat:
+            case PathDelimiter:
+            case Pos:
+            case Translator:
+            case Unique:
+            case Virtual:
+                return true;
+        }
+        return false;
+    }
 
 private boolean isHeader(){
 
@@ -115,8 +145,8 @@ block	: header (Lb+  record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier headerModifiers?  (';' attribute)*
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(ATTRIBUTES attribute)*) ;
+	: headerMode  Identifier headerModifiers?  (';' DocumentId)? (';' attribute)*
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(DOCUMENTID DocumentId)? ^(ATTRIBUTES attribute)*) ;
 
 headerModifiers 
 	: ('[' headerModifierAssignment (','  headerModifierAssignment)*']')+
@@ -131,25 +161,25 @@ record
    	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
     	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField* Field*));
     	
-attribute	: identifier  attributeModifiers?
-	-> ^(ATTRIBUTE identifier ^(MODIFIERS attributeModifiers)?);
+attribute	: attributeName  attributeModifiers?
+	-> ^(ATTRIBUTE attributeName ^(MODIFIERS attributeModifiers)?);
 
 attributeModifiers
 	: ('[' attributeModifierAssignment (','  attributeModifierAssignment)*']')+
 	-> ^(MODIFIER attributeModifierAssignment)+;
 
 attributeModifierAssignment
-	: attributeModifier '=' (hmValue=Bool | hmValue=Identifier |  hmValue=Classname);
+	: attributeModifier ArgumentModifierval;	
 	
-identifier	:Identifier ('.' Identifier |  ('(' identifier (',' identifier)* ')'))?;
+attributeName	:Identifier ('.' Identifier |  ('('  (DocumentId |  attributeName (',' attributeName)*) ')' ))? | '@' Identifier '[' Translator '=' Classname ']';
 
 macro
 	:Macrodef Macroval
 	-> ^(ASSIGNEMENT Macrodef Macroval);
 
+
 attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
-
 
 headerMode		:Insert | InsertUpdate | Update | Remove;
 //block
@@ -198,6 +228,7 @@ headerMode		:Insert | InsertUpdate | Update | Remove;
  Unique		:'unique';
  Virtual		:'virtual';
 
+Comma 		:',';
 DoubleQuote		:'"';
 Semicolon		:';';
 RightBracket		:']';
@@ -209,14 +240,35 @@ Equals		:'=';
 LineContinuation	:'\\\\';
 Bool		:'true' | 'false';
 
+fragment HeaderMode	: Insert | InsertUpdate | Update | Remove;
+
+fragment HeaderModifier	:BatchMode | CacheUnique | Processor;
+
+fragment ArgumentModifier 
+		: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
+
 Macrodef
 	:'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
 
 Macroval
 	@after {setText(getText().substring(1, getText().length()).trim());}
-	:{isMacroAssignement()}?=> '='~('\r' | '\n')* ;
+	:{isMacroAssignment()}?=> ('='~('\r' | '\n')*) | 
+	 ;
 	
+ArgumentModifierval
+	@after {
+		String text = getText().substring(1, getText().length()).trim();
+		if (text.endsWith(",")){
+		    text = text.substring(0, text.length() - 1);
+		}
+		setText(text);
+	}
+	:{isArgumentModifierAssignment()}?=> '='~('\r' | '\n' | ';' | '[' | ']' | ',')*;
+
+DocumentId
+	:'&' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 Identifier
 	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
@@ -254,4 +306,5 @@ Field
 
  Ws	:(' ' | '\t') {$channel=HIDDEN;};
   Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
-Char	: ~('\r' | '\n' | '"' | ';') ;
+Char	: ~('\r' | '\n' | '"' | ';' ) ;
+
