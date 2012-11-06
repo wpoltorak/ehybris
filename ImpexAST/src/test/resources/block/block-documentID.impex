@@ -1,0 +1,6 @@
+INSERT_UPDATE Customer;uid[unique=true];description;groups(uid)[mode=append];defaultPaymentAddress( &addrID );
+;customer;ignore value;$customerGroup;addr1
+
+
+INSERT_UPDATE Address ; &addrID	; owner( Customer.uid )
+;customer

@@ -1,6 +1,6 @@
 <map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1346848542096" ID="ID_849519018" MODIFIED="1348473741871" TEXT="ytools">
+<node CREATED="1346848542096" ID="ID_849519018" MODIFIED="1352230958114" TEXT="ytools">
 <node CREATED="1348473652039" ID="ID_107991129" MODIFIED="1351807963434" POSITION="right" TEXT="yeclipse">
 <node CREATED="1346848553270" ID="ID_224474371" MODIFIED="1351889314768" TEXT="Impex Editor">
 <node CREATED="1346848561046" ID="ID_1811607809" MODIFIED="1346849139296" TEXT="Syntax Coloring"/>
@@ -59,12 +59,12 @@
 <node CREATED="1348174013020" ID="ID_1593524753" MODIFIED="1348174023344" TEXT="Mark column names"/>
 <node CREATED="1348174037813" ID="ID_117525857" MODIFIED="1348174051062" TEXT="Mark table names"/>
 <node CREATED="1348174023775" ID="ID_1898382876" MODIFIED="1348174029380" TEXT="Mark values"/>
-<node CREATED="1348467106680" ID="ID_1329422842" MODIFIED="1348467341714" TEXT="Toolbar button">
-<icon BUILTIN="flag-green"/>
+<node CREATED="1348467106680" ID="ID_1329422842" MODIFIED="1352231092443" TEXT="Toolbar button">
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1348467172919" FOLDED="true" ID="ID_1872716909" MODIFIED="1348683505259" TEXT="Show whitespaces">
-<icon BUILTIN="flag-green"/>
+<node CREATED="1348467172919" FOLDED="true" ID="ID_1872716909" MODIFIED="1352231087994" TEXT="Show whitespaces">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1348467180196" ID="ID_1115777630" MODIFIED="1348682116804" TEXT="General preference">
 <icon BUILTIN="flag-green"/>
 </node>
@@ -72,31 +72,32 @@
 <icon BUILTIN="flag-green"/>
 </node>
 </node>
-<node CREATED="1348467037523" FOLDED="true" ID="ID_752031791" MODIFIED="1348682100197" TEXT="Show line numbers">
-<icon BUILTIN="flag-green"/>
-<node CREATED="1348467234896" ID="ID_479262826" MODIFIED="1348682098067" TEXT="Context menu - Annotation bar">
-<icon BUILTIN="flag-green"/>
+<node CREATED="1348467037523" FOLDED="true" ID="ID_752031791" MODIFIED="1352231102795" TEXT="Show line numbers">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1348467234896" ID="ID_479262826" MODIFIED="1352231098634" TEXT="Context menu - Annotation bar">
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1348467211052" ID="ID_1428526848" MODIFIED="1348467214010" TEXT="Locale support"/>
 <node CREATED="1351807976735" ID="ID_1367907465" MODIFIED="1351889319242" TEXT="TODO">
 <icon BUILTIN="flag-orange"/>
-<node CREATED="1351807984400" ID="ID_1752344220" MODIFIED="1352068486521" TEXT="DocumentID &amp;param">
-<icon BUILTIN="flag-green"/>
+<node CREATED="1351807984400" ID="ID_1752344220" MODIFIED="1352231110203" TEXT="DocumentID &amp;param">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1351808098209" FOLDED="true" ID="ID_1147273267" MODIFIED="1352068494587" TEXT="Special Attribute">
-<icon BUILTIN="flag-green"/>
+<node CREATED="1351808098209" FOLDED="true" ID="ID_1147273267" MODIFIED="1352231119523" TEXT="Special Attribute">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1351808104789" ID="ID_912433692" MODIFIED="1351808107619" TEXT="@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator]"/>
 </node>
-<node CREATED="1351808132567" FOLDED="true" ID="ID_1454945020" MODIFIED="1351808216443" TEXT="Alternative Pattern">
+<node CREATED="1351808132567" ID="ID_1454945020" MODIFIED="1352230919523" TEXT="Alternative Pattern">
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
+<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1352230925944" TEXT="line continuation"/>
 <node CREATED="1351808217660" ID="ID_1928138048" MODIFIED="1351808221531" TEXT="Header and Attribute Modifier">
 <node CREATED="1351808049370" ID="ID_606915320" MODIFIED="1351808065253" TEXT="[modifier=value,modifier=value][modifier=value]"/>
 <node CREATED="1351808024055" ID="ID_1778351720" MODIFIED="1351808044534" TEXT="[modifier=value][modifier=value][modifier=value]"/>
 <node CREATED="1351808001760" ID="ID_217467757" MODIFIED="1351808018626" TEXT="[modifier=value,modifier=value,modifier=value]"/>
 </node>
-<node CREATED="1351808231072" ID="ID_1216241507" MODIFIED="1352068460614" TEXT="Macro">
+<node CREATED="1351808231072" ID="ID_1216241507" MODIFIED="1352230916846" TEXT="Macro">
 <node CREATED="1351808335417" ID="ID_1085046320" MODIFIED="1351808337286" TEXT="INSERT Product; code; $catalogVersion"/>
 </node>
 <node CREATED="1351808381254" ID="ID_270178730" MODIFIED="1351808384646" TEXT="Abbreviations"/>
@@ -105,7 +106,12 @@
 <node CREATED="1351959693147" ID="ID_285416420" MODIFIED="1351959704251" TEXT="czy slowo kluczowe moze byc typem?"/>
 <node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1351973451412" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
+<node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1352230337846" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator"/>
 <node CREATED="1351973742670" ID="ID_1635801525" MODIFIED="1351973769737" TEXT="map-delimiter: domy&#x15b;lnie &#x15b;rednik - mo&#x17c;e by&#x107; problem  z parsowaniem linii"/>
+<node CREATED="1352230359401" ID="ID_885466501" MODIFIED="1352230713478" TEXT="&lt;ignore&gt; jako normalne pole - sprawdzic spacje i czy trim moze byc ok"/>
+<node CREATED="1352230714288" ID="ID_877706588" MODIFIED="1352230729668" TEXT="field - sprawdzic czy trim dla wartosci bez cudzyslowa jest ok"/>
+<node CREATED="1352230786148" ID="ID_1957077560" MODIFIED="1352230797491" TEXT="macro w nag&#x142;&#xf3;wku i atrybutach / modifierach"/>
+<node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1352230823093" TEXT="czy alternatywa moze byc zagniezdzona?"/>
 </node>
 </node>
 </node>

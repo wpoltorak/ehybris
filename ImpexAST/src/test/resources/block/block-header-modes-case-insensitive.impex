@@ -1,0 +1,26 @@
+# Tests INSERT, INSERT_UPDATE, UPDATE and REMOVE modes
+# case insensitive
+
+#INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;regulargroup;customerGroup;
+
+#insert_update Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;regulargroup;customerGroup;
+
+#UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;regulargroup;customerGroup;
+
+#update Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;regulargroup;customerGroup;
+
+#INSERT Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;admin;Administrator
+
+#insert Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;admin;Administrator
+
+#REMOVE Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;admin;Administrator
+
+#remove Usergroup;uid[unique=true];groups(uid)[mode=append]
+#;admin;Administrator

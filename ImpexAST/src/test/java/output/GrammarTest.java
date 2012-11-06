@@ -78,9 +78,6 @@ public class GrammarTest {
         final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex, impex.length));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         printTokens(tokens);
-        System.out.println("__________________________");
-        //        new ImpexParser(tokens).parse().getTree();
-        //        System.out.println("__________________________");
         final CommonTree tree = (CommonTree) new ImpexParser(tokens).impex().getTree();
         final DOTTreeGenerator gen = new DOTTreeGenerator();
         final StringTemplate st = gen.toDOT(tree);

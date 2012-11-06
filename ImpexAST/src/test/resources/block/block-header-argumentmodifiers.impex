@@ -1,0 +1,22 @@
+# Tests type name
+
+$regulargroup=regulargroup
+$customergroup = customergroup
+
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup;uid[	unique= true  	];groups(uid)[mode =	append,	collection-delimiter = , ]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[collection-delimiter = , ][mode=append,default=customerGroup]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup;uid[unique=true][cellDecorator=de.hybris.platform.catalog.jalo.classification.eclass.EClassSuperCategoryDecorator];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup;uid[unique=true,		forceWrite		=	true];groups(uid)[ignoreKeyCase =true,mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup	;uid[unique=true][ignorenull =true,lang=en][virtual =false][ignorenull =true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;

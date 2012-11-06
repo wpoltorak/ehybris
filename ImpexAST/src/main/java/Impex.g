@@ -138,50 +138,65 @@ parse
 impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX  
 	// ^(COMMENTS Comment*) 
-	 ^(ASSIGNEMENTS macro)*  ^(BLOCKS block)*);
+	 ^(ASSIGNEMENTS macro)*  ^(BLOCKS block*));
 //if(input.LA(1) != ']') return true;
 
 block	: header (Lb+  record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier headerModifiers?  (';' DocumentId)? (';' attribute)*
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(DOCUMENTID DocumentId)? ^(ATTRIBUTES attribute)*) ;
+	: headerMode  Identifier headerModifiers?  (Semicolon DocumentID)? (Semicolon attribute)+
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(DOCUMENTID DocumentID)? ^(ATTRIBUTES attribute+)) ;
 
 headerModifiers 
-	: ('[' headerModifierAssignment (','  headerModifierAssignment)*']')+
+	: (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)+
 	-> ^(MODIFIER headerModifierAssignment)+;
 
-headerModifierAssignment: headerModifier '=' (hmValue=Bool | hmValue=Classname)
+headerModifierAssignment: headerModifier Equals (hmValue=Bool | hmValue=Classname)
 	-> headerModifier $hmValue;
 
-headerModifier	:BatchMode | CacheUnique | Processor;
+headerModifier
+	:BatchMode | CacheUnique | Processor;
 
+// handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
    	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
     	-> ^(RECORD ^(SUBTYPE Identifier)? ^(FIELDS QuotedField* Field*));
-    	
-attribute	: attributeName  attributeModifiers?
-	-> ^(ATTRIBUTE attributeName ^(MODIFIERS attributeModifiers)?);
 
+//handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
+attribute	: (specialAttribute | normalAttribute)?
+	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
+
+//handles normal attributes (e.g. ;uid[unique=true])
+normalAttribute
+	: attributeName attributeModifiers?
+	-> attributeName ^(MODIFIERS attributeModifiers)?;
+
+//handles special attributes (e..g ;@media[...])
+specialAttribute
+	:SpecialAttribute LBracket attributeModifierAssignment RBracket
+	-> SpecialAttribute ^(MODIFIERS ^(MODIFIER attributeModifierAssignment));
+			
 attributeModifiers
-	: ('[' attributeModifierAssignment (','  attributeModifierAssignment)*']')+
+	: (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)+
 	-> ^(MODIFIER attributeModifierAssignment)+;
 
 attributeModifierAssignment
 	: attributeModifier ArgumentModifierval;	
 	
-attributeName	:Identifier ('.' Identifier |  ('('  (DocumentId |  attributeName (',' attributeName)*) ')' ))? | '@' Identifier '[' Translator '=' Classname ']';
+attributeName	
+	:Macrodef | (Identifier (Dot Identifier |  (LParenthesis  (DocumentID |  attributeName (Comma attributeName)*) RParenthesis ))?);
 
 macro
 	:Macrodef Macroval
 	-> ^(ASSIGNEMENT Macrodef Macroval);
 
+attributeModifier
+	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
-attributeModifier	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
-
-headerMode		:Insert | InsertUpdate | Update | Remove;
+headerMode
+	:Insert | InsertUpdate | Update | Remove;
 //block
 //	: header  (
 //	            options {
@@ -204,9 +219,9 @@ headerMode		:Insert | InsertUpdate | Update | Remove;
 // Update		:('U' | 'u') ('P' | 'p') ('D' | 'd') ('A' | 'a') ('T' | 't') ('E' | 'e');
 /// Remove		:('R' | 'r' ) ('E' | 'e') ('M' | 'm') ('O' | 'o') ('V' | 'v') ('E' | 'e');
 
- BatchMode		:'batchmode';
- CacheUnique		:'cacheUnique';
- Processor		:'processor';
+ BatchMode	:'batchmode';
+ CacheUnique	:'cacheUnique';
+ Processor	:'processor';
 
  Alias		:'alias';
  AllowNull		:'allownull';
@@ -228,25 +243,28 @@ headerMode		:Insert | InsertUpdate | Update | Remove;
  Unique		:'unique';
  Virtual		:'virtual';
 
-Comma 		:',';
-DoubleQuote		:'"';
-Semicolon		:';';
-RightBracket		:']';
-LeftBracket		:'[';
-LeftParenthesis 	:'(';
-RightParenthesis	:')';
-Equals		:'=';
+//Ignore	:'<ignore>';
+Comma 	:',';
+Dot	:'.';
+DoubleQuote	:'"';
+Semicolon	:';';
+RBracket	:']';
+LBracket	:'[';
+LParenthesis 	:'(';
+RParenthesis	:')';
+Equals	:'=';
 
-LineContinuation	:'\\\\';
-Bool		:'true' | 'false';
+Bool	:'true' | 'false';
 
-fragment HeaderMode	: Insert | InsertUpdate | Update | Remove;
+fragment HeaderMode	
+	: Insert | InsertUpdate | Update | Remove;
 
-fragment HeaderModifier	:BatchMode | CacheUnique | Processor;
+fragment HeaderModifier	
+	:BatchMode | CacheUnique | Processor;
 
-fragment ArgumentModifier 
-		: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-		| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
+fragment ArgumentModifier 	
+	:Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
 Macrodef
 	:'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
@@ -259,16 +277,20 @@ Macroval
 	
 ArgumentModifierval
 	@after {
-		String text = getText().substring(1, getText().length()).trim();
-		if (text.endsWith(",")){
-		    text = text.substring(0, text.length() - 1);
-		}
-		setText(text);
+ 	  String text = getText().substring(1, getText().length()).trim();
+	  if (text.endsWith(",")){
+	    text = text.substring(0, text.length() - 1);
+	  }
+	  setText(text);
 	}
-	:{isArgumentModifierAssignment()}?=> '='~('\r' | '\n' | ';' | '[' | ']' | ',')*;
+		:{isArgumentModifierAssignment()}?=> '='~('\r' | '\n' | ';' | '[' | ']' | ',')*;
 
-DocumentId
+SpecialAttribute
+	:'@' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
+
+DocumentID
 	:'&' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
+	
 Identifier
 	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
@@ -279,6 +301,9 @@ Comment
 	@after { setText(getText().substring(1, getText().length())); }
 	:'#' ~('\r' | '\n')* Lb? {$channel=HIDDEN;};
 
+//IgnoredField
+//	:';' Ignore;
+	
 QuotedField 	
 	@after { setText(getText().substring(1, getText().length())); }
 	:';' '"' (Char | '"' '"' | ';')*  '"';
@@ -307,4 +332,5 @@ Field
  Ws	:(' ' | '\t') {$channel=HIDDEN;};
   Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
 Char	: ~('\r' | '\n' | '"' | ';' ) ;
-
+// \\ next line
+NextRow	:'\\\\' Ws* Lb{$channel=HIDDEN;};
