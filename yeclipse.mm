@@ -111,7 +111,9 @@
 <node CREATED="1352230359401" ID="ID_885466501" MODIFIED="1352230713478" TEXT="&lt;ignore&gt; jako normalne pole - sprawdzic spacje i czy trim moze byc ok"/>
 <node CREATED="1352230714288" ID="ID_877706588" MODIFIED="1352230729668" TEXT="field - sprawdzic czy trim dla wartosci bez cudzyslowa jest ok"/>
 <node CREATED="1352230786148" ID="ID_1957077560" MODIFIED="1352230797491" TEXT="macro w nag&#x142;&#xf3;wku i atrybutach / modifierach"/>
-<node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1352230823093" TEXT="czy alternatywa moze byc zagniezdzona?"/>
+<node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1352231671401" TEXT="modifier value moze byc w &apos; &apos;, a w srodku podw&#xf3;jne &apos;&apos;"/>
+<node CREATED="1352237268164" ID="ID_1756743800" MODIFIED="1352237344632" TEXT="\\ nie jest parsowany w og&#xf3;le, s&#x142;u&#x17c;y jako separator linii"/>
+<node CREATED="1352237288919" ID="ID_1464044142" MODIFIED="1352237314164" TEXT="csv.fieldseparator, csv.quotecharacter"/>
 </node>
 </node>
 </node>
