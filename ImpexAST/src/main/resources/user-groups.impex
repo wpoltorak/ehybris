@@ -1,17 +1,2 @@
-#
-# Import Sample Customers
-# 
-$regulargroup=regulargroup
-$customergroup = customergroup
-
-# Create Customer Group
-INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
-;$regulargroup;customergroup
-
-	
-	$macro_def=This is a macro
-	
-	$another=true $and_one_more=xxx
-$onemore_12=sss	
-$_onemore_10=sss!@#$%^&*()	
-	
+INSERT_UPDATE Customer;uid[unique=true];groups[ignorenull=	,default= ]
+;testuser;;
