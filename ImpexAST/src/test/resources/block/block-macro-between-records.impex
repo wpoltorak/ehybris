@@ -1,0 +1,8 @@
+# Tests blank lines between records
+$admin=admin
+INSERT_UPDATE Usergroup;uid;name
+;$admin;Administrator Group
+$admin = customergroup
+;$admin;Administrator
+;user;Name Surname
+ 

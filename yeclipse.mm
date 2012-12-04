@@ -1,7 +1,7 @@
 <map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1346848542096" ID="ID_849519018" MODIFIED="1352230958114" TEXT="ytools">
-<node CREATED="1348473652039" ID="ID_107991129" MODIFIED="1351807963434" POSITION="right" TEXT="yeclipse">
+<node CREATED="1346848542096" ID="ID_849519018" MODIFIED="1354566009669" TEXT="ytools">
+<node CREATED="1348473652039" ID="ID_107991129" MODIFIED="1354566012166" POSITION="right" TEXT="yeclipse">
 <node CREATED="1346848553270" ID="ID_224474371" MODIFIED="1351889314768" TEXT="Impex Editor">
 <node CREATED="1346848561046" ID="ID_1811607809" MODIFIED="1346849139296" TEXT="Syntax Coloring"/>
 <node CREATED="1346848569598" ID="ID_1603819541" MODIFIED="1346848575267" TEXT="Syntax Highlighting"/>
@@ -19,16 +19,21 @@
 <node CREATED="1346848812806" ID="ID_1845385202" MODIFIED="1346848816772" TEXT="Mode name typo"/>
 <node CREATED="1346848804654" ID="ID_882254760" MODIFIED="1346848812246" TEXT="Argument name typo"/>
 <node CREATED="1346848798910" ID="ID_559972554" MODIFIED="1346848803972" TEXT="Number of semicolons"/>
-<node CREATED="1350845961817" ID="ID_1396219298" MODIFIED="1350845973512" TEXT="Unknown macro "/>
+<node CREATED="1350845961817" ID="ID_1396219298" MODIFIED="1354456978710" TEXT="Unknown macro"/>
 <node CREATED="1351805711304" ID="ID_1091460623" MODIFIED="1351805723533" TEXT="Unknown Document ID"/>
 <node CREATED="1351786620905" ID="ID_559717125" MODIFIED="1351786641296" TEXT="Type - Subtype - no inheritance"/>
 <node CREATED="1351786642196" ID="ID_1977072846" MODIFIED="1351786667603" TEXT="If abstract type check if each row starts with subtype"/>
 <node CREATED="1351786701933" ID="ID_98603508" MODIFIED="1351786848288" TEXT="Check if class specified in modifiers exists"/>
+<node CREATED="1354302294835" ID="ID_969299094" MODIFIED="1354302306629" TEXT="Header without records"/>
 </node>
 <node CREATED="1350845632636" ID="ID_179087172" MODIFIED="1350845637683" TEXT="Warning">
 <node CREATED="1350845656895" ID="ID_1559636110" MODIFIED="1350845694701" TEXT="Duplicate macro assignment"/>
 <node CREATED="1351787208048" ID="ID_106127349" MODIFIED="1351787247760" TEXT="For any value for which header attrib is skipped (empty)"/>
 <node CREATED="1351889215347" ID="ID_577119729" MODIFIED="1351889228874" TEXT="Duplicate modifier definition"/>
+<node CREATED="1353876882200" ID="ID_716301912" MODIFIED="1353876951906" TEXT="Macro ref inside &apos; or &quot; is not replaced by definition">
+<node CREATED="1353876933988" ID="ID_890815196" MODIFIED="1353876947804" TEXT="inside modifier assignement"/>
+<node CREATED="1353876953832" ID="ID_1238426082" MODIFIED="1353876958523" TEXT="inside field"/>
+</node>
 </node>
 </node>
 <node CREATED="1346848599542" ID="ID_490319220" MODIFIED="1346848789692" TEXT="Content Assist (Ctrl+Space)">
@@ -79,12 +84,12 @@
 </node>
 </node>
 <node CREATED="1348467211052" ID="ID_1428526848" MODIFIED="1348467214010" TEXT="Locale support"/>
-<node CREATED="1351807976735" ID="ID_1367907465" MODIFIED="1351889319242" TEXT="TODO">
+<node CREATED="1351807976735" ID="ID_1367907465" MODIFIED="1354453968725" TEXT="TODO">
 <icon BUILTIN="flag-orange"/>
 <node CREATED="1351807984400" ID="ID_1752344220" MODIFIED="1352231110203" TEXT="DocumentID &amp;param">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1351808098209" FOLDED="true" ID="ID_1147273267" MODIFIED="1352231119523" TEXT="Special Attribute">
+<node CREATED="1351808098209" ID="ID_1147273267" MODIFIED="1354457057156" TEXT="Special Attribute">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1351808104789" ID="ID_912433692" MODIFIED="1351808107619" TEXT="@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator]"/>
 </node>
@@ -92,7 +97,8 @@
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
 <node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1352230925944" TEXT="line continuation"/>
-<node CREATED="1351808217660" ID="ID_1928138048" MODIFIED="1351808221531" TEXT="Header and Attribute Modifier">
+<node CREATED="1351808217660" ID="ID_1928138048" MODIFIED="1354457053080" TEXT="Header and Attribute Modifier">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1351808049370" ID="ID_606915320" MODIFIED="1351808065253" TEXT="[modifier=value,modifier=value][modifier=value]"/>
 <node CREATED="1351808024055" ID="ID_1778351720" MODIFIED="1351808044534" TEXT="[modifier=value][modifier=value][modifier=value]"/>
 <node CREATED="1351808001760" ID="ID_217467757" MODIFIED="1351808018626" TEXT="[modifier=value,modifier=value,modifier=value]"/>
@@ -102,31 +108,53 @@
 </node>
 <node CREATED="1351808381254" ID="ID_270178730" MODIFIED="1351808384646" TEXT="Abbreviations"/>
 <node CREATED="1351889326054" ID="ID_1087186455" MODIFIED="1351889331917" TEXT="Impex:">
-<node CREATED="1351889333955" ID="ID_517514289" MODIFIED="1351889351149" TEXT="jak podw&#xf3;jne modifiery to kt&#xf3;ry aktualny?"/>
-<node CREATED="1351959693147" ID="ID_285416420" MODIFIED="1351959704251" TEXT="czy slowo kluczowe moze byc typem?"/>
-<node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1351973451412" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
+<node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1354453236675" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
-<node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1352230337846" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator"/>
+<node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1354457126585" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1351973742670" ID="ID_1635801525" MODIFIED="1351973769737" TEXT="map-delimiter: domy&#x15b;lnie &#x15b;rednik - mo&#x17c;e by&#x107; problem  z parsowaniem linii"/>
 <node CREATED="1352230359401" ID="ID_885466501" MODIFIED="1352291349291" TEXT="&lt;ignore&gt; jako normalne pole - sprawdzic spacje i czy trim moze byc ok">
 <icon BUILTIN="idea"/>
 </node>
-<node CREATED="1352230714288" ID="ID_877706588" MODIFIED="1352291310611" TEXT="field - sprawdzic czy trim dla wartosci bez cudzyslowa jest ok">
+<node CREATED="1352230714288" ID="ID_877706588" MODIFIED="1354453203968" TEXT="field - sprawdzic czy trim dla wartosci bez cudzyslowa jest ok">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1354453279322" ID="ID_1402919520" MODIFIED="1354453292124" TEXT="wygl&#x105;da na to ze z cudzys&#x142;owem jest ok"/>
+</node>
+<node CREATED="1354436289474" ID="ID_1438039066" MODIFIED="1354436354502" TEXT="czy s&#x142;owo kluczowe mo&#x17c;e by&#x107; nazw&#x105; tabelki? Np Insert?">
+<icon BUILTIN="idea"/>
+</node>
+<node CREATED="1354436405616" ID="ID_1560229026" MODIFIED="1354436443473" TEXT="ograniczenia identyfikator&#xf3;w - jakie znaki mog&#x105; w nich wyst&#x119;powa&#x107;: nazwy tabele, atrybut&#xf3;w, warto&#x15b;ci modyfikator&#xf3;w">
 <icon BUILTIN="idea"/>
 </node>
 <node CREATED="1352230786148" ID="ID_1957077560" MODIFIED="1352291316595" TEXT="macro w nag&#x142;&#xf3;wku i atrybutach / modifierach">
 <icon BUILTIN="idea"/>
 </node>
-<node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1352231671401" TEXT="modifier value moze byc w &apos; &apos;, a w srodku podw&#xf3;jne &apos;&apos;"/>
+<node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1354453984308" TEXT="modifier value moze byc w &apos; &apos;, a w srodku podw&#xf3;jne &apos;&apos;"/>
+<node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1354479820335" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; warto&#x15b;ciowa&#x107; @makra ">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1352237268164" ID="ID_1756743800" MODIFIED="1352291335667" TEXT="\\ nie jest parsowany w og&#xf3;le, s&#x142;u&#x17c;y jako separator linii">
 <icon BUILTIN="idea"/>
 </node>
+<node CREATED="1354438094848" ID="ID_693180894" MODIFIED="1354457037265" TEXT="Czy kolejno&#x15b;&#x107; definiowania makr ma znaczenie?">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1354456867020" ID="ID_1200920209" MODIFIED="1354456881285" TEXT="Tak, zasada jak normalna zmienna"/>
+<node CREATED="1354456923194" ID="ID_1227592113" MODIFIED="1354456963420" TEXT="Je&#x15b;li brakuje definicji w&#xf3;wczas traktowane jest jako zwyk&#x142;y tekst"/>
+</node>
 <node CREATED="1352237288919" ID="ID_1464044142" MODIFIED="1352237314164" TEXT="csv.fieldseparator, csv.quotecharacter"/>
+<node CREATED="1353879486627" ID="ID_366987585" MODIFIED="1353879495131" TEXT="first line of import: https://wiki.hybris.com/display/release4/ImpEx+FAQ"/>
 </node>
 </node>
 </node>
 <node CREATED="1346848983870" ID="ID_1512641674" MODIFIED="1346848995536" TEXT="Y process support"/>
-<node CREATED="1348055866879" ID="ID_595282892" MODIFIED="1348055897742" TEXT="Items support"/>
+<node CREATED="1348055866879" ID="ID_595282892" MODIFIED="1354566067804" TEXT="Items support">
+<node CREATED="1354566073128" FOLDED="true" ID="ID_1574297874" MODIFIED="1354566194693" TEXT="move between modules">
+<node CREATED="1354566139381" ID="ID_486187017" MODIFIED="1354566154354" TEXT="https://wiki.hybris.com/display/release4/Type+System+Documentation#TypeSystemDocumentation-stepstomovetype"/>
+</node>
+<node CREATED="1354566195694" ID="ID_1977840804" MODIFIED="1354566202332" TEXT="rename"/>
+<node CREATED="1354566203147" ID="ID_1686313856" MODIFIED="1354566208994" TEXT="remove"/>
+</node>
 <node CREATED="1348055906671" ID="ID_1873311658" MODIFIED="1348055944110" TEXT="modules">
 <node CREATED="1348055945183" ID="ID_252549192" MODIFIED="1348055949038" TEXT="add new"/>
 <node CREATED="1348055949743" ID="ID_417056019" MODIFIED="1348055951990" TEXT="edit name"/>

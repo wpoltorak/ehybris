@@ -81,7 +81,9 @@ public class GrammarTest {
         final CommonTree tree = (CommonTree) new ImpexParser(tokens).impex().getTree();
         final DOTTreeGenerator gen = new DOTTreeGenerator();
         final StringTemplate st = gen.toDOT(tree);
-        FileUtils.write(new File("graph.dot"), st.toString());
+        final File graph = new File("graph.dot");
+        graph.createNewFile();
+        FileUtils.write(graph, st.toString());
 
         //
         // final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
@@ -102,7 +104,7 @@ public class GrammarTest {
     }
 
     private void checkGrammar(final File directory) {
-        String errors = "";
+        String errors = S;
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
             final File file = it.next();
             try {
@@ -127,13 +129,12 @@ public class GrammarTest {
                 };
                 parser.impex().getTree();
             } catch (final Exception e) {
-                errors += "Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e
-                        .getMessage() + "\n";
+                errors += "Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage() + S;
             }
 
         }
 
-        if (!errors.isEmpty()) {
+        if (!errors.trim().isEmpty()) {
             System.err.println(errors);
             fail(errors);
         }
