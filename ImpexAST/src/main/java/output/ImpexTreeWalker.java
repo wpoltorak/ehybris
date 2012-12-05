@@ -3,7 +3,7 @@
 package output;
 
 import output.tree.ImpexNode;
-import output.tree.MacroNode;
+import output.tree.BlockNode;
 
 
 import org.antlr.runtime.*;
@@ -1187,7 +1187,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input, Token.UP, null); 
 
 
-            node = new MacroNode((def!=null?def.getText():null), (val!=null?val.getText():null));
+            node = new BlockNode((def!=null?def.getText():null), (val!=null?val.getText():null));
 
             }
 

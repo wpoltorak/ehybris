@@ -13,8 +13,6 @@ options {
 
 
 tokens{
-	MACRO;
-	MACROS;
 	ATTRIBUTES;
 	ATTRIBUTE;
 	ATTRIBUTE_NAME;
@@ -44,33 +42,56 @@ tokens{
  package output;
   
 
-//import java.util.AbstractMap.SimpleImmutableEntry;  
+import java.util.AbstractMap.SimpleImmutableEntry;  
 import java.util.HashMap;
 import java.util.Map;
-//import java.util.regex.Pattern;
-//import java.util.regex.Matcher;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 }
 
 @parser::members {
-private final Map<String, Map<Integer, String>> macros = new HashMap<String, Map<Integer, String>>();
-//private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
-//Matcher m = macroPattern.matcher(val);
- //       while(m.find()) {        }
- 
- 
-private void registerMacro(final Token def, final String val){
-    final String macrodef = def.getText();
-    Map<Integer, String> macroval = macros.get(macrodef);
-    if (macroval == null) {
-        macroval = new HashMap<Integer, String>();
-        macros.put(macrodef, macroval);
+
+
+    private final Map<String, List<SimpleImmutableEntry>> macros = new HashMap<String, List<SimpleImmutableEntry>>();
+    private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
+
+    private void registerMacro(final Token def, final String val) {
+        final String macrodef = def.getText();
+        List<SimpleImmutableEntry> macroval = macros.get(macrodef);
+        if (macroval == null) {
+            macroval = new ArrayList<SimpleImmutableEntry>();
+            macros.put(macrodef, macroval);
+        }
+        macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val));
     }
-    macroval.put(def.getLine(), val);
-}
+
+    private String getMacroVal(final String macroDef, final int refLine) {
+        final List<SimpleImmutableEntry> list = macros.get(macroDef);
+        if (list == null) {
+            // in case there is no such macro definition treat it as normal text and issue an error 
+            return macroDef;
+        }
+
+        for (int i = list.size() - 1; i >= 0; --i) {
+            final SimpleImmutableEntry<Integer, String> entry = list.get(i);
+            if (entry.getKey().intValue() < refLine) {
+                String val = entry.getValue();
+                final Matcher m = macroPattern.matcher(val);
+                while (m.find()) {
+                    final String nestedMacroDef = m.group();
+                    final String nestedVal = getMacroVal(nestedMacroDef, entry.getKey());
+                    val = m.replaceFirst(nestedVal);
+                }
+                return val;
+            }
+        }
+        return macroDef;
+    }
 }
 
 @lexer::members {
-
 public class TokenList {
 
     private final ArrayList<Token> array;
@@ -164,8 +185,7 @@ private boolean isMacroAssignment() {
     }
 
 private boolean isHeader(){
-
- return isHeader;
+     return isHeader;
 }
 private Token getToken(int num) {
     return tokens.get(num);
@@ -176,9 +196,9 @@ parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
   	
 impex	: (Lb |  block | macro)* EOF
-	 -> ^(IMPEX ^(MACROS macro*)  ^(BLOCKS block*));
+	 -> ^(IMPEX ^(BLOCKS block*));
 
-block	: header (Lb+ record)+
+block	: header (Lb+ (macro Lb?)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header

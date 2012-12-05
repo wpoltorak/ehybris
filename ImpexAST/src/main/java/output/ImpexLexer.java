@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-02 21:54:46
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-05 22:25:27
 
  package output;  
 
@@ -54,37 +54,34 @@ public class ImpexLexer extends Lexer {
     public static final int LParenthesis=44;
     public static final int Lang=45;
     public static final int Lb=46;
-    public static final int MACRO=47;
-    public static final int MACROS=48;
-    public static final int MACRO_REF=49;
-    public static final int MODIFIER=50;
-    public static final int MODIFIERS=51;
-    public static final int Macrodef=52;
-    public static final int MapDelimiter=53;
-    public static final int Mode=54;
-    public static final int NextRow=55;
-    public static final int NumberFormat=56;
-    public static final int Or=57;
-    public static final int PathDelimiter=58;
-    public static final int Pos=59;
-    public static final int Processor=60;
-    public static final int QuotedField=61;
-    public static final int RBracket=62;
-    public static final int RECORD=63;
-    public static final int RECORDS=64;
-    public static final int RParenthesis=65;
-    public static final int Remove=66;
-    public static final int SUBTYPE=67;
-    public static final int Semicolon=68;
-    public static final int SpecialAttribute=69;
-    public static final int TYPE=70;
-    public static final int Translator=71;
-    public static final int Unique=72;
-    public static final int Update=73;
-    public static final int ValueAssignement=74;
-    public static final int Virtual=75;
-    public static final int Ws=76;
-
+    public static final int MACRO_REF=47;
+    public static final int MODIFIER=48;
+    public static final int MODIFIERS=49;
+    public static final int Macrodef=50;
+    public static final int MapDelimiter=51;
+    public static final int Mode=52;
+    public static final int NextRow=53;
+    public static final int NumberFormat=54;
+    public static final int Or=55;
+    public static final int PathDelimiter=56;
+    public static final int Pos=57;
+    public static final int Processor=58;
+    public static final int QuotedField=59;
+    public static final int RBracket=60;
+    public static final int RECORD=61;
+    public static final int RECORDS=62;
+    public static final int RParenthesis=63;
+    public static final int Remove=64;
+    public static final int SUBTYPE=65;
+    public static final int Semicolon=66;
+    public static final int SpecialAttribute=67;
+    public static final int TYPE=68;
+    public static final int Translator=69;
+    public static final int Unique=70;
+    public static final int Update=71;
+    public static final int ValueAssignement=72;
+    public static final int Virtual=73;
+    public static final int Ws=74;
 
     public class TokenList {
 
@@ -179,8 +176,7 @@ public class ImpexLexer extends Lexer {
         }
 
     private boolean isHeader(){
-
-     return isHeader;
+         return isHeader;
     }
     private Token getToken(int num) {
         return tokens.get(num);
@@ -207,8 +203,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Insert;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:281:9: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:281:10: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:301:9: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:301:10: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -286,8 +282,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = InsertUpdate;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:282:15: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:282:16: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:302:15: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:302:16: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -427,8 +423,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Update;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:283:9: ( ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:283:10: ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:303:9: ( ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:303:10: ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
                 input.consume();
@@ -506,8 +502,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Remove;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:284:9: ( ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:284:10: ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:304:9: ( ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:304:10: ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
                 input.consume();
@@ -585,8 +581,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = BatchMode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:286:12: ( ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:286:13: ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:306:12: ( ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:306:13: ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                 input.consume();
@@ -694,8 +690,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CacheUnique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:287:14: ( ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:287:15: ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:307:14: ( ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:307:15: ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -823,8 +819,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Processor;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:288:12: ( ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:288:13: ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:308:12: ( ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:308:13: ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -932,8 +928,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Alias;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:294:8: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:294:9: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:314:8: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:314:9: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' )
             {
             if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
                 input.consume();
@@ -1001,8 +997,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = AllowNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:295:12: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:295:13: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:315:12: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:315:13: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
                 input.consume();
@@ -1110,8 +1106,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CellDecorator;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:296:15: ( ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:296:16: ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:316:15: ( ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:316:16: ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -1259,8 +1255,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CollectionDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:297:22: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:297:23: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:317:22: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:317:23: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -1470,8 +1466,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Dateformat;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:298:13: ( ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:298:14: ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:318:13: ( ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:318:14: ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
                 input.consume();
@@ -1589,8 +1585,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Default;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:299:10: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:299:11: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:319:10: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:319:11: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
                 input.consume();
@@ -1678,8 +1674,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = ForceWrite;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:300:13: ( ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:300:14: ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:320:13: ( ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:320:14: ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
                 input.consume();
@@ -1797,8 +1793,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreKeyCase;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:301:15: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:301:16: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:321:15: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:321:16: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -1946,8 +1942,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:302:13: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:302:14: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:322:13: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:322:14: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -2065,8 +2061,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = KeyToValueDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:303:21: ( ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:303:22: ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:323:21: ( ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:323:22: ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='K'||input.LA(1)=='k' ) {
                 input.consume();
@@ -2258,8 +2254,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Lang;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:304:7: ( ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:304:8: ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:324:7: ( ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:324:8: ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' )
             {
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                 input.consume();
@@ -2317,8 +2313,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = MapDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:305:14: ( ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:305:15: ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:325:14: ( ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:325:15: ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='M'||input.LA(1)=='m' ) {
                 input.consume();
@@ -2458,8 +2454,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Mode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:306:7: ( ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:306:8: ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:326:7: ( ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:326:8: ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='M'||input.LA(1)=='m' ) {
                 input.consume();
@@ -2517,8 +2513,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = NumberFormat;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:307:14: ( ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:307:15: ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:327:14: ( ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:327:15: ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
                 input.consume();
@@ -2656,8 +2652,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = PathDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:308:15: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:308:16: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:328:15: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:328:16: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -2807,8 +2803,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Pos;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:309:6: ( ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:309:7: ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:329:6: ( ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:329:7: ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -2856,8 +2852,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Translator;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:310:13: ( ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:310:14: ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:330:13: ( ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:330:14: ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
                 input.consume();
@@ -2975,8 +2971,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Unique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:311:9: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:311:10: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:331:9: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:331:10: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
                 input.consume();
@@ -3054,8 +3050,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Virtual;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:10: ( ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:11: ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:332:10: ( ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:332:11: ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='V'||input.LA(1)=='v' ) {
                 input.consume();
@@ -3143,8 +3139,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Comma;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:336:8: ( ',' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:336:9: ','
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:8: ( ',' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:9: ','
             {
             match(','); 
 
@@ -3164,8 +3160,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Dot;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:337:5: ( '.' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:337:6: '.'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:5: ( '.' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:6: '.'
             {
             match('.'); 
 
@@ -3185,8 +3181,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = DoubleQuote;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:338:13: ( '\"' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:338:14: '\"'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:358:13: ( '\"' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:358:14: '\"'
             {
             match('\"'); 
 
@@ -3206,8 +3202,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Semicolon;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:339:11: ( ';' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:339:12: ';'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:359:11: ( ';' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:359:12: ';'
             {
             match(';'); 
 
@@ -3227,8 +3223,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:340:10: ( ']' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:340:11: ']'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:360:10: ( ']' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:360:11: ']'
             {
             match(']'); 
 
@@ -3248,8 +3244,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:341:10: ( '[' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:341:11: '['
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:361:10: ( '[' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:361:11: '['
             {
             match('['); 
 
@@ -3269,8 +3265,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:342:15: ( '(' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:342:16: '('
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:362:15: ( '(' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:362:16: '('
             {
             match('('); 
 
@@ -3290,8 +3286,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:343:14: ( ')' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:343:15: ')'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:363:14: ( ')' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:363:15: ')'
             {
             match(')'); 
 
@@ -3311,8 +3307,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Equals;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:344:8: ( '=' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:344:9: '='
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:364:8: ( '=' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:364:9: '='
             {
             match('='); 
 
@@ -3332,8 +3328,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Or;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:345:4: ( '|' )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:345:5: '|'
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:365:4: ( '|' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:365:5: '|'
             {
             match('|'); 
 
@@ -3353,7 +3349,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Bool;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:347:6: ( 'true' | 'false' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:367:6: ( 'true' | 'false' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -3372,7 +3368,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:347:7: 'true'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:367:7: 'true'
                     {
                     match("true"); 
 
@@ -3381,7 +3377,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:347:16: 'false'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:367:16: 'false'
                     {
                     match("false"); 
 
@@ -3403,7 +3399,7 @@ public class ImpexLexer extends Lexer {
     // $ANTLR start "HeaderMode"
     public final void mHeaderMode() throws RecognitionException {
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:350:2: ( Insert | InsertUpdate | Update | Remove )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:370:2: ( Insert | InsertUpdate | Update | Remove )
             int alt2=4;
             switch ( input.LA(1) ) {
             case 'I':
@@ -3496,7 +3492,7 @@ public class ImpexLexer extends Lexer {
 
             switch (alt2) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:350:4: Insert
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:370:4: Insert
                     {
                     mInsert(); 
 
@@ -3504,7 +3500,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:350:13: InsertUpdate
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:370:13: InsertUpdate
                     {
                     mInsertUpdate(); 
 
@@ -3512,7 +3508,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:350:28: Update
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:370:28: Update
                     {
                     mUpdate(); 
 
@@ -3520,7 +3516,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:350:37: Remove
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:370:37: Remove
                     {
                     mRemove(); 
 
@@ -3540,7 +3536,7 @@ public class ImpexLexer extends Lexer {
     // $ANTLR start "HeaderModifier"
     public final void mHeaderModifier() throws RecognitionException {
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:353:2: ( BatchMode | CacheUnique | Processor )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:373:2: ( BatchMode | CacheUnique | Processor )
             int alt3=3;
             switch ( input.LA(1) ) {
             case 'B':
@@ -3571,7 +3567,7 @@ public class ImpexLexer extends Lexer {
 
             switch (alt3) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:353:3: BatchMode
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:373:3: BatchMode
                     {
                     mBatchMode(); 
 
@@ -3579,7 +3575,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:353:15: CacheUnique
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:373:15: CacheUnique
                     {
                     mCacheUnique(); 
 
@@ -3587,7 +3583,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:353:29: Processor
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:373:29: Processor
                     {
                     mProcessor(); 
 
@@ -3607,7 +3603,7 @@ public class ImpexLexer extends Lexer {
     // $ANTLR start "AttributeModifier"
     public final void mAttributeModifier() throws RecognitionException {
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:2: ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:2: ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
             int alt4=19;
             switch ( input.LA(1) ) {
             case 'A':
@@ -3848,7 +3844,7 @@ public class ImpexLexer extends Lexer {
 
             switch (alt4) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:3: Alias
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:3: Alias
                     {
                     mAlias(); 
 
@@ -3856,7 +3852,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:11: AllowNull
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:11: AllowNull
                     {
                     mAllowNull(); 
 
@@ -3864,7 +3860,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:23: CellDecorator
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:23: CellDecorator
                     {
                     mCellDecorator(); 
 
@@ -3872,7 +3868,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:39: CollectionDelimiter
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:39: CollectionDelimiter
                     {
                     mCollectionDelimiter(); 
 
@@ -3880,7 +3876,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:61: Dateformat
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:61: Dateformat
                     {
                     mDateformat(); 
 
@@ -3888,7 +3884,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:74: Default
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:74: Default
                     {
                     mDefault(); 
 
@@ -3896,7 +3892,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:84: ForceWrite
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:84: ForceWrite
                     {
                     mForceWrite(); 
 
@@ -3904,7 +3900,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 8 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:97: IgnoreKeyCase
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:97: IgnoreKeyCase
                     {
                     mIgnoreKeyCase(); 
 
@@ -3912,7 +3908,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 9 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:356:113: IgnoreNull
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:376:113: IgnoreNull
                     {
                     mIgnoreNull(); 
 
@@ -3920,7 +3916,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 10 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:4: KeyToValueDelimiter
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:4: KeyToValueDelimiter
                     {
                     mKeyToValueDelimiter(); 
 
@@ -3928,7 +3924,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 11 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:26: Lang
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:26: Lang
                     {
                     mLang(); 
 
@@ -3936,7 +3932,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 12 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:33: MapDelimiter
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:33: MapDelimiter
                     {
                     mMapDelimiter(); 
 
@@ -3944,7 +3940,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 13 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:48: Mode
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:48: Mode
                     {
                     mMode(); 
 
@@ -3952,7 +3948,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 14 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:55: NumberFormat
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:55: NumberFormat
                     {
                     mNumberFormat(); 
 
@@ -3960,7 +3956,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 15 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:70: PathDelimiter
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:70: PathDelimiter
                     {
                     mPathDelimiter(); 
 
@@ -3968,7 +3964,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 16 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:86: Pos
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:86: Pos
                     {
                     mPos(); 
 
@@ -3976,7 +3972,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 17 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:92: Translator
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:92: Translator
                     {
                     mTranslator(); 
 
@@ -3984,7 +3980,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 18 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:105: Unique
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:105: Unique
                     {
                     mUnique(); 
 
@@ -3992,7 +3988,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 19 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:357:114: Virtual
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:377:114: Virtual
                     {
                     mVirtual(); 
 
@@ -4014,8 +4010,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Macrodef;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:362:2: ( '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:362:3: '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:382:2: ( '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:382:3: '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('$'); 
 
@@ -4029,7 +4025,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:362:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:382:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -4079,7 +4075,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = ValueAssignement;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:365:2: ({...}? => '=' (~ ( '\\r' | '\\n' ) )* |{...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* ) |)
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:385:2: ({...}? => '=' (~ ( '\\r' | '\\n' ) )* |{...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* ) |)
             int alt11=3;
             int LA11_0 = input.LA(1);
 
@@ -4105,7 +4101,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt11) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:365:3: {...}? => '=' (~ ( '\\r' | '\\n' ) )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:385:3: {...}? => '=' (~ ( '\\r' | '\\n' ) )*
                     {
                     if ( !((isMacroAssignment())) ) {
                         throw new FailedPredicateException(input, "ValueAssignement", "isMacroAssignment()");
@@ -4113,7 +4109,7 @@ public class ImpexLexer extends Lexer {
 
                     match('='); 
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:365:34: (~ ( '\\r' | '\\n' ) )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:385:34: (~ ( '\\r' | '\\n' ) )*
                     loop6:
                     do {
                         int alt6=2;
@@ -4152,7 +4148,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:3: {...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:3: {...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
                     {
                     if ( !((isArgumentModifierAssignment())) ) {
                         throw new FailedPredicateException(input, "ValueAssignement", "isArgumentModifierAssignment()");
@@ -4160,14 +4156,14 @@ public class ImpexLexer extends Lexer {
 
                     match('='); 
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:44: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:44: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
                     int alt10=2;
                     alt10 = dfa10.predict(input);
                     switch (alt10) {
                         case 1 :
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:45: ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"'
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:45: ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"'
                             {
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:45: ( ' ' | '\\t' )*
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:45: ( ' ' | '\\t' )*
                             loop7:
                             do {
                                 int alt7=2;
@@ -4203,7 +4199,7 @@ public class ImpexLexer extends Lexer {
 
                             match('\"'); 
 
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:62: (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )*
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:62: (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )*
                             loop8:
                             do {
                                 int alt8=3;
@@ -4225,7 +4221,7 @@ public class ImpexLexer extends Lexer {
 
                                 switch (alt8) {
                             	case 1 :
-                            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:63: ~ ( '\\r' | '\\n' | '\"' )
+                            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:63: ~ ( '\\r' | '\\n' | '\"' )
                             	    {
                             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) {
                             	        input.consume();
@@ -4240,7 +4236,7 @@ public class ImpexLexer extends Lexer {
                             	    }
                             	    break;
                             	case 2 :
-                            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:87: '\"' '\"'
+                            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:87: '\"' '\"'
                             	    {
                             	    match('\"'); 
 
@@ -4262,9 +4258,9 @@ public class ImpexLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:217: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:217: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
                             {
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:366:217: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:386:217: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
                             loop9:
                             do {
                                 int alt9=2;
@@ -4309,7 +4305,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:367:3: 
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:387:3: 
                     {
                     }
                     break;
@@ -4329,8 +4325,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = SpecialAttribute;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:441:2: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:441:3: '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:461:2: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:461:3: '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('@'); 
 
@@ -4344,7 +4340,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:441:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:461:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop12:
             do {
                 int alt12=2;
@@ -4394,8 +4390,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = DocumentID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:444:2: ( '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:444:3: '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:464:2: ( '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:464:3: '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('&'); 
 
@@ -4409,7 +4405,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:444:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:464:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop13:
             do {
                 int alt13=2;
@@ -4459,8 +4455,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Identifier;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:447:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:447:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:467:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:467:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
                 input.consume();
@@ -4472,7 +4468,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:447:35: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:467:35: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop14:
             do {
                 int alt14=2;
@@ -4522,10 +4518,10 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Classname;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:2: ( ( ( 'a' .. 'z' )+ '.' )+ 'A' .. 'Z' ( 'A' .. 'Z' | 'a' .. 'z' )+ )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:3: ( ( 'a' .. 'z' )+ '.' )+ 'A' .. 'Z' ( 'A' .. 'Z' | 'a' .. 'z' )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:2: ( ( ( 'a' .. 'z' )+ '.' )+ 'A' .. 'Z' ( 'A' .. 'Z' | 'a' .. 'z' )+ )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:3: ( ( 'a' .. 'z' )+ '.' )+ 'A' .. 'Z' ( 'A' .. 'Z' | 'a' .. 'z' )+
             {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:3: ( ( 'a' .. 'z' )+ '.' )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:3: ( ( 'a' .. 'z' )+ '.' )+
             int cnt16=0;
             loop16:
             do {
@@ -4539,9 +4535,9 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:4: ( 'a' .. 'z' )+ '.'
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:4: ( 'a' .. 'z' )+ '.'
             	    {
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:4: ( 'a' .. 'z' )+
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:4: ( 'a' .. 'z' )+
             	    int cnt15=0;
             	    loop15:
             	    do {
@@ -4597,7 +4593,7 @@ public class ImpexLexer extends Lexer {
 
             matchRange('A','Z'); 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:450:35: ( 'A' .. 'Z' | 'a' .. 'z' )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:470:35: ( 'A' .. 'Z' | 'a' .. 'z' )+
             int cnt17=0;
             loop17:
             do {
@@ -4652,12 +4648,12 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:454:2: ( '#' (~ ( '\\r' | '\\n' ) )* ( Lb )? )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:454:3: '#' (~ ( '\\r' | '\\n' ) )* ( Lb )?
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:474:2: ( '#' (~ ( '\\r' | '\\n' ) )* ( Lb )? )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:474:3: '#' (~ ( '\\r' | '\\n' ) )* ( Lb )?
             {
             match('#'); 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:454:7: (~ ( '\\r' | '\\n' ) )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:474:7: (~ ( '\\r' | '\\n' ) )*
             loop18:
             do {
                 int alt18=2;
@@ -4691,7 +4687,7 @@ public class ImpexLexer extends Lexer {
             } while (true);
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:454:23: ( Lb )?
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:474:23: ( Lb )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -4700,7 +4696,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:454:23: Lb
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:474:23: Lb
                     {
                     mLb(); 
 
@@ -4730,7 +4726,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = QuotedField;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:2: ({...}? => ';' ( Ws )* '\"' ( Char | '\"' '\"' | ';' )* '\"' |)
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:2: ({...}? => ';' ( Ws )* '\"' ( Char | '\"' '\"' | ';' )* '\"' |)
             int alt22=2;
             int LA22_0 = input.LA(1);
 
@@ -4742,7 +4738,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt22) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:3: {...}? => ';' ( Ws )* '\"' ( Char | '\"' '\"' | ';' )* '\"'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:3: {...}? => ';' ( Ws )* '\"' ( Char | '\"' '\"' | ';' )* '\"'
                     {
                     if ( !((isHeader() == false)) ) {
                         throw new FailedPredicateException(input, "QuotedField", "isHeader() == false");
@@ -4750,7 +4746,7 @@ public class ImpexLexer extends Lexer {
 
                     match(';'); 
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:32: ( Ws )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:32: ( Ws )*
                     loop20:
                     do {
                         int alt20=2;
@@ -4763,7 +4759,7 @@ public class ImpexLexer extends Lexer {
 
                         switch (alt20) {
                     	case 1 :
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:32: Ws
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:32: Ws
                     	    {
                     	    mWs(); 
 
@@ -4779,7 +4775,7 @@ public class ImpexLexer extends Lexer {
 
                     match('\"'); 
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:40: ( Char | '\"' '\"' | ';' )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:40: ( Char | '\"' '\"' | ';' )*
                     loop21:
                     do {
                         int alt21=4;
@@ -4804,7 +4800,7 @@ public class ImpexLexer extends Lexer {
 
                         switch (alt21) {
                     	case 1 :
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:41: Char
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:41: Char
                     	    {
                     	    mChar(); 
 
@@ -4812,7 +4808,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:48: '\"' '\"'
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:48: '\"' '\"'
                     	    {
                     	    match('\"'); 
 
@@ -4821,7 +4817,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 3 :
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:58: ';'
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:58: ';'
                     	    {
                     	    match(';'); 
 
@@ -4839,7 +4835,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:468:70: 
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:488:70: 
                     {
                     }
                     break;
@@ -4867,7 +4863,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Field;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:472:2: ({...}? => ';' ( Char )* |)
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:2: ({...}? => ';' ( Char )* |)
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -4879,7 +4875,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt24) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:472:3: {...}? => ';' ( Char )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:3: {...}? => ';' ( Char )*
                     {
                     if ( !((isHeader() == false)) ) {
                         throw new FailedPredicateException(input, "Field", "isHeader() == false");
@@ -4887,7 +4883,7 @@ public class ImpexLexer extends Lexer {
 
                     match(';'); 
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:472:32: ( Char )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:32: ( Char )*
                     loop23:
                     do {
                         int alt23=2;
@@ -4924,7 +4920,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:472:39: 
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:39: 
                     {
                     }
                     break;
@@ -4945,8 +4941,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Ws;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:491:4: ( ( ' ' | '\\t' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:491:5: ( ' ' | '\\t' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:511:4: ( ( ' ' | '\\t' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:511:5: ( ' ' | '\\t' )
             {
             if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
                 input.consume();
@@ -4976,10 +4972,10 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Lb;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:4: ( ( ( '\\r' )? '\\n' | '\\r' ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:5: ( ( '\\r' )? '\\n' | '\\r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:4: ( ( ( '\\r' )? '\\n' | '\\r' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:5: ( ( '\\r' )? '\\n' | '\\r' )
             {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:5: ( ( '\\r' )? '\\n' | '\\r' )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:5: ( ( '\\r' )? '\\n' | '\\r' )
             int alt26=2;
             int LA26_0 = input.LA(1);
 
@@ -5005,9 +5001,9 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt26) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:6: ( '\\r' )? '\\n'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:6: ( '\\r' )? '\\n'
                     {
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:6: ( '\\r' )?
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:6: ( '\\r' )?
                     int alt25=2;
                     int LA25_0 = input.LA(1);
 
@@ -5016,7 +5012,7 @@ public class ImpexLexer extends Lexer {
                     }
                     switch (alt25) {
                         case 1 :
-                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:6: '\\r'
+                            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:6: '\\r'
                             {
                             match('\r'); 
 
@@ -5031,7 +5027,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:492:19: '\\r'
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:512:19: '\\r'
                     {
                     match('\r'); 
 
@@ -5057,7 +5053,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Char;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:493:6: (~ ( '\\r' | '\\n' | '\"' | ';' ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:513:6: (~ ( '\\r' | '\\n' | '\"' | ';' ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:
             {
             if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= ':')||(input.LA(1) >= '<' && input.LA(1) <= '\uFFFF') ) {
@@ -5086,14 +5082,14 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = NextRow;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:495:9: ( '\\\\\\\\' ( Ws )* Lb )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:495:10: '\\\\\\\\' ( Ws )* Lb
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:515:9: ( '\\\\\\\\' ( Ws )* Lb )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:515:10: '\\\\\\\\' ( Ws )* Lb
             {
             match("\\\\"); 
 
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:495:17: ( Ws )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:515:17: ( Ws )*
             loop27:
             do {
                 int alt27=2;
@@ -5106,7 +5102,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt27) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:495:17: Ws
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:515:17: Ws
             	    {
             	    mWs(); 
 
@@ -5598,7 +5594,7 @@ public class ImpexLexer extends Lexer {
             this.transition = DFA10_transition;
         }
         public String getDescription() {
-            return "366:44: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )";
+            return "386:44: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )";
         }
     }
     static final String DFA28_eotS =

@@ -119,7 +119,6 @@ public class GrammarTest {
                 };
                 final CommonTokenStream tokens = new CommonTokenStream(lexer);
                 printTokens(tokens);
-
                 final ImpexParser parser = new ImpexParser(tokens) {
                     @Override
                     public void emitErrorMessage(final String msg) {

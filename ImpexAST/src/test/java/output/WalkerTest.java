@@ -10,7 +10,7 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.commons.io.FileUtils;
 
-import tree.ImpexNode;
+import output.tree.ImpexNode;
 
 public class WalkerTest {
 
