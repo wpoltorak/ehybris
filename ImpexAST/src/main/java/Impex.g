@@ -202,12 +202,8 @@ block	: header (Lb+ (macro Lb?)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier headerModifiers?  (Semicolon attribute?)* (Semicolon DocumentID(Semicolon attribute?)*)? 
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers)? ^(DOCUMENTID DocumentID)? ^(ATTRIBUTES attribute*)) ;
-
-headerModifiers 
-	: (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)+
-	-> ^(MODIFIERS headerModifierAssignment+);
+	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon attribute?)* (Semicolon DocumentID(Semicolon attribute?)*)? 
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID)? ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
 	-> ^(MODIFIER headerModifier boolOrClassname);
@@ -220,9 +216,10 @@ headerModifier
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? (QuotedField | Field)+ // ( Lb | (LineContinuation {newline();} record))
-    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS QuotedField* Field*));
+   	: Identifier? field+ // ( Lb | (LineContinuation {newline();} record))
+    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
 
+field	:	QuotedField | Field;
 //handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
 //attribute	: (specialAttribute | normalAttribute)?
 //	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
@@ -241,14 +238,6 @@ record
 //specialAttribute
 //	:SpecialAttribute LBracket attributeModifierAssignment RBracket
 //	-> SpecialAttribute ^(MODIFIERS ^(MODIFIER attributeModifierAssignment));
-			
-attributeModifiers
-	: (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)
-	-> ^(MODIFIERS attributeModifierAssignment+);
-
-attributeModifierAssignment
-	: attributeModifier ValueAssignement
-	-> ^(MODIFIER attributeModifier ValueAssignement);	
 
 //attributeName
 //	:Macrodef | (Identifier (Dot attributeName |  (LParenthesis  (DocumentID |  attributeName (Comma attributeName)*) RParenthesis ))?);
@@ -260,19 +249,20 @@ attributeName
 	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?); //^(DOCUMENTID_REF DocumentID)?
 	
 attribute
-	:attributeName (LParenthesis  (DocumentID | attribute)(Comma (DocumentID | attribute))* RParenthesis )?
-		 attributeModifiers*
-	-> ^(ATTRIBUTE attributeName ^(ITEM_EXPRESSION attribute* ^(DOCUMENTID_REF DocumentID*)) ^(MODIFIERS attributeModifiers*));
+	:attributeName (LParenthesis  (DocumentID | attribute)(Comma (DocumentID | attribute))* RParenthesis )? (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)*
+	-> ^(ATTRIBUTE attributeName ^(ITEM_EXPRESSION attribute* ^(DOCUMENTID_REF DocumentID*)) ^(MODIFIERS attributeModifierAssignment*));
 
-
+attributeModifierAssignment
+	: attributeModifier ValueAssignment
+	-> ^(MODIFIER attributeModifier ValueAssignment);	
 
 //attributeSubType	:	;
 		
 //attributeComposedType	:	;	
 	
 macro
-	:Macrodef ValueAssignement
-	{registerMacro($Macrodef, $ValueAssignement.text);};
+	:Macrodef ValueAssignment
+	{registerMacro($Macrodef, $ValueAssignment.text);};
 	//-> ^(MACRO Macrodef ValueAssignement);
 
 attributeModifier
@@ -381,7 +371,7 @@ fragment AttributeModifier
 Macrodef
 	:'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
-ValueAssignement
+ValueAssignment
 	:{isMacroAssignment()}?		=> '=' ~('\r' | '\n')*		{setText(getText().substring(1, getText().length()).trim());}
 	|{isArgumentModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
 	|;
@@ -479,8 +469,8 @@ Comment
 QuotedField 	
 	@after { 
 		String text = getText();
-		text = text.substring(1, text.length()).trim(); //remove leading semicolon and trim to remove any spaces
-		text = text.substring(1, text.length() - 1);      // remove surrounding doublequotes
+		text = text.substring(1, text.length()).trim();  //remove leading semicolon and trim to remove any spaces
+		text = text.substring(1, text.length() - 1).trim();      // remove surrounding doublequotes and again trim to remove any spaces
 		setText(text);
 		
 		
@@ -488,7 +478,9 @@ QuotedField
 	:{isHeader() == false}?=> ';' Ws* '"' (Char | '"' '"' | ';')*  '"' |;
 
 Field 	
-	@after { setText(getText().substring(1, getText().length()).trim()); }
+	@after { 
+	    setText(getText().substring(1, getText().length()).trim()); //remove leading semicolon and trim to remove any spaces
+	}
 	:{isHeader() == false}?=> ';' Char* |;
 
 //BeanShell	

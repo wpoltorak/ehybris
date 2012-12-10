@@ -8,87 +8,94 @@ options {
 @header {
 package output;
 
+import output.tree.AttributeNode;
+import output.tree.BlockNode;
+import output.tree.HeaderNode;
 import output.tree.ImpexNode;
-import output.tree.MacroNode;
+import output.tree.ModifierNode;
+import output.tree.RecordNode;
+import output.tree.RefNode;
 }
 
-walk	returns [ImpexNode node]
-	:impex;
+walk	returns [List<ImpexNode> blocks]
+	:impex {blocks = $impex.blocks;};
 
-impex	returns [ImpexNode node]
-	:^(IMPEX ^(MACROS macro*)  ^(BLOCKS block*));
+impex	returns [List<ImpexNode> blocks]
+	@init{
+		blocks = new ArrayList<ImpexNode>();
+	}
+	:^(IMPEX  ^(BLOCKS (block {blocks.add($block.node);})*));
 
 block	returns [ImpexNode node]
-	:^(BLOCK header ^(RECORDS record+));
+	@init { 
+ 		 BlockNode bn = new BlockNode(); 
+ 		 node = bn; 
+	}  
+	:^(BLOCK (header {bn.setHeader($header.node);})
+	^(RECORDS (record {bn.addRecord($record.node);})+)
+	);
 
 header	returns [ImpexNode node]
-	:^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifiers?) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
+	@init{
+		HeaderNode hn = new HeaderNode();
+		node = hn;
+	}
+	:^(HEADER (headerMode {hn.setMode($headerMode.mode);})
+	^(TYPE Identifier {hn.setType($Identifier.text);}) 
+	^(MODIFIERS (headerModifierAssignment {hn.addModifier($headerModifierAssignment.node);})*) 
+	^(DOCUMENTID(DocumentID{hn.setDocumentID($DocumentID.text);})?) 
+	^(ATTRIBUTES (attribute {hn.addAttribute($attribute.node);})*)) ;
 
-headerModifiers	 returns [ImpexNode node]
-	: ^(MODIFIERS headerModifierAssignment+);
 
 headerModifierAssignment	 returns [ImpexNode node]
-		: ^(MODIFIER headerModifier boolOrClassname);
+		: ^(MODIFIER headerModifier boolOrClassname){node = new ModifierNode($headerModifier.modifier, $boolOrClassname.text);};
 
-boolOrClassname
-	:Bool | Classname;
+boolOrClassname returns [String text]
+	:v=(Bool | Classname){text = $v.text;};
 	
-headerModifier
-	:BatchMode | CacheUnique | Processor;
+headerModifier returns [int modifier]
+	:v=(BatchMode | CacheUnique | Processor) {modifier = $v.type;};
 
-// handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record	 returns [ImpexNode node]
-   	: ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS QuotedField* Field*));
+	@init{
+	    RecordNode rn = new RecordNode(); 
+ 	    node = rn; 
+	}
+   	: ^(RECORD 
+   	^(SUBTYPE (Identifier {rn.setSubType($Identifier.text);})?) 
+   	^(FIELDS (field  {rn.addField($field.text);})+)
+   	);
 
-//handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
-//attribute	: (specialAttribute | normalAttribute)?
-//	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
-
-
-//handles normal attributes (e.g. ;uid[unique=true])
-//normalAttribute
-//	: attributeName attributeModifiers?
-//	-> attributeName ^(MODIFIERS attributeModifiers)?;
-
-//attribute
-//	: attributeName attributeModifiers?
-//	-> attributeName ^(MODIFIERS attributeModifiers)?;
-
-//handles special attributes (e..g ;@media[...])
-//specialAttribute
-//	:SpecialAttribute LBracket attributeModifierAssignment RBracket
-//	-> SpecialAttribute ^(MODIFIERS ^(MODIFIER attributeModifierAssignment));
+field	returns [String text]
+	:v=(QuotedField | Field){text = $v.text;};
 			
-attributeModifiers	 returns [ImpexNode node]
-	: ^(MODIFIERS attributeModifierAssignment+);
-
-attributeModifierAssignment	 returns [ImpexNode node]
-	: ^(MODIFIER attributeModifier ValueAssignement);	
-
-//attributeName
-//	:Macrodef | (Identifier (Dot attributeName |  (LParenthesis  (DocumentID |  attributeName (Comma attributeName)*) RParenthesis ))?);
-
 
 attributeName 	 returns [ImpexNode node]
-	:^(MACRO_REF  Macrodef)
-	| ^(ATTRIBUTE_NAME SpecialAttribute)
-	|^(ATTRIBUTE_NAME Identifier attributeName?); //^(DOCUMENTID_REF DocumentID)?
+	:^(MACRO_REF  Macrodef){node = new RefNode($Macrodef.text, $Macrodef.type);}
+	| ^(ATTRIBUTE_NAME SpecialAttribute){node = new RefNode($SpecialAttribute.text, $SpecialAttribute.type);}
+	|^(ATTRIBUTE_NAME Identifier attributeName?){node = new RefNode($Identifier.text, $Identifier.type);};
 	
 attribute	 returns [ImpexNode node]
-	:^(ATTRIBUTE attributeName ^(ITEM_EXPRESSION attribute* ^(DOCUMENTID_REF DocumentID*)) ^(MODIFIERS attributeModifiers*));
+	@init{
+	    AttributeNode an = new AttributeNode(); 
+ 	    node = an; 
+	}
 
-
-
-//attributeSubType	:	;
-		
-//attributeComposedType	:	;	
+	:^(ATTRIBUTE attributeName {an.setName($attributeName.node);}
+	 ^(ITEM_EXPRESSION (attr = attribute {an.addAttribute($attr.node);})* 
+	 ^(DOCUMENTID_REF (DocumentID{an.addAttribute(new RefNode($DocumentID.text, $DocumentID.type));})*
+	 )
+	 ) 
+	^(MODIFIERS (attributeModifierAssignment {an.addModifier($attributeModifierAssignment.node);})*)
+	);
 	
-macro	 returns [ImpexNode node]
-	:^(MACRO def=Macrodef val=ValueAssignement){node = new MacroNode($def.text, $val.text);};
+attributeModifierAssignment	 returns [ImpexNode node]
+	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier, $ValueAssignment.text);};
+	
+attributeModifier returns [int modifier]
+	: v=(Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual){modifier = $v.type;};
 
-attributeModifier
-	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
-
-headerMode
-	:Insert | InsertUpdate | Update | Remove;
+headerMode returns [int mode]
+	:v=(Insert | InsertUpdate | Update | Remove){mode = $v.type;};
+		

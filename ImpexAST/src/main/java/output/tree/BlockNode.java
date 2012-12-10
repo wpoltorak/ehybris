@@ -1,12 +1,22 @@
 package output.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockNode implements ImpexNode {
 
-    private final String macroDef;
-    private final String moacroVal;
+    private ImpexNode header;
+    private final List<ImpexNode> records = new ArrayList<ImpexNode>();
 
-    public BlockNode(final String macroDef, final String moacroVal) {
-        this.macroDef = macroDef;
-        this.moacroVal = moacroVal;
+    public BlockNode() {
+
+    }
+
+    public void setHeader(final ImpexNode header) {
+        this.header = header;
+    }
+
+    public void addRecord(final ImpexNode record) {
+        records.add(record);
     }
 }

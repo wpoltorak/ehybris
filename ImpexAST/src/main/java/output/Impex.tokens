@@ -66,6 +66,6 @@ TYPE=68
 Translator=69
 Unique=70
 Update=71
-ValueAssignement=72
+ValueAssignment=72
 Virtual=73
 Ws=74
