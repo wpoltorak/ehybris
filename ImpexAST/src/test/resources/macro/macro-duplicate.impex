@@ -1,0 +1,7 @@
+	
+	$macro_def=This is a macro $macro_def=$macro_def
+	
+	$another=true $and_one_more=xxx
+$macro_def=sss	
+$macro_def=$macro_def$macro_def	
+	

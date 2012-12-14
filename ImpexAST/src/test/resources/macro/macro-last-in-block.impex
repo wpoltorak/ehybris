@@ -1,0 +1,10 @@
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append,collection-delimiter=","]
+;regulargroup;customerGroup;
+;regulargroup;customerGroup;
+		
+;regulargroup;customerGroup;
+$macro_def=This is a macro
+
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append,collection-delimiter=","]
+;regulargroup;customerGroup;
+$macro_def=This is a $macro_def

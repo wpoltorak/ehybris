@@ -54,21 +54,25 @@ import java.util.regex.Matcher;
 @parser::members {
 
 
-    private final Map<String, List<SimpleImmutableEntry>> macros = new HashMap<String, List<SimpleImmutableEntry>>();
+    private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
     private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
 
     private void registerMacro(final Token def, final String val) {
         final String macrodef = def.getText();
-        List<SimpleImmutableEntry> macroval = macros.get(macrodef);
+        List<SimpleImmutableEntry<Integer, String>> macroval = macros.get(macrodef);
         if (macroval == null) {
-            macroval = new ArrayList<SimpleImmutableEntry>();
+            macroval = new ArrayList<SimpleImmutableEntry<Integer, String>>();
             macros.put(macrodef, macroval);
         }
-        macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val));
+        macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val == null? "" : val));
     }
 
+    Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros(){
+        return macros;
+    }
+    
     private String getMacroVal(final String macroDef, final int refLine) {
-        final List<SimpleImmutableEntry> list = macros.get(macroDef);
+        final List<SimpleImmutableEntry<Integer, String>> list = macros.get(macroDef);
         if (list == null) {
             // in case there is no such macro definition treat it as normal text and issue an error 
             return macroDef;
@@ -194,9 +198,11 @@ private Token getToken(int num) {
 
 parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
-  	
+
+//default channel  	
 impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX ^(BLOCKS block*));
+
 
 block	: header (Lb+ (macro Lb?)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
@@ -219,7 +225,7 @@ record
    	: Identifier? field+ // ( Lb | (LineContinuation {newline();} record))
     	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
 
-field	:	QuotedField | Field;
+field	:QuotedField | Field;
 //handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
 //attribute	: (specialAttribute | normalAttribute)?
 //	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
@@ -257,13 +263,13 @@ attributeModifierAssignment
 	-> ^(MODIFIER attributeModifier ValueAssignment);	
 
 //attributeSubType	:	;
-		
 //attributeComposedType	:	;	
-	
+
+//if after equals there is no other value except end of file then Lexer treats this as Equals, not as ValueAssignment
 macro
-	:Macrodef ValueAssignment
-	{registerMacro($Macrodef, $ValueAssignment.text);};
-	//-> ^(MACRO Macrodef ValueAssignement);
+	:Macrodef 
+	(ValueAssignment {registerMacro($Macrodef, $ValueAssignment.text);} 
+	|Equals {registerMacro($Macrodef, "");});
 
 attributeModifier
 	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull

@@ -1,0 +1,9 @@
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append,collection-delimiter=","]
+;regulargroup;customerGroup;
+$macro_def=This is a macro
+
+    	
+$macro_def1=This is a macro1
+$macro_def1=This is a macro2
+;regulargroup;customerGroup;
+;regulargroup;customerGroup;

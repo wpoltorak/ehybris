@@ -17,6 +17,10 @@ import output.tree.RecordNode;
 import output.tree.RefNode;
 }
 
+@parser::members {
+
+}
+
 walk	returns [List<ImpexNode> blocks]
 	:impex {blocks = $impex.blocks;};
 
