@@ -27,4 +27,10 @@ public class AttributeNode implements ImpexNode {
     public void addModifier(final ImpexNode modifier) {
         modifiers.add(modifier);
     }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
 }

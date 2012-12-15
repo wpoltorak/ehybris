@@ -37,4 +37,10 @@ public class AttributeNameNode implements ImpexNode {
     public ImpexNode getSubName() {
         return subName;
     }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
 }

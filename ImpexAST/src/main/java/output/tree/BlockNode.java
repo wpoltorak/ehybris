@@ -19,4 +19,10 @@ public class BlockNode implements ImpexNode {
     public void addRecord(final ImpexNode record) {
         records.add(record);
     }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
 }

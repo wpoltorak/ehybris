@@ -42,11 +42,13 @@ tokens{
  package output;
   
 
+import java.util.ArrayList;
 import java.util.AbstractMap.SimpleImmutableEntry;  
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 }
@@ -55,6 +57,7 @@ import java.util.regex.Matcher;
 
 
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
+    private final Set<String> documentIDs = new HashSet<String>();
     private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
 
     private void registerMacro(final Token def, final String val) {
@@ -67,14 +70,30 @@ import java.util.regex.Matcher;
         macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val == null? "" : val));
     }
 
+    private void registerDocumentID(String documentID){
+    	if (documentIDs.contains(documentID)){
+    		//TODO issue an error indicating that there is duplicated documentID definition
+    		
+    	}
+    	documentIDs.add(documentID);
+    }
+
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros(){
         return macros;
+    }
+    
+    Set<String> getDocumentIDs(){
+    	return documentIDs;
+    }
+    
+    private boolean hasDocumentID(String documentID){
+    	return documentIDs.contains(documentID);
     }
     
     private String getMacroVal(final String macroDef, final int refLine) {
         final List<SimpleImmutableEntry<Integer, String>> list = macros.get(macroDef);
         if (list == null) {
-            // in case there is no such macro definition treat it as normal text and issue an error 
+            // TODO in case there is no such macro definition treat it as normal text and issue an error 
             return macroDef;
         }
 
@@ -208,7 +227,7 @@ block	: header (Lb+ (macro Lb*)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)* (Semicolon DocumentID(Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)*)? 
+	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)*)? 
 	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname

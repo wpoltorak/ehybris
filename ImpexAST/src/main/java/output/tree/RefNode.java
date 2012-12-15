@@ -9,4 +9,10 @@ public class RefNode implements ImpexNode {
         this.name = name;
         this.type = type;
     }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
 }

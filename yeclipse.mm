@@ -107,11 +107,21 @@
 <node CREATED="1351808335417" ID="ID_1085046320" MODIFIED="1351808337286" TEXT="INSERT Product; code; $catalogVersion"/>
 </node>
 <node CREATED="1351808381254" ID="ID_270178730" MODIFIED="1351808384646" TEXT="Abbreviations"/>
-<node CREATED="1355558894811" ID="ID_296508571" MODIFIED="1355558897741" TEXT="beanshell">
-<node CREATED="1355558899360" ID="ID_1408632982" MODIFIED="1355558906503" TEXT="w cudzys&#x142;owie"/>
+<node CREATED="1355558894811" ID="ID_296508571" MODIFIED="1355603205018" TEXT="beanshell">
+<icon BUILTIN="help"/>
+<node CREATED="1355558899360" ID="ID_1408632982" MODIFIED="1355603194694" TEXT="w cudzys&#x142;owie">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1355603105018" ID="ID_496031713" MODIFIED="1355603142058" TEXT="na razie ignorowany">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1355603111515" ID="ID_1301621483" MODIFIED="1355603130216" TEXT="nowy parser oparty na Javie?">
+<icon BUILTIN="help"/>
+</node>
 </node>
 <node CREATED="1351889326054" ID="ID_1087186455" MODIFIED="1351889331917" TEXT="Impex:">
 <node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1354453236675" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
+<node CREATED="1355610884024" ID="ID_866605607" MODIFIED="1355610907677" TEXT="documentID - co z duplikatami? kt&#xf3;ra definicja jest wi&#x105;&#x17c;&#x105;ca? ostatnia?"/>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
 <node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1354457126585" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator">
 <icon BUILTIN="button_ok"/>
@@ -134,7 +144,9 @@
 <icon BUILTIN="idea"/>
 </node>
 <node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1354453984308" TEXT="modifier value moze byc w &apos; &apos;, a w srodku podw&#xf3;jne &apos;&apos;"/>
-<node CREATED="1355561620928" ID="ID_1533051185" MODIFIED="1355561626674" TEXT="atrybut moze byc w cudzyslowie"/>
+<node CREATED="1355561620928" ID="ID_1533051185" MODIFIED="1355561626674" TEXT="atrybut moze byc w cudzyslowie">
+<node CREATED="1355610862084" ID="ID_250960236" MODIFIED="1355610871601" TEXT="co z wewn&#x119;trznymi cudzys&#x142;owami?"/>
+</node>
 <node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1354479820335" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; warto&#x15b;ciowa&#x107; @makra ">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -149,8 +161,11 @@
 <node CREATED="1352237288919" ID="ID_1464044142" MODIFIED="1352237314164" TEXT="csv.fieldseparator, csv.quotecharacter"/>
 <node CREATED="1353879486627" ID="ID_366987585" MODIFIED="1353879495131" TEXT="first line of import: https://wiki.hybris.com/display/release4/ImpEx+FAQ"/>
 <node CREATED="1355560830150" ID="ID_806374891" MODIFIED="1355560910888" TEXT="sprawdzanie z&#x142;o&#x17c;onej definicji kolumny: catalogVersion(catalog(id),version) -&gt; clothescatalog:Staged"/>
-<node CREATED="1355561168070" ID="ID_1415789332" MODIFIED="1355561194201" TEXT="User Rights">
-<node CREATED="1355561183376" ID="ID_978105635" MODIFIED="1355561183376" TEXT="User Rights"/>
+<node CREATED="1355561168070" ID="ID_1415789332" MODIFIED="1355604417356" TEXT="User Rights">
+<icon BUILTIN="help"/>
+<node CREATED="1355561183376" ID="ID_978105635" MODIFIED="1355604410637" TEXT="na razie ignorowany">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 </node>
 </node>

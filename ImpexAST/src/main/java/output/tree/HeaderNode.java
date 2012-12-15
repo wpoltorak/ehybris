@@ -12,7 +12,6 @@ public class HeaderNode implements ImpexNode {
     private String documentID;
 
     public HeaderNode() {
-        System.out.println();
     }
 
     public void addModifier(final ImpexNode modifier) {
@@ -33,5 +32,11 @@ public class HeaderNode implements ImpexNode {
 
     public void setDocumentID(final String documentID) {
         this.documentID = documentID;
+    }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
     }
 }

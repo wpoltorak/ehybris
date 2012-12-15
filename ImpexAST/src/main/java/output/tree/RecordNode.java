@@ -18,4 +18,10 @@ public class RecordNode implements ImpexNode {
     public void addField(final String field) {
         fields.add(field);
     }
+
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
 }

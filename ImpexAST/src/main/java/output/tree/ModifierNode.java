@@ -10,4 +10,10 @@ public class ModifierNode implements ImpexNode {
         this.value = value;
     }
 
+    @Override
+    public void evaluate() {
+        // TODO Auto-generated method stub
+
+    }
+
 }
