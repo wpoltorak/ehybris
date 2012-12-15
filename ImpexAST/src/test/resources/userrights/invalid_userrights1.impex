@@ -1,0 +1,6 @@
+$START_USERRIGHTS
+Type;UID;MemberOfGroups;Password;Target;read;change
+UserGroup;impexgroup;employeegroup;
+;;;;Product.code;-;-
+;;;;Product.ean;-;-
+$END_USERRIGHTS

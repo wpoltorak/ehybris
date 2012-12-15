@@ -38,7 +38,7 @@
 </node>
 <node CREATED="1346848599542" ID="ID_490319220" MODIFIED="1346848789692" TEXT="Content Assist (Ctrl+Space)">
 <node CREATED="1346848872934" ID="ID_1087420185" MODIFIED="1346848876892" TEXT="modes"/>
-<node CREATED="1346848877550" ID="ID_621096877" MODIFIED="1346848881756" TEXT="arguments"/>
+<node CREATED="1346848877550" ID="ID_621096877" MODIFIED="1355558484241" TEXT="attribute modifiers"/>
 </node>
 <node CREATED="1346848611350" ID="ID_1143451399" MODIFIED="1346848783476" TEXT="Qick Assist (Ctrl+1)">
 <node CREATED="1346848773646" ID="ID_1008274618" MODIFIED="1346848777364" TEXT="Rename in file">
@@ -77,7 +77,7 @@
 <icon BUILTIN="flag-green"/>
 </node>
 </node>
-<node CREATED="1348467037523" FOLDED="true" ID="ID_752031791" MODIFIED="1352231102795" TEXT="Show line numbers">
+<node CREATED="1348467037523" FOLDED="true" ID="ID_752031791" MODIFIED="1355558437616" TEXT="Show line numbers">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1348467234896" ID="ID_479262826" MODIFIED="1352231098634" TEXT="Context menu - Annotation bar">
 <icon BUILTIN="button_ok"/>
@@ -97,7 +97,7 @@
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
 <node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1352230925944" TEXT="line continuation"/>
-<node CREATED="1351808217660" ID="ID_1928138048" MODIFIED="1354457053080" TEXT="Header and Attribute Modifier">
+<node CREATED="1351808217660" FOLDED="true" ID="ID_1928138048" MODIFIED="1355558458865" TEXT="Header and Attribute Modifier">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1351808049370" ID="ID_606915320" MODIFIED="1351808065253" TEXT="[modifier=value,modifier=value][modifier=value]"/>
 <node CREATED="1351808024055" ID="ID_1778351720" MODIFIED="1351808044534" TEXT="[modifier=value][modifier=value][modifier=value]"/>
@@ -107,6 +107,9 @@
 <node CREATED="1351808335417" ID="ID_1085046320" MODIFIED="1351808337286" TEXT="INSERT Product; code; $catalogVersion"/>
 </node>
 <node CREATED="1351808381254" ID="ID_270178730" MODIFIED="1351808384646" TEXT="Abbreviations"/>
+<node CREATED="1355558894811" ID="ID_296508571" MODIFIED="1355558897741" TEXT="beanshell">
+<node CREATED="1355558899360" ID="ID_1408632982" MODIFIED="1355558906503" TEXT="w cudzys&#x142;owie"/>
+</node>
 <node CREATED="1351889326054" ID="ID_1087186455" MODIFIED="1351889331917" TEXT="Impex:">
 <node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1354453236675" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
@@ -131,6 +134,7 @@
 <icon BUILTIN="idea"/>
 </node>
 <node CREATED="1352230815050" ID="ID_1424455966" MODIFIED="1354453984308" TEXT="modifier value moze byc w &apos; &apos;, a w srodku podw&#xf3;jne &apos;&apos;"/>
+<node CREATED="1355561620928" ID="ID_1533051185" MODIFIED="1355561626674" TEXT="atrybut moze byc w cudzyslowie"/>
 <node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1354479820335" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; warto&#x15b;ciowa&#x107; @makra ">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -144,6 +148,10 @@
 </node>
 <node CREATED="1352237288919" ID="ID_1464044142" MODIFIED="1352237314164" TEXT="csv.fieldseparator, csv.quotecharacter"/>
 <node CREATED="1353879486627" ID="ID_366987585" MODIFIED="1353879495131" TEXT="first line of import: https://wiki.hybris.com/display/release4/ImpEx+FAQ"/>
+<node CREATED="1355560830150" ID="ID_806374891" MODIFIED="1355560910888" TEXT="sprawdzanie z&#x142;o&#x17c;onej definicji kolumny: catalogVersion(catalog(id),version) -&gt; clothescatalog:Staged"/>
+<node CREATED="1355561168070" ID="ID_1415789332" MODIFIED="1355561194201" TEXT="User Rights">
+<node CREATED="1355561183376" ID="ID_978105635" MODIFIED="1355561183376" TEXT="User Rights"/>
+</node>
 </node>
 </node>
 </node>

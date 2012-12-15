@@ -204,11 +204,11 @@ impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX ^(BLOCKS block*));
 
 
-block	: header (Lb+ (macro Lb?)* record)+
+block	: header (Lb+ (macro Lb*)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon attribute?)* (Semicolon DocumentID(Semicolon attribute?)*)? 
+	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)* (Semicolon DocumentID(Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)*)? 
 	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID)? ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
@@ -265,12 +265,6 @@ attributeModifierAssignment
 //attributeSubType	:	;
 //attributeComposedType	:	;	
 
-//if after equals there is no other value except end of file then Lexer treats this as Equals, not as ValueAssignment
-macro
-	:Macrodef 
-	(ValueAssignment {registerMacro($Macrodef, $ValueAssignment.text);} 
-	|Equals {registerMacro($Macrodef, "");});
-
 attributeModifier
 	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
@@ -285,6 +279,13 @@ headerMode
 //	               |   '\n'         {newline();}
 //	             )*
 //	;
+
+
+//if after equals there is no other value except end of file then Lexer treats this as Equals, not as ValueAssignment
+macro
+	:Macrodef 
+	(ValueAssignment {registerMacro($Macrodef, $ValueAssignment.text);} 
+	|Equals {registerMacro($Macrodef, "");});
 
 // Insert		
  		//@init { ((ImpexANTLRStringStream)input).caseInsensitive(); }
@@ -452,6 +453,10 @@ fragment AttributeModifierval
 	)|;
 */
 //fragment Xxx :~('\r' | '\n' | ';' | '[' | ']');
+UserRights
+	:'$START_USERRIGHTS' .* '$END_USERRIGHTS' {$channel=HIDDEN;};
+	
+BeanShell	:(('#%' ~('\r' | '\n')* | '"#%' (~('"') | '"' '"')* '"') Lb?) {$channel=HIDDEN;};
 	
 SpecialAttribute
 	:'@' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
@@ -488,9 +493,6 @@ Field
 	    setText(getText().substring(1, getText().length()).trim()); //remove leading semicolon and trim to remove any spaces
 	}
 	:{isHeader() == false}?=> ';' Char* |;
-
-//BeanShell	
-//	:'#$' ~('\r' | '\n')* ;
 
 //Block
 //CURLY_BLOCK_SCARF

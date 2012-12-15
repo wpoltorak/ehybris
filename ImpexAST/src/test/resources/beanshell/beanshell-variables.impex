@@ -1,0 +1,9 @@
+#% String testString = ""Hello"";
+#comment
+#%impex.info(testString)
+
+#%	line.get(1);
+	#% some comment
+#%	System.out.print(currentLineNumber);
+
+#% System.out.print(currentLocation);

@@ -1,0 +1,9 @@
+INSERT Address; owner( Customer.uid); street;
+; meier ; Leopoldstr. 12 ;
+#% lastItem.getOwner().setDefaultPaymentAddress( lastItem );
+
+UPDATE Order;"code[unique=true]";
+;"O-K2006-C0000-001";
+#%   impex.getLastImportedItem().recalculate();
+;"O-K2006-C0005-001";
+#%   impex.getLastImportedItem().recalculate();

@@ -1,0 +1,3 @@
+	#% beanshell with inlined $macro=definition
+#% or another with another inlined	$macro = definition with more text  
+

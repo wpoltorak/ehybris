@@ -1,0 +1,6 @@
+#% String testString = ""Hello"";
+
+#% if: CatalogManager.getInstance().getCatalog("myCatalog") != null ;
+INSERT Catalog; id[unique=true];
+;web
+#% endif:

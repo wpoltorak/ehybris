@@ -1,0 +1,26 @@
+#% String testString = ""Hello"";
+# print Hello for each value line to read
+
+INSERT_UPDATE Product;code[unique=true]; catalogVersion(catalog(id),version);
+#%beforeEach:line.clear();
+;myProduct;clothescatalog:Staged
+;myProduct;clothescatalog:Staged
+#%beforeEach:end
+
+;myProduct;clothescatalog:Staged
+
+#%afterEach:line.clear();
+# note: scope of beforeEach ends here as the next line is a header
+INSERT_UPDATE Product;code[unique=true]; catalogVersion(catalog(id),version);
+;myProduct;clothescatalog:Staged
+
+INSERT_UPDATE Product;code[unique=true]; catalogVersion(catalog(id),version);
+#%beforeEach:line.clear();
+;myProduct;clothescatalog:Staged
+
+#first afterEach overwritten
+INSERT_UPDATE Product;code
+#%afterEach:impex.log(""Outermost loop"");
+#%afterEach:impex.log(""Innermost loop"");
+;myProduct;
+#%afterEach:end

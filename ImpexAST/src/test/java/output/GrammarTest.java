@@ -1,6 +1,5 @@
 package output;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -21,30 +20,32 @@ public class GrammarTest {
 
     @Test
     public void macros() throws Exception {
-        final File dir = new File(getClass().getResource("/macro").getFile());
-        assertTrue(dir.isDirectory());
-        checkGrammar(dir);
+        checkGrammar(new File(getClass().getResource("/macro").getFile()));
     }
 
     @Test
     public void commons() throws Exception {
-        final File dir = new File(getClass().getResource("/common").getFile());
-        assertTrue(dir.isDirectory());
-        checkGrammar(dir);
+        checkGrammar(new File(getClass().getResource("/common").getFile()));
     }
 
     @Test
     public void comments() throws Exception {
-        final File dir = new File(getClass().getResource("/comment").getFile());
-        assertTrue(dir.isDirectory());
-        checkGrammar(dir);
+        checkGrammar(new File(getClass().getResource("/comment").getFile()));
+    }
+
+    @Test
+    public void beanshell() throws Exception {
+        checkGrammar(new File(getClass().getResource("/beanshell").getFile()));
     }
 
     @Test
     public void blocks() throws Exception {
-        final File dir = new File(getClass().getResource("/block").getFile());
-        assertTrue(dir.isDirectory());
-        checkGrammar(dir);
+        checkGrammar(new File(getClass().getResource("/block").getFile()));
+    }
+
+    @Test
+    public void userRights() throws Exception {
+        checkGrammar(new File(getClass().getResource("/userrights").getFile()));
     }
 
     // @Test
