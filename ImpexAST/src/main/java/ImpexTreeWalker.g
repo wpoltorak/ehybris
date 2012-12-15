@@ -8,6 +8,7 @@ options {
 @header {
 package output;
 
+import output.tree.AttributeNameNode;
 import output.tree.AttributeNode;
 import output.tree.BlockNode;
 import output.tree.HeaderNode;
@@ -15,10 +16,6 @@ import output.tree.ImpexNode;
 import output.tree.ModifierNode;
 import output.tree.RecordNode;
 import output.tree.RefNode;
-}
-
-@parser::members {
-
 }
 
 walk	returns [List<ImpexNode> blocks]
@@ -75,9 +72,14 @@ field	returns [String text]
 			
 
 attributeName 	 returns [ImpexNode node]
-	:^(MACRO_REF  Macrodef){node = new RefNode($Macrodef.text, $Macrodef.type);}
-	| ^(ATTRIBUTE_NAME SpecialAttribute){node = new RefNode($SpecialAttribute.text, $SpecialAttribute.type);}
-	|^(ATTRIBUTE_NAME Identifier attributeName?){node = new RefNode($Identifier.text, $Identifier.type);};
+	@init{
+	    AttributeNameNode ann = new AttributeNameNode(); 
+ 	    node = ann; 
+	}
+	:^(ATTRIBUTE_NAME  
+	(Macrodef {ann.init($Macrodef.text, $Macrodef.type);})? 
+	(SpecialAttribute {ann.init($SpecialAttribute.text, $SpecialAttribute.type);})? 
+	(Identifier {ann.init($Identifier.text, $Identifier.type);} (attrName = attributeName {ann.setSubName($attrName.node);})?)?);
 	
 attribute	 returns [ImpexNode node]
 	@init{

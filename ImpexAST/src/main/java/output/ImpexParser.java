@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-15 21:45:46
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-15 23:09:31
 
  package output;
   
@@ -599,7 +599,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: header, record
+            // elements: record, header
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -678,7 +678,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "header"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:210:1: header : headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ( ^( DOCUMENTID DocumentID ) )? ^( ATTRIBUTES ( attribute )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:210:1: header : headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
     public final ImpexParser.header_return header() throws RecognitionException {
         ImpexParser.header_return retval = new ImpexParser.header_return();
         retval.start = input.LT(1);
@@ -736,7 +736,7 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleSubtreeStream stream_headerModifierAssignment=new RewriteRuleSubtreeStream(adaptor,"rule headerModifierAssignment");
         RewriteRuleSubtreeStream stream_attribute=new RewriteRuleSubtreeStream(adaptor,"rule attribute");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:211:2: ( headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ( ^( DOCUMENTID DocumentID ) )? ^( ATTRIBUTES ( attribute )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:211:2: ( headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
             // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:211:4: headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote )? )* )?
             {
             pushFollow(FOLLOW_headerMode_in_header266);
@@ -1006,7 +1006,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: attribute, headerModifierAssignment, DocumentID, headerMode, Identifier
+            // elements: attribute, Identifier, headerMode, DocumentID, headerModifierAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1016,9 +1016,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 212:2: -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ( ^( DOCUMENTID DocumentID ) )? ^( ATTRIBUTES ( attribute )* ) )
+            // 212:2: -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:5: ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ( ^( DOCUMENTID DocumentID ) )? ^( ATTRIBUTES ( attribute )* ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:5: ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1058,24 +1058,24 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:83: ( ^( DOCUMENTID DocumentID ) )?
-                if ( stream_DocumentID.hasNext() ) {
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:83: ^( DOCUMENTID DocumentID )
-                    {
-                    CommonTree root_2 = (CommonTree)adaptor.nil();
-                    root_2 = (CommonTree)adaptor.becomeRoot(
-                    (CommonTree)adaptor.create(DOCUMENTID, "DOCUMENTID")
-                    , root_2);
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:83: ^( DOCUMENTID ( DocumentID )? )
+                {
+                CommonTree root_2 = (CommonTree)adaptor.nil();
+                root_2 = (CommonTree)adaptor.becomeRoot(
+                (CommonTree)adaptor.create(DOCUMENTID, "DOCUMENTID")
+                , root_2);
 
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:96: ( DocumentID )?
+                if ( stream_DocumentID.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_DocumentID.nextNode()
                     );
 
-                    adaptor.addChild(root_1, root_2);
-                    }
-
                 }
                 stream_DocumentID.reset();
+
+                adaptor.addChild(root_1, root_2);
+                }
 
                 // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:212:109: ^( ATTRIBUTES ( attribute )* )
                 {
@@ -1443,7 +1443,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: field, Identifier
+            // elements: Identifier, field
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1604,7 +1604,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "attributeName"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:252:1: attributeName : ( Macrodef -> ^( MACRO_REF Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) );
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:252:1: attributeName : ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) );
     public final ImpexParser.attributeName_return attributeName() throws RecognitionException {
         ImpexParser.attributeName_return retval = new ImpexParser.attributeName_return();
         retval.start = input.LT(1);
@@ -1629,7 +1629,7 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleTokenStream stream_Identifier=new RewriteRuleTokenStream(adaptor,"token Identifier");
         RewriteRuleSubtreeStream stream_attributeName=new RewriteRuleSubtreeStream(adaptor,"rule attributeName");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:253:2: ( Macrodef -> ^( MACRO_REF Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:253:2: ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) )
             int alt17=3;
             switch ( input.LA(1) ) {
             case Macrodef:
@@ -1674,13 +1674,13 @@ public TreeAdaptor getTreeAdaptor() {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 253:12: -> ^( MACRO_REF Macrodef )
+                    // 253:12: -> ^( ATTRIBUTE_NAME Macrodef )
                     {
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:253:15: ^( MACRO_REF Macrodef )
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:253:15: ^( ATTRIBUTE_NAME Macrodef )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot(
-                        (CommonTree)adaptor.create(MACRO_REF, "MACRO_REF")
+                        (CommonTree)adaptor.create(ATTRIBUTE_NAME, "ATTRIBUTE_NAME")
                         , root_1);
 
                         adaptor.addChild(root_1, 
@@ -2120,7 +2120,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: attributeName, DocumentID, attributeModifierAssignment, attribute
+            // elements: attribute, DocumentID, attributeModifierAssignment, attributeName
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2264,7 +2264,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: ValueAssignment, attributeModifier
+            // elements: attributeModifier, ValueAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 

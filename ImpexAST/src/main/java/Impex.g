@@ -209,7 +209,7 @@ block	: header (Lb+ (macro Lb*)* record)+
 
 header
 	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)* (Semicolon DocumentID(Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)*)? 
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID)? ^(ATTRIBUTES attribute*)) ;
+	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
 	-> ^(MODIFIER headerModifier boolOrClassname);
@@ -250,7 +250,7 @@ field	:QuotedField | Field;
 
 
 attributeName 
-	:Macrodef -> ^(MACRO_REF  Macrodef)
+	:Macrodef -> ^(ATTRIBUTE_NAME  Macrodef)
 	| SpecialAttribute -> ^(ATTRIBUTE_NAME SpecialAttribute)
 	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?); //^(DOCUMENTID_REF DocumentID)?
 	
