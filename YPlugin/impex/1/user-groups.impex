@@ -7,3 +7,10 @@ $customergroup=customergroup
 # Create Customer Group
 INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;customergroup
+
+
+$customergroup=customergroup
+$description =   	description								  
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];description
+;$customergroup;"		   descrddiption		   "
