@@ -3,10 +3,12 @@ package output.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeaderNode implements ImpexNode {
+import output.ImpexContext;
 
-    private final List<ImpexNode> modifiers = new ArrayList<ImpexNode>();
-    private final List<ImpexNode> attributes = new ArrayList<ImpexNode>();
+public class HeaderNode implements IImpexNode {
+
+    private final List<IImpexNode> modifiers = new ArrayList<IImpexNode>();
+    private final List<IImpexNode> attributes = new ArrayList<IImpexNode>();
     private int mode;
     private String type;
     private String documentID;
@@ -14,11 +16,23 @@ public class HeaderNode implements ImpexNode {
     public HeaderNode() {
     }
 
-    public void addModifier(final ImpexNode modifier) {
+    @Override
+    public void evaluate(final ImpexContext context) {
+        //TODO check if type exists 
+        for (final IImpexNode modifier : modifiers) {
+            modifier.evaluate(context);
+        }
+
+        for (final IImpexNode attribute : attributes) {
+            attribute.evaluate(context);
+        }
+    }
+
+    public void addModifier(final IImpexNode modifier) {
         modifiers.add(modifier);
     }
 
-    public void addAttribute(final ImpexNode attribute) {
+    public void addAttribute(final IImpexNode attribute) {
         attributes.add(attribute);
     }
 
@@ -32,11 +46,5 @@ public class HeaderNode implements ImpexNode {
 
     public void setDocumentID(final String documentID) {
         this.documentID = documentID;
-    }
-
-    @Override
-    public void evaluate() {
-        // TODO Auto-generated method stub
-
     }
 }

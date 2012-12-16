@@ -150,13 +150,7 @@ private boolean isHeader = false;
     emit(token);
   }
 
-//  @Override
-//  public void emit(Token token) {
- //   tokens.add(token);
- //   super.emit(token);
-//  } 
-  
-  @Override
+ @Override
  public void emit(Token token) {
     if(token.getChannel() == Token.DEFAULT_CHANNEL) {
         tokens.add(token);
@@ -210,6 +204,7 @@ private boolean isMacroAssignment() {
 private boolean isHeader(){
      return isHeader;
 }
+
 private Token getToken(int num) {
     return tokens.get(num);
 }
@@ -241,10 +236,11 @@ headerModifier
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? field+ // ( Lb | (LineContinuation {newline();} record))
-    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
+   	: Identifier? fields 
+    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS fields));
+    	
+fields	:(QuotedField | Field)+ (NextRow! {newline();} fields)?;
 
-field	:QuotedField | Field;
 //handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
 //attribute	: (specialAttribute | normalAttribute)?
 //	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
@@ -531,4 +527,4 @@ Field
   Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
 Char	: ~('\r' | '\n' | '"' | ';' ) ;
 // \\ next line
-NextRow	:'\\\\' Ws* Lb{$channel=HIDDEN;};
+NextRow	:'\\\\' Ws* Lb?;

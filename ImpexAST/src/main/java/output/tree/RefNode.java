@@ -1,6 +1,8 @@
 package output.tree;
 
-public class RefNode implements ImpexNode {
+import output.ImpexContext;
+
+public class RefNode implements IImpexNode {
 
     private final String name;
     private final int type;
@@ -11,7 +13,7 @@ public class RefNode implements ImpexNode {
     }
 
     @Override
-    public void evaluate() {
+    public void evaluate(ImpexContext context) {
         // TODO Auto-generated method stub
 
     }

@@ -3,26 +3,30 @@ package output.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockNode implements ImpexNode {
+import output.ImpexContext;
 
-    private ImpexNode header;
-    private final List<ImpexNode> records = new ArrayList<ImpexNode>();
+public class BlockNode implements IImpexNode {
+
+    private IImpexNode header;
+    private final List<IImpexNode> records = new ArrayList<IImpexNode>();
 
     public BlockNode() {
-
-    }
-
-    public void setHeader(final ImpexNode header) {
-        this.header = header;
-    }
-
-    public void addRecord(final ImpexNode record) {
-        records.add(record);
     }
 
     @Override
-    public void evaluate() {
-        // TODO Auto-generated method stub
-
+    public void evaluate(final ImpexContext context) {
+        header.evaluate(context);
+        for (final IImpexNode record : records) {
+            record.evaluate(context);
+        }
     }
+
+    public void setHeader(final IImpexNode header) {
+        this.header = header;
+    }
+
+    public void addRecord(final IImpexNode record) {
+        records.add(record);
+    }
+
 }

@@ -3,12 +3,23 @@ package output.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordNode implements ImpexNode {
+import output.ImpexContext;
+
+public class RecordNode implements IImpexNode {
 
     private String subtype;
     private final List<String> fields = new ArrayList<String>();
 
     public RecordNode() {
+    }
+
+    @Override
+    public void evaluate(final ImpexContext context) {
+
+        //        for (final IImpexNode field : fields) {
+        //            field.evaluate(context);
+        //        }
+
     }
 
     public void setSubType(final String subtype) {
@@ -19,9 +30,4 @@ public class RecordNode implements ImpexNode {
         fields.add(field);
     }
 
-    @Override
-    public void evaluate() {
-        // TODO Auto-generated method stub
-
-    }
 }

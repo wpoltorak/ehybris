@@ -1,11 +1,19 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g 2012-12-15 23:09:38
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g 2012-12-16 09:52:06
 
 package output;
 
+import java.util.ArrayList;
+import java.util.AbstractMap.SimpleImmutableEntry;  
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import output.tree.AttributeNameNode;
 import output.tree.AttributeNode;
 import output.tree.BlockNode;
 import output.tree.HeaderNode;
+import output.tree.IImpexNode;
 import output.tree.ImpexNode;
 import output.tree.ModifierNode;
 import output.tree.RecordNode;
@@ -120,17 +128,17 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "walk"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:21:1: walk returns [List<ImpexNode> blocks] : impex ;
-    public final List<ImpexNode> walk() throws RecognitionException {
-        List<ImpexNode> blocks = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:29:1: walk returns [IImpexNode impex] : impex ;
+    public final IImpexNode walk() throws RecognitionException {
+        IImpexNode impex = null;
 
 
-        List<ImpexNode> impex1 =null;
+        ImpexNode impex1 =null;
 
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:22:2: ( impex )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:22:3: impex
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:30:2: ( impex )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:30:3: impex
             {
             pushFollow(FOLLOW_impex_in_walk45);
             impex1=impex();
@@ -138,7 +146,7 @@ public class ImpexTreeWalker extends TreeParser {
             state._fsp--;
 
 
-            blocks = impex1;
+            impex = impex1;
 
             }
 
@@ -151,27 +159,28 @@ public class ImpexTreeWalker extends TreeParser {
         finally {
         	// do for sure before leaving
         }
-        return blocks;
+        return impex;
     }
     // $ANTLR end "walk"
 
 
 
     // $ANTLR start "impex"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:24:1: impex returns [List<ImpexNode> blocks] : ^( IMPEX ^( BLOCKS ( block )* ) ) ;
-    public final List<ImpexNode> impex() throws RecognitionException {
-        List<ImpexNode> blocks = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:32:1: impex returns [ImpexNode node] : ^( IMPEX ^( BLOCKS ( block )* ) ) ;
+    public final ImpexNode impex() throws RecognitionException {
+        ImpexNode node = null;
 
 
-        ImpexNode block2 =null;
+        IImpexNode block2 =null;
 
 
 
-        		blocks = new ArrayList<ImpexNode>();
+        		ImpexNode in = new ImpexNode();
+        		node = in;
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:28:2: ( ^( IMPEX ^( BLOCKS ( block )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:28:3: ^( IMPEX ^( BLOCKS ( block )* ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:37:2: ( ^( IMPEX ^( BLOCKS ( block )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:37:3: ^( IMPEX ^( BLOCKS ( block )* ) )
             {
             match(input,IMPEX,FOLLOW_IMPEX_in_impex65); 
 
@@ -180,7 +189,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:28:21: ( block )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:37:21: ( block )*
                 loop1:
                 do {
                     int alt1=2;
@@ -193,7 +202,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt1) {
                 	case 1 :
-                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:28:22: block
+                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:37:22: block
                 	    {
                 	    pushFollow(FOLLOW_block_in_impex72);
                 	    block2=block();
@@ -201,7 +210,7 @@ public class ImpexTreeWalker extends TreeParser {
                 	    state._fsp--;
 
 
-                	    blocks.add(block2);
+                	    in.addBlock(block2);
 
                 	    }
                 	    break;
@@ -230,21 +239,21 @@ public class ImpexTreeWalker extends TreeParser {
         finally {
         	// do for sure before leaving
         }
-        return blocks;
+        return node;
     }
     // $ANTLR end "impex"
 
 
 
     // $ANTLR start "block"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:30:1: block returns [ImpexNode node] : ^( BLOCK ( header ) ^( RECORDS ( record )+ ) ) ;
-    public final ImpexNode block() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:39:1: block returns [IImpexNode node] : ^( BLOCK ( header ) ^( RECORDS ( record )+ ) ) ;
+    public final IImpexNode block() throws RecognitionException {
+        IImpexNode node = null;
 
 
-        ImpexNode header3 =null;
+        IImpexNode header3 =null;
 
-        ImpexNode record4 =null;
+        IImpexNode record4 =null;
 
 
          
@@ -252,14 +261,14 @@ public class ImpexTreeWalker extends TreeParser {
          		 node = bn; 
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:35:2: ( ^( BLOCK ( header ) ^( RECORDS ( record )+ ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:35:3: ^( BLOCK ( header ) ^( RECORDS ( record )+ ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:2: ( ^( BLOCK ( header ) ^( RECORDS ( record )+ ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:3: ^( BLOCK ( header ) ^( RECORDS ( record )+ ) )
             {
             match(input,BLOCK,FOLLOW_BLOCK_in_block99); 
 
             match(input, Token.DOWN, null); 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:35:11: ( header )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:35:12: header
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:11: ( header )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:12: header
             {
             pushFollow(FOLLOW_header_in_block102);
             header3=header();
@@ -275,7 +284,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input,RECORDS,FOLLOW_RECORDS_in_block109); 
 
             match(input, Token.DOWN, null); 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:36:12: ( record )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:45:12: ( record )+
             int cnt2=0;
             loop2:
             do {
@@ -289,7 +298,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                 switch (alt2) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:36:13: record
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:45:13: record
             	    {
             	    pushFollow(FOLLOW_record_in_block112);
             	    record4=record();
@@ -336,18 +345,18 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "header"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:39:1: header returns [ImpexNode node] : ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
-    public final ImpexNode header() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:48:1: header returns [IImpexNode node] : ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
+    public final IImpexNode header() throws RecognitionException {
+        IImpexNode node = null;
 
 
         CommonTree Identifier6=null;
         CommonTree DocumentID8=null;
         int headerMode5 =0;
 
-        ImpexNode headerModifierAssignment7 =null;
+        IImpexNode headerModifierAssignment7 =null;
 
-        ImpexNode attribute9 =null;
+        IImpexNode attribute9 =null;
 
 
 
@@ -355,14 +364,14 @@ public class ImpexTreeWalker extends TreeParser {
         		node = hn;
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:2: ( ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:3: ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:2: ( ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:3: ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
             {
             match(input,HEADER,FOLLOW_HEADER_in_header138); 
 
             match(input, Token.DOWN, null); 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:12: ( headerMode )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:44:13: headerMode
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:12: ( headerMode )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:13: headerMode
             {
             pushFollow(FOLLOW_headerMode_in_header141);
             headerMode5=headerMode();
@@ -389,7 +398,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:46:14: ( headerModifierAssignment )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:55:14: ( headerModifierAssignment )*
                 loop3:
                 do {
                     int alt3=2;
@@ -402,7 +411,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt3) {
                 	case 1 :
-                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:46:15: headerModifierAssignment
+                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:55:15: headerModifierAssignment
                 	    {
                 	    pushFollow(FOLLOW_headerModifierAssignment_in_header161);
                 	    headerModifierAssignment7=headerModifierAssignment();
@@ -429,7 +438,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:47:14: ( DocumentID )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:56:14: ( DocumentID )?
                 int alt4=2;
                 int LA4_0 = input.LA(1);
 
@@ -438,7 +447,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
                 switch (alt4) {
                     case 1 :
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:47:15: DocumentID
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:56:15: DocumentID
                         {
                         DocumentID8=(CommonTree)match(input,DocumentID,FOLLOW_DocumentID_in_header173); 
 
@@ -458,7 +467,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:48:15: ( attribute )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:57:15: ( attribute )*
                 loop5:
                 do {
                     int alt5=2;
@@ -471,7 +480,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt5) {
                 	case 1 :
-                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:48:16: attribute
+                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:57:16: attribute
                 	    {
                 	    pushFollow(FOLLOW_attribute_in_header185);
                 	    attribute9=attribute();
@@ -515,9 +524,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerModifierAssignment"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:51:1: headerModifierAssignment returns [ImpexNode node] : ^( MODIFIER headerModifier boolOrClassname ) ;
-    public final ImpexNode headerModifierAssignment() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:60:1: headerModifierAssignment returns [IImpexNode node] : ^( MODIFIER headerModifier boolOrClassname ) ;
+    public final IImpexNode headerModifierAssignment() throws RecognitionException {
+        IImpexNode node = null;
 
 
         int headerModifier10 =0;
@@ -526,8 +535,8 @@ public class ImpexTreeWalker extends TreeParser {
 
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:52:3: ( ^( MODIFIER headerModifier boolOrClassname ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:52:5: ^( MODIFIER headerModifier boolOrClassname )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:61:3: ( ^( MODIFIER headerModifier boolOrClassname ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:61:5: ^( MODIFIER headerModifier boolOrClassname )
             {
             match(input,MODIFIER,FOLLOW_MODIFIER_in_headerModifierAssignment209); 
 
@@ -567,7 +576,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "boolOrClassname"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:54:1: boolOrClassname returns [String text] : v= ( Bool | Classname ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:63:1: boolOrClassname returns [String text] : v= ( Bool | Classname ) ;
     public final String boolOrClassname() throws RecognitionException {
         String text = null;
 
@@ -575,8 +584,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:55:2: (v= ( Bool | Classname ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:55:3: v= ( Bool | Classname )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:64:2: (v= ( Bool | Classname ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:64:3: v= ( Bool | Classname )
             {
             v=(CommonTree)input.LT(1);
 
@@ -610,7 +619,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerModifier"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:57:1: headerModifier returns [int modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:66:1: headerModifier returns [int modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
     public final int headerModifier() throws RecognitionException {
         int modifier = 0;
 
@@ -618,8 +627,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:58:2: (v= ( BatchMode | CacheUnique | Processor ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:58:3: v= ( BatchMode | CacheUnique | Processor )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:67:2: (v= ( BatchMode | CacheUnique | Processor ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:67:3: v= ( BatchMode | CacheUnique | Processor )
             {
             v=(CommonTree)input.LT(1);
 
@@ -653,9 +662,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "record"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:60:1: record returns [ImpexNode node] : ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) ;
-    public final ImpexNode record() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:69:1: record returns [IImpexNode node] : ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) ;
+    public final IImpexNode record() throws RecognitionException {
+        IImpexNode node = null;
 
 
         CommonTree Identifier12=null;
@@ -667,8 +676,8 @@ public class ImpexTreeWalker extends TreeParser {
          	    node = rn; 
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:65:5: ( ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:65:7: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:74:5: ( ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:74:7: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
             {
             match(input,RECORD,FOLLOW_RECORD_in_record286); 
 
@@ -677,7 +686,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:66:15: ( Identifier )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:75:15: ( Identifier )?
                 int alt6=2;
                 int LA6_0 = input.LA(1);
 
@@ -686,7 +695,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
                 switch (alt6) {
                     case 1 :
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:66:16: Identifier
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:75:16: Identifier
                         {
                         Identifier12=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_record297); 
 
@@ -705,7 +714,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input,FIELDS,FOLLOW_FIELDS_in_record310); 
 
             match(input, Token.DOWN, null); 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:67:14: ( field )+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:76:14: ( field )+
             int cnt7=0;
             loop7:
             do {
@@ -719,7 +728,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                 switch (alt7) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:67:15: field
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:76:15: field
             	    {
             	    pushFollow(FOLLOW_field_in_record313);
             	    field13=field();
@@ -766,7 +775,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "field"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:70:1: field returns [String text] : v= ( QuotedField | Field ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:79:1: field returns [String text] : v= ( QuotedField | Field ) ;
     public final String field() throws RecognitionException {
         String text = null;
 
@@ -774,8 +783,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:71:2: (v= ( QuotedField | Field ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:71:3: v= ( QuotedField | Field )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:80:2: (v= ( QuotedField | Field ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:80:3: v= ( QuotedField | Field )
             {
             v=(CommonTree)input.LT(1);
 
@@ -809,15 +818,15 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attributeName"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:74:1: attributeName returns [ImpexNode node] : ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) ;
-    public final ImpexNode attributeName() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:83:1: attributeName returns [IImpexNode node] : ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) ;
+    public final IImpexNode attributeName() throws RecognitionException {
+        IImpexNode node = null;
 
 
         CommonTree Macrodef14=null;
         CommonTree SpecialAttribute15=null;
         CommonTree Identifier16=null;
-        ImpexNode attrName =null;
+        IImpexNode attrName =null;
 
 
 
@@ -825,14 +834,14 @@ public class ImpexTreeWalker extends TreeParser {
          	    node = ann; 
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:79:2: ( ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:79:3: ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:88:2: ( ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:88:3: ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? )
             {
             match(input,ATTRIBUTE_NAME,FOLLOW_ATTRIBUTE_NAME_in_attributeName370); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:80:2: ( Macrodef )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:89:2: ( Macrodef )?
                 int alt8=2;
                 int LA8_0 = input.LA(1);
 
@@ -841,7 +850,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
                 switch (alt8) {
                     case 1 :
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:80:3: Macrodef
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:89:3: Macrodef
                         {
                         Macrodef14=(CommonTree)match(input,Macrodef,FOLLOW_Macrodef_in_attributeName376); 
 
@@ -853,7 +862,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
 
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:81:2: ( SpecialAttribute )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:90:2: ( SpecialAttribute )?
                 int alt9=2;
                 int LA9_0 = input.LA(1);
 
@@ -862,7 +871,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
                 switch (alt9) {
                     case 1 :
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:81:3: SpecialAttribute
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:90:3: SpecialAttribute
                         {
                         SpecialAttribute15=(CommonTree)match(input,SpecialAttribute,FOLLOW_SpecialAttribute_in_attributeName385); 
 
@@ -874,7 +883,7 @@ public class ImpexTreeWalker extends TreeParser {
                 }
 
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:82:2: ( Identifier (attrName= attributeName )? )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:2: ( Identifier (attrName= attributeName )? )?
                 int alt11=2;
                 int LA11_0 = input.LA(1);
 
@@ -883,13 +892,13 @@ public class ImpexTreeWalker extends TreeParser {
                 }
                 switch (alt11) {
                     case 1 :
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:82:3: Identifier (attrName= attributeName )?
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:3: Identifier (attrName= attributeName )?
                         {
                         Identifier16=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_attributeName394); 
 
                         ann.init((Identifier16!=null?Identifier16.getText():null), (Identifier16!=null?Identifier16.getType():0));
 
-                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:82:62: (attrName= attributeName )?
+                        // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:62: (attrName= attributeName )?
                         int alt10=2;
                         int LA10_0 = input.LA(1);
 
@@ -898,7 +907,7 @@ public class ImpexTreeWalker extends TreeParser {
                         }
                         switch (alt10) {
                             case 1 :
-                                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:82:63: attrName= attributeName
+                                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:63: attrName= attributeName
                                 {
                                 pushFollow(FOLLOW_attributeName_in_attributeName403);
                                 attrName=attributeName();
@@ -942,17 +951,17 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attribute"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:84:1: attribute returns [ImpexNode node] : ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) ;
-    public final ImpexNode attribute() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:93:1: attribute returns [IImpexNode node] : ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) ;
+    public final IImpexNode attribute() throws RecognitionException {
+        IImpexNode node = null;
 
 
         CommonTree DocumentID18=null;
-        ImpexNode attr =null;
+        IImpexNode attr =null;
 
-        ImpexNode attributeName17 =null;
+        IImpexNode attributeName17 =null;
 
-        ImpexNode attributeModifierAssignment19 =null;
+        IImpexNode attributeModifierAssignment19 =null;
 
 
 
@@ -960,8 +969,8 @@ public class ImpexTreeWalker extends TreeParser {
          	    node = an; 
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:90:2: ( ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:90:3: ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:99:2: ( ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:99:3: ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION (attr= attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
             {
             match(input,ATTRIBUTE,FOLLOW_ATTRIBUTE_in_attribute431); 
 
@@ -977,7 +986,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input,ITEM_EXPRESSION,FOLLOW_ITEM_EXPRESSION_in_attribute440); 
 
             match(input, Token.DOWN, null); 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:21: (attr= attribute )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:100:21: (attr= attribute )*
             loop12:
             do {
                 int alt12=2;
@@ -990,7 +999,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                 switch (alt12) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:91:22: attr= attribute
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:100:22: attr= attribute
             	    {
             	    pushFollow(FOLLOW_attribute_in_attribute447);
             	    attr=attribute();
@@ -1013,7 +1022,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:92:20: ( DocumentID )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:101:20: ( DocumentID )*
                 loop13:
                 do {
                     int alt13=2;
@@ -1026,7 +1035,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt13) {
                 	case 1 :
-                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:92:21: DocumentID
+                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:101:21: DocumentID
                 	    {
                 	    DocumentID18=(CommonTree)match(input,DocumentID,FOLLOW_DocumentID_in_attribute460); 
 
@@ -1052,7 +1061,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:95:14: ( attributeModifierAssignment )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:104:14: ( attributeModifierAssignment )*
                 loop14:
                 do {
                     int alt14=2;
@@ -1065,7 +1074,7 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt14) {
                 	case 1 :
-                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:95:15: attributeModifierAssignment
+                	    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:104:15: attributeModifierAssignment
                 	    {
                 	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute479);
                 	    attributeModifierAssignment19=attributeModifierAssignment();
@@ -1109,9 +1118,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attributeModifierAssignment"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:98:1: attributeModifierAssignment returns [ImpexNode node] : ^( MODIFIER attributeModifier ValueAssignment ) ;
-    public final ImpexNode attributeModifierAssignment() throws RecognitionException {
-        ImpexNode node = null;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:107:1: attributeModifierAssignment returns [IImpexNode node] : ^( MODIFIER attributeModifier ValueAssignment ) ;
+    public final IImpexNode attributeModifierAssignment() throws RecognitionException {
+        IImpexNode node = null;
 
 
         CommonTree ValueAssignment21=null;
@@ -1119,8 +1128,8 @@ public class ImpexTreeWalker extends TreeParser {
 
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:99:2: ( ^( MODIFIER attributeModifier ValueAssignment ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:99:4: ^( MODIFIER attributeModifier ValueAssignment )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:108:2: ( ^( MODIFIER attributeModifier ValueAssignment ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:108:4: ^( MODIFIER attributeModifier ValueAssignment )
             {
             match(input,MODIFIER,FOLLOW_MODIFIER_in_attributeModifierAssignment503); 
 
@@ -1156,7 +1165,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attributeModifier"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:101:1: attributeModifier returns [int modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:110:1: attributeModifier returns [int modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
     public final int attributeModifier() throws RecognitionException {
         int modifier = 0;
 
@@ -1164,8 +1173,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:102:2: (v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:102:4: v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:111:2: (v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:111:4: v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
             {
             v=(CommonTree)input.LT(1);
 
@@ -1199,7 +1208,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerMode"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:105:1: headerMode returns [int mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:114:1: headerMode returns [int mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
     public final int headerMode() throws RecognitionException {
         int mode = 0;
 
@@ -1207,8 +1216,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:106:2: (v= ( Insert | InsertUpdate | Update | Remove ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:106:3: v= ( Insert | InsertUpdate | Update | Remove )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:115:2: (v= ( Insert | InsertUpdate | Update | Remove ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:115:3: v= ( Insert | InsertUpdate | Update | Remove )
             {
             v=(CommonTree)input.LT(1);
 

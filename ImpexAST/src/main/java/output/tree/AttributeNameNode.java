@@ -1,10 +1,12 @@
 package output.tree;
 
-public class AttributeNameNode implements ImpexNode {
+import output.ImpexContext;
+
+public class AttributeNameNode implements IImpexNode {
 
     private String name;
     private int type;
-    private ImpexNode subName;
+    private IImpexNode subName;
 
     public AttributeNameNode() {
     }
@@ -14,7 +16,7 @@ public class AttributeNameNode implements ImpexNode {
         this.type = type;
     }
 
-    public void setSubName(final ImpexNode subName) {
+    public void setSubName(final IImpexNode subName) {
         this.subName = subName;
     }
 
@@ -34,12 +36,12 @@ public class AttributeNameNode implements ImpexNode {
         this.type = type;
     }
 
-    public ImpexNode getSubName() {
+    public IImpexNode getSubName() {
         return subName;
     }
 
     @Override
-    public void evaluate() {
+    public void evaluate(ImpexContext context) {
         // TODO Auto-generated method stub
 
     }

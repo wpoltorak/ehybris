@@ -3,34 +3,36 @@ package output.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AttributeNode implements ImpexNode {
+import output.ImpexContext;
 
-    private final List<ImpexNode> expression = new ArrayList<ImpexNode>();
-    private final List<ImpexNode> modifiers = new ArrayList<ImpexNode>();
-    private ImpexNode name;
+public class AttributeNode implements IImpexNode {
+
+    private final List<IImpexNode> expression = new ArrayList<IImpexNode>();
+    private final List<IImpexNode> modifiers = new ArrayList<IImpexNode>();
+    private IImpexNode name;
 
     public AttributeNode() {
     }
 
-    public AttributeNode(final ImpexNode name) {
+    public AttributeNode(final IImpexNode name) {
         this.name = name;
-    }
-
-    public void setName(final ImpexNode name) {
-        this.name = name;
-    }
-
-    public void addAttribute(final ImpexNode attribute) {
-        this.expression.add(attribute);
-    }
-
-    public void addModifier(final ImpexNode modifier) {
-        modifiers.add(modifier);
     }
 
     @Override
-    public void evaluate() {
-        // TODO Auto-generated method stub
+    public void evaluate(final ImpexContext context) {
 
     }
+
+    public void setName(final IImpexNode name) {
+        this.name = name;
+    }
+
+    public void addAttribute(final IImpexNode attribute) {
+        this.expression.add(attribute);
+    }
+
+    public void addModifier(final IImpexNode modifier) {
+        modifiers.add(modifier);
+    }
+
 }

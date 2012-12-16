@@ -8,26 +8,35 @@ options {
 @header {
 package output;
 
+import java.util.ArrayList;
+import java.util.AbstractMap.SimpleImmutableEntry;  
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import output.tree.AttributeNameNode;
 import output.tree.AttributeNode;
 import output.tree.BlockNode;
 import output.tree.HeaderNode;
+import output.tree.IImpexNode;
 import output.tree.ImpexNode;
 import output.tree.ModifierNode;
 import output.tree.RecordNode;
 import output.tree.RefNode;
 }
 
-walk	returns [List<ImpexNode> blocks]
-	:impex {blocks = $impex.blocks;};
+walk	returns [IImpexNode impex]
+	:impex {impex = $impex.node;};
 
-impex	returns [List<ImpexNode> blocks]
+impex	returns [ImpexNode node]
 	@init{
-		blocks = new ArrayList<ImpexNode>();
+		ImpexNode in = new ImpexNode();
+		node = in;
 	}
-	:^(IMPEX  ^(BLOCKS (block {blocks.add($block.node);})*));
+	:^(IMPEX  ^(BLOCKS (block {in.addBlock($block.node);})*));
 
-block	returns [ImpexNode node]
+block	returns [IImpexNode node]
 	@init { 
  		 BlockNode bn = new BlockNode(); 
  		 node = bn; 
@@ -36,7 +45,7 @@ block	returns [ImpexNode node]
 	^(RECORDS (record {bn.addRecord($record.node);})+)
 	);
 
-header	returns [ImpexNode node]
+header	returns [IImpexNode node]
 	@init{
 		HeaderNode hn = new HeaderNode();
 		node = hn;
@@ -48,7 +57,7 @@ header	returns [ImpexNode node]
 	^(ATTRIBUTES (attribute {hn.addAttribute($attribute.node);})*)) ;
 
 
-headerModifierAssignment	 returns [ImpexNode node]
+headerModifierAssignment	 returns [IImpexNode node]
 		: ^(MODIFIER headerModifier boolOrClassname){node = new ModifierNode($headerModifier.modifier, $boolOrClassname.text);};
 
 boolOrClassname returns [String text]
@@ -57,7 +66,7 @@ boolOrClassname returns [String text]
 headerModifier returns [int modifier]
 	:v=(BatchMode | CacheUnique | Processor) {modifier = $v.type;};
 
-record	 returns [ImpexNode node]
+record	 returns [IImpexNode node]
 	@init{
 	    RecordNode rn = new RecordNode(); 
  	    node = rn; 
@@ -71,7 +80,7 @@ field	returns [String text]
 	:v=(QuotedField | Field){text = $v.text;};
 			
 
-attributeName 	 returns [ImpexNode node]
+attributeName 	 returns [IImpexNode node]
 	@init{
 	    AttributeNameNode ann = new AttributeNameNode(); 
  	    node = ann; 
@@ -81,7 +90,7 @@ attributeName 	 returns [ImpexNode node]
 	(SpecialAttribute {ann.init($SpecialAttribute.text, $SpecialAttribute.type);})? 
 	(Identifier {ann.init($Identifier.text, $Identifier.type);} (attrName = attributeName {ann.setSubName($attrName.node);})?)?);
 	
-attribute	 returns [ImpexNode node]
+attribute	 returns [IImpexNode node]
 	@init{
 	    AttributeNode an = new AttributeNode(); 
  	    node = an; 
@@ -95,7 +104,7 @@ attribute	 returns [ImpexNode node]
 	^(MODIFIERS (attributeModifierAssignment {an.addModifier($attributeModifierAssignment.node);})*)
 	);
 	
-attributeModifierAssignment	 returns [ImpexNode node]
+attributeModifierAssignment	 returns [IImpexNode node]
 	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier, $ValueAssignment.text);};
 	
 attributeModifier returns [int modifier]
