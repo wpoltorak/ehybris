@@ -1,0 +1,5 @@
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz;Ann Hertz;K2006-C0005;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;owan;Obi Wan ;Z2023-D0923

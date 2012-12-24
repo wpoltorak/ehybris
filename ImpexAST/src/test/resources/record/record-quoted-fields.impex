@@ -1,0 +1,6 @@
+UPDATE User;uid[unique=true];name;customerID;
+;"ahertz ";"	Anja Hertz";"K2006-C0005	";
+;"jsmith";"John ""Texas"" Smith";"L4506-D2005";
+;"owan";"Obi;Wan";"L4536-D2005";
+;"owan";"Obi	
+ 	Wan";"L4536-D2005";

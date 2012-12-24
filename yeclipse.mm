@@ -147,7 +147,7 @@
 <node CREATED="1355561620928" ID="ID_1533051185" MODIFIED="1355561626674" TEXT="atrybut moze byc w cudzyslowie">
 <node CREATED="1355610862084" ID="ID_250960236" MODIFIED="1355610871601" TEXT="co z wewn&#x119;trznymi cudzys&#x142;owami?"/>
 </node>
-<node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1354479820335" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; warto&#x15b;ciowa&#x107; @makra ">
+<node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1355773885318" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; ewaluowa&#x107; warto&#x15b;ciowa&#x107; @makra ">
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1352237268164" ID="ID_1756743800" MODIFIED="1352291335667" TEXT="\\ nie jest parsowany w og&#xf3;le, s&#x142;u&#x17c;y jako separator linii">
@@ -161,12 +161,18 @@
 <node CREATED="1352237288919" ID="ID_1464044142" MODIFIED="1352237314164" TEXT="csv.fieldseparator, csv.quotecharacter"/>
 <node CREATED="1353879486627" ID="ID_366987585" MODIFIED="1353879495131" TEXT="first line of import: https://wiki.hybris.com/display/release4/ImpEx+FAQ"/>
 <node CREATED="1355560830150" ID="ID_806374891" MODIFIED="1355560910888" TEXT="sprawdzanie z&#x142;o&#x17c;onej definicji kolumny: catalogVersion(catalog(id),version) -&gt; clothescatalog:Staged"/>
-<node CREATED="1355561168070" ID="ID_1415789332" MODIFIED="1355604417356" TEXT="User Rights">
+<node CREATED="1355561168070" ID="ID_1415789332" MODIFIED="1355684372085" TEXT="User Rights">
 <icon BUILTIN="help"/>
 <node CREATED="1355561183376" ID="ID_978105635" MODIFIED="1355604410637" TEXT="na razie ignorowany">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
+<node CREATED="1355684373963" ID="ID_944566467" MODIFIED="1355773816429" TEXT="blank lines">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1355684396641" ID="ID_349681220" MODIFIED="1355684399497" TEXT=";;;;;;;;;"/>
+<node CREATED="1355773794162" ID="ID_1868712476" MODIFIED="1355773811950" TEXT="nie trzeba specjalnego parsowania, walker zajmie si&#x119; tym przypadkiem i zglosi blad"/>
+</node>
+<node CREATED="1355685370996" ID="ID_754403165" MODIFIED="1355693633061" TEXT="sprawdzic czy typ jest abstrakcyjny jesli tak to info gdy nie ma subtypu + sprawdzic hierarchie dziedziczenia"/>
 </node>
 </node>
 </node>

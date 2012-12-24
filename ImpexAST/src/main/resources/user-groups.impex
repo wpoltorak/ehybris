@@ -1,5 +1,5 @@
-INSERT_UPDATE Order;"code[unique=true]";"user(uid)";"date[dateformat=dd.MM.yyyy HH:mm]";"currency(isocode)";"net";"deliveryMode(code)";"paymentMode(code)";"Discounts(code)";"calculated"
-"#%afterEach: impex.getLastImportedItem().setDeliveryAddress(impex.getLastImportedItem().getUser().getDefaultDeliveryAddress());
-impex.getLastImportedItem().setPaymentAddress(impex.getLastImportedItem().getUser().getDefaultPaymentAddress());"
-;"O-K2006-C0000-001";"demo";26.01.2006 10:58:00;"EUR";"false";;"advance";;"false"
-#%afterEach:end
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz;\\
+Anja Hertz\\	
+;	 \\  
+K2006-C0005;

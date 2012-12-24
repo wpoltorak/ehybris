@@ -44,6 +44,11 @@ public class GrammarTest {
     }
 
     @Test
+    public void records() throws Exception {
+        checkGrammar(new File(getClass().getResource("/record").getFile()));
+    }
+
+    @Test
     public void userRights() throws Exception {
         checkGrammar(new File(getClass().getResource("/userrights").getFile()));
     }

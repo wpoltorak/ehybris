@@ -1,0 +1,4 @@
+# ;testgroup;test\ group;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;testgroup;"test\   
+group";;

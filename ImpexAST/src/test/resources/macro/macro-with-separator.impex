@@ -1,0 +1,36 @@
+
+$macro1	= Macro with \ 
+	separator\
++more	
+
+$macro2=Macro with	\
+separator
+$macro3=Macro with\
+separator
+$macro4=Macro with\
+\
+\
+\
+\
+\	
+\
+\
+\
+separator
+
+$macro5=Macro with\
+\
+\
+\
+\
+\
+\
+\
+\
+separator
+
+$macro6=Macro with\		
+separator
+$macro7=Macro with\
+		separator
+

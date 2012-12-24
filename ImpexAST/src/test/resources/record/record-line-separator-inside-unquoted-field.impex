@@ -1,0 +1,24 @@
+# ;testgroup;test group;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;test\
+group;test group;;
+
+# ;testgroup;test group;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;testgroup;test \
+group;;
+
+# ;testgroup;test	group;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;testgroup;test	\				    
+group;;
+
+# ;testgroup;test group;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;testgroup;test\
+	   group;;
+	   
+ # ;testgroup;testgroup;;
+INSERT_UPDATE Usergroup;uid[unique= true];locname;groups(uid)[mode=append,collection-delimiter = ","]
+;testgroup;test\
+group;;			

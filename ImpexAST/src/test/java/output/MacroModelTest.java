@@ -25,6 +25,23 @@ public class MacroModelTest {
     }
 
     @Test
+    public void macroWithSeparator() throws Exception {
+        init("/macro/macro-with-separator.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        assertEquals(7, macros.size());
+
+        assertSingleEntry(macros.get("$macro1"), 2, "Macro with separator+more");
+        assertSingleEntry(macros.get("$macro2"), 6, "Macro with separator");
+        assertSingleEntry(macros.get("$macro3"), 8, "Macro withseparator");
+        assertSingleEntry(macros.get("$macro4"), 10, "Macro with separator");
+        assertSingleEntry(macros.get("$macro5"), 21, "Macro withseparator");
+        assertSingleEntry(macros.get("$macro6"), 32, "Macro with separator");
+        assertSingleEntry(macros.get("$macro7"), 34, "Macro with separator");
+
+    }
+
+    @Test
     public void macroWithKeyword() throws Exception {
         init("/macro/macro-with-keyword.impex");
 

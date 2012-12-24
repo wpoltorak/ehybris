@@ -36,6 +36,10 @@ tokens{
 
 @lexer::header {
  package output;  
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 }
  
 @parser::header {
@@ -208,6 +212,18 @@ private boolean isHeader(){
 private Token getToken(int num) {
     return tokens.get(num);
 }
+
+    private String removeSeparators(final String text) {
+        final Pattern p = Pattern.compile("([ \t]*)\\\\([ \t]*)(\r?\n|\r)([ \t]*)");
+        final Matcher m = p.matcher(text);
+        final StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(2).isEmpty() && m.group(4).isEmpty();
+            m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
 }
 
 parse
@@ -236,10 +252,10 @@ headerModifier
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? fields 
-    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS fields));
+   	: Identifier? field+
+    	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
     	
-fields	:(QuotedField | Field)+ (NextRow! {newline();} fields)?;
+field	:QuotedField | Field ;
 
 //handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
 //attribute	: (specialAttribute | normalAttribute)?
@@ -388,13 +404,15 @@ fragment AttributeModifier
 	:Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
+fragment Separator	:'\\' Ws* Lb;
+
 //AttributeModifierAssignment
 //	:Ws* AttributeModifier Ws* Equals Ws* ~('\r' | '\n' | ';' | '[' | ']')* Comma Ws* AttributeModifier;	
 Macrodef
 	:'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
 ValueAssignment
-	:{isMacroAssignment()}?		=> '=' ~('\r' | '\n')*		{setText(getText().substring(1, getText().length()).trim());}
+	:{isMacroAssignment()}?		=> '=' (~('\r' | '\n') | Separator)*		{String text = removeSeparators(getText()); setText(text.substring(1, text.length()).trim());}
 	|{isArgumentModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
 	|;
 
@@ -468,6 +486,9 @@ fragment AttributeModifierval
 	)|;
 */
 //fragment Xxx :~('\r' | '\n' | ';' | '[' | ']');
+// \\ next line
+NextRow	:(options{greedy = true;}:'\\' '\\' Ws* Lb) {skip();} ;
+
 UserRights
 	:'$START_USERRIGHTS' .* '$END_USERRIGHTS' {$channel=HIDDEN;};
 	
@@ -501,7 +522,7 @@ QuotedField
 		
 		
 	}
-	:{isHeader() == false}?=> ';' Ws* '"' (Char | '"' '"' | ';')*  '"' |;
+	:{isHeader() == false}?=> ';' Ws* '"' (~'"' | '"' '"')*  '"' |;
 
 Field 	
 	@after { 
@@ -526,5 +547,5 @@ Field
  Ws	:(' ' | '\t') {$channel=HIDDEN;};
   Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
 Char	: ~('\r' | '\n' | '"' | ';' ) ;
-// \\ next line
-NextRow	:'\\\\' Ws* Lb?;
+
+//NextRow	:'\\\\' Ws* Lb{$channel=HIDDEN;};

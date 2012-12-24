@@ -1,0 +1,2 @@
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz;Anja Hertz;K2006-C0005;
