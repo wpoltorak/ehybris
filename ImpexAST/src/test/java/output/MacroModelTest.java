@@ -24,21 +24,41 @@ public class MacroModelTest {
         parser.impex().getTree();
     }
 
+    /**
+     * Test if separator & surrounding whitespace characters are correctly removed from macro value.
+     * <ul>
+     * Algorithm should work as follows:
+     * <li>Separator and line break characters are ignored</li>
+     * <li>Any whitespace characters after separator and before line break are ignored</li>
+     * <li>Any whitespace characters before separator and after line break are converted into single space character</li>
+     * <ul>
+     * 
+     * @throws Exception
+     */
     @Test
     public void macroWithSeparator() throws Exception {
         init("/macro/macro-with-separator.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(7, macros.size());
+        assertEquals(8, macros.size());
 
         assertSingleEntry(macros.get("$macro1"), 2, "Macro with separator+more");
         assertSingleEntry(macros.get("$macro2"), 6, "Macro with separator");
         assertSingleEntry(macros.get("$macro3"), 8, "Macro withseparator");
-        assertSingleEntry(macros.get("$macro4"), 10, "Macro with separator");
-        assertSingleEntry(macros.get("$macro5"), 21, "Macro withseparator");
-        assertSingleEntry(macros.get("$macro6"), 32, "Macro with separator");
-        assertSingleEntry(macros.get("$macro7"), 34, "Macro with separator");
+        assertSingleEntry(macros.get("$macro4"), 10, "Macro withseparator");
+        assertSingleEntry(macros.get("$macro5"), 17, "Macro withseparator");
+        assertSingleEntry(macros.get("$macro6"), 23, "Macro with separator");
+        assertSingleEntry(macros.get("$macro7"), 29, "Macro withseparator");
+        assertSingleEntry(macros.get("$macro8"), 31, "Macro with separator");
+    }
 
+    @Test
+    public void macroWithQuotedValue() throws Exception {
+        init("/macro/macro-with-quoted-value.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        assertEquals(1, macros.size());
+        assertSingleEntry(macros.get("$macro"), 1, "\"  This is a macro and much more  \"");
     }
 
     @Test
@@ -46,10 +66,12 @@ public class MacroModelTest {
         init("/macro/macro-with-keyword.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(2, macros.size());
+        assertEquals(3, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro with default alias");
         assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=xxx unique another");
+        assertSingleEntry(macros.get("$onemore"), 6, "This macro is with false \\ separator");
+
     }
 
     @Test

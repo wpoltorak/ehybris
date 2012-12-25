@@ -218,11 +218,15 @@ private Token getToken(int num) {
         final Matcher m = p.matcher(text);
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {
-            final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(2).isEmpty() && m.group(4).isEmpty();
+            final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(4).isEmpty();
             m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
         }
         m.appendTail(sb);
         return sb.toString();
+    }
+    
+    private String removeLineBreaks(final String text){
+        return text.replaceAll("(\r?\n|\r)", "");
     }
 }
 
@@ -515,7 +519,7 @@ Comment
 	
 QuotedField 	
 	@after { 
-		String text = getText();
+		String text = removeLineBreaks(getText());
 		text = text.substring(1, text.length()).trim();  //remove leading semicolon and trim to remove any spaces
 		text = text.substring(1, text.length() - 1).trim();      // remove surrounding doublequotes and again trim to remove any spaces
 		setText(text);
@@ -525,10 +529,11 @@ QuotedField
 	:{isHeader() == false}?=> ';' Ws* '"' (~'"' | '"' '"')*  '"' |;
 
 Field 	
-	@after { 
-	    setText(getText().substring(1, getText().length()).trim()); //remove leading semicolon and trim to remove any spaces
+	@after {
+	    String text = removeSeparators(getText()); 
+	    setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
 	}
-	:{isHeader() == false}?=> ';' Char* |;
+	:{isHeader() == false}?=> (';' (Char| Separator)*) |;
 
 //Block
 //CURLY_BLOCK_SCARF

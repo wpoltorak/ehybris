@@ -12,7 +12,7 @@ import org.antlr.runtime.tree.Tree;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-public class ImpexTreeModelTest {
+public class HeaderModelTest {
 
     /**
      * I check if empty attribute exists in a tree

@@ -10,11 +10,7 @@ separator
 $macro4=Macro with\
 \
 \
-\
-\
 \	
-\
-\
 \
 separator
 
@@ -22,15 +18,16 @@ $macro5=Macro with\
 \
 \
 \
+separator
+
+$macro6=Macro with\
 \
-\
-\
-\
+	\
 \
 separator
 
-$macro6=Macro with\		
+$macro7=Macro with\		
 separator
-$macro7=Macro with\
+$macro8=Macro with\
 		separator
 

@@ -5,12 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
-import java.util.Map;
 
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 
 public class TreeModelTest {
 
@@ -23,86 +21,6 @@ public class TreeModelTest {
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         parser = new ImpexParser(tokens);
         parser.impex().getTree();
-    }
-
-    @Test
-    public void macroWithKeyword() throws Exception {
-        init("/macro/macro-with-keyword.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(2, macros.size());
-
-        assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro with default alias");
-        assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=xxx unique another");
-    }
-
-    @Test
-    public void macroWithComment() throws Exception {
-        init("/macro/macro-with-comment.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(5, macros.size());
-
-        assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=#xxx");
-        assertSingleEntry(macros.get("$_onemore_10"), 6, "sss!@#$%^&*()");
-        assertSingleEntry(macros.get("$last"), 10, "#comment");
-
-    }
-
-    @Test
-    public void macroWithWhitespace() throws Exception {
-        init("/macro/macro-with-whitespace.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(4, macros.size());
-
-        assertSingleEntry(macros.get("$macro"), 2, "");
-        assertSingleEntry(macros.get("$macro1"), 4, "This is a 	macro");
-        assertSingleEntry(macros.get("$macro2"), 6, "\\t \\r\\n \\\\ntest \\r\\t");
-        assertSingleEntry(macros.get("$macro3"), 7, "");
-    }
-
-    @Test
-    public void macroWithMultipleDefinitions() throws Exception {
-        init("/macro/macro-duplicate.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(2, macros.size());
-
-        assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=xxx");
-
-        assertEntries(macros.get("$macro_def"), new int[] { 2, 5, 6 }, new String[] { "This is a macro $macro_def=$macro_def", "sss",
-                "$macro_def$macro_def" });
-    }
-
-    @Test
-    public void macroInsideBlock() throws Exception {
-        init("/macro/macro-inside-block.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(2, macros.size());
-
-        assertSingleEntry(macros.get("$macro_def"), 3, "This is a macro");
-        assertEntries(macros.get("$macro_def1"), new int[] { 6, 7 }, new String[] { "This is a macro1", "This is a macro2" });
-    }
-
-    @Test
-    public void macroFirstInBlock() throws Exception {
-        init("/macro/macro-first-in-block.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(1, macros.size());
-
-        assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro");
-    }
-
-    @Test
-    public void macroLastInBlock() throws Exception {
-        init("/macro/macro-last-in-block.impex");
-
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
-        assertEquals(1, macros.size());
-        assertEntries(macros.get("$macro_def"), new int[] { 6, 10 }, new String[] { "This is a macro", "This is a $macro_def" });
     }
 
     /**

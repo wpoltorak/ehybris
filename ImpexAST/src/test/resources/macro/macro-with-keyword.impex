@@ -3,4 +3,4 @@ $macro_def=This is a macro with default alias
 
 $another=true $and_one_more=xxx unique another
 
-	
+$onemore=This macro is with false \ separator	
