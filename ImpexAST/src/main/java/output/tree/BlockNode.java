@@ -19,6 +19,7 @@ public class BlockNode implements IImpexNode {
         for (final IImpexNode record : records) {
             record.evaluate(context);
         }
+        //        context.
     }
 
     public void setHeader(final IImpexNode header) {

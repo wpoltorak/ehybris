@@ -2,27 +2,13 @@ package output;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
 
-import org.antlr.runtime.CommonTokenStream;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-public class MacroModelTest {
-
-    private ImpexParser parser;
-
-    private void init(final String name) throws Exception {
-        final File file = new File(getClass().getResource(name).getFile());
-        final String impex = FileUtils.readFileToString(file);
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        parser = new ImpexParser(tokens);
-        parser.impex().getTree();
-    }
+public class MacroModelTest extends ModelTest {
 
     /**
      * Test if separator & surrounding whitespace characters are correctly removed from macro value.

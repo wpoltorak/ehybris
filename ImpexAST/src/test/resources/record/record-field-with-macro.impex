@@ -1,0 +1,3 @@
+$surname = Hertz
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz;Ann $surname  ;K2006-C0005;

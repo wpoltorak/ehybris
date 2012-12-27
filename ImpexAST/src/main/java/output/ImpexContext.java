@@ -1,6 +1,7 @@
 package output;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,10 +12,23 @@ public class ImpexContext {
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros;
     private final Set<String> documentIDs;
     private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
+    private final List<ImpexError> errors = new ArrayList<ImpexError>();
 
     public ImpexContext(final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros, final Set<String> documentIDs) {
         this.macros = macros;
         this.documentIDs = documentIDs;
+    }
+
+    public boolean hasErrors() {
+        return !errors.isEmpty();
+    }
+
+    public List<ImpexError> getErrors() {
+        return errors;
+    }
+
+    public void addError(final ImpexError error) {
+        errors.add(error);
     }
 
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {

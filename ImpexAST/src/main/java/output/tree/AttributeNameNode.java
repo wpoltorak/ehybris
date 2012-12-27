@@ -41,7 +41,7 @@ public class AttributeNameNode implements IImpexNode {
     }
 
     @Override
-    public void evaluate(ImpexContext context) {
+    public void evaluate(final ImpexContext context) {
         // TODO Auto-generated method stub
 
     }

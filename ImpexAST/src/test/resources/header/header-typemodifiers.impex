@@ -9,17 +9,17 @@ INSERT_UPDATE Usergroup[cacheUnique=true];uid[unique=true];groups(uid)[mode=appe
 INSERT_UPDATE Usergroup[ cacheUnique =true    ];uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;
 
-INSERT_UPDATE Usergroup[ cacheUnique =true   ,batchmode=false ];uid[unique=true];groups(uid)[mode=append]
+INSERT_UPDATE Usergroup[ CacheUnique =true   ,BATCHMODE=false ];uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;
 
 INSERT_UPDATE Usergroup[ processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ,cacheUnique =true  	 ,batchmode=false];uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;
 
-INSERT_UPDATE Usergroup[ cacheUnique =true 	  ,batchmode=false][processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ];uid[unique=true];groups(uid)[mode=append]
+INSERT_UPDATE Usergroup[ CACHEUNIQUE =true 	  ,batchmode=false][processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ];uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;
 
 INSERT_UPDATE Usergroup	 [ batchmode= false][ cacheUnique =true  ]    [processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ]  ;uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;
 
-INSERT_UPDATE Usergroup	[batchmode=false][batchmode=true];uid[unique=true];groups(uid)[mode=append]
+INSERT_UPDATE Usergroup	[batchMode=false][batchmode=true];uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;$customerGroup;

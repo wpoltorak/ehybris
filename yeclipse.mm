@@ -96,7 +96,11 @@
 <node CREATED="1351808132567" ID="ID_1454945020" MODIFIED="1352230919523" TEXT="Alternative Pattern">
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
-<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1352230925944" TEXT="line continuation"/>
+<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1356592141056" TEXT="line continuation">
+<icon BUILTIN="help"/>
+<node CREATED="1356592161083" ID="ID_550461144" MODIFIED="1356592176798" TEXT="inside makro value"/>
+<node CREATED="1356592182749" ID="ID_525888285" MODIFIED="1356592192118" TEXT="inside unquoted fields"/>
+</node>
 <node CREATED="1351808217660" FOLDED="true" ID="ID_1928138048" MODIFIED="1355558458865" TEXT="Header and Attribute Modifier">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1351808049370" ID="ID_606915320" MODIFIED="1351808065253" TEXT="[modifier=value,modifier=value][modifier=value]"/>
@@ -120,7 +124,10 @@
 </node>
 </node>
 <node CREATED="1351889326054" ID="ID_1087186455" MODIFIED="1351889331917" TEXT="Impex:">
-<node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1354453236675" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?"/>
+<node CREATED="1351973433625" ID="ID_1004845289" MODIFIED="1356591948055" TEXT="czy macro moze byc coll-delimiter? czy jest ewaluowane?">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1356591927296" ID="ID_1192297929" MODIFIED="1356591943054" TEXT="tak, moze byc i jest ewaluowane"/>
+</node>
 <node CREATED="1355610884024" ID="ID_866605607" MODIFIED="1355610907677" TEXT="documentID - co z duplikatami? kt&#xf3;ra definicja jest wi&#x105;&#x17c;&#x105;ca? ostatnia?"/>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
 <node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1354457126585" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator">
@@ -150,8 +157,10 @@
 <node CREATED="1354453994748" ID="ID_276032166" MODIFIED="1355773885318" TEXT="jak rekord w &apos; albo &quot; to r&#xf3;wnie&#x17c; ewaluowa&#x107; warto&#x15b;ciowa&#x107; @makra ">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1352237268164" ID="ID_1756743800" MODIFIED="1352291335667" TEXT="\\ nie jest parsowany w og&#xf3;le, s&#x142;u&#x17c;y jako separator linii">
-<icon BUILTIN="idea"/>
+<node CREATED="1352237268164" FOLDED="true" ID="ID_1756743800" MODIFIED="1356592082836" TEXT="\\ nie jest parsowany w og&#xf3;le, s&#x142;u&#x17c;y jako separator linii">
+<icon BUILTIN="help"/>
+<node CREATED="1356591996198" ID="ID_224825063" MODIFIED="1356592045749" TEXT="w polach bez cudzyslowa"/>
+<node CREATED="1356592010540" ID="ID_1603737896" MODIFIED="1356592033129" TEXT="w warto&#x15b;ciach makr"/>
 </node>
 <node CREATED="1354438094848" ID="ID_693180894" MODIFIED="1354457037265" TEXT="Czy kolejno&#x15b;&#x107; definiowania makr ma znaczenie?">
 <icon BUILTIN="button_ok"/>
@@ -167,7 +176,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1355684373963" ID="ID_944566467" MODIFIED="1355773816429" TEXT="blank lines">
+<node CREATED="1355684373963" ID="ID_944566467" MODIFIED="1356592104793" TEXT="blank lines">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1355684396641" ID="ID_349681220" MODIFIED="1355684399497" TEXT=";;;;;;;;;"/>
 <node CREATED="1355773794162" ID="ID_1868712476" MODIFIED="1355773811950" TEXT="nie trzeba specjalnego parsowania, walker zajmie si&#x119; tym przypadkiem i zglosi blad"/>

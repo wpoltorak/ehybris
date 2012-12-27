@@ -1,0 +1,5 @@
+INSERT Usergroup;uid[unique=true];;groups(uid)[mode=append]
+;$regulargroup;ignore value;$customerGroup;
+
+INSERT Usergroup;uid[unique=true];	 ;groups(uid)[mode=append]
+;$regulargroup;ignore value;$customerGroup;

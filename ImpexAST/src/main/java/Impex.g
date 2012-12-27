@@ -242,7 +242,7 @@ block	: header (Lb+ (macro Lb*)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} (Semicolon (attribute | DoubleQuote attribute DoubleQuote)?)*)? 
+	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} 	(Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
 	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
@@ -287,7 +287,8 @@ field	:QuotedField | Field ;
 attributeName 
 	:Macrodef -> ^(ATTRIBUTE_NAME  Macrodef)
 	| SpecialAttribute -> ^(ATTRIBUTE_NAME SpecialAttribute)
-	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?); //^(DOCUMENTID_REF DocumentID)?
+	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?)
+	| ->^(ATTRIBUTE_NAME);  //In case there is an empty attribute
 	
 attribute
 	:attributeName (LParenthesis  (DocumentID | attribute)(Comma (DocumentID | attribute))* RParenthesis )? (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)*
@@ -316,11 +317,11 @@ headerMode
 //	;
 
 
-//if after equals there is no other value except end of file then Lexer treats this as Equals, not as ValueAssignment
+
 macro
 	:Macrodef 
 	(ValueAssignment {registerMacro($Macrodef, $ValueAssignment.text);} 
-	|Equals {registerMacro($Macrodef, "");});
+	|Equals {registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
 
 // Insert		
  		//@init { ((ImpexANTLRStringStream)input).caseInsensitive(); }
@@ -513,7 +514,6 @@ Classname
 Comment	
 	@after { setText(getText().substring(1, getText().length())); }
 	:'#' ~('\r' | '\n')* Lb? {$channel=HIDDEN;};
-
 //IgnoredField
 //	:';' Ignore;
 	
@@ -550,7 +550,5 @@ Field
 //    ;	
 
  Ws	:(' ' | '\t') {$channel=HIDDEN;};
-  Lb	:('\r'? '\n' | '\r' );//{$channel=HIDDEN;};
+  Lb	:('\r'? '\n' | '\r' );
 Char	: ~('\r' | '\n' | '"' | ';' ) ;
-
-//NextRow	:'\\\\' Ws* Lb{$channel=HIDDEN;};
