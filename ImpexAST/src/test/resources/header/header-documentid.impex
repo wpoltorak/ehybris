@@ -1,0 +1,5 @@
+INSERT Customer; uid[unique=true];;defaultPaymentAddress( &addrID ); 
+; andi; ; addr1 ; 
+ 
+INSERT Address; &addrID ; owner( Customer.uid );
+; addr1 ; andi ; 
