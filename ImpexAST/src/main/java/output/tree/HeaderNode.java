@@ -16,9 +16,12 @@ public class HeaderNode implements IImpexNode {
     public HeaderNode() {
     }
 
-    @Override
     public void evaluate(final ImpexContext context) {
-        //TODO check if type exists 
+        //        try {
+        //            Class.forName(type);
+        //        } catch (final ClassNotFoundException e) {
+        //            context.addError(ImpexError.UnknownType);
+        //        }
         for (final IImpexNode modifier : modifiers) {
             modifier.evaluate(context);
         }

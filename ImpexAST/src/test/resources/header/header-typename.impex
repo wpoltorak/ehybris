@@ -8,9 +8,7 @@ INSERT_UPDATE Insert;uid
 ;admin
 INSERT_UPDATE insert;uid
 ;admin
-#INSERT_UPDATE cacheUnique;uid
-#;admin
-#INSERT_UPDATE mode;uid
-#;admin
-
-
+INSERT_UPDATE cacheUnique;uid
+;admin
+INSERT_UPDATE mode;uid
+;admin

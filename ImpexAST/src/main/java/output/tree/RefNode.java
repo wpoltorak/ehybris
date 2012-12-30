@@ -12,8 +12,7 @@ public class RefNode implements IImpexNode {
         this.type = type;
     }
 
-    @Override
-    public void evaluate(ImpexContext context) {
+    public void evaluate(final ImpexContext context) {
         // TODO Auto-generated method stub
 
     }

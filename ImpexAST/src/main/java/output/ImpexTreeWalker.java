@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g 2012-12-16 09:52:06
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g 2012-12-30 20:59:50
 
 package output;
 
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexTreeWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "AttributeModifier", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "HeaderMode", "HeaderModifier", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NextRow", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
@@ -38,74 +38,71 @@ public class ImpexTreeWalker extends TreeParser {
     public static final int ATTRIBUTE_NAME=6;
     public static final int Alias=7;
     public static final int AllowNull=8;
-    public static final int AttributeModifier=9;
-    public static final int BLOCK=10;
-    public static final int BLOCKS=11;
-    public static final int BatchMode=12;
-    public static final int BeanShell=13;
-    public static final int Bool=14;
-    public static final int CacheUnique=15;
-    public static final int CellDecorator=16;
-    public static final int Char=17;
-    public static final int Classname=18;
-    public static final int CollectionDelimiter=19;
-    public static final int Comma=20;
-    public static final int Comment=21;
-    public static final int DOCUMENTID=22;
-    public static final int DOCUMENTID_REF=23;
-    public static final int Dateformat=24;
-    public static final int Default=25;
-    public static final int DocumentID=26;
-    public static final int Dot=27;
-    public static final int DoubleQuote=28;
-    public static final int Equals=29;
-    public static final int FIELDS=30;
-    public static final int Field=31;
-    public static final int ForceWrite=32;
-    public static final int HEADER=33;
-    public static final int HeaderMode=34;
-    public static final int HeaderModifier=35;
-    public static final int IMPEX=36;
-    public static final int ITEM_EXPRESSION=37;
-    public static final int Identifier=38;
-    public static final int IgnoreKeyCase=39;
-    public static final int IgnoreNull=40;
-    public static final int Insert=41;
-    public static final int InsertUpdate=42;
-    public static final int KeyToValueDelimiter=43;
-    public static final int LBracket=44;
-    public static final int LParenthesis=45;
-    public static final int Lang=46;
-    public static final int Lb=47;
-    public static final int MACRO_REF=48;
-    public static final int MODIFIER=49;
-    public static final int MODIFIERS=50;
-    public static final int Macrodef=51;
-    public static final int MapDelimiter=52;
-    public static final int Mode=53;
-    public static final int NextRow=54;
-    public static final int NumberFormat=55;
-    public static final int Or=56;
-    public static final int PathDelimiter=57;
-    public static final int Pos=58;
-    public static final int Processor=59;
-    public static final int QuotedField=60;
-    public static final int RBracket=61;
-    public static final int RECORD=62;
-    public static final int RECORDS=63;
-    public static final int RParenthesis=64;
-    public static final int Remove=65;
-    public static final int SUBTYPE=66;
-    public static final int Semicolon=67;
-    public static final int SpecialAttribute=68;
-    public static final int TYPE=69;
-    public static final int Translator=70;
-    public static final int Unique=71;
-    public static final int Update=72;
-    public static final int UserRights=73;
-    public static final int ValueAssignment=74;
-    public static final int Virtual=75;
-    public static final int Ws=76;
+    public static final int BLOCK=9;
+    public static final int BLOCKS=10;
+    public static final int BatchMode=11;
+    public static final int BeanShell=12;
+    public static final int Bool=13;
+    public static final int CacheUnique=14;
+    public static final int CellDecorator=15;
+    public static final int Char=16;
+    public static final int Classname=17;
+    public static final int CollectionDelimiter=18;
+    public static final int Comma=19;
+    public static final int Comment=20;
+    public static final int DOCUMENTID=21;
+    public static final int DOCUMENTID_REF=22;
+    public static final int Dateformat=23;
+    public static final int Default=24;
+    public static final int DocumentID=25;
+    public static final int Dot=26;
+    public static final int DoubleQuote=27;
+    public static final int Equals=28;
+    public static final int FIELDS=29;
+    public static final int Field=30;
+    public static final int ForceWrite=31;
+    public static final int HEADER=32;
+    public static final int IMPEX=33;
+    public static final int ITEM_EXPRESSION=34;
+    public static final int Identifier=35;
+    public static final int IgnoreKeyCase=36;
+    public static final int IgnoreNull=37;
+    public static final int Insert=38;
+    public static final int InsertUpdate=39;
+    public static final int KeyToValueDelimiter=40;
+    public static final int LBracket=41;
+    public static final int LParenthesis=42;
+    public static final int Lang=43;
+    public static final int Lb=44;
+    public static final int MACRO_REF=45;
+    public static final int MODIFIER=46;
+    public static final int MODIFIERS=47;
+    public static final int Macrodef=48;
+    public static final int MapDelimiter=49;
+    public static final int Mode=50;
+    public static final int NumberFormat=51;
+    public static final int Or=52;
+    public static final int PathDelimiter=53;
+    public static final int Pos=54;
+    public static final int Processor=55;
+    public static final int QuotedField=56;
+    public static final int RBracket=57;
+    public static final int RECORD=58;
+    public static final int RECORDS=59;
+    public static final int RParenthesis=60;
+    public static final int Remove=61;
+    public static final int SUBTYPE=62;
+    public static final int Semicolon=63;
+    public static final int Separator=64;
+    public static final int SpecialAttribute=65;
+    public static final int TYPE=66;
+    public static final int Translator=67;
+    public static final int Unique=68;
+    public static final int Update=69;
+    public static final int UserRights=70;
+    public static final int ValueAssignment=71;
+    public static final int Virtual=72;
+    public static final int Ws=73;
 
     // delegates
     public TreeParser[] getDelegates() {
@@ -345,14 +342,15 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "header"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:48:1: header returns [IImpexNode node] : ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:48:1: header returns [IImpexNode node] : ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
     public final IImpexNode header() throws RecognitionException {
         IImpexNode node = null;
 
 
-        CommonTree Identifier6=null;
         CommonTree DocumentID8=null;
-        int headerMode5 =0;
+        Tree headerMode5 =null;
+
+        String headerTypeName6 =null;
 
         IImpexNode headerModifierAssignment7 =null;
 
@@ -364,8 +362,8 @@ public class ImpexTreeWalker extends TreeParser {
         		node = hn;
         	
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:2: ( ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:3: ^( HEADER ( headerMode ) ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:2: ( ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:53:3: ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
             {
             match(input,HEADER,FOLLOW_HEADER_in_header138); 
 
@@ -379,7 +377,7 @@ public class ImpexTreeWalker extends TreeParser {
             state._fsp--;
 
 
-            hn.setMode(headerMode5);
+            hn.setMode(headerMode5.getType());
 
             }
 
@@ -387,9 +385,13 @@ public class ImpexTreeWalker extends TreeParser {
             match(input,TYPE,FOLLOW_TYPE_in_header148); 
 
             match(input, Token.DOWN, null); 
-            Identifier6=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_header150); 
+            pushFollow(FOLLOW_headerTypeName_in_header150);
+            headerTypeName6=headerTypeName();
 
-            hn.setType((Identifier6!=null?Identifier6.getText():null));
+            state._fsp--;
+
+
+            hn.setType(headerTypeName6);
 
             match(input, Token.UP, null); 
 
@@ -529,7 +531,7 @@ public class ImpexTreeWalker extends TreeParser {
         IImpexNode node = null;
 
 
-        int headerModifier10 =0;
+        Tree headerModifier10 =null;
 
         String boolOrClassname11 =null;
 
@@ -556,7 +558,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input, Token.UP, null); 
 
 
-            node = new ModifierNode(headerModifier10, boolOrClassname11);
+            node = new ModifierNode(headerModifier10.getType(), boolOrClassname11);
 
             }
 
@@ -619,9 +621,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerModifier"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:66:1: headerModifier returns [int modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
-    public final int headerModifier() throws RecognitionException {
-        int modifier = 0;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:66:1: headerModifier returns [Tree modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
+    public final Tree headerModifier() throws RecognitionException {
+        Tree modifier = null;
 
 
         CommonTree v=null;
@@ -642,7 +644,7 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            modifier = (v!=null?v.getType():0);
+            modifier = v;
 
             }
 
@@ -1124,7 +1126,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
         CommonTree ValueAssignment21=null;
-        int attributeModifier20 =0;
+        Tree attributeModifier20 =null;
 
 
         try {
@@ -1145,7 +1147,7 @@ public class ImpexTreeWalker extends TreeParser {
             match(input, Token.UP, null); 
 
 
-            node = new ModifierNode(attributeModifier20, (ValueAssignment21!=null?ValueAssignment21.getText():null));
+            node = new ModifierNode(attributeModifier20.getType(), (ValueAssignment21!=null?ValueAssignment21.getText():null));
 
             }
 
@@ -1165,9 +1167,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attributeModifier"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:110:1: attributeModifier returns [int modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
-    public final int attributeModifier() throws RecognitionException {
-        int modifier = 0;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:110:1: attributeModifier returns [Tree modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
+    public final Tree attributeModifier() throws RecognitionException {
+        Tree modifier = null;
 
 
         CommonTree v=null;
@@ -1178,7 +1180,7 @@ public class ImpexTreeWalker extends TreeParser {
             {
             v=(CommonTree)input.LT(1);
 
-            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= Mode)||input.LA(1)==NumberFormat||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
+            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= NumberFormat)||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
                 input.consume();
                 state.errorRecovery=false;
             }
@@ -1188,7 +1190,7 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            modifier = (v!=null?v.getType():0);
+            modifier = v;
 
             }
 
@@ -1208,9 +1210,9 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerMode"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:114:1: headerMode returns [int mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
-    public final int headerMode() throws RecognitionException {
-        int mode = 0;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:114:1: headerMode returns [Tree mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
+    public final Tree headerMode() throws RecognitionException {
+        Tree mode = null;
 
 
         CommonTree v=null;
@@ -1231,7 +1233,7 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            mode = (v!=null?v.getType():0);
+            mode = v;
 
             }
 
@@ -1248,6 +1250,141 @@ public class ImpexTreeWalker extends TreeParser {
     }
     // $ANTLR end "headerMode"
 
+
+
+    // $ANTLR start "headerTypeName"
+    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:117:1: headerTypeName returns [String text] : ( Identifier | headerMode | attributeModifier | headerModifier );
+    public final String headerTypeName() throws RecognitionException {
+        String text = null;
+
+
+        CommonTree Identifier22=null;
+        Tree headerMode23 =null;
+
+        Tree attributeModifier24 =null;
+
+        Tree headerModifier25 =null;
+
+
+        try {
+            // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:118:2: ( Identifier | headerMode | attributeModifier | headerModifier )
+            int alt15=4;
+            switch ( input.LA(1) ) {
+            case Identifier:
+                {
+                alt15=1;
+                }
+                break;
+            case Insert:
+            case InsertUpdate:
+            case Remove:
+            case Update:
+                {
+                alt15=2;
+                }
+                break;
+            case Alias:
+            case AllowNull:
+            case CellDecorator:
+            case CollectionDelimiter:
+            case Dateformat:
+            case Default:
+            case ForceWrite:
+            case IgnoreKeyCase:
+            case IgnoreNull:
+            case KeyToValueDelimiter:
+            case Lang:
+            case MapDelimiter:
+            case Mode:
+            case NumberFormat:
+            case PathDelimiter:
+            case Pos:
+            case Translator:
+            case Unique:
+            case Virtual:
+                {
+                alt15=3;
+                }
+                break;
+            case BatchMode:
+            case CacheUnique:
+            case Processor:
+                {
+                alt15=4;
+                }
+                break;
+            default:
+                NoViableAltException nvae =
+                    new NoViableAltException("", 15, 0, input);
+
+                throw nvae;
+
+            }
+
+            switch (alt15) {
+                case 1 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:118:4: Identifier
+                    {
+                    Identifier22=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName643); 
+
+                    text = (Identifier22!=null?Identifier22.getText():null);
+
+                    }
+                    break;
+                case 2 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:119:3: headerMode
+                    {
+                    pushFollow(FOLLOW_headerMode_in_headerTypeName649);
+                    headerMode23=headerMode();
+
+                    state._fsp--;
+
+
+                    text = headerMode23.getText();
+
+                    }
+                    break;
+                case 3 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:120:3: attributeModifier
+                    {
+                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName655);
+                    attributeModifier24=attributeModifier();
+
+                    state._fsp--;
+
+
+                    text = attributeModifier24.getText();
+
+                    }
+                    break;
+                case 4 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/ImpexTreeWalker.g:121:3: headerModifier
+                    {
+                    pushFollow(FOLLOW_headerModifier_in_headerTypeName661);
+                    headerModifier25=headerModifier();
+
+                    state._fsp--;
+
+
+                    text = headerModifier25.getText();
+
+                    }
+                    break;
+
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return text;
+    }
+    // $ANTLR end "headerTypeName"
+
     // Delegated rules
 
 
@@ -1256,23 +1393,23 @@ public class ImpexTreeWalker extends TreeParser {
     public static final BitSet FOLLOW_impex_in_walk45 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_IMPEX_in_impex65 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_BLOCKS_in_impex69 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_block_in_impex72 = new BitSet(new long[]{0x0000000000000408L});
+    public static final BitSet FOLLOW_block_in_impex72 = new BitSet(new long[]{0x0000000000000208L});
     public static final BitSet FOLLOW_BLOCK_in_block99 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_header_in_block102 = new BitSet(new long[]{0x8000000000000000L});
+    public static final BitSet FOLLOW_header_in_block102 = new BitSet(new long[]{0x0800000000000000L});
     public static final BitSet FOLLOW_RECORDS_in_block109 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_record_in_block112 = new BitSet(new long[]{0x4000000000000008L});
+    public static final BitSet FOLLOW_record_in_block112 = new BitSet(new long[]{0x0400000000000008L});
     public static final BitSet FOLLOW_HEADER_in_header138 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerMode_in_header141 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_headerMode_in_header141 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
     public static final BitSet FOLLOW_TYPE_in_header148 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_Identifier_in_header150 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_headerTypeName_in_header150 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_MODIFIERS_in_header158 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header161 = new BitSet(new long[]{0x0002000000000008L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header161 = new BitSet(new long[]{0x0000400000000008L});
     public static final BitSet FOLLOW_DOCUMENTID_in_header171 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_DocumentID_in_header173 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_ATTRIBUTES_in_header182 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_attribute_in_header185 = new BitSet(new long[]{0x0000000000000018L});
     public static final BitSet FOLLOW_MODIFIER_in_headerModifierAssignment209 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment211 = new BitSet(new long[]{0x0000000000044000L});
+    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment211 = new BitSet(new long[]{0x0000000000022000L});
     public static final BitSet FOLLOW_boolOrClassname_in_headerModifierAssignment213 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_set_in_boolOrClassname229 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_headerModifier251 = new BitSet(new long[]{0x0000000000000002L});
@@ -1280,25 +1417,29 @@ public class ImpexTreeWalker extends TreeParser {
     public static final BitSet FOLLOW_SUBTYPE_in_record294 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_Identifier_in_record297 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_FIELDS_in_record310 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_field_in_record313 = new BitSet(new long[]{0x1000000080000008L});
+    public static final BitSet FOLLOW_field_in_record313 = new BitSet(new long[]{0x0100000040000008L});
     public static final BitSet FOLLOW_set_in_field339 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ATTRIBUTE_NAME_in_attributeName370 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_Macrodef_in_attributeName376 = new BitSet(new long[]{0x0000004000000008L,0x0000000000000010L});
-    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName385 = new BitSet(new long[]{0x0000004000000008L});
+    public static final BitSet FOLLOW_Macrodef_in_attributeName376 = new BitSet(new long[]{0x0000000800000008L,0x0000000000000002L});
+    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName385 = new BitSet(new long[]{0x0000000800000008L});
     public static final BitSet FOLLOW_Identifier_in_attributeName394 = new BitSet(new long[]{0x0000000000000048L});
     public static final BitSet FOLLOW_attributeName_in_attributeName403 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_ATTRIBUTE_in_attribute431 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeName_in_attribute433 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_attributeName_in_attribute433 = new BitSet(new long[]{0x0000000400000000L});
     public static final BitSet FOLLOW_ITEM_EXPRESSION_in_attribute440 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attribute_in_attribute447 = new BitSet(new long[]{0x0000000000800010L});
+    public static final BitSet FOLLOW_attribute_in_attribute447 = new BitSet(new long[]{0x0000000000400010L});
     public static final BitSet FOLLOW_DOCUMENTID_REF_in_attribute457 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute460 = new BitSet(new long[]{0x0000000004000008L});
+    public static final BitSet FOLLOW_DocumentID_in_attribute460 = new BitSet(new long[]{0x0000000002000008L});
     public static final BitSet FOLLOW_MODIFIERS_in_attribute476 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute479 = new BitSet(new long[]{0x0002000000000008L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute479 = new BitSet(new long[]{0x0000400000000008L});
     public static final BitSet FOLLOW_MODIFIER_in_attributeModifierAssignment503 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment505 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
+    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment505 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
     public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment507 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_set_in_attributeModifier525 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_headerMode614 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_headerTypeName643 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerMode_in_headerTypeName649 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName655 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerModifier_in_headerTypeName661 = new BitSet(new long[]{0x0000000000000002L});
 
 }

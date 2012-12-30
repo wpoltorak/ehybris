@@ -1,11 +1,7 @@
 package output;
 
-public class ImpexError {
+public enum ImpexError {
 
-    private final String text;
+    InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode, InvalidLang, InvalidNumberFormat, InvalidDateFormat, UnknownType;
 
-    public ImpexError(final String text) {
-        super();
-        this.text = text;
-    }
 }

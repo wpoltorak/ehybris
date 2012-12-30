@@ -18,9 +18,11 @@ public class AttributeNode implements IImpexNode {
         this.name = name;
     }
 
-    @Override
     public void evaluate(final ImpexContext context) {
 
+        for (final IImpexNode modifier : modifiers) {
+            modifier.evaluate(context);
+        }
     }
 
     public void setName(final IImpexNode name) {

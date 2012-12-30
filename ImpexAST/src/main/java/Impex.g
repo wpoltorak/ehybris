@@ -242,8 +242,8 @@ block	: header (Lb+ (macro Lb*)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  Identifier (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} 	(Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
-	-> ^(HEADER headerMode ^(TYPE Identifier) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
+	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} 	(Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
+	-> ^(HEADER headerMode ^(TYPE headerTypeName) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
 	-> ^(MODIFIER headerModifier boolOrClassname);
@@ -307,6 +307,9 @@ attributeModifier
 
 headerMode
 	:Insert | InsertUpdate | Update | Remove;
+	
+headerTypeName
+	:Identifier | headerMode | attributeModifier | headerModifier;
 //block
 //	: header  (
 //	            options {
@@ -397,19 +400,21 @@ RParenthesis	:')';
 Equals	:'=';
 Or	:'|';
 
-Bool	:'true' | 'false';
+Bool	
+	:'true' | 'false';
 
-fragment HeaderMode	
-	: Insert | InsertUpdate | Update | Remove;
+//fragment HeaderMode	
+//	: Insert | InsertUpdate | Update | Remove;
 
-fragment HeaderModifier	
-	:BatchMode | CacheUnique | Processor;
+//fragment HeaderModifier	
+//	:BatchMode | CacheUnique | Processor;
 
-fragment AttributeModifier 	
-	:Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
+//fragment AttributeModifier 	
+//	:Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
+//	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
-fragment Separator	:'\\' Ws* Lb;
+fragment Separator	
+	:'\\' Ws* Lb;
 
 //AttributeModifierAssignment
 //	:Ws* AttributeModifier Ws* Equals Ws* ~('\r' | '\n' | ';' | '[' | ']')* Comma Ws* AttributeModifier;	
@@ -492,12 +497,11 @@ fragment AttributeModifierval
 */
 //fragment Xxx :~('\r' | '\n' | ';' | '[' | ']');
 // \\ next line
-NextRow	:(options{greedy = true;}:'\\' '\\' Ws* Lb) {skip();} ;
-
 UserRights
 	:'$START_USERRIGHTS' .* '$END_USERRIGHTS' {$channel=HIDDEN;};
 	
-BeanShell	:(('#%' ~('\r' | '\n')* | '"#%' (~('"') | '"' '"')* '"') Lb?) {$channel=HIDDEN;};
+BeanShell	
+	:(('#%' ~('\r' | '\n')* | '"#%' (~('"') | '"' '"')* '"') Lb?) {$channel=HIDDEN;};
 	
 SpecialAttribute
 	:'@' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
@@ -549,6 +553,10 @@ Field
 //        '}'
 //    ;	
 
- Ws	:(' ' | '\t') {$channel=HIDDEN;};
-  Lb	:('\r'? '\n' | '\r' );
-Char	: ~('\r' | '\n' | '"' | ';' ) ;
+ Ws	
+ 	:(' ' | '\t') {$channel=HIDDEN;};
+  Lb	
+  	:('\r'? '\n' | '\r' );
+Char	
+	: ~('\r' | '\n' | '"' | ';' ) ;
+	

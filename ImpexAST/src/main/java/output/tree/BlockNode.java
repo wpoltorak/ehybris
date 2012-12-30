@@ -13,7 +13,6 @@ public class BlockNode implements IImpexNode {
     public BlockNode() {
     }
 
-    @Override
     public void evaluate(final ImpexContext context) {
         header.evaluate(context);
         for (final IImpexNode record : records) {

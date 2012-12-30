@@ -50,21 +50,21 @@ header	returns [IImpexNode node]
 		HeaderNode hn = new HeaderNode();
 		node = hn;
 	}
-	:^(HEADER (headerMode {hn.setMode($headerMode.mode);})
-	^(TYPE Identifier {hn.setType($Identifier.text);}) 
+	:^(HEADER (headerMode {hn.setMode($headerMode.mode.getType());})
+	^(TYPE headerTypeName {hn.setType($headerTypeName.text);}) 
 	^(MODIFIERS (headerModifierAssignment {hn.addModifier($headerModifierAssignment.node);})*) 
 	^(DOCUMENTID(DocumentID{hn.setDocumentID($DocumentID.text);})?) 
 	^(ATTRIBUTES (attribute {hn.addAttribute($attribute.node);})*)) ;
 
 
 headerModifierAssignment	 returns [IImpexNode node]
-		: ^(MODIFIER headerModifier boolOrClassname){node = new ModifierNode($headerModifier.modifier, $boolOrClassname.text);};
+		: ^(MODIFIER headerModifier boolOrClassname){node = new ModifierNode($headerModifier.modifier.getType(), $boolOrClassname.text);};
 
 boolOrClassname returns [String text]
 	:v=(Bool | Classname){text = $v.text;};
 	
-headerModifier returns [int modifier]
-	:v=(BatchMode | CacheUnique | Processor) {modifier = $v.type;};
+headerModifier returns [Tree modifier]
+	:v=(BatchMode | CacheUnique | Processor) {modifier = $v;};
 
 record	 returns [IImpexNode node]
 	@init{
@@ -105,12 +105,18 @@ attribute	 returns [IImpexNode node]
 	);
 	
 attributeModifierAssignment	 returns [IImpexNode node]
-	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier, $ValueAssignment.text);};
+	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier.getType(), $ValueAssignment.text);};
 	
-attributeModifier returns [int modifier]
+attributeModifier returns [Tree  modifier]
 	: v=(Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
-	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual){modifier = $v.type;};
+	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual){modifier = $v;};
 
-headerMode returns [int mode]
-	:v=(Insert | InsertUpdate | Update | Remove){mode = $v.type;};
+headerMode returns [Tree mode]
+	:v=(Insert | InsertUpdate | Update | Remove){mode = $v;};
+	
+headerTypeName returns [String text]
+	: Identifier {text = $Identifier.text;}
+	|headerMode {text = $headerMode.mode.getText();}
+	|attributeModifier {text = $attributeModifier.modifier.getText();}
+	|headerModifier {text = $headerModifier.modifier.getText();};	
 		

@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-26 09:13:40
+// $ANTLR 3.4 /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g 2012-12-30 20:02:02
 
  package output;
   
@@ -25,7 +25,7 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "AttributeModifier", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "HeaderMode", "HeaderModifier", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NextRow", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
@@ -34,75 +34,71 @@ public class ImpexParser extends Parser {
     public static final int ATTRIBUTE_NAME=6;
     public static final int Alias=7;
     public static final int AllowNull=8;
-    public static final int AttributeModifier=9;
-    public static final int BLOCK=10;
-    public static final int BLOCKS=11;
-    public static final int BatchMode=12;
-    public static final int BeanShell=13;
-    public static final int Bool=14;
-    public static final int CacheUnique=15;
-    public static final int CellDecorator=16;
-    public static final int Char=17;
-    public static final int Classname=18;
-    public static final int CollectionDelimiter=19;
-    public static final int Comma=20;
-    public static final int Comment=21;
-    public static final int DOCUMENTID=22;
-    public static final int DOCUMENTID_REF=23;
-    public static final int Dateformat=24;
-    public static final int Default=25;
-    public static final int DocumentID=26;
-    public static final int Dot=27;
-    public static final int DoubleQuote=28;
-    public static final int Equals=29;
-    public static final int FIELDS=30;
-    public static final int Field=31;
-    public static final int ForceWrite=32;
-    public static final int HEADER=33;
-    public static final int HeaderMode=34;
-    public static final int HeaderModifier=35;
-    public static final int IMPEX=36;
-    public static final int ITEM_EXPRESSION=37;
-    public static final int Identifier=38;
-    public static final int IgnoreKeyCase=39;
-    public static final int IgnoreNull=40;
-    public static final int Insert=41;
-    public static final int InsertUpdate=42;
-    public static final int KeyToValueDelimiter=43;
-    public static final int LBracket=44;
-    public static final int LParenthesis=45;
-    public static final int Lang=46;
-    public static final int Lb=47;
-    public static final int MACRO_REF=48;
-    public static final int MODIFIER=49;
-    public static final int MODIFIERS=50;
-    public static final int Macrodef=51;
-    public static final int MapDelimiter=52;
-    public static final int Mode=53;
-    public static final int NextRow=54;
-    public static final int NumberFormat=55;
-    public static final int Or=56;
-    public static final int PathDelimiter=57;
-    public static final int Pos=58;
-    public static final int Processor=59;
-    public static final int QuotedField=60;
-    public static final int RBracket=61;
-    public static final int RECORD=62;
-    public static final int RECORDS=63;
-    public static final int RParenthesis=64;
-    public static final int Remove=65;
-    public static final int SUBTYPE=66;
-    public static final int Semicolon=67;
-    public static final int Separator=68;
-    public static final int SpecialAttribute=69;
-    public static final int TYPE=70;
-    public static final int Translator=71;
-    public static final int Unique=72;
-    public static final int Update=73;
-    public static final int UserRights=74;
-    public static final int ValueAssignment=75;
-    public static final int Virtual=76;
-    public static final int Ws=77;
+    public static final int BLOCK=9;
+    public static final int BLOCKS=10;
+    public static final int BatchMode=11;
+    public static final int BeanShell=12;
+    public static final int Bool=13;
+    public static final int CacheUnique=14;
+    public static final int CellDecorator=15;
+    public static final int Char=16;
+    public static final int Classname=17;
+    public static final int CollectionDelimiter=18;
+    public static final int Comma=19;
+    public static final int Comment=20;
+    public static final int DOCUMENTID=21;
+    public static final int DOCUMENTID_REF=22;
+    public static final int Dateformat=23;
+    public static final int Default=24;
+    public static final int DocumentID=25;
+    public static final int Dot=26;
+    public static final int DoubleQuote=27;
+    public static final int Equals=28;
+    public static final int FIELDS=29;
+    public static final int Field=30;
+    public static final int ForceWrite=31;
+    public static final int HEADER=32;
+    public static final int IMPEX=33;
+    public static final int ITEM_EXPRESSION=34;
+    public static final int Identifier=35;
+    public static final int IgnoreKeyCase=36;
+    public static final int IgnoreNull=37;
+    public static final int Insert=38;
+    public static final int InsertUpdate=39;
+    public static final int KeyToValueDelimiter=40;
+    public static final int LBracket=41;
+    public static final int LParenthesis=42;
+    public static final int Lang=43;
+    public static final int Lb=44;
+    public static final int MACRO_REF=45;
+    public static final int MODIFIER=46;
+    public static final int MODIFIERS=47;
+    public static final int Macrodef=48;
+    public static final int MapDelimiter=49;
+    public static final int Mode=50;
+    public static final int NumberFormat=51;
+    public static final int Or=52;
+    public static final int PathDelimiter=53;
+    public static final int Pos=54;
+    public static final int Processor=55;
+    public static final int QuotedField=56;
+    public static final int RBracket=57;
+    public static final int RECORD=58;
+    public static final int RECORDS=59;
+    public static final int RParenthesis=60;
+    public static final int Remove=61;
+    public static final int SUBTYPE=62;
+    public static final int Semicolon=63;
+    public static final int Separator=64;
+    public static final int SpecialAttribute=65;
+    public static final int TYPE=66;
+    public static final int Translator=67;
+    public static final int Unique=68;
+    public static final int Update=69;
+    public static final int UserRights=70;
+    public static final int ValueAssignment=71;
+    public static final int Virtual=72;
+    public static final int Ws=73;
 
     // delegates
     public Parser[] getDelegates() {
@@ -619,7 +615,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: record, header
+            // elements: header, record
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -698,7 +694,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "header"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:244:1: header : headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:244:1: header : headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
     public final ImpexParser.header_return header() throws RecognitionException {
         ImpexParser.header_return retval = new ImpexParser.header_return();
         retval.start = input.LT(1);
@@ -706,7 +702,6 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Identifier12=null;
         Token LBracket13=null;
         Token Comma15=null;
         Token RBracket17=null;
@@ -719,6 +714,8 @@ public TreeAdaptor getTreeAdaptor() {
         Token DoubleQuote27=null;
         Token DoubleQuote29=null;
         ImpexParser.headerMode_return headerMode11 =null;
+
+        ImpexParser.headerTypeName_return headerTypeName12 =null;
 
         ImpexParser.headerModifierAssignment_return headerModifierAssignment14 =null;
 
@@ -733,7 +730,6 @@ public TreeAdaptor getTreeAdaptor() {
         ImpexParser.attribute_return attribute28 =null;
 
 
-        CommonTree Identifier12_tree=null;
         CommonTree LBracket13_tree=null;
         CommonTree Comma15_tree=null;
         CommonTree RBracket17_tree=null;
@@ -750,14 +746,14 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleTokenStream stream_LBracket=new RewriteRuleTokenStream(adaptor,"token LBracket");
         RewriteRuleTokenStream stream_Semicolon=new RewriteRuleTokenStream(adaptor,"token Semicolon");
         RewriteRuleTokenStream stream_Comma=new RewriteRuleTokenStream(adaptor,"token Comma");
-        RewriteRuleTokenStream stream_Identifier=new RewriteRuleTokenStream(adaptor,"token Identifier");
         RewriteRuleTokenStream stream_DoubleQuote=new RewriteRuleTokenStream(adaptor,"token DoubleQuote");
         RewriteRuleSubtreeStream stream_headerMode=new RewriteRuleSubtreeStream(adaptor,"rule headerMode");
         RewriteRuleSubtreeStream stream_headerModifierAssignment=new RewriteRuleSubtreeStream(adaptor,"rule headerModifierAssignment");
+        RewriteRuleSubtreeStream stream_headerTypeName=new RewriteRuleSubtreeStream(adaptor,"rule headerTypeName");
         RewriteRuleSubtreeStream stream_attribute=new RewriteRuleSubtreeStream(adaptor,"rule attribute");
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:2: ( headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:4: headerMode Identifier ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:2: ( headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:4: headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
             {
             pushFollow(FOLLOW_headerMode_in_header266);
             headerMode11=headerMode();
@@ -766,11 +762,14 @@ public TreeAdaptor getTreeAdaptor() {
 
             stream_headerMode.add(headerMode11.getTree());
 
-            Identifier12=(Token)match(input,Identifier,FOLLOW_Identifier_in_header269);  
-            stream_Identifier.add(Identifier12);
+            pushFollow(FOLLOW_headerTypeName_in_header269);
+            headerTypeName12=headerTypeName();
 
+            state._fsp--;
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:27: ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )*
+            stream_headerTypeName.add(headerTypeName12.getTree());
+
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:31: ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )*
             loop8:
             do {
                 int alt8=2;
@@ -783,7 +782,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt8) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:28: LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:32: LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket
             	    {
             	    LBracket13=(Token)match(input,LBracket,FOLLOW_LBracket_in_header272);  
             	    stream_LBracket.add(LBracket13);
@@ -796,7 +795,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             	    stream_headerModifierAssignment.add(headerModifierAssignment14.getTree());
 
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:62: ( Comma headerModifierAssignment )*
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:66: ( Comma headerModifierAssignment )*
             	    loop7:
             	    do {
             	        int alt7=2;
@@ -809,7 +808,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             	        switch (alt7) {
             	    	case 1 :
-            	    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:63: Comma headerModifierAssignment
+            	    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:67: Comma headerModifierAssignment
             	    	    {
             	    	    Comma15=(Token)match(input,Comma,FOLLOW_Comma_in_header277);  
             	    	    stream_Comma.add(Comma15);
@@ -844,7 +843,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:109: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:113: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
             loop10:
             do {
                 int alt10=2;
@@ -863,13 +862,13 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt10) {
             	case 1 :
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:110: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:114: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
             	    {
             	    Semicolon18=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header290);  
             	    stream_Semicolon.add(Semicolon18);
 
 
-            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:120: ( attribute | DoubleQuote attribute DoubleQuote )
+            	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:124: ( attribute | DoubleQuote attribute DoubleQuote )
             	    int alt9=2;
             	    int LA9_0 = input.LA(1);
 
@@ -888,7 +887,7 @@ public TreeAdaptor getTreeAdaptor() {
             	    }
             	    switch (alt9) {
             	        case 1 :
-            	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:121: attribute
+            	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:125: attribute
             	            {
             	            pushFollow(FOLLOW_attribute_in_header293);
             	            attribute19=attribute();
@@ -900,7 +899,7 @@ public TreeAdaptor getTreeAdaptor() {
             	            }
             	            break;
             	        case 2 :
-            	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:133: DoubleQuote attribute DoubleQuote
+            	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:137: DoubleQuote attribute DoubleQuote
             	            {
             	            DoubleQuote20=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header297);  
             	            stream_DoubleQuote.add(DoubleQuote20);
@@ -932,7 +931,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:170: ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:174: ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -941,7 +940,7 @@ public TreeAdaptor getTreeAdaptor() {
             }
             switch (alt13) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:171: Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:175: Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
                     {
                     Semicolon23=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header307);  
                     stream_Semicolon.add(Semicolon23);
@@ -953,7 +952,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                     registerDocumentID((DocumentID24!=null?DocumentID24.getText():null));
 
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:232: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:236: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
                     loop12:
                     do {
                         int alt12=2;
@@ -966,13 +965,13 @@ public TreeAdaptor getTreeAdaptor() {
 
                         switch (alt12) {
                     	case 1 :
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:233: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:237: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
                     	    {
                     	    Semicolon25=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header314);  
                     	    stream_Semicolon.add(Semicolon25);
 
 
-                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:243: ( attribute | DoubleQuote attribute DoubleQuote )
+                    	    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:247: ( attribute | DoubleQuote attribute DoubleQuote )
                     	    int alt11=2;
                     	    int LA11_0 = input.LA(1);
 
@@ -991,7 +990,7 @@ public TreeAdaptor getTreeAdaptor() {
                     	    }
                     	    switch (alt11) {
                     	        case 1 :
-                    	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:244: attribute
+                    	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:248: attribute
                     	            {
                     	            pushFollow(FOLLOW_attribute_in_header317);
                     	            attribute26=attribute();
@@ -1003,7 +1002,7 @@ public TreeAdaptor getTreeAdaptor() {
                     	            }
                     	            break;
                     	        case 2 :
-                    	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:256: DoubleQuote attribute DoubleQuote
+                    	            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:245:260: DoubleQuote attribute DoubleQuote
                     	            {
                     	            DoubleQuote27=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header321);  
                     	            stream_DoubleQuote.add(DoubleQuote27);
@@ -1042,7 +1041,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: attribute, Identifier, headerMode, headerModifierAssignment, DocumentID
+            // elements: DocumentID, headerTypeName, attribute, headerModifierAssignment, headerMode
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1052,9 +1051,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 246:2: -> ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+            // 246:2: -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
             {
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:5: ^( HEADER headerMode ^( TYPE Identifier ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:5: ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1063,28 +1062,26 @@ public TreeAdaptor getTreeAdaptor() {
 
                 adaptor.addChild(root_1, stream_headerMode.nextTree());
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:25: ^( TYPE Identifier )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:25: ^( TYPE headerTypeName )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(TYPE, "TYPE")
                 , root_2);
 
-                adaptor.addChild(root_2, 
-                stream_Identifier.nextNode()
-                );
+                adaptor.addChild(root_2, stream_headerTypeName.nextTree());
 
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:44: ^( MODIFIERS ( headerModifierAssignment )* )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:48: ^( MODIFIERS ( headerModifierAssignment )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(MODIFIERS, "MODIFIERS")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:56: ( headerModifierAssignment )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:60: ( headerModifierAssignment )*
                 while ( stream_headerModifierAssignment.hasNext() ) {
                     adaptor.addChild(root_2, stream_headerModifierAssignment.nextTree());
 
@@ -1094,14 +1091,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:83: ^( DOCUMENTID ( DocumentID )? )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:87: ^( DOCUMENTID ( DocumentID )? )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(DOCUMENTID, "DOCUMENTID")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:96: ( DocumentID )?
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:100: ( DocumentID )?
                 if ( stream_DocumentID.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_DocumentID.nextNode()
@@ -1113,14 +1110,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:109: ^( ATTRIBUTES ( attribute )* )
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:113: ^( ATTRIBUTES ( attribute )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(ATTRIBUTES, "ATTRIBUTES")
                 , root_2);
 
-                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:122: ( attribute )*
+                // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:246:126: ( attribute )*
                 while ( stream_attribute.hasNext() ) {
                     adaptor.addChild(root_2, stream_attribute.nextTree());
 
@@ -1210,7 +1207,7 @@ public TreeAdaptor getTreeAdaptor() {
             stream_boolOrClassname.add(boolOrClassname32.getTree());
 
             // AST REWRITE
-            // elements: boolOrClassname, headerModifier
+            // elements: headerModifier, boolOrClassname
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1479,7 +1476,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: Identifier, field
+            // elements: field, Identifier
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1827,7 +1824,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: Identifier, attributeName
+                    // elements: attributeName, Identifier
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2200,7 +2197,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: DocumentID, attributeModifierAssignment, attributeName, attribute
+            // elements: attributeName, attribute, attributeModifierAssignment, DocumentID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2429,7 +2426,7 @@ public TreeAdaptor getTreeAdaptor() {
 
             set58=(Token)input.LT(1);
 
-            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= Mode)||input.LA(1)==NumberFormat||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
+            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= NumberFormat)||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
                 input.consume();
                 adaptor.addChild(root_0, 
                 (CommonTree)adaptor.create(set58)
@@ -2531,6 +2528,171 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "headerMode"
 
 
+    public static class headerTypeName_return extends ParserRuleReturnScope {
+        CommonTree tree;
+        public Object getTree() { return tree; }
+    };
+
+
+    // $ANTLR start "headerTypeName"
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:311:1: headerTypeName : ( Identifier | headerMode | attributeModifier | headerModifier );
+    public final ImpexParser.headerTypeName_return headerTypeName() throws RecognitionException {
+        ImpexParser.headerTypeName_return retval = new ImpexParser.headerTypeName_return();
+        retval.start = input.LT(1);
+
+
+        CommonTree root_0 = null;
+
+        Token Identifier60=null;
+        ImpexParser.headerMode_return headerMode61 =null;
+
+        ImpexParser.attributeModifier_return attributeModifier62 =null;
+
+        ImpexParser.headerModifier_return headerModifier63 =null;
+
+
+        CommonTree Identifier60_tree=null;
+
+        try {
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:2: ( Identifier | headerMode | attributeModifier | headerModifier )
+            int alt24=4;
+            switch ( input.LA(1) ) {
+            case Identifier:
+                {
+                alt24=1;
+                }
+                break;
+            case Insert:
+            case InsertUpdate:
+            case Remove:
+            case Update:
+                {
+                alt24=2;
+                }
+                break;
+            case Alias:
+            case AllowNull:
+            case CellDecorator:
+            case CollectionDelimiter:
+            case Dateformat:
+            case Default:
+            case ForceWrite:
+            case IgnoreKeyCase:
+            case IgnoreNull:
+            case KeyToValueDelimiter:
+            case Lang:
+            case MapDelimiter:
+            case Mode:
+            case NumberFormat:
+            case PathDelimiter:
+            case Pos:
+            case Translator:
+            case Unique:
+            case Virtual:
+                {
+                alt24=3;
+                }
+                break;
+            case BatchMode:
+            case CacheUnique:
+            case Processor:
+                {
+                alt24=4;
+                }
+                break;
+            default:
+                NoViableAltException nvae =
+                    new NoViableAltException("", 24, 0, input);
+
+                throw nvae;
+
+            }
+
+            switch (alt24) {
+                case 1 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:3: Identifier
+                    {
+                    root_0 = (CommonTree)adaptor.nil();
+
+
+                    Identifier60=(Token)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName787); 
+                    Identifier60_tree = 
+                    (CommonTree)adaptor.create(Identifier60)
+                    ;
+                    adaptor.addChild(root_0, Identifier60_tree);
+
+
+                    }
+                    break;
+                case 2 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:16: headerMode
+                    {
+                    root_0 = (CommonTree)adaptor.nil();
+
+
+                    pushFollow(FOLLOW_headerMode_in_headerTypeName791);
+                    headerMode61=headerMode();
+
+                    state._fsp--;
+
+                    adaptor.addChild(root_0, headerMode61.getTree());
+
+                    }
+                    break;
+                case 3 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:29: attributeModifier
+                    {
+                    root_0 = (CommonTree)adaptor.nil();
+
+
+                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName795);
+                    attributeModifier62=attributeModifier();
+
+                    state._fsp--;
+
+                    adaptor.addChild(root_0, attributeModifier62.getTree());
+
+                    }
+                    break;
+                case 4 :
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:312:49: headerModifier
+                    {
+                    root_0 = (CommonTree)adaptor.nil();
+
+
+                    pushFollow(FOLLOW_headerModifier_in_headerTypeName799);
+                    headerModifier63=headerModifier();
+
+                    state._fsp--;
+
+                    adaptor.addChild(root_0, headerModifier63.getTree());
+
+                    }
+                    break;
+
+            }
+            retval.stop = input.LT(-1);
+
+
+            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+    	retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return retval;
+    }
+    // $ANTLR end "headerTypeName"
+
+
     public static class macro_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
@@ -2538,7 +2700,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "macro"
-    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:321:1: macro : Macrodef ( ValueAssignment | Equals ) ;
+    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:324:1: macro : Macrodef ( ValueAssignment | Equals ) ;
     public final ImpexParser.macro_return macro() throws RecognitionException {
         ImpexParser.macro_return retval = new ImpexParser.macro_return();
         retval.start = input.LT(1);
@@ -2546,71 +2708,71 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Macrodef60=null;
-        Token ValueAssignment61=null;
-        Token Equals62=null;
+        Token Macrodef64=null;
+        Token ValueAssignment65=null;
+        Token Equals66=null;
 
-        CommonTree Macrodef60_tree=null;
-        CommonTree ValueAssignment61_tree=null;
-        CommonTree Equals62_tree=null;
+        CommonTree Macrodef64_tree=null;
+        CommonTree ValueAssignment65_tree=null;
+        CommonTree Equals66_tree=null;
 
         try {
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:322:2: ( Macrodef ( ValueAssignment | Equals ) )
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:322:3: Macrodef ( ValueAssignment | Equals )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:325:2: ( Macrodef ( ValueAssignment | Equals ) )
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:325:3: Macrodef ( ValueAssignment | Equals )
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            Macrodef60=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro796); 
-            Macrodef60_tree = 
-            (CommonTree)adaptor.create(Macrodef60)
+            Macrodef64=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro817); 
+            Macrodef64_tree = 
+            (CommonTree)adaptor.create(Macrodef64)
             ;
-            adaptor.addChild(root_0, Macrodef60_tree);
+            adaptor.addChild(root_0, Macrodef64_tree);
 
 
-            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:323:2: ( ValueAssignment | Equals )
-            int alt24=2;
-            int LA24_0 = input.LA(1);
+            // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:326:2: ( ValueAssignment | Equals )
+            int alt25=2;
+            int LA25_0 = input.LA(1);
 
-            if ( (LA24_0==ValueAssignment) ) {
-                alt24=1;
+            if ( (LA25_0==ValueAssignment) ) {
+                alt25=1;
             }
-            else if ( (LA24_0==Equals) ) {
-                alt24=2;
+            else if ( (LA25_0==Equals) ) {
+                alt25=2;
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 24, 0, input);
+                    new NoViableAltException("", 25, 0, input);
 
                 throw nvae;
 
             }
-            switch (alt24) {
+            switch (alt25) {
                 case 1 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:323:3: ValueAssignment
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:326:3: ValueAssignment
                     {
-                    ValueAssignment61=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_macro801); 
-                    ValueAssignment61_tree = 
-                    (CommonTree)adaptor.create(ValueAssignment61)
+                    ValueAssignment65=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_macro822); 
+                    ValueAssignment65_tree = 
+                    (CommonTree)adaptor.create(ValueAssignment65)
                     ;
-                    adaptor.addChild(root_0, ValueAssignment61_tree);
+                    adaptor.addChild(root_0, ValueAssignment65_tree);
 
 
-                    registerMacro(Macrodef60, (ValueAssignment61!=null?ValueAssignment61.getText():null));
+                    registerMacro(Macrodef64, (ValueAssignment65!=null?ValueAssignment65.getText():null));
 
                     }
                     break;
                 case 2 :
-                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:324:3: Equals
+                    // /work/projects/yeclipse/ImpexAST/src/main/java/Impex.g:327:3: Equals
                     {
-                    Equals62=(Token)match(input,Equals,FOLLOW_Equals_in_macro808); 
-                    Equals62_tree = 
-                    (CommonTree)adaptor.create(Equals62)
+                    Equals66=(Token)match(input,Equals,FOLLOW_Equals_in_macro829); 
+                    Equals66_tree = 
+                    (CommonTree)adaptor.create(Equals66)
                     ;
-                    adaptor.addChild(root_0, Equals62_tree);
+                    adaptor.addChild(root_0, Equals66_tree);
 
 
-                    registerMacro(Macrodef60, "");
+                    registerMacro(Macrodef64, "");
 
                     }
                     break;
@@ -2650,25 +2812,25 @@ public TreeAdaptor getTreeAdaptor() {
     static final String DFA6_eofS =
         "\1\1\1\uffff\1\1\2\uffff\3\1";
     static final String DFA6_minS =
-        "\1\51\1\uffff\1\37\1\35\1\uffff\3\37";
+        "\1\46\1\uffff\1\36\1\34\1\uffff\3\36";
     static final String DFA6_maxS =
-        "\1\111\1\uffff\1\111\1\113\1\uffff\3\111";
+        "\1\105\1\uffff\1\105\1\107\1\uffff\3\105";
     static final String DFA6_acceptS =
         "\1\uffff\1\2\2\uffff\1\1\3\uffff";
     static final String DFA6_specialS =
         "\10\uffff}>";
     static final String[] DFA6_transitionS = {
-            "\2\1\4\uffff\1\2\3\uffff\1\1\15\uffff\1\1\7\uffff\1\1",
+            "\2\1\4\uffff\1\2\3\uffff\1\1\14\uffff\1\1\7\uffff\1\1",
             "",
-            "\1\4\6\uffff\1\4\2\uffff\2\1\4\uffff\1\2\3\uffff\1\3\10\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\2\3\uffff\1\3\7\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\6\55\uffff\1\5",
+            "\1\6\52\uffff\1\5",
             "",
-            "\1\4\6\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\4\6\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\4\6\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1"
     };
 
@@ -2708,61 +2870,65 @@ public TreeAdaptor getTreeAdaptor() {
  
 
     public static final BitSet FOLLOW_EOF_in_parse178 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Lb_in_impex188 = new BitSet(new long[]{0x0008860000000000L,0x0000000000000202L});
-    public static final BitSet FOLLOW_block_in_impex193 = new BitSet(new long[]{0x0008860000000000L,0x0000000000000202L});
-    public static final BitSet FOLLOW_macro_in_impex197 = new BitSet(new long[]{0x0008860000000000L,0x0000000000000202L});
+    public static final BitSet FOLLOW_Lb_in_impex188 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_block_in_impex193 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_macro_in_impex197 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
     public static final BitSet FOLLOW_EOF_in_impex201 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_header_in_block225 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_Lb_in_block228 = new BitSet(new long[]{0x1008804080000000L});
-    public static final BitSet FOLLOW_macro_in_block232 = new BitSet(new long[]{0x1008804080000000L});
-    public static final BitSet FOLLOW_Lb_in_block234 = new BitSet(new long[]{0x1008804080000000L});
-    public static final BitSet FOLLOW_record_in_block239 = new BitSet(new long[]{0x0000800000000002L});
-    public static final BitSet FOLLOW_headerMode_in_header266 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_Identifier_in_header269 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_LBracket_in_header272 = new BitSet(new long[]{0x0800000000009000L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header274 = new BitSet(new long[]{0x2000000000100000L});
-    public static final BitSet FOLLOW_Comma_in_header277 = new BitSet(new long[]{0x0800000000009000L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header280 = new BitSet(new long[]{0x2000000000100000L});
-    public static final BitSet FOLLOW_RBracket_in_header284 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_Semicolon_in_header290 = new BitSet(new long[]{0x0008304010000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_attribute_in_header293 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header297 = new BitSet(new long[]{0x0008304000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_attribute_in_header299 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header301 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_Semicolon_in_header307 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_DocumentID_in_header309 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_Semicolon_in_header314 = new BitSet(new long[]{0x0008304010000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_attribute_in_header317 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header321 = new BitSet(new long[]{0x0008304000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_attribute_in_header323 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header325 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
-    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment375 = new BitSet(new long[]{0x0000000020000000L});
-    public static final BitSet FOLLOW_Equals_in_headerModifierAssignment377 = new BitSet(new long[]{0x0000000000044000L});
+    public static final BitSet FOLLOW_header_in_block225 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_Lb_in_block228 = new BitSet(new long[]{0x0101100840000000L});
+    public static final BitSet FOLLOW_macro_in_block232 = new BitSet(new long[]{0x0101100840000000L});
+    public static final BitSet FOLLOW_Lb_in_block234 = new BitSet(new long[]{0x0101100840000000L});
+    public static final BitSet FOLLOW_record_in_block239 = new BitSet(new long[]{0x0000100000000002L});
+    public static final BitSet FOLLOW_headerMode_in_header266 = new BitSet(new long[]{0x20EE09F88184C980L,0x0000000000000138L});
+    public static final BitSet FOLLOW_headerTypeName_in_header269 = new BitSet(new long[]{0x8000020000000002L});
+    public static final BitSet FOLLOW_LBracket_in_header272 = new BitSet(new long[]{0x0080000000004800L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header274 = new BitSet(new long[]{0x0200000000080000L});
+    public static final BitSet FOLLOW_Comma_in_header277 = new BitSet(new long[]{0x0080000000004800L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header280 = new BitSet(new long[]{0x0200000000080000L});
+    public static final BitSet FOLLOW_RBracket_in_header284 = new BitSet(new long[]{0x8000020000000002L});
+    public static final BitSet FOLLOW_Semicolon_in_header290 = new BitSet(new long[]{0x0001060808000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_attribute_in_header293 = new BitSet(new long[]{0x8000000000000002L});
+    public static final BitSet FOLLOW_DoubleQuote_in_header297 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_attribute_in_header299 = new BitSet(new long[]{0x0000000008000000L});
+    public static final BitSet FOLLOW_DoubleQuote_in_header301 = new BitSet(new long[]{0x8000000000000002L});
+    public static final BitSet FOLLOW_Semicolon_in_header307 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_DocumentID_in_header309 = new BitSet(new long[]{0x8000000000000002L});
+    public static final BitSet FOLLOW_Semicolon_in_header314 = new BitSet(new long[]{0x0001060808000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_attribute_in_header317 = new BitSet(new long[]{0x8000000000000002L});
+    public static final BitSet FOLLOW_DoubleQuote_in_header321 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_attribute_in_header323 = new BitSet(new long[]{0x0000000008000000L});
+    public static final BitSet FOLLOW_DoubleQuote_in_header325 = new BitSet(new long[]{0x8000000000000002L});
+    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment375 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_Equals_in_headerModifierAssignment377 = new BitSet(new long[]{0x0000000000022000L});
     public static final BitSet FOLLOW_boolOrClassname_in_headerModifierAssignment379 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_record432 = new BitSet(new long[]{0x1000000080000000L});
-    public static final BitSet FOLLOW_field_in_record435 = new BitSet(new long[]{0x1000000080000002L});
+    public static final BitSet FOLLOW_Identifier_in_record432 = new BitSet(new long[]{0x0100000040000000L});
+    public static final BitSet FOLLOW_field_in_record435 = new BitSet(new long[]{0x0100000040000002L});
     public static final BitSet FOLLOW_Macrodef_in_attributeName510 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_SpecialAttribute_in_attributeName524 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_attributeName537 = new BitSet(new long[]{0x0000000008000002L});
-    public static final BitSet FOLLOW_Dot_in_attributeName540 = new BitSet(new long[]{0x0008004000000000L,0x0000000000000020L});
+    public static final BitSet FOLLOW_Identifier_in_attributeName537 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_Dot_in_attributeName540 = new BitSet(new long[]{0x0001000800000000L,0x0000000000000002L});
     public static final BitSet FOLLOW_attributeName_in_attributeName542 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_attributeName_in_attribute575 = new BitSet(new long[]{0x0000300000000002L});
-    public static final BitSet FOLLOW_LParenthesis_in_attribute578 = new BitSet(new long[]{0x0008304004000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute582 = new BitSet(new long[]{0x0000000000100000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_attribute_in_attribute586 = new BitSet(new long[]{0x0000000000100000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_Comma_in_attribute589 = new BitSet(new long[]{0x0008304004000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute592 = new BitSet(new long[]{0x0000000000100000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_attribute_in_attribute596 = new BitSet(new long[]{0x0000000000100000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_RParenthesis_in_attribute601 = new BitSet(new long[]{0x0000100000000002L});
-    public static final BitSet FOLLOW_LBracket_in_attribute607 = new BitSet(new long[]{0x06B0498103090180L,0x0000000000001180L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute609 = new BitSet(new long[]{0x2000000000100000L});
-    public static final BitSet FOLLOW_Comma_in_attribute612 = new BitSet(new long[]{0x06B0498103090180L,0x0000000000001180L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute615 = new BitSet(new long[]{0x2000000000100000L});
-    public static final BitSet FOLLOW_RBracket_in_attribute619 = new BitSet(new long[]{0x0000100000000002L});
-    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment660 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_attributeName_in_attribute575 = new BitSet(new long[]{0x0000060000000002L});
+    public static final BitSet FOLLOW_LParenthesis_in_attribute578 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_DocumentID_in_attribute582 = new BitSet(new long[]{0x1000000000080000L});
+    public static final BitSet FOLLOW_attribute_in_attribute586 = new BitSet(new long[]{0x1000000000080000L});
+    public static final BitSet FOLLOW_Comma_in_attribute589 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_DocumentID_in_attribute592 = new BitSet(new long[]{0x1000000000080000L});
+    public static final BitSet FOLLOW_attribute_in_attribute596 = new BitSet(new long[]{0x1000000000080000L});
+    public static final BitSet FOLLOW_RParenthesis_in_attribute601 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_LBracket_in_attribute607 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000118L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute609 = new BitSet(new long[]{0x0200000000080000L});
+    public static final BitSet FOLLOW_Comma_in_attribute612 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000118L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute615 = new BitSet(new long[]{0x0200000000080000L});
+    public static final BitSet FOLLOW_RBracket_in_attribute619 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment660 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
     public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment662 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Macrodef_in_macro796 = new BitSet(new long[]{0x0000000020000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_ValueAssignment_in_macro801 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Equals_in_macro808 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_headerTypeName787 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerMode_in_headerTypeName791 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName795 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerModifier_in_headerTypeName799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Macrodef_in_macro817 = new BitSet(new long[]{0x0000000010000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_ValueAssignment_in_macro822 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Equals_in_macro829 = new BitSet(new long[]{0x0000000000000002L});
 
 }

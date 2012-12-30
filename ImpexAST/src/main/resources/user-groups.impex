@@ -1,2 +1,2 @@
-INSERT Usergroup;uid[unique=true];;groups(uid)[mode=append]
-;$regulargroup;ignore value;$customerGroup;
+INSERT_UPDATE cacheUnique;uid
+;admin
