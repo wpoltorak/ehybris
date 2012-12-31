@@ -1,6 +1,8 @@
 package output.tree;
 
 import output.ImpexContext;
+import output.ImpexError;
+import output.ImpexParser;
 
 public class RefNode implements IImpexNode {
 
@@ -13,7 +15,15 @@ public class RefNode implements IImpexNode {
     }
 
     public void evaluate(final ImpexContext context) {
-        // TODO Auto-generated method stub
+        switch (type) {
+            case ImpexParser.DOCUMENTID_REF:
+                if (!context.hasDocumentID(name)) {
+                    context.addError(ImpexError.UnknownDocumentID);
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 }

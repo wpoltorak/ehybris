@@ -39,7 +39,7 @@ public class ImpexContext {
         return documentIDs;
     }
 
-    boolean hasDocumentID(final String documentID) {
+    public boolean hasDocumentID(final String documentID) {
         return documentIDs.contains(documentID);
     }
 

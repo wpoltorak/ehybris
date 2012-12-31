@@ -19,6 +19,9 @@ public class AttributeNode implements IImpexNode {
     }
 
     public void evaluate(final ImpexContext context) {
+        for (final IImpexNode item : expression) {
+            item.evaluate(context);
+        }
 
         for (final IImpexNode modifier : modifiers) {
             modifier.evaluate(context);

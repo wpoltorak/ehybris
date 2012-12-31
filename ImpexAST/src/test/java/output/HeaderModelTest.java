@@ -3,8 +3,10 @@ package output;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 import org.junit.Test;
@@ -160,6 +162,21 @@ public class HeaderModelTest extends ModelTest {
         assertHeaderType(header(tree, 3), "insert");
         assertHeaderType(header(tree, 4), "cacheUnique");
         assertHeaderType(header(tree, 5), "mode");
+    }
+
+    @Test
+    public void documentIDs() throws Exception {
+        final Tree tree = init("/header/header-documentid.impex");
+        final Set<String> documentIDs = parser.getDocumentIDs();
+        assertEquals(2, documentIDs.size());
+        assertTrue(documentIDs.contains("&addrID"));
+        assertTrue(documentIDs.contains("&addrID2"));
+
+        final Tree attribute = attribute(tree, 0, 2);
+        final Tree itemExpr = getChildWithType(attribute, ImpexParser.ITEM_EXPRESSION);
+        final Tree documentIDRef = getChildWithType(itemExpr, ImpexParser.DOCUMENTID_REF);
+        assertEquals(1, documentIDRef.getChildCount());
+        assertEquals("&addrID", documentIDRef.getChild(0).getText());
     }
 
     private void assertModifiers(final Tree modifiers, final int[] types, final String[] values) {
