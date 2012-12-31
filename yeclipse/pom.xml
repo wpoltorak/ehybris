@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
+ 	<repositories>
 		<repository>
 			<id>juno</id>
 			<layout>p2</layout>
@@ -52,7 +52,5 @@
 		</plugins>
 	</build>
 
-	<modules>
-		<module>../../projects/yeclipse/YFeature</module>
-	</modules>
+	
 </project>
