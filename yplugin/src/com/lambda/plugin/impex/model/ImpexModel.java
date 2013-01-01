@@ -67,7 +67,7 @@ public class ImpexModel implements IImpexModel {
         }
     }
 
-    private class ImpexLexer extends output.ImpexLexer {
+    private class ImpexLexer extends com.lambda.impex.ast.ImpexLexer {
 
         private final Map<Integer, Map<String, Object>> markerAttributes = new HashMap<Integer, Map<String, Object>>();
 
@@ -112,7 +112,8 @@ public class ImpexModel implements IImpexModel {
         }
 
         @Override
-        protected Object recoverFromMismatchedToken(final IntStream arg0, final int arg1, final BitSet arg2) throws RecognitionException {
+        protected Object recoverFromMismatchedToken(final IntStream arg0, final int arg1, final BitSet arg2)
+                throws RecognitionException {
             // TODO Auto-generated method stub
             return super.recoverFromMismatchedToken(arg0, arg1, arg2);
         }
@@ -136,12 +137,13 @@ public class ImpexModel implements IImpexModel {
             super.reportError(e);
         }
 
-        private IProblem createProblem(final Exception exception, final int offset, final int length, final int lineNumber,
-                final int severity) {
+        private IProblem createProblem(final Exception exception, final int offset, final int length,
+                final int lineNumber, final int severity) {
             return createProblem(exception.getMessage(), offset, length, lineNumber, severity);
         }
 
-        private IProblem createProblem(final String message, final int offset, final int length, final int lineNumber, final int severity) {
+        private IProblem createProblem(final String message, final int offset, final int length, final int lineNumber,
+                final int severity) {
             return new ImpexModelProblem(message, severity, offset, length, lineNumber);
         }
 

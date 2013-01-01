@@ -53,4 +53,8 @@
 	</build>
 
 	
+	<modules>
+		<module>../yfeature</module>
+		<module>../yplugin</module>
+	</modules>
 </project>
