@@ -15,15 +15,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import output.tree.AttributeNameNode;
-import output.tree.AttributeNode;
-import output.tree.BlockNode;
-import output.tree.HeaderNode;
-import output.tree.IImpexNode;
-import output.tree.ImpexNode;
-import output.tree.ModifierNode;
-import output.tree.RecordNode;
-import output.tree.RefNode;
+import com.lambda.impex.ast.nodes.AttributeNameNode;
+import com.lambda.impex.ast.nodes.AttributeNode;
+import com.lambda.impex.ast.nodes.BlockNode;
+import com.lambda.impex.ast.nodes.HeaderNode;
+import com.lambda.impex.ast.nodes.IImpexNode;
+import com.lambda.impex.ast.nodes.ImpexNode;
+import com.lambda.impex.ast.nodes.ModifierNode;
+import com.lambda.impex.ast.nodes.RecordNode;
+import com.lambda.impex.ast.nodes.RefNode;
 }
 
 walk	returns [IImpexNode impex]

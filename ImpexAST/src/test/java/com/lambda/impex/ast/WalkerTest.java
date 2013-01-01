@@ -12,13 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import com.lambda.impex.ast.ImpexANTLRStringStream;
-import com.lambda.impex.ast.ImpexContext;
-import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser;
-import com.lambda.impex.ast.ImpexTreeWalker;
 import com.lambda.impex.ast.nodes.IImpexNode;
-
 
 public class WalkerTest {
 
