@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ImpexAST</groupId>
-	<artifactId>ImpexAST</artifactId>
+	<groupId>com.lambda</groupId>
+	<artifactId>impexast</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<plugins>
@@ -10,14 +10,17 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.5</source>
+					<target>1.5</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr3-maven-plugin</artifactId>
 				<version>${antlr.version}</version>
+				<configuration>
+    				<outputDirectory>src/main/java</outputDirectory>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -28,7 +31,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<name>ImpexAST</name>
+	<name>impexast</name>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
