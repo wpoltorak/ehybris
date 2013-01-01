@@ -1,4 +1,4 @@
-// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-01-01 08:16:38
+// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-01-01 08:32:44
 
  package com.lambda.impex.ast;
   
@@ -692,7 +692,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: header, record
+            // elements: record, header
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1158,7 +1158,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: headerModifierAssignment, DocumentID, attribute, headerTypeName, headerMode
+            // elements: headerTypeName, headerModifierAssignment, attribute, DocumentID, headerMode
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1950,7 +1950,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: Identifier, attributeName
+                    // elements: attributeName, Identifier
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -2358,7 +2358,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: DocumentID, attributeModifierAssignment, attribute, attributeName
+            // elements: attribute, attributeName, attributeModifierAssignment, DocumentID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2502,7 +2502,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: ValueAssignment, attributeModifier
+            // elements: attributeModifier, ValueAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
