@@ -2,13 +2,11 @@ package com.lambda.impex.ast.nodes;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-
-import org.apache.commons.lang3.LocaleUtils;
+import java.util.Locale;
 
 import com.lambda.impex.ast.ImpexContext;
 import com.lambda.impex.ast.ImpexError;
 import com.lambda.impex.ast.ImpexParser;
-
 
 public class ModifierNode implements IImpexNode {
 
@@ -74,9 +72,7 @@ public class ModifierNode implements IImpexNode {
                 } catch (final NumberFormatException e) {
                     //is not a PK number so verify locale name
                     try {
-                        if (LocaleUtils.toLocale(ensureCorrectCase(value)) == null) {
-                            context.addError(ImpexError.InvalidLang);
-                        }
+                        toLocale(value);
                     } catch (final IllegalArgumentException ex) {
                         context.addError(ImpexError.InvalidLang);
                     }
@@ -102,20 +98,43 @@ public class ModifierNode implements IImpexNode {
                 }
                 break;
         }
-
     }
 
-    private String ensureCorrectCase(final String value) {
-        final String[] split = value.split("_");
-        String val = null;
-        if (split.length > 1) {
-            val = split[0].toLowerCase() + "_" + split[1].toUpperCase();
+    private Locale toLocale(final String str) {
+        if (str == null) {
+            throw new IllegalArgumentException("Invalid locale format: " + String.valueOf(str));
         }
-        if (split.length > 2) {
-            for (int i = 2; i < split.length; i++) {
-                val += "_" + split[i];
+        final int len = str.length();
+        if (len != 2 && len != 5 && len < 7) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        final char ch0 = str.charAt(0);
+        final char ch1 = str.charAt(1);
+        if (!Character.isLetter(ch0) || !Character.isLetter(ch1)) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        if (len == 2) {
+            return new Locale(str, "");
+        } else {
+            if (str.charAt(2) != '_') {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            final char ch3 = str.charAt(3);
+            if (ch3 == '_') {
+                return new Locale(str.substring(0, 2), "", str.substring(4));
+            }
+            final char ch4 = str.charAt(4);
+            if (!Character.isLetter(ch3) || !Character.isLetter(ch4)) {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            if (len == 5) {
+                return new Locale(str.substring(0, 2), str.substring(3, 5));
+            } else {
+                if (str.charAt(5) != '_') {
+                    throw new IllegalArgumentException("Invalid locale format: " + str);
+                }
+                return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
             }
         }
-        return val;
     }
 }
