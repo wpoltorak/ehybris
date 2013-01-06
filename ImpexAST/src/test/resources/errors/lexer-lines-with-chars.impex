@@ -1,0 +1,10 @@
+#
+# invalid xxx yyy
+# 
+$regulargroup=regulargroup
+$customergroup=customergroup
+xxx
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;customergroup
+yyy
