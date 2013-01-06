@@ -11,9 +11,6 @@ import java.util.Set;
 import org.antlr.runtime.tree.Tree;
 import org.junit.Test;
 
-import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser;
-
 public class HeaderModelTest extends ModelTest {
 
     @Test
@@ -170,7 +167,7 @@ public class HeaderModelTest extends ModelTest {
     @Test
     public void documentIDs() throws Exception {
         final Tree tree = init("/header/header-documentid.impex");
-        final Set<String> documentIDs = parser.getDocumentIDs();
+        final Set<String> documentIDs = context.getDocumentIDs();
         assertEquals(2, documentIDs.size());
         assertTrue(documentIDs.contains("&addrID"));
         assertTrue(documentIDs.contains("&addrID2"));

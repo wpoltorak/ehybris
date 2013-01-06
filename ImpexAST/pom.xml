@@ -34,6 +34,7 @@
 				<configuration>
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
+						<descriptorRef>src</descriptorRef>
 					</descriptorRefs>
 				</configuration>
 				<executions>

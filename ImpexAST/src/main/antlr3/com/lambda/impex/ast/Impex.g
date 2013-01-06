@@ -59,94 +59,43 @@ import java.util.regex.Matcher;
 
 @parser::members {
 
+private ImpexContext context;
 
-    private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
-    private final Set<String> documentIDs = new HashSet<String>();
-    private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
+public ImpexParser(final ImpexContext context, final TokenStream input) {
+    this(input, new RecognizerSharedState());
+    this.context = context;
+}
 
-    private void registerMacro(final Token def, final String val) {
-        final String macrodef = def.getText();
-        List<SimpleImmutableEntry<Integer, String>> macroval = macros.get(macrodef);
-        if (macroval == null) {
-            macroval = new ArrayList<SimpleImmutableEntry<Integer, String>>();
-            macros.put(macrodef, macroval);
-        }
-        macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val == null? "" : val));
+@Override
+public void reportError(final RecognitionException e) {
+    if ( state.errorRecovery ) {
+        return;
     }
-
-    private void registerDocumentID(String documentID){
-    	if (documentIDs.contains(documentID)){
-    		//TODO issue an error indicating that there is duplicated documentID definition
-    		
-    	}
-    	documentIDs.add(documentID);
-    }
-
-    Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros(){
-        return macros;
-    }
-    
-    Set<String> getDocumentIDs(){
-    	return documentIDs;
-    }
-    
-    private boolean hasDocumentID(String documentID){
-    	return documentIDs.contains(documentID);
-    }
-    
-    private String getMacroVal(final String macroDef, final int refLine) {
-        final List<SimpleImmutableEntry<Integer, String>> list = macros.get(macroDef);
-        if (list == null) {
-            // TODO in case there is no such macro definition treat it as normal text and issue an error 
-            return macroDef;
-        }
-
-        for (int i = list.size() - 1; i >= 0; --i) {
-            final SimpleImmutableEntry<Integer, String> entry = list.get(i);
-            if (entry.getKey().intValue() < refLine) {
-                String val = entry.getValue();
-                final Matcher m = macroPattern.matcher(val);
-                while (m.find()) {
-                    final String nestedMacroDef = m.group();
-                    final String nestedVal = getMacroVal(nestedMacroDef, entry.getKey());
-                    val = m.replaceFirst(nestedVal);
-                }
-                return val;
-            }
-        }
-        return macroDef;
-    }
+    context.registerError( (CommonToken)e.token);
+    super.reportError(e);
+}
 }
 
 @lexer::members {
-public class TokenList {
 
-    private final ArrayList<Token> array;
-    private final int capacity;
-
-    public TokenList(final int capacity) {
-        this.capacity = capacity;
-        array = new ArrayList<Token>(capacity + 1);
-    }
-
-    public void add(final Token token) {
-        if (array.size() == capacity) {
-            array.remove(0);
-        }
-        array.add(token);
-    }
-
-    public Token get(final int num) {
-        if (num > capacity - 1) {
-            throw new IllegalArgumentException("Greater than list size");
-        }
-
-        return array.get(capacity - 1 - num);
-    }
-
-}
-private final TokenList tokens = new TokenList(1);
+private Token lastToken;
 private boolean isHeader = false;
+private final Pattern lineSeparatorPattern = Pattern.compile("([ \t]*)\\\\([ \t]*)(\r?\n|\r)([ \t]*)");
+private ImpexContext context;
+
+public ImpexLexer(ImpexContext context, CharStream input) {
+    this(input, new RecognizerSharedState());
+    this.context = context;
+}
+
+@Override
+public void reportError(final RecognitionException e) {
+    if ( state.errorRecovery ) {
+        return;
+    }
+    context.registerError(e);
+    super.reportError(e);
+ }
 
   private void emit(String text, int type) {
     Token token = new CommonToken(type, text);
@@ -157,7 +106,7 @@ private boolean isHeader = false;
  @Override
  public void emit(Token token) {
     if(token.getChannel() == Token.DEFAULT_CHANNEL) {
-        tokens.add(token);
+        lastToken = token;
     }
     int t = token.getType();
     if (t == Insert || t == InsertUpdate || t  == Update || t ==Remove){
@@ -171,16 +120,12 @@ private boolean isHeader = false;
 }
 
 private boolean isMacroAssignment() {
-        final Token token = getToken(0);
-        return token != null && token.getType() == Macrodef;
-//            return input.LA(-1) == Macrodef;
+        return lastToken != null && lastToken.getType() == Macrodef;
 }
 
 
     private boolean isArgumentModifierAssignment() {
-        final Token token = getToken(0);
-
-        switch (token.getType()) {
+        switch (lastToken.getType()) {
             case Alias:
             case AllowNull:
             case CellDecorator:
@@ -209,40 +154,42 @@ private boolean isHeader(){
      return isHeader;
 }
 
-private Token getToken(int num) {
-    return tokens.get(num);
+private String removeSeparators(final String text) {
+    final Matcher m = lineSeparatorPattern.matcher(text);
+    final StringBuffer sb = new StringBuffer();
+    while (m.find()) {
+        final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(4).isEmpty();
+        m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
+    }
+    m.appendTail(sb);
+    return sb.toString();
 }
-
-    private String removeSeparators(final String text) {
-        final Pattern p = Pattern.compile("([ \t]*)\\\\([ \t]*)(\r?\n|\r)([ \t]*)");
-        final Matcher m = p.matcher(text);
-        final StringBuffer sb = new StringBuffer();
-        while (m.find()) {
-            final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(4).isEmpty();
-            m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
-        }
-        m.appendTail(sb);
-        return sb.toString();
-    }
     
-    private String removeLineBreaks(final String text){
-        return text.replaceAll("(\r?\n|\r)", "");
-    }
+private String removeLineBreaks(final String text){
+    return text.replaceAll("(\r?\n|\r)", "");
+}
 }
 
 parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
 
-//default channel  	
+
 impex	: (Lb |  block | macro)* EOF
 	 -> ^(IMPEX ^(BLOCKS block*));
-
+catch [RecognitionException ex] {
+    reportError(ex);
+    consumeUntil(input, new BitSet(new long[] { Insert, InsertUpdate, Update, Remove, Macrodef }));
+}
+	 
+sync	@init{
+	    sync();
+	}:/* nothing */	;
 
 block	: header (Lb+ (macro Lb*)* record)+
 	-> ^(BLOCK header ^(RECORDS record+));
 
 header
-	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{registerDocumentID($DocumentID.text);} 	(Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
+	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{context.registerDocumentID((CommonToken)$DocumentID);} (Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
 	-> ^(HEADER headerMode ^(TYPE headerTypeName) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
 headerModifierAssignment: headerModifier Equals boolOrClassname
@@ -288,7 +235,7 @@ attributeName
 	:Macrodef -> ^(ATTRIBUTE_NAME  Macrodef)
 	| SpecialAttribute -> ^(ATTRIBUTE_NAME SpecialAttribute)
 	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?)
-	| ->^(ATTRIBUTE_NAME);  //In case there is an empty attribute
+	| /* nothing */ ->^(ATTRIBUTE_NAME);  //In case there is an empty attribute
 	
 attribute
 	:attributeName (LParenthesis  (DocumentID | attribute)(Comma (DocumentID | attribute))* RParenthesis )? (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)*
@@ -323,8 +270,8 @@ headerTypeName
 
 macro
 	:Macrodef 
-	(ValueAssignment {registerMacro($Macrodef, $ValueAssignment.text);} 
-	|Equals {registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
+	(ValueAssignment {context.registerMacro($Macrodef, $ValueAssignment.text);} 
+	|Equals {context.registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
 
 // Insert		
  		//@init { ((ImpexANTLRStringStream)input).caseInsensitive(); }
@@ -424,7 +371,7 @@ Macrodef
 ValueAssignment
 	:{isMacroAssignment()}?		=> '=' (~('\r' | '\n') | Separator)*		{String text = removeSeparators(getText()); setText(text.substring(1, text.length()).trim());}
 	|{isArgumentModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
-	|;
+	| /* nothing */;
 
 /*
 Macroval
@@ -530,14 +477,14 @@ QuotedField
 		
 		
 	}
-	:{isHeader() == false}?=> ';' Ws* '"' (~'"' | '"' '"')*  '"' |;
+	:{isHeader() == false}?=> ';' Ws* '"' (~'"' | '"' '"')*  '"' | /* nothing */;
 
 Field 	
 	@after {
 	    String text = removeSeparators(getText()); 
 	    setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
 	}
-	:{isHeader() == false}?=> (';' (Char| Separator)*) |;
+	:{isHeader() == false}?=> (';' (Char| Separator)*) | /* nothing */;
 
 //Block
 //CURLY_BLOCK_SCARF

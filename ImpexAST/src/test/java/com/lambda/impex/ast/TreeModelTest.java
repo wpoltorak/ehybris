@@ -6,13 +6,10 @@ import java.io.File;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.apache.commons.io.FileUtils;
-
-import com.lambda.impex.ast.ImpexANTLRStringStream;
-import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser;
 
 public class TreeModelTest {
 
@@ -21,7 +18,7 @@ public class TreeModelTest {
     private void init(final String name) throws Exception {
         final File file = new File(getClass().getResource(name).getFile());
         final String impex = FileUtils.readFileToString(file);
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
+        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         parser = new ImpexParser(tokens);
         parser.impex().getTree();
@@ -68,7 +65,7 @@ public class TreeModelTest {
 
     private CommonTree buildAST(final File file) throws Exception {
         final String impex = FileUtils.readFileToString(file);
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
+        final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final ImpexParser parser = new ImpexParser(tokens);
         return (CommonTree) parser.impex().getTree();

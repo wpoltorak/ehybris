@@ -4,25 +4,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 import org.apache.commons.io.FileUtils;
 
-import com.lambda.impex.ast.ImpexANTLRStringStream;
-import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser;
-
 public abstract class ModelTest {
 
     protected ImpexParser parser;
+    protected ImpexContext context;
 
     protected CommonTree init(final String name) throws Exception {
         final File file = new File(getClass().getResource(name).getFile());
         final String impex = FileUtils.readFileToString(file);
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
+        context = new ImpexContext();
+        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        parser = new ImpexParser(tokens);
+        parser = new ImpexParser(context, tokens);
         return (CommonTree) parser.impex().getTree();
     }
 

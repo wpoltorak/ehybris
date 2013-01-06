@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import com.lambda.impex.ast.ImpexContext;
 import com.lambda.impex.ast.ImpexError;
+import com.lambda.impex.ast.ImpexError.Type;
 import com.lambda.impex.ast.ImpexParser;
 
 public class ModifierNode implements IImpexNode {
@@ -29,7 +30,7 @@ public class ModifierNode implements IImpexNode {
             case ImpexParser.Unique:
             case ImpexParser.Virtual:
                 if (!Boolean.TRUE.toString().equalsIgnoreCase(value) && !Boolean.FALSE.toString().equalsIgnoreCase(value)) {
-                    context.addError(ImpexError.InvalidBoolean);
+                    context.addError(new ImpexError(Type.InvalidBoolean));
                 }
                 break;
 
@@ -48,18 +49,18 @@ public class ModifierNode implements IImpexNode {
                     new SimpleDateFormat(value);
                 } catch (final NullPointerException e) {
 
-                    context.addError(ImpexError.InvalidDateFormat);
+                    context.addError(new ImpexError(Type.InvalidDateFormat));
                 } catch (final IllegalArgumentException e) {
-                    context.addError(ImpexError.InvalidDateFormat);
+                    context.addError(new ImpexError(Type.InvalidDateFormat));
                 }
                 break;
             case ImpexParser.NumberFormat:
                 try {
                     new DecimalFormat(value);
                 } catch (final NullPointerException e) {
-                    context.addError(ImpexError.InvalidNumberFormat);
+                    context.addError(new ImpexError(Type.InvalidNumberFormat));
                 } catch (final IllegalArgumentException e) {
-                    context.addError(ImpexError.InvalidNumberFormat);
+                    context.addError(new ImpexError(Type.InvalidNumberFormat));
                 }
                 break;
             case ImpexParser.Default:
@@ -74,14 +75,14 @@ public class ModifierNode implements IImpexNode {
                     try {
                         toLocale(value);
                     } catch (final IllegalArgumentException ex) {
-                        context.addError(ImpexError.InvalidLang);
+                        context.addError(new ImpexError(Type.InvalidLang));
                     }
                 }
             case ImpexParser.MapDelimiter:
                 break;
             case ImpexParser.Mode:
                 if (!"append".equalsIgnoreCase(value) && !"remove".equalsIgnoreCase(value)) {
-                    context.addError(ImpexError.InvalidMode);
+                    context.addError(new ImpexError(Type.InvalidMode));
                 }
                 break;
             case ImpexParser.PathDelimiter:
@@ -91,10 +92,10 @@ public class ModifierNode implements IImpexNode {
                 try {
                     final Integer pos = Integer.valueOf(value);
                     if (pos.intValue() < 0) {
-                        context.addError(ImpexError.InvalidPosition);
+                        context.addError(new ImpexError(Type.InvalidPosition));
                     }
                 } catch (final NumberFormatException e) {
-                    context.addError(ImpexError.InvalidPosition);
+                    context.addError(new ImpexError(Type.InvalidPosition));
                 }
                 break;
         }

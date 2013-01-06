@@ -25,7 +25,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithSeparator() throws Exception {
         init("/macro/macro-with-separator.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(8, macros.size());
 
         assertSingleEntry(macros.get("$macro1"), 2, "Macro with separator+more");
@@ -42,7 +42,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithQuotedValue() throws Exception {
         init("/macro/macro-with-quoted-value.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
         assertSingleEntry(macros.get("$macro"), 1, "\"  This is a macro and much more  \"");
     }
@@ -51,7 +51,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithKeyword() throws Exception {
         init("/macro/macro-with-keyword.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(3, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro with default alias");
@@ -64,7 +64,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithComment() throws Exception {
         init("/macro/macro-with-comment.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(5, macros.size());
 
         assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=#xxx");
@@ -77,7 +77,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithWhitespace() throws Exception {
         init("/macro/macro-with-whitespace.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(4, macros.size());
 
         assertSingleEntry(macros.get("$macro"), 2, "");
@@ -90,7 +90,7 @@ public class MacroModelTest extends ModelTest {
     public void macroWithMultipleDefinitions() throws Exception {
         init("/macro/macro-duplicate.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(2, macros.size());
 
         assertSingleEntry(macros.get("$another"), 4, "true $and_one_more=xxx");
@@ -103,7 +103,7 @@ public class MacroModelTest extends ModelTest {
     public void macroInsideBlock() throws Exception {
         init("/macro/macro-inside-block.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(2, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 3, "This is a macro");
@@ -114,7 +114,7 @@ public class MacroModelTest extends ModelTest {
     public void macroFirstInBlock() throws Exception {
         init("/macro/macro-first-in-block.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro");
@@ -124,7 +124,7 @@ public class MacroModelTest extends ModelTest {
     public void macroLastInBlock() throws Exception {
         init("/macro/macro-last-in-block.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
         assertEntries(macros.get("$macro_def"), new int[] { 6, 10 }, new String[] { "This is a macro", "This is a $macro_def" });
     }
@@ -133,7 +133,7 @@ public class MacroModelTest extends ModelTest {
     public void macroInsideComment() throws Exception {
         init("/macro/macro-inside-comment.impex");
 
-        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = parser.getMacros();
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(0, macros.size());
     }
 

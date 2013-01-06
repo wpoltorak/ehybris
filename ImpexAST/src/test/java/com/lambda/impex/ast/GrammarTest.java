@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.Iterator;
 
+import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
@@ -14,10 +15,6 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-
-import com.lambda.impex.ast.ImpexANTLRStringStream;
-import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser;
 
 public class GrammarTest {
     public static final String S = System.getProperty("line.separator");
@@ -90,10 +87,11 @@ public class GrammarTest {
     @Test
     public void xx() throws Exception {
         final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex, impex.length));
+        final ImpexContext context = new ImpexContext();
+        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex, impex.length));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         printTokens(tokens);
-        final CommonTree tree = (CommonTree) new ImpexParser(tokens).impex().getTree();
+        final CommonTree tree = (CommonTree) new ImpexParser(context, tokens).impex().getTree();
         final DOTTreeGenerator gen = new DOTTreeGenerator();
         final StringTemplate st = gen.toDOT(tree);
         final File graph = new File("graph.dot");
@@ -110,11 +108,12 @@ public class GrammarTest {
     @Test
     public void yy() throws Exception {
         final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex));
+        final ImpexContext context = new ImpexContext();
+        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         // printTokens(tokens);
         System.out.println("__________________________");
-        final ImpexParser parser = new ImpexParser(tokens);
+        final ImpexParser parser = new ImpexParser(context, tokens);
         parser.parse().getTree();
     }
 
@@ -124,7 +123,8 @@ public class GrammarTest {
             final File file = it.next();
             try {
                 final String impex = FileUtils.readFileToString(file);
-                final ImpexLexer lexer = new ImpexLexer(new ImpexANTLRStringStream(impex)) {
+                final ImpexContext context = new ImpexContext();
+                final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex)) {
 
                     @Override
                     public void reportError(final RecognitionException e) {
@@ -134,7 +134,7 @@ public class GrammarTest {
                 };
                 final CommonTokenStream tokens = new CommonTokenStream(lexer);
                 printTokens(tokens);
-                final ImpexParser parser = new ImpexParser(tokens) {
+                final ImpexParser parser = new ImpexParser(context, tokens) {
                     @Override
                     public void emitErrorMessage(final String msg) {
                         super.emitErrorMessage(msg);

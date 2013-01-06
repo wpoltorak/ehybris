@@ -2,6 +2,7 @@ package com.lambda.impex.ast.nodes;
 
 import com.lambda.impex.ast.ImpexContext;
 import com.lambda.impex.ast.ImpexError;
+import com.lambda.impex.ast.ImpexError.Type;
 import com.lambda.impex.ast.ImpexParser;
 
 public class RefNode implements IImpexNode {
@@ -18,7 +19,7 @@ public class RefNode implements IImpexNode {
         switch (type) {
             case ImpexParser.DOCUMENTID_REF:
                 if (!context.hasDocumentID(name)) {
-                    context.addError(ImpexError.UnknownDocumentID);
+                    context.addError(new ImpexError(Type.UnknownDocumentID));
                 }
                 break;
             default:
