@@ -3,41 +3,40 @@ package com.lambda.impex.ast.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lambda.impex.ast.ImpexContext;
+import com.lambda.impex.ast.ImpexVisitor;
 
+public class AttributeNode extends ImpexASTNode {
 
-public class AttributeNode implements IImpexNode {
-
-    private final List<IImpexNode> expression = new ArrayList<IImpexNode>();
-    private final List<IImpexNode> modifiers = new ArrayList<IImpexNode>();
-    private IImpexNode name;
+    private final List<ImpexASTNode> expression = new ArrayList<ImpexASTNode>();
+    private final List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
+    private ImpexASTNode name;
 
     public AttributeNode() {
     }
 
-    public AttributeNode(final IImpexNode name) {
+    public AttributeNode(final ImpexASTNode name) {
         this.name = name;
     }
 
-    public void evaluate(final ImpexContext context) {
-        for (final IImpexNode item : expression) {
-            item.evaluate(context);
-        }
-
-        for (final IImpexNode modifier : modifiers) {
-            modifier.evaluate(context);
+    @Override
+    void doAccept(final ImpexVisitor visitor) {
+        final boolean acceptChildren = visitor.visit(this);
+        if (acceptChildren) {
+            acceptChild(visitor, name);
+            acceptChildren(visitor, expression);
+            acceptChildren(visitor, modifiers);
         }
     }
 
-    public void setName(final IImpexNode name) {
+    public void setName(final ImpexASTNode name) {
         this.name = name;
     }
 
-    public void addAttribute(final IImpexNode attribute) {
+    public void addAttribute(final ImpexASTNode attribute) {
         this.expression.add(attribute);
     }
 
-    public void addModifier(final IImpexNode modifier) {
+    public void addModifier(final ImpexASTNode modifier) {
         modifiers.add(modifier);
     }
 

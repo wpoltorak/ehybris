@@ -19,104 +19,111 @@ import com.lambda.impex.ast.nodes.AttributeNameNode;
 import com.lambda.impex.ast.nodes.AttributeNode;
 import com.lambda.impex.ast.nodes.BlockNode;
 import com.lambda.impex.ast.nodes.HeaderNode;
-import com.lambda.impex.ast.nodes.IImpexNode;
+import com.lambda.impex.ast.nodes.ImpexASTNode;
 import com.lambda.impex.ast.nodes.ImpexNode;
 import com.lambda.impex.ast.nodes.ModifierNode;
 import com.lambda.impex.ast.nodes.RecordNode;
 import com.lambda.impex.ast.nodes.RefNode;
 }
 
-walk	returns [IImpexNode impex]
-	:impex {impex = $impex.node;};
+walk	[ImpexContext context] returns [ImpexASTNode impex]
+	:impex [context] {impex = $impex.node;};
 
-impex	returns [ImpexNode node]
+impex	[ImpexContext context] returns [ImpexNode node]
 	@init{
 		ImpexNode in = new ImpexNode();
 		node = in;
 	}
-	:^(IMPEX  ^(BLOCKS (block {in.addBlock($block.node);})*));
+	:^(IMPEX  ^(BLOCKS (block[context] {in.addBlock($block.node);})*));
 
-block	returns [IImpexNode node]
+block	[ImpexContext context] returns [ImpexASTNode node]
 	@init { 
- 		 BlockNode bn = new BlockNode(); 
- 		 node = bn; 
-	}  
-	:^(BLOCK (header {bn.setHeader($header.node);})
-	^(RECORDS (record {bn.addRecord($record.node);})+)
+		ImpexASTNode header;
+		List<ImpexASTNode> records = new ArrayList<ImpexASTNode>();
+	} 
+	@after {
+ 		 node = new BlockNode(header, records); 
+	}
+	
+	:^(BLOCK (header [context] {header = $header.node;})
+	^(RECORDS (record [context] {records.add($record.node);})*)
 	);
 
-header	returns [IImpexNode node]
+header	[ImpexContext context] returns [ImpexASTNode node]
 	@init{
-		HeaderNode hn = new HeaderNode();
-		node = hn;
+		CommonToken mode;
+		CommonToken type;
+		CommonToken documentID = null;
+		List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
+		List<ImpexASTNode> attributes = new ArrayList<ImpexASTNode>();
 	}
-	:^(HEADER (headerMode {hn.setMode($headerMode.mode.getType());})
-	^(TYPE headerTypeName {hn.setType($headerTypeName.text);}) 
-	^(MODIFIERS (headerModifierAssignment {hn.addModifier($headerModifierAssignment.node);})*) 
-	^(DOCUMENTID(DocumentID{hn.setDocumentID($DocumentID.text);})?) 
-	^(ATTRIBUTES (attribute {hn.addAttribute($attribute.node);})*)) ;
+	@after{
+		node = new HeaderNode(mode, type, documentID, modifiers, attributes);
+	}
+	:^(HEADER (headerMode {mode = (CommonToken)$headerMode.mode.getToken();})
+	^(TYPE headerTypeName {type = (CommonToken)$headerTypeName.type;}) 
+	^(MODIFIERS (headerModifierAssignment [context] {modifiers.add($headerModifierAssignment.node);})*) 
+	^(DOCUMENTID(DocumentID{documentID = (CommonToken)$DocumentID.token;})?) 
+	^(ATTRIBUTES (attribute [context] {attributes.add($attribute.node);})*)) ;
 
 
-headerModifierAssignment	 returns [IImpexNode node]
-		: ^(MODIFIER headerModifier boolOrClassname){node = new ModifierNode($headerModifier.modifier.getType(), $boolOrClassname.text);};
+headerModifierAssignment	 [ImpexContext context] returns [ImpexASTNode node]
+		: ^(MODIFIER headerModifier ValueAssignment){node = new ModifierNode($headerModifier.modifier.getType(), (CommonToken)$ValueAssignment.token);};
 
-boolOrClassname returns [String text]
-	:v=(Bool | Classname){text = $v.text;};
-	
-headerModifier returns [Tree modifier]
+headerModifier  returns [CommonTree modifier]
 	:v=(BatchMode | CacheUnique | Processor) {modifier = $v;};
 
-record	 returns [IImpexNode node]
+record	[ImpexContext context] returns [ImpexASTNode node]
 	@init{
 	    RecordNode rn = new RecordNode(); 
  	    node = rn; 
 	}
    	: ^(RECORD 
    	^(SUBTYPE (Identifier {rn.setSubType($Identifier.text);})?) 
-   	^(FIELDS (field  {rn.addField($field.text);})+)
+   	^(FIELDS (field [context]  {rn.addField($field.text);})+)
    	);
 
-field	returns [String text]
+field	[ImpexContext context] returns [String text]
 	:v=(QuotedField | Field){text = $v.text;};
 			
 
-attributeName 	 returns [IImpexNode node]
+attributeName [ImpexContext context] returns [ImpexASTNode node]
 	@init{
 	    AttributeNameNode ann = new AttributeNameNode(); 
  	    node = ann; 
 	}
 	:^(ATTRIBUTE_NAME  
-	(Macrodef {ann.init($Macrodef.text, $Macrodef.type);})? 
-	(SpecialAttribute {ann.init($SpecialAttribute.text, $SpecialAttribute.type);})? 
-	(Identifier {ann.init($Identifier.text, $Identifier.type);} (attrName = attributeName {ann.setSubName($attrName.node);})?)?);
+	(Macrodef {ann.init((CommonToken)$Macrodef.token);})? 
+	(SpecialAttribute {ann.init((CommonToken)$SpecialAttribute.token);})? 
+	(Identifier {ann.init((CommonToken)$Identifier.token);} (attrName = attributeName [context]{ann.setSubName($attrName.node);})?)?);
 	
-attribute	 returns [IImpexNode node]
+attribute	[ImpexContext context] returns [ImpexASTNode node]
 	@init{
 	    AttributeNode an = new AttributeNode(); 
  	    node = an; 
 	}
 
-	:^(ATTRIBUTE attributeName {an.setName($attributeName.node);}
-	 ^(ITEM_EXPRESSION (attr = attribute {an.addAttribute($attr.node);})* 
-	 ^(DOCUMENTID_REF (DocumentID{an.addAttribute(new RefNode($DocumentID.text, $DocumentID.type));})*
+	:^(ATTRIBUTE attributeName [context] {an.setName($attributeName.node);}
+	 ^(ITEM_EXPRESSION (attr = attribute [context]{an.addAttribute($attr.node);})* 
+	 ^(DOCUMENTID_REF (DocumentID{an.addAttribute(new RefNode((CommonToken)$DocumentID.token));})*
 	 )
 	 ) 
-	^(MODIFIERS (attributeModifierAssignment {an.addModifier($attributeModifierAssignment.node);})*)
+	^(MODIFIERS (attributeModifierAssignment [context]{an.addModifier($attributeModifierAssignment.node);})*)
 	);
 	
-attributeModifierAssignment	 returns [IImpexNode node]
-	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier.getType(), $ValueAssignment.text);};
+attributeModifierAssignment [ImpexContext context]	 returns [ImpexASTNode node]
+	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier.getType(), (CommonToken)$ValueAssignment.token);};
 	
-attributeModifier returns [Tree  modifier]
+attributeModifier  returns [CommonTree  modifier]
 	: v=(Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual){modifier = $v;};
 
-headerMode returns [Tree mode]
+headerMode  returns [CommonTree mode]
 	:v=(Insert | InsertUpdate | Update | Remove){mode = $v;};
 	
-headerTypeName returns [String text]
-	: Identifier {text = $Identifier.text;}
-	|headerMode {text = $headerMode.mode.getText();}
-	|attributeModifier {text = $attributeModifier.modifier.getText();}
-	|headerModifier {text = $headerModifier.modifier.getText();};	
+headerTypeName  returns [CommonToken type]
+	: Identifier {type = (CommonToken)$Identifier.token;}
+	|headerMode {type = (CommonToken)$headerMode.mode.getToken();}
+	|attributeModifier {type = (CommonToken)$attributeModifier.modifier.getToken();}
+	|headerModifier {type = (CommonToken)$headerModifier.modifier.getToken();};	
 		

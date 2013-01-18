@@ -35,11 +35,11 @@ public class ImpexEditor extends TextEditor {
 
     public ImpexEditor() {
         colorManager = new ColorManager();
-        setSourceViewerConfiguration(new ImpexConfiguration(this, colorManager));
-        setDocumentProvider(new ImpexDocumentProvider());
+        setSourceViewerConfiguration(new ImpexEditorConfiguration(this, colorManager));
+        // setDocumentProvider(new ImpexDocumentProvider());
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
-        //        getVerticalRuler().getModel().addAnnotation(annotation, position);
+        // getVerticalRuler().getModel().addAnnotation(annotation, position);
     }
 
     @Override
@@ -47,20 +47,19 @@ public class ImpexEditor extends TextEditor {
         super.createPartControl(parent);
 
         final ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
-
         projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
         projectionSupport.install();
 
-        //turn projection mode on
+        // turn projection mode on
         viewer.doOperation(ProjectionViewer.TOGGLE);
 
         annotationModel = viewer.getProjectionAnnotationModel();
     }
 
     /**
-     * Returns the Ant model for the current editor input of this editor.
+     * Returns the Impex model for the current editor input of this editor.
      * 
-     * @return the Ant model for this editor or <code>null</code>
+     * @return the Impex model for this editor or <code>null</code>
      */
     public IImpexModel getImpexModel() {
         if (impexModel == null) {
@@ -75,7 +74,8 @@ public class ImpexEditor extends TextEditor {
 
     @Override
     protected ISourceViewer createSourceViewer(final Composite parent, final IVerticalRuler ruler, final int styles) {
-        final ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
+        final ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(),
+                styles);
         // ensure decoration support has been created and configured.
         getSourceViewerDecorationSupport(viewer);
 
@@ -85,10 +85,10 @@ public class ImpexEditor extends TextEditor {
     @Override
     protected CompositeRuler createCompositeRuler() {
         final CompositeRuler ruler = new CompositeRuler();
-        //        ruler.addDecorator(0, new AnnotationRulerColumn(VERTICAL_RULER_WIDTH));
-        //        if (isLineNumberRulerVisible()) {
-        //            ruler.addDecorator(1, createLineNumberRulerColumn());
-        //        }
+        // ruler.addDecorator(0, new AnnotationRulerColumn(VERTICAL_RULER_WIDTH));
+        // if (isLineNumberRulerVisible()) {
+        // ruler.addDecorator(1, createLineNumberRulerColumn());
+        // }
         return ruler;
     }
 
@@ -100,8 +100,8 @@ public class ImpexEditor extends TextEditor {
     public void updateFoldingStructure(final List<Position> positions) {
         final Annotation[] annotations = new Annotation[positions.size()];
 
-        //this will hold the new annotations along
-        //with their corresponding positions
+        // this will hold the new annotations along
+        // with their corresponding positions
         final HashMap<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
 
         for (int i = 0; i < positions.size(); i++) {
@@ -122,7 +122,7 @@ public class ImpexEditor extends TextEditor {
         super.doSave(monitor);
         final IImpexModel model = getImpexModel();
         model.reconcile();
-        //TODO need to update editor image 
+        // TODO need to update editor image
         // updateEditorImage(model);
     }
 

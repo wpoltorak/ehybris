@@ -7,28 +7,44 @@ import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 
 import com.lambda.impex.ast.ImpexError.Type;
-import com.lambda.impex.ast.nodes.IImpexNode;
+import com.lambda.impex.ast.nodes.ImpexASTNode;
 
 public class ImpexCompiler {
 
     private ImpexContext context;
+    private ImpexVisitor visitor;
 
     public ImpexCompiler() {
     }
 
     public void compile(final char[] source) {
+        try {
+            internalCompile(source);
+        } catch (final RecognitionException e) {
+            final ImpexError error = new ImpexError(Type.GeneralSyntaxError);
+            error.setText(e.getMessage());
+            context.addError(error);
+            e.printStackTrace();
+        }
+    }
+
+    protected void internalCompile(final char[] source) throws RecognitionException {
+        if (visitor == null) {
+            throw new IllegalStateException("Impex visitor has not been set");
+        }
+
         context = new ImpexContext();
         final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(source, source.length));
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final ImpexParser parser = new ImpexParser(context, tokens);
-        try {
-            final CommonTree tree = (CommonTree) parser.impex().getTree();
+
+        final CommonTree tree = (CommonTree) parser.impex().getTree();
+        visitor.prepare(context);
+        if (parser.getNumberOfSyntaxErrors() <= 0) {
             final CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
             final ImpexTreeWalker walker = new ImpexTreeWalker(nodes);
-            final IImpexNode impex = walker.walk();
-            impex.evaluate(context);
-        } catch (final RecognitionException e) {
-            context.addError(new ImpexError(Type.ParserSyntaxError));
+            final ImpexASTNode impex = walker.walk(context);
+            impex.accept(visitor);
         }
     }
 
@@ -36,4 +52,7 @@ public class ImpexCompiler {
         return context;
     }
 
+    public void setVisitor(final ImpexVisitor visitor) {
+        this.visitor = visitor;
+    }
 }

@@ -18,7 +18,9 @@ import com.lambda.impex.ast.ImpexError.Type;
 
 public class ImpexContext {
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
-    private final Set<String> documentIDs = new HashSet<String>();
+    private final Map<String, CommonToken> documentIDs = new HashMap<String, CommonToken>();
+    private final Set<String> duplicateDocumentIDs = new HashSet<String>();
+
     private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
     private final List<ImpexError> errors = new ArrayList<ImpexError>();
 
@@ -42,11 +44,11 @@ public class ImpexContext {
     }
 
     Set<String> getDocumentIDs() {
-        return documentIDs;
+        return documentIDs.keySet();
     }
 
     public boolean hasDocumentID(final String documentID) {
-        return documentIDs.contains(documentID);
+        return documentIDs.containsKey(documentID);
     }
 
     public String getMacroVal(final String macroDef, final int refLine) {
@@ -82,16 +84,22 @@ public class ImpexContext {
         error.setLength(1);
         error.setStartIndex(e.index);
         error.setStopIndex(e.index + 1);
+
         addError(error);
     }
 
     void registerError(final CommonToken token) {
-        final ImpexError error = new ImpexError(ImpexError.Type.ParserSyntaxError);
+        registerError(token, ImpexError.Type.ParserSyntaxError);
+    }
+
+    void registerError(final CommonToken token, final ImpexError.Type type) {
+        final ImpexError error = new ImpexError(type);
         error.setLineNumber(token.getLine());
         error.setPositionInRow(token.getCharPositionInLine());
         error.setLength(token.getText().length());
         error.setStartIndex(token.getStartIndex());
         error.setStopIndex(token.getStopIndex());
+        error.setText(token.getText());
         addError(error);
     }
 
@@ -107,16 +115,16 @@ public class ImpexContext {
 
     void registerDocumentID(final CommonToken documentID) {
         final String text = documentID.getText();
-        if (documentIDs.contains(text)) {
-            final ImpexError error = new ImpexError(ImpexError.Type.DuplicateDocumentID);
-            error.setLineNumber(documentID.getLine());
-            error.setLength(text.length());
-            error.setPositionInRow(documentID.getCharPositionInLine());
-            error.setStartIndex(documentID.getStartIndex());
-            error.setStopIndex(documentID.getStopIndex());
-            errors.add(error);
+        if (documentIDs.containsKey(text)) {
+            registerError(documentID, ImpexError.Type.DuplicateDocumentID);
+
+            //if it is the first duplicate report error for original documentID as well 
+            if (!duplicateDocumentIDs.contains(text)) {
+                registerError(documentIDs.get(text), ImpexError.Type.DuplicateDocumentID);
+                duplicateDocumentIDs.add(text);
+            }
             return;
         }
-        documentIDs.add(text);
+        documentIDs.put(text, documentID);
     }
 }

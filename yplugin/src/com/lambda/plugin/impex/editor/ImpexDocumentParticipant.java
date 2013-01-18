@@ -1,26 +1,32 @@
 package com.lambda.plugin.impex.editor;
 
+import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentPartitioner;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
-import org.eclipse.ui.editors.text.StorageDocumentProvider;
 
-public class ImpexStorageDocumentProvider extends StorageDocumentProvider {
+public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
-    @Override
-    protected void setupDocument(final Object element, final IDocument document) {
-        if (document != null) {
-            final IDocumentPartitioner partitioner = new ImpexPartitioner(new ImpexPartitionScanner(), new String[] {
-                    ImpexPartitionScanner.IMPEX_HEADER, ImpexPartitionScanner.IMPEX_MACRO });
-            partitioner.connect(document);
+    public void setup(IDocument document) {
+        final IDocumentPartitioner partitioner = new ImpexPartitioner(new ImpexPartitionScanner(),
+                ImpexPartitionScanner.CONTENT_TYPES);
+        if (document instanceof IDocumentExtension3) {
+            ((IDocumentExtension3) document).setDocumentPartitioner(ImpexPartitioner.IMPEX_PARTITIONING, partitioner);
+        } else {
             document.setDocumentPartitioner(partitioner);
         }
+        partitioner.connect(document);
     }
 
     public class ImpexPartitioner extends FastPartitioner {
+
+        public static final String IMPEX_PARTITIONING = "___impex_partitioning";
 
         public ImpexPartitioner(final IPartitionTokenScanner scanner, final String[] legalContentTypes) {
             super(scanner, legalContentTypes);
@@ -32,14 +38,21 @@ public class ImpexStorageDocumentProvider extends StorageDocumentProvider {
             printPartitions(document);
         }
 
+        @Override
+        public IRegion documentChanged2(DocumentEvent e) {
+            IRegion region = super.documentChanged2(e);
+            printPartitions(fDocument);
+            return region;
+        }
+
         public void printPartitions(final IDocument document) {
             final StringBuffer buffer = new StringBuffer();
 
             final ITypedRegion[] partitions = computePartitioning(0, document.getLength());
             for (int i = 0; i < partitions.length; i++) {
                 try {
-                    buffer.append("Partition type: " + partitions[i].getType() + ", offset: " + partitions[i].getOffset() + ", length: "
-                            + partitions[i].getLength());
+                    buffer.append("Partition type: " + partitions[i].getType() + ", offset: "
+                            + partitions[i].getOffset() + ", length: " + partitions[i].getLength());
                     buffer.append("\n");
                     buffer.append("Text:\n");
                     buffer.append(document.get(partitions[i].getOffset(), partitions[i].getLength()));
@@ -51,4 +64,5 @@ public class ImpexStorageDocumentProvider extends StorageDocumentProvider {
             System.out.print(buffer);
         }
     }
+
 }

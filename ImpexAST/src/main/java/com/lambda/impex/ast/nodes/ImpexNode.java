@@ -3,23 +3,26 @@ package com.lambda.impex.ast.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lambda.impex.ast.ImpexContext;
+import com.lambda.impex.ast.ImpexVisitor;
 
+public class ImpexNode extends ImpexASTNode {
 
-public class ImpexNode implements IImpexNode {
-
-    private final List<IImpexNode> blocks = new ArrayList<IImpexNode>();
+    private final List<ImpexASTNode> blocks = new ArrayList<ImpexASTNode>();
 
     public ImpexNode() {
     }
 
-    public void evaluate(final ImpexContext context) {
-        for (final IImpexNode block : blocks) {
-            block.evaluate(context);
+    @Override
+    void doAccept(final ImpexVisitor visitor) {
+        final boolean visitChildren = visitor.visit(this);
+        if (visitChildren) {
+            for (final ImpexASTNode node : blocks) {
+                node.doAccept(visitor);
+            }
         }
     }
 
-    public void addBlock(final IImpexNode node) {
+    public void addBlock(final ImpexASTNode node) {
         blocks.add(node);
     }
 }

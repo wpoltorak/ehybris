@@ -4,14 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lambda.impex.ast.ImpexContext;
+import com.lambda.impex.ast.ImpexVisitor;
 
-
-public class RecordNode implements IImpexNode {
+public class RecordNode extends ImpexASTNode {
 
     private String subtype;
     private final List<String> fields = new ArrayList<String>();
 
     public RecordNode() {
+    }
+
+    @Override
+    void doAccept(final ImpexVisitor visitor) {
+        final boolean acceptChildren = visitor.visit(this);
+        if (acceptChildren) {
+            //            for (final ImpexASTNode node : fields) {
+            //                node.accept(visitor);
+            //            }
+        }
+
     }
 
     public void evaluate(final ImpexContext context) {

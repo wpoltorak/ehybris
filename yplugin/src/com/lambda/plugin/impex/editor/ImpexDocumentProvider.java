@@ -5,15 +5,21 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
+import org.eclipse.ui.texteditor.IDocumentProvider;
 
+import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
 
 public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
     public ImpexDocumentProvider() {
-        setParentDocumentProvider(new TextFileDocumentProvider(new ImpexStorageDocumentProvider()));
+        IDocumentProvider provider = new TextFileDocumentProvider();
+        provider = new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING, new ImpexDocumentParticipant(),
+                provider);
+        setParentDocumentProvider(provider);
     }
 
     @Override
@@ -25,7 +31,8 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
         final ImpexFileInfo impexFileInfo = (ImpexFileInfo) fileInfo;
         final IDocument document = fileInfo.fTextFileBuffer.getDocument();
-        impexFileInfo.model = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element : null);
+        impexFileInfo.model = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element
+                : null);
         return fileInfo;
     }
 

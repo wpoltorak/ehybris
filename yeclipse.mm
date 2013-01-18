@@ -182,6 +182,9 @@
 <node CREATED="1355773794162" ID="ID_1868712476" MODIFIED="1355773811950" TEXT="nie trzeba specjalnego parsowania, walker zajmie si&#x119; tym przypadkiem i zglosi blad"/>
 </node>
 <node CREATED="1355685370996" ID="ID_754403165" MODIFIED="1355693633061" TEXT="sprawdzic czy typ jest abstrakcyjny jesli tak to info gdy nie ma subtypu + sprawdzic hierarchie dziedziczenia"/>
+<node CREATED="1358194517542" ID="ID_1460040549" MODIFIED="1358194540759" TEXT="documentid - error gdy wartosc w rekordzie sie powtarza - sprawdzic"/>
+<node CREATED="1358194541795" ID="ID_717377560" MODIFIED="1358194565124" TEXT="modifiery - wartosci wszedzie maja miec mozliwosc wstawienia makra"/>
+<node CREATED="1358194569831" ID="ID_90513017" MODIFIED="1358194599220" TEXT="makro jako osobny wezel w drzewie?"/>
 </node>
 </node>
 </node>

@@ -8,3 +8,4 @@ xxx
 INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
 ;$regulargroup;customergroup
 yyy
+;othergroup;lastgroup

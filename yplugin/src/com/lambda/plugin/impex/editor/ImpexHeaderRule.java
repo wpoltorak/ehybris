@@ -79,5 +79,4 @@ public class ImpexHeaderRule extends EndOfLineRule {
 
         return true;
     }
-
 }

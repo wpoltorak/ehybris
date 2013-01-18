@@ -1,22 +1,33 @@
 package com.lambda.impex.ast.nodes;
 
-import com.lambda.impex.ast.ImpexContext;
+import org.antlr.runtime.CommonToken;
 
-public class AttributeNameNode implements IImpexNode {
+import com.lambda.impex.ast.ImpexContext;
+import com.lambda.impex.ast.ImpexVisitor;
+
+public class AttributeNameNode extends ImpexASTNode {
 
     private String name;
     private int type;
-    private IImpexNode subName;
+    private ImpexASTNode subName;
 
     public AttributeNameNode() {
     }
 
-    public void init(final String name, final int type) {
-        this.name = name;
-        this.type = type;
+    @Override
+    void doAccept(final ImpexVisitor visitor) {
+        final boolean acceptChildren = visitor.visit(this);
+        if (acceptChildren) {
+            acceptChild(visitor, subName);
+        }
     }
 
-    public void setSubName(final IImpexNode subName) {
+    public void init(final CommonToken token) {
+        this.name = token.getText();
+        this.type = token.getType();
+    }
+
+    public void setSubName(final ImpexASTNode subName) {
         this.subName = subName;
     }
 
@@ -36,7 +47,7 @@ public class AttributeNameNode implements IImpexNode {
         this.type = type;
     }
 
-    public IImpexNode getSubName() {
+    public ImpexASTNode getSubName() {
         return subName;
     }
 

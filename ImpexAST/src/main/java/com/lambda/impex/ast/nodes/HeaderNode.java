@@ -1,54 +1,54 @@
 package com.lambda.impex.ast.nodes;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.lambda.impex.ast.ImpexContext;
+import org.antlr.runtime.CommonToken;
 
+import com.lambda.impex.ast.ImpexVisitor;
 
-public class HeaderNode implements IImpexNode {
+public class HeaderNode extends ImpexASTNode {
 
-    private final List<IImpexNode> modifiers = new ArrayList<IImpexNode>();
-    private final List<IImpexNode> attributes = new ArrayList<IImpexNode>();
-    private int mode;
-    private String type;
-    private String documentID;
+    private final List<ImpexASTNode> modifiers;
+    private final List<ImpexASTNode> attributes;
+    private final int mode;
+    private final String type;
+    private final String documentID;
 
-    public HeaderNode() {
+    public HeaderNode(final CommonToken mode, final CommonToken type, final CommonToken documentID, final List<ImpexASTNode> modifiers,
+            final List<ImpexASTNode> attributes) {
+        this.type = type.getText();
+        this.mode = mode.getType();
+        this.documentID = documentID != null ? documentID.getText() : null;
+        this.modifiers = modifiers;
+        this.attributes = attributes;
     }
 
-    public void evaluate(final ImpexContext context) {
-        //        try {
-        //            Class.forName(type);
-        //        } catch (final ClassNotFoundException e) {
-        //            context.addError(ImpexError.UnknownType);
-        //        }
-        for (final IImpexNode modifier : modifiers) {
-            modifier.evaluate(context);
+    @Override
+    void doAccept(final ImpexVisitor visitor) {
+        final boolean acceptChildren = visitor.visit(this);
+        if (acceptChildren) {
+            acceptChildren(visitor, modifiers);
+            acceptChildren(visitor, attributes);
         }
-
-        for (final IImpexNode attribute : attributes) {
-            attribute.evaluate(context);
-        }
     }
 
-    public void addModifier(final IImpexNode modifier) {
-        modifiers.add(modifier);
+    public List<ImpexASTNode> getModifiers() {
+        return modifiers;
     }
 
-    public void addAttribute(final IImpexNode attribute) {
-        attributes.add(attribute);
+    public int getMode() {
+        return mode;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public String getType() {
+        return type;
     }
 
-    public void setMode(final int mode) {
-        this.mode = mode;
+    public String getDocumentID() {
+        return documentID;
     }
 
-    public void setDocumentID(final String documentID) {
-        this.documentID = documentID;
+    public List<ImpexASTNode> getAttributes() {
+        return attributes;
     }
 }

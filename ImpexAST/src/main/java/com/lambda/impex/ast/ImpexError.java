@@ -3,7 +3,7 @@ package com.lambda.impex.ast;
 public class ImpexError {
     public enum Type {
         InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode, InvalidLang, InvalidNumberFormat, InvalidDateFormat,
-        UnknownType, UnknownDocumentID, UnknownMacro, DuplicateDocumentID, ParserSyntaxError, LexerSyntaxError;
+        General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, DuplicateDocumentID, ParserSyntaxError, LexerSyntaxError;
     }
 
     private int lineNumber;
@@ -11,6 +11,9 @@ public class ImpexError {
     private int startIndex;
     private int stopIndex;
     private Type type;
+    private int length;
+    private String text;
+    private String messageCode;
 
     public ImpexError(final Type type) {
         this.type = type;
@@ -23,9 +26,6 @@ public class ImpexError {
     public void setType(final Type type) {
         this.type = type;
     }
-
-    private String messageCode;
-    private int length;
 
     public int getLineNumber() {
         return lineNumber;
@@ -73,5 +73,13 @@ public class ImpexError {
 
     public int getLength() {
         return length;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(final String text) {
+        this.text = text;
     }
 }

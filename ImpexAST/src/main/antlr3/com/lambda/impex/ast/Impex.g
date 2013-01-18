@@ -59,11 +59,12 @@ import java.util.regex.Matcher;
 
 @parser::members {
 
-private ImpexContext context;
+private ImpexContext context = new ImpexContext();
 
+// comment out this constructor if you need to debug in ANTLRWorks
 public ImpexParser(final ImpexContext context, final TokenStream input) {
-    this(input, new RecognizerSharedState());
-    this.context = context;
+   this(input);
+   this.context = context;
 }
 
 @Override
@@ -74,6 +75,80 @@ public void reportError(final RecognitionException e) {
     context.registerError( (CommonToken)e.token);
     super.reportError(e);
 }
+
+    /**
+     * Use the current stacked followset to work out the valid tokens that can follow on from the current point in the parse, then recover
+     * by eating tokens that are not a member of the follow set we compute.
+     * 
+     * This method is used whenever we wish to force a sync, even though the parser has not yet checked LA(1) for alt selection. This is
+     * useful in situations where only a subset of tokens can begin a new construct (such as the start of a new statement in a block) and we
+     * want to proactively detect garbage so that the current rule does not exit on on an exception.
+     * 
+     * We could override recover() to make this the default behavior but that is too much like using a sledge hammer to crack a nut. We want
+     * finer grained control of the recovery and error mechanisms.
+     * 
+     * @author Jim Idle
+     * @see http://www.antlr.org/wiki/display/ANTLR3/Custom+Syntax+Error+Recovery
+     * 
+     * @param follow set of tokens to recover to
+     */
+    private void syncToSet() {
+        // Compute the followset that is in context wherever we are in the
+        // rule chain/stack
+        BitSet follow = state.following[state._fsp]; //computeContextSensitiveRuleFOLLOW();
+        syncToSet(follow);
+    }
+
+    /**
+     * This method synchronizes input with the given token set.<br/>
+     * Used when due to an error antlr cannot loop back to correct position in the stream.<br/>
+     * 
+     * @author Jim Idle
+     * @see http://www.antlr.org/wiki/display/ANTLR3/Custom+Syntax+Error+Recovery
+     * 
+     * @param follow set of tokens to recover to
+     */
+    protected void syncToSet(final BitSet follow) {
+        int mark = -1;
+        try {
+            mark = input.mark();
+            // Consume all tokens in the stream until we find a member of the follow
+            // set, which means the next production should be guaranteed to be happy.
+            //
+            while (!follow.member(input.LA(1))) {
+                if (input.LA(1) == Token.EOF) {
+                    // Looks like we didn't find anything at all that can help us here
+                    // so we need to rewind to where we were and let normal error handling
+                    // bail out.
+                    //
+                    input.rewind();
+                    mark = -1;
+                    return;
+                }
+                final CommonToken token = (CommonToken) input.LT(1);
+                //register error only if token is not blank
+                if (token.getText() != null && token.getText().trim().length() != 0) {
+                    context.registerError(token);
+                }
+
+                input.consume();
+                // Now here, because you are consuming some tokens, yu will probably want
+                // to raise an error message such as "Spurious elements after the class member were discarded"
+                // using whatever your override of displayRecognitionError() routine does to record
+                // error messages. The exact error my depend on context etc.
+            }
+        } catch (final Exception e) {
+            // Just ignore any errors here, we will just let the recognizer
+            // try to resync as normal - something must be very screwed.
+            //
+        } finally {
+            // Always release the mark we took
+            //
+            if (mark != -1) {
+                input.release(mark);
+            }
+        }
+    }
 }
 
 @lexer::members {
@@ -124,31 +199,34 @@ private boolean isMacroAssignment() {
 }
 
 
-    private boolean isArgumentModifierAssignment() {
-        switch (lastToken.getType()) {
-            case Alias:
-            case AllowNull:
-            case CellDecorator:
-            case CollectionDelimiter:
-            case Dateformat:
-            case Default:
-            case ForceWrite:
-            case IgnoreKeyCase:
-            case IgnoreNull:
-            case KeyToValueDelimiter:
-            case Lang:
-            case MapDelimiter:
-            case Mode:
-            case NumberFormat:
-            case PathDelimiter:
-            case Pos:
-            case Translator:
-            case Unique:
-            case Virtual:
-                return true;
-        }
-        return false;
+private boolean isModifierAssignment() {
+    switch (lastToken.getType()) {
+        case Alias:
+        case AllowNull:
+        case CellDecorator:
+        case CollectionDelimiter:
+        case Dateformat:
+        case Default:
+        case ForceWrite:
+        case IgnoreKeyCase:
+        case IgnoreNull:
+        case KeyToValueDelimiter:
+        case Lang:
+        case MapDelimiter:
+        case Mode:
+        case NumberFormat:
+        case PathDelimiter:
+        case Pos:
+        case Translator:
+        case Unique:
+        case Virtual:
+        case BatchMode:
+        case CacheUnique:
+        case Processor:
+            return true;
     }
+    return false;
+}
 
 private boolean isHeader(){
      return isHeader;
@@ -173,39 +251,42 @@ private String removeLineBreaks(final String text){
 parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
 
+sync
+	@init{
+	    syncToSet();
+	}:/* nothing */;
 
-impex	: (Lb |  block | macro)* EOF
+impex	: sync ((Lb |  block | macro)  sync)* EOF
 	 -> ^(IMPEX ^(BLOCKS block*));
 catch [RecognitionException ex] {
     reportError(ex);
     consumeUntil(input, new BitSet(new long[] { Insert, InsertUpdate, Update, Remove, Macrodef }));
 }
 	 
-sync	@init{
-	    sync();
-	}:/* nothing */	;
-
-block	: header (Lb+ (macro Lb*)* record)+
-	-> ^(BLOCK header ^(RECORDS record+));
+block	: header  (((Lb )+ (macro  (Lb )*)* record) )*
+	-> ^(BLOCK header ^(RECORDS record*));
 
 header
-	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | DoubleQuote attribute DoubleQuote))* (Semicolon DocumentID{context.registerDocumentID((CommonToken)$DocumentID);} (Semicolon (attribute | DoubleQuote attribute DoubleQuote))*)? 
+	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | quote attribute quote))* (Semicolon DocumentID{context.registerDocumentID((CommonToken)$DocumentID);} (Semicolon (attribute | quote attribute quote))*)? 
 	-> ^(HEADER headerMode ^(TYPE headerTypeName) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
 
-headerModifierAssignment: headerModifier Equals boolOrClassname
-	-> ^(MODIFIER headerModifier boolOrClassname);
+quote	:DoubleQuote | Quote;
 
-boolOrClassname
-	:Bool | Classname;
-	
+headerModifierAssignment: headerModifier ValueAssignment
+	-> ^(MODIFIER headerModifier ValueAssignment);
+
 headerModifier
 	:BatchMode | CacheUnique | Processor;
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? field+
+   	: Identifier? (field )+
     	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
-    	
+catch [RecognitionException ex] {
+    reportError(ex);
+    consumeUntil(input, new BitSet(new long[] { Lb }));
+}
+	
 field	:QuotedField | Field ;
 
 //handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
@@ -339,6 +420,7 @@ Virtual		:'virtual';
 Comma 	:',';
 Dot	:'.';
 DoubleQuote	:'"';
+Quote	:'\'';
 Semicolon	:';';
 RBracket	:']';
 LBracket	:'[';
@@ -370,7 +452,7 @@ Macrodef
 
 ValueAssignment
 	:{isMacroAssignment()}?		=> '=' (~('\r' | '\n') | Separator)*		{String text = removeSeparators(getText()); setText(text.substring(1, text.length()).trim());}
-	|{isArgumentModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
+	|{isModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
 	| /* nothing */;
 
 /*
@@ -443,9 +525,10 @@ fragment AttributeModifierval
 	)|;
 */
 //fragment Xxx :~('\r' | '\n' | ';' | '[' | ']');
-// \\ next line
+
+// There can be meaningless ;;;;;;;; at the end of  user rights section
 UserRights
-	:'$START_USERRIGHTS' .* '$END_USERRIGHTS' {$channel=HIDDEN;};
+	:'$START_USERRIGHTS' .* '$END_USERRIGHTS' (Semicolon | Ws)* {$channel=HIDDEN;};
 	
 BeanShell	
 	:(('#%' ~('\r' | '\n')* | '"#%' (~('"') | '"' '"')* '"') Lb?) {$channel=HIDDEN;};

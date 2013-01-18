@@ -80,6 +80,16 @@
             Create Kizoom Functest project
          </description>
       </wizard>
+      <wizard
+            category="com.lambda.plugin.wizard"
+            class="com.lambda.plugin.impex.wizards.ImpexNewWizard"
+            icon="icons/sample.gif"
+            id="com.lambda.plugin.impex.wizards.ImpexNewWizard"
+            name="Impex file">
+         <description>
+            Create new impex file
+         </description>
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -524,8 +534,28 @@
                icon="icons/sample.gif"
                id="com.lambda.plugin.impex.editor.ImpexEditor"
                name="ImpEx Editor">
+            <contentTypeBinding
+                  contentTypeId="com.lambda.plugin.impexFile">
+            </contentTypeBinding>
          </editor>
       </extension>
+      <extension
+            point="org.eclipse.ui.editors.documentProviders">
+         <provider
+               class="com.lambda.plugin.impex.editor.ImpexDocumentProvider"
+               extensions="impex"
+               id="com.lambda.plugin.impex.editor.ImpexDocumentProvider">
+         </provider>
+      </extension>
+	 <extension
+ 		id="com.lambda.plugin.impex.editor.ImpexDocumentSetupParticipant"
+       point="org.eclipse.core.filebuffers.documentSetup">
+    <participant
+    		extensions="impex"
+    		contentTypeId="com.lambda.plugin.impexFile"
+          class="com.lambda.plugin.impex.editor.ImpexDocumentParticipant">
+    </participant>
+       </extension>
       <extension
             id="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
             name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
@@ -555,4 +585,5 @@
     </super> 
   			<persistent value="true" /> 
 	</extension>
+
 </plugin>

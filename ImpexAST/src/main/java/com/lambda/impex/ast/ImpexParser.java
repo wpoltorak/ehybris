@@ -1,4 +1,4 @@
-// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-01-06 22:03:07
+// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-01-17 12:30:37
 
  package com.lambda.impex.ast;
   
@@ -25,7 +25,7 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "Quote", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
@@ -81,24 +81,25 @@ public class ImpexParser extends Parser {
     public static final int PathDelimiter=53;
     public static final int Pos=54;
     public static final int Processor=55;
-    public static final int QuotedField=56;
-    public static final int RBracket=57;
-    public static final int RECORD=58;
-    public static final int RECORDS=59;
-    public static final int RParenthesis=60;
-    public static final int Remove=61;
-    public static final int SUBTYPE=62;
-    public static final int Semicolon=63;
-    public static final int Separator=64;
-    public static final int SpecialAttribute=65;
-    public static final int TYPE=66;
-    public static final int Translator=67;
-    public static final int Unique=68;
-    public static final int Update=69;
-    public static final int UserRights=70;
-    public static final int ValueAssignment=71;
-    public static final int Virtual=72;
-    public static final int Ws=73;
+    public static final int Quote=56;
+    public static final int QuotedField=57;
+    public static final int RBracket=58;
+    public static final int RECORD=59;
+    public static final int RECORDS=60;
+    public static final int RParenthesis=61;
+    public static final int Remove=62;
+    public static final int SUBTYPE=63;
+    public static final int Semicolon=64;
+    public static final int Separator=65;
+    public static final int SpecialAttribute=66;
+    public static final int TYPE=67;
+    public static final int Translator=68;
+    public static final int Unique=69;
+    public static final int Update=70;
+    public static final int UserRights=71;
+    public static final int ValueAssignment=72;
+    public static final int Virtual=73;
+    public static final int Ws=74;
 
     // delegates
     public Parser[] getDelegates() {
@@ -128,11 +129,12 @@ public TreeAdaptor getTreeAdaptor() {
 
 
 
-    private ImpexContext context;
+    private ImpexContext context = new ImpexContext();
 
+    // comment out this constructor if you need to debug in ANTLRWorks
     public ImpexParser(final ImpexContext context, final TokenStream input) {
-        this(input, new RecognizerSharedState());
-        this.context = context;
+       this(input);
+       this.context = context;
     }
 
     @Override
@@ -144,6 +146,80 @@ public TreeAdaptor getTreeAdaptor() {
         super.reportError(e);
     }
 
+        /**
+         * Use the current stacked followset to work out the valid tokens that can follow on from the current point in the parse, then recover
+         * by eating tokens that are not a member of the follow set we compute.
+         * 
+         * This method is used whenever we wish to force a sync, even though the parser has not yet checked LA(1) for alt selection. This is
+         * useful in situations where only a subset of tokens can begin a new construct (such as the start of a new statement in a block) and we
+         * want to proactively detect garbage so that the current rule does not exit on on an exception.
+         * 
+         * We could override recover() to make this the default behavior but that is too much like using a sledge hammer to crack a nut. We want
+         * finer grained control of the recovery and error mechanisms.
+         * 
+         * @author Jim Idle
+         * @see http://www.antlr.org/wiki/display/ANTLR3/Custom+Syntax+Error+Recovery
+         * 
+         * @param follow set of tokens to recover to
+         */
+        private void syncToSet() {
+            // Compute the followset that is in context wherever we are in the
+            // rule chain/stack
+            BitSet follow = state.following[state._fsp]; //computeContextSensitiveRuleFOLLOW();
+            syncToSet(follow);
+        }
+
+        /**
+         * This method synchronizes input with the given token set.<br/>
+         * Used when due to an error antlr cannot loop back to correct position in the stream.<br/>
+         * 
+         * @author Jim Idle
+         * @see http://www.antlr.org/wiki/display/ANTLR3/Custom+Syntax+Error+Recovery
+         * 
+         * @param follow set of tokens to recover to
+         */
+        protected void syncToSet(final BitSet follow) {
+            int mark = -1;
+            try {
+                mark = input.mark();
+                // Consume all tokens in the stream until we find a member of the follow
+                // set, which means the next production should be guaranteed to be happy.
+                //
+                while (!follow.member(input.LA(1))) {
+                    if (input.LA(1) == Token.EOF) {
+                        // Looks like we didn't find anything at all that can help us here
+                        // so we need to rewind to where we were and let normal error handling
+                        // bail out.
+                        //
+                        input.rewind();
+                        mark = -1;
+                        return;
+                    }
+                    final CommonToken token = (CommonToken) input.LT(1);
+                    //register error only if token is not blank
+                    if (token.getText() != null && token.getText().trim().length() != 0) {
+                        context.registerError(token);
+                    }
+
+                    input.consume();
+                    // Now here, because you are consuming some tokens, yu will probably want
+                    // to raise an error message such as "Spurious elements after the class member were discarded"
+                    // using whatever your override of displayRecognitionError() routine does to record
+                    // error messages. The exact error my depend on context etc.
+                }
+            } catch (final Exception e) {
+                // Just ignore any errors here, we will just let the recognizer
+                // try to resync as normal - something must be very screwed.
+                //
+            } finally {
+                // Always release the mark we took
+                //
+                if (mark != -1) {
+                    input.release(mark);
+                }
+            }
+        }
+
 
     public static class parse_return extends ParserRuleReturnScope {
         CommonTree tree;
@@ -152,7 +228,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "parse"
-    // com/lambda/impex/ast/Impex.g:173:1: parse : (t= . )* EOF ;
+    // com/lambda/impex/ast/Impex.g:251:1: parse : (t= . )* EOF ;
     public final ImpexParser.parse_return parse() throws RecognitionException {
         ImpexParser.parse_return retval = new ImpexParser.parse_return();
         retval.start = input.LT(1);
@@ -167,13 +243,13 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree EOF1_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:174:3: ( (t= . )* EOF )
-            // com/lambda/impex/ast/Impex.g:174:6: (t= . )* EOF
+            // com/lambda/impex/ast/Impex.g:252:3: ( (t= . )* EOF )
+            // com/lambda/impex/ast/Impex.g:252:6: (t= . )* EOF
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            // com/lambda/impex/ast/Impex.g:174:6: (t= . )*
+            // com/lambda/impex/ast/Impex.g:252:6: (t= . )*
             loop1:
             do {
                 int alt1=2;
@@ -230,6 +306,7 @@ public TreeAdaptor getTreeAdaptor() {
                 case PathDelimiter:
                 case Pos:
                 case Processor:
+                case Quote:
                 case QuotedField:
                 case RBracket:
                 case RECORD:
@@ -257,7 +334,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                 switch (alt1) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:174:7: t= .
+            	    // com/lambda/impex/ast/Impex.g:252:7: t= .
             	    {
             	    t=(Token)input.LT(1);
 
@@ -308,6 +385,48 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "parse"
 
 
+    public static class sync_return extends ParserRuleReturnScope {
+        CommonTree tree;
+        public Object getTree() { return tree; }
+    };
+
+
+    // $ANTLR start "sync"
+    // com/lambda/impex/ast/Impex.g:254:1: sync :;
+    public final ImpexParser.sync_return sync() throws RecognitionException {
+        ImpexParser.sync_return retval = new ImpexParser.sync_return();
+        retval.start = input.LT(1);
+
+
+        CommonTree root_0 = null;
+
+
+        	    syncToSet();
+        	
+        try {
+            // com/lambda/impex/ast/Impex.g:257:3: ()
+            // com/lambda/impex/ast/Impex.g:257:17: 
+            {
+            root_0 = (CommonTree)adaptor.nil();
+
+
+            }
+
+            retval.stop = input.LT(-1);
+
+
+            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+        }
+        finally {
+        	// do for sure before leaving
+        }
+        return retval;
+    }
+    // $ANTLR end "sync"
+
+
     public static class impex_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
@@ -315,7 +434,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "impex"
-    // com/lambda/impex/ast/Impex.g:177:1: impex : ( Lb | block | macro )* EOF -> ^( IMPEX ^( BLOCKS ( block )* ) ) ;
+    // com/lambda/impex/ast/Impex.g:259:1: impex : sync ( ( Lb | block | macro ) sync )* EOF -> ^( IMPEX ^( BLOCKS ( block )* ) ) ;
     public final ImpexParser.impex_return impex() throws RecognitionException {
         ImpexParser.impex_return retval = new ImpexParser.impex_return();
         retval.start = input.LT(1);
@@ -323,92 +442,142 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Lb2=null;
-        Token EOF5=null;
-        ImpexParser.block_return block3 =null;
+        Token Lb3=null;
+        Token EOF7=null;
+        ImpexParser.sync_return sync2 =null;
 
-        ImpexParser.macro_return macro4 =null;
+        ImpexParser.block_return block4 =null;
+
+        ImpexParser.macro_return macro5 =null;
+
+        ImpexParser.sync_return sync6 =null;
 
 
-        CommonTree Lb2_tree=null;
-        CommonTree EOF5_tree=null;
+        CommonTree Lb3_tree=null;
+        CommonTree EOF7_tree=null;
         RewriteRuleTokenStream stream_EOF=new RewriteRuleTokenStream(adaptor,"token EOF");
         RewriteRuleTokenStream stream_Lb=new RewriteRuleTokenStream(adaptor,"token Lb");
         RewriteRuleSubtreeStream stream_macro=new RewriteRuleSubtreeStream(adaptor,"rule macro");
+        RewriteRuleSubtreeStream stream_sync=new RewriteRuleSubtreeStream(adaptor,"rule sync");
         RewriteRuleSubtreeStream stream_block=new RewriteRuleSubtreeStream(adaptor,"rule block");
         try {
-            // com/lambda/impex/ast/Impex.g:177:7: ( ( Lb | block | macro )* EOF -> ^( IMPEX ^( BLOCKS ( block )* ) ) )
-            // com/lambda/impex/ast/Impex.g:177:9: ( Lb | block | macro )* EOF
+            // com/lambda/impex/ast/Impex.g:259:7: ( sync ( ( Lb | block | macro ) sync )* EOF -> ^( IMPEX ^( BLOCKS ( block )* ) ) )
+            // com/lambda/impex/ast/Impex.g:259:9: sync ( ( Lb | block | macro ) sync )* EOF
             {
-            // com/lambda/impex/ast/Impex.g:177:9: ( Lb | block | macro )*
-            loop2:
+            pushFollow(FOLLOW_sync_in_impex197);
+            sync2=sync();
+
+            state._fsp--;
+
+            stream_sync.add(sync2.getTree());
+
+            // com/lambda/impex/ast/Impex.g:259:14: ( ( Lb | block | macro ) sync )*
+            loop3:
             do {
-                int alt2=4;
+                int alt3=2;
                 switch ( input.LA(1) ) {
-                case Lb:
-                    {
-                    alt2=1;
-                    }
-                    break;
                 case Insert:
                 case InsertUpdate:
+                case Lb:
+                case Macrodef:
                 case Remove:
                 case Update:
                     {
-                    alt2=2;
-                    }
-                    break;
-                case Macrodef:
-                    {
-                    alt2=3;
+                    alt3=1;
                     }
                     break;
 
                 }
 
-                switch (alt2) {
+                switch (alt3) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:177:10: Lb
+            	    // com/lambda/impex/ast/Impex.g:259:15: ( Lb | block | macro ) sync
             	    {
-            	    Lb2=(Token)match(input,Lb,FOLLOW_Lb_in_impex188);  
-            	    stream_Lb.add(Lb2);
+            	    // com/lambda/impex/ast/Impex.g:259:15: ( Lb | block | macro )
+            	    int alt2=3;
+            	    switch ( input.LA(1) ) {
+            	    case Lb:
+            	        {
+            	        alt2=1;
+            	        }
+            	        break;
+            	    case Insert:
+            	    case InsertUpdate:
+            	    case Remove:
+            	    case Update:
+            	        {
+            	        alt2=2;
+            	        }
+            	        break;
+            	    case Macrodef:
+            	        {
+            	        alt2=3;
+            	        }
+            	        break;
+            	    default:
+            	        NoViableAltException nvae =
+            	            new NoViableAltException("", 2, 0, input);
 
+            	        throw nvae;
 
             	    }
-            	    break;
-            	case 2 :
-            	    // com/lambda/impex/ast/Impex.g:177:16: block
-            	    {
-            	    pushFollow(FOLLOW_block_in_impex193);
-            	    block3=block();
+
+            	    switch (alt2) {
+            	        case 1 :
+            	            // com/lambda/impex/ast/Impex.g:259:16: Lb
+            	            {
+            	            Lb3=(Token)match(input,Lb,FOLLOW_Lb_in_impex201);  
+            	            stream_Lb.add(Lb3);
+
+
+            	            }
+            	            break;
+            	        case 2 :
+            	            // com/lambda/impex/ast/Impex.g:259:22: block
+            	            {
+            	            pushFollow(FOLLOW_block_in_impex206);
+            	            block4=block();
+
+            	            state._fsp--;
+
+            	            stream_block.add(block4.getTree());
+
+            	            }
+            	            break;
+            	        case 3 :
+            	            // com/lambda/impex/ast/Impex.g:259:30: macro
+            	            {
+            	            pushFollow(FOLLOW_macro_in_impex210);
+            	            macro5=macro();
+
+            	            state._fsp--;
+
+            	            stream_macro.add(macro5.getTree());
+
+            	            }
+            	            break;
+
+            	    }
+
+
+            	    pushFollow(FOLLOW_sync_in_impex214);
+            	    sync6=sync();
 
             	    state._fsp--;
 
-            	    stream_block.add(block3.getTree());
-
-            	    }
-            	    break;
-            	case 3 :
-            	    // com/lambda/impex/ast/Impex.g:177:24: macro
-            	    {
-            	    pushFollow(FOLLOW_macro_in_impex197);
-            	    macro4=macro();
-
-            	    state._fsp--;
-
-            	    stream_macro.add(macro4.getTree());
+            	    stream_sync.add(sync6.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    break loop2;
+            	    break loop3;
                 }
             } while (true);
 
 
-            EOF5=(Token)match(input,EOF,FOLLOW_EOF_in_impex201);  
-            stream_EOF.add(EOF5);
+            EOF7=(Token)match(input,EOF,FOLLOW_EOF_in_impex218);  
+            stream_EOF.add(EOF7);
 
 
             // AST REWRITE
@@ -422,23 +591,23 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 178:3: -> ^( IMPEX ^( BLOCKS ( block )* ) )
+            // 260:3: -> ^( IMPEX ^( BLOCKS ( block )* ) )
             {
-                // com/lambda/impex/ast/Impex.g:178:6: ^( IMPEX ^( BLOCKS ( block )* ) )
+                // com/lambda/impex/ast/Impex.g:260:6: ^( IMPEX ^( BLOCKS ( block )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(IMPEX, "IMPEX")
                 , root_1);
 
-                // com/lambda/impex/ast/Impex.g:178:14: ^( BLOCKS ( block )* )
+                // com/lambda/impex/ast/Impex.g:260:14: ^( BLOCKS ( block )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(BLOCKS, "BLOCKS")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:178:23: ( block )*
+                // com/lambda/impex/ast/Impex.g:260:23: ( block )*
                 while ( stream_block.hasNext() ) {
                     adaptor.addChild(root_2, stream_block.nextTree());
 
@@ -480,48 +649,6 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "impex"
 
 
-    public static class sync_return extends ParserRuleReturnScope {
-        CommonTree tree;
-        public Object getTree() { return tree; }
-    };
-
-
-    // $ANTLR start "sync"
-    // com/lambda/impex/ast/Impex.g:184:1: sync :;
-    public final ImpexParser.sync_return sync() throws RecognitionException {
-        ImpexParser.sync_return retval = new ImpexParser.sync_return();
-        retval.start = input.LT(1);
-
-
-        CommonTree root_0 = null;
-
-
-        	    sync();
-        	
-        try {
-            // com/lambda/impex/ast/Impex.g:186:3: ()
-            // com/lambda/impex/ast/Impex.g:186:18: 
-            {
-            root_0 = (CommonTree)adaptor.nil();
-
-
-            }
-
-            retval.stop = input.LT(-1);
-
-
-            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
-            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
-
-        }
-        finally {
-        	// do for sure before leaving
-        }
-        return retval;
-    }
-    // $ANTLR end "sync"
-
-
     public static class block_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
@@ -529,7 +656,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "block"
-    // com/lambda/impex/ast/Impex.g:188:1: block : header ( ( Lb )+ ( macro ( Lb )* )* record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) ;
+    // com/lambda/impex/ast/Impex.g:266:1: block : header ( ( ( Lb )+ ( macro ( Lb )* )* record ) )* -> ^( BLOCK header ^( RECORDS ( record )* ) ) ;
     public final ImpexParser.block_return block() throws RecognitionException {
         ImpexParser.block_return retval = new ImpexParser.block_return();
         retval.start = input.LT(1);
@@ -537,127 +664,129 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Lb7=null;
         Token Lb9=null;
-        ImpexParser.header_return header6 =null;
+        Token Lb11=null;
+        ImpexParser.header_return header8 =null;
 
-        ImpexParser.macro_return macro8 =null;
+        ImpexParser.macro_return macro10 =null;
 
-        ImpexParser.record_return record10 =null;
+        ImpexParser.record_return record12 =null;
 
 
-        CommonTree Lb7_tree=null;
         CommonTree Lb9_tree=null;
+        CommonTree Lb11_tree=null;
         RewriteRuleTokenStream stream_Lb=new RewriteRuleTokenStream(adaptor,"token Lb");
         RewriteRuleSubtreeStream stream_record=new RewriteRuleSubtreeStream(adaptor,"rule record");
         RewriteRuleSubtreeStream stream_macro=new RewriteRuleSubtreeStream(adaptor,"rule macro");
         RewriteRuleSubtreeStream stream_header=new RewriteRuleSubtreeStream(adaptor,"rule header");
         try {
-            // com/lambda/impex/ast/Impex.g:188:7: ( header ( ( Lb )+ ( macro ( Lb )* )* record )+ -> ^( BLOCK header ^( RECORDS ( record )+ ) ) )
-            // com/lambda/impex/ast/Impex.g:188:9: header ( ( Lb )+ ( macro ( Lb )* )* record )+
+            // com/lambda/impex/ast/Impex.g:266:7: ( header ( ( ( Lb )+ ( macro ( Lb )* )* record ) )* -> ^( BLOCK header ^( RECORDS ( record )* ) ) )
+            // com/lambda/impex/ast/Impex.g:266:9: header ( ( ( Lb )+ ( macro ( Lb )* )* record ) )*
             {
-            pushFollow(FOLLOW_header_in_block243);
-            header6=header();
+            pushFollow(FOLLOW_header_in_block249);
+            header8=header();
 
             state._fsp--;
 
-            stream_header.add(header6.getTree());
+            stream_header.add(header8.getTree());
 
-            // com/lambda/impex/ast/Impex.g:188:16: ( ( Lb )+ ( macro ( Lb )* )* record )+
-            int cnt6=0;
-            loop6:
+            // com/lambda/impex/ast/Impex.g:266:17: ( ( ( Lb )+ ( macro ( Lb )* )* record ) )*
+            loop7:
             do {
-                int alt6=2;
-                alt6 = dfa6.predict(input);
-                switch (alt6) {
+                int alt7=2;
+                alt7 = dfa7.predict(input);
+                switch (alt7) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:188:17: ( Lb )+ ( macro ( Lb )* )* record
+            	    // com/lambda/impex/ast/Impex.g:266:18: ( ( Lb )+ ( macro ( Lb )* )* record )
             	    {
-            	    // com/lambda/impex/ast/Impex.g:188:17: ( Lb )+
-            	    int cnt3=0;
-            	    loop3:
+            	    // com/lambda/impex/ast/Impex.g:266:18: ( ( Lb )+ ( macro ( Lb )* )* record )
+            	    // com/lambda/impex/ast/Impex.g:266:19: ( Lb )+ ( macro ( Lb )* )* record
+            	    {
+            	    // com/lambda/impex/ast/Impex.g:266:19: ( Lb )+
+            	    int cnt4=0;
+            	    loop4:
             	    do {
-            	        int alt3=2;
+            	        int alt4=2;
             	        switch ( input.LA(1) ) {
             	        case Lb:
             	            {
-            	            alt3=1;
+            	            alt4=1;
             	            }
             	            break;
 
             	        }
 
-            	        switch (alt3) {
+            	        switch (alt4) {
             	    	case 1 :
-            	    	    // com/lambda/impex/ast/Impex.g:188:17: Lb
+            	    	    // com/lambda/impex/ast/Impex.g:266:20: Lb
             	    	    {
-            	    	    Lb7=(Token)match(input,Lb,FOLLOW_Lb_in_block246);  
-            	    	    stream_Lb.add(Lb7);
+            	    	    Lb9=(Token)match(input,Lb,FOLLOW_Lb_in_block255);  
+            	    	    stream_Lb.add(Lb9);
 
 
             	    	    }
             	    	    break;
 
             	    	default :
-            	    	    if ( cnt3 >= 1 ) break loop3;
+            	    	    if ( cnt4 >= 1 ) break loop4;
             	                EarlyExitException eee =
-            	                    new EarlyExitException(3, input);
+            	                    new EarlyExitException(4, input);
             	                throw eee;
             	        }
-            	        cnt3++;
+            	        cnt4++;
             	    } while (true);
 
 
-            	    // com/lambda/impex/ast/Impex.g:188:21: ( macro ( Lb )* )*
-            	    loop5:
+            	    // com/lambda/impex/ast/Impex.g:266:26: ( macro ( Lb )* )*
+            	    loop6:
             	    do {
-            	        int alt5=2;
+            	        int alt6=2;
             	        switch ( input.LA(1) ) {
             	        case Macrodef:
             	            {
-            	            alt5=1;
+            	            alt6=1;
             	            }
             	            break;
 
             	        }
 
-            	        switch (alt5) {
+            	        switch (alt6) {
             	    	case 1 :
-            	    	    // com/lambda/impex/ast/Impex.g:188:22: macro ( Lb )*
+            	    	    // com/lambda/impex/ast/Impex.g:266:27: macro ( Lb )*
             	    	    {
-            	    	    pushFollow(FOLLOW_macro_in_block250);
-            	    	    macro8=macro();
+            	    	    pushFollow(FOLLOW_macro_in_block261);
+            	    	    macro10=macro();
 
             	    	    state._fsp--;
 
-            	    	    stream_macro.add(macro8.getTree());
+            	    	    stream_macro.add(macro10.getTree());
 
-            	    	    // com/lambda/impex/ast/Impex.g:188:28: ( Lb )*
-            	    	    loop4:
+            	    	    // com/lambda/impex/ast/Impex.g:266:34: ( Lb )*
+            	    	    loop5:
             	    	    do {
-            	    	        int alt4=2;
+            	    	        int alt5=2;
             	    	        switch ( input.LA(1) ) {
             	    	        case Lb:
             	    	            {
-            	    	            alt4=1;
+            	    	            alt5=1;
             	    	            }
             	    	            break;
 
             	    	        }
 
-            	    	        switch (alt4) {
+            	    	        switch (alt5) {
             	    	    	case 1 :
-            	    	    	    // com/lambda/impex/ast/Impex.g:188:28: Lb
+            	    	    	    // com/lambda/impex/ast/Impex.g:266:35: Lb
             	    	    	    {
-            	    	    	    Lb9=(Token)match(input,Lb,FOLLOW_Lb_in_block252);  
-            	    	    	    stream_Lb.add(Lb9);
+            	    	    	    Lb11=(Token)match(input,Lb,FOLLOW_Lb_in_block265);  
+            	    	    	    stream_Lb.add(Lb11);
 
 
             	    	    	    }
             	    	    	    break;
 
             	    	    	default :
-            	    	    	    break loop4;
+            	    	    	    break loop5;
             	    	        }
             	    	    } while (true);
 
@@ -666,28 +795,27 @@ public TreeAdaptor getTreeAdaptor() {
             	    	    break;
 
             	    	default :
-            	    	    break loop5;
+            	    	    break loop6;
             	        }
             	    } while (true);
 
 
-            	    pushFollow(FOLLOW_record_in_block257);
-            	    record10=record();
+            	    pushFollow(FOLLOW_record_in_block272);
+            	    record12=record();
 
             	    state._fsp--;
 
-            	    stream_record.add(record10.getTree());
+            	    stream_record.add(record12.getTree());
+
+            	    }
+
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt6 >= 1 ) break loop6;
-                        EarlyExitException eee =
-                            new EarlyExitException(6, input);
-                        throw eee;
+            	    break loop7;
                 }
-                cnt6++;
             } while (true);
 
 
@@ -702,9 +830,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 189:2: -> ^( BLOCK header ^( RECORDS ( record )+ ) )
+            // 267:2: -> ^( BLOCK header ^( RECORDS ( record )* ) )
             {
-                // com/lambda/impex/ast/Impex.g:189:5: ^( BLOCK header ^( RECORDS ( record )+ ) )
+                // com/lambda/impex/ast/Impex.g:267:5: ^( BLOCK header ^( RECORDS ( record )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -713,16 +841,14 @@ public TreeAdaptor getTreeAdaptor() {
 
                 adaptor.addChild(root_1, stream_header.nextTree());
 
-                // com/lambda/impex/ast/Impex.g:189:20: ^( RECORDS ( record )+ )
+                // com/lambda/impex/ast/Impex.g:267:20: ^( RECORDS ( record )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(RECORDS, "RECORDS")
                 , root_2);
 
-                if ( !(stream_record.hasNext()) ) {
-                    throw new RewriteEarlyExitException();
-                }
+                // com/lambda/impex/ast/Impex.g:267:30: ( record )*
                 while ( stream_record.hasNext() ) {
                     adaptor.addChild(root_2, stream_record.nextTree());
 
@@ -771,7 +897,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "header"
-    // com/lambda/impex/ast/Impex.g:191:1: header : headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
+    // com/lambda/impex/ast/Impex.g:269:1: header : headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | quote attribute quote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | quote attribute quote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) ;
     public final ImpexParser.header_return header() throws RecognitionException {
         ImpexParser.header_return retval = new ImpexParser.header_return();
         retval.start = input.LT(1);
@@ -779,169 +905,175 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token LBracket13=null;
-        Token Comma15=null;
-        Token RBracket17=null;
-        Token Semicolon18=null;
-        Token DoubleQuote20=null;
-        Token DoubleQuote22=null;
-        Token Semicolon23=null;
-        Token DocumentID24=null;
+        Token LBracket15=null;
+        Token Comma17=null;
+        Token RBracket19=null;
+        Token Semicolon20=null;
         Token Semicolon25=null;
-        Token DoubleQuote27=null;
-        Token DoubleQuote29=null;
-        ImpexParser.headerMode_return headerMode11 =null;
+        Token DocumentID26=null;
+        Token Semicolon27=null;
+        ImpexParser.headerMode_return headerMode13 =null;
 
-        ImpexParser.headerTypeName_return headerTypeName12 =null;
-
-        ImpexParser.headerModifierAssignment_return headerModifierAssignment14 =null;
+        ImpexParser.headerTypeName_return headerTypeName14 =null;
 
         ImpexParser.headerModifierAssignment_return headerModifierAssignment16 =null;
 
-        ImpexParser.attribute_return attribute19 =null;
+        ImpexParser.headerModifierAssignment_return headerModifierAssignment18 =null;
 
         ImpexParser.attribute_return attribute21 =null;
 
-        ImpexParser.attribute_return attribute26 =null;
+        ImpexParser.quote_return quote22 =null;
+
+        ImpexParser.attribute_return attribute23 =null;
+
+        ImpexParser.quote_return quote24 =null;
 
         ImpexParser.attribute_return attribute28 =null;
 
+        ImpexParser.quote_return quote29 =null;
 
-        CommonTree LBracket13_tree=null;
-        CommonTree Comma15_tree=null;
-        CommonTree RBracket17_tree=null;
-        CommonTree Semicolon18_tree=null;
-        CommonTree DoubleQuote20_tree=null;
-        CommonTree DoubleQuote22_tree=null;
-        CommonTree Semicolon23_tree=null;
-        CommonTree DocumentID24_tree=null;
+        ImpexParser.attribute_return attribute30 =null;
+
+        ImpexParser.quote_return quote31 =null;
+
+
+        CommonTree LBracket15_tree=null;
+        CommonTree Comma17_tree=null;
+        CommonTree RBracket19_tree=null;
+        CommonTree Semicolon20_tree=null;
         CommonTree Semicolon25_tree=null;
-        CommonTree DoubleQuote27_tree=null;
-        CommonTree DoubleQuote29_tree=null;
+        CommonTree DocumentID26_tree=null;
+        CommonTree Semicolon27_tree=null;
         RewriteRuleTokenStream stream_DocumentID=new RewriteRuleTokenStream(adaptor,"token DocumentID");
         RewriteRuleTokenStream stream_RBracket=new RewriteRuleTokenStream(adaptor,"token RBracket");
         RewriteRuleTokenStream stream_LBracket=new RewriteRuleTokenStream(adaptor,"token LBracket");
         RewriteRuleTokenStream stream_Semicolon=new RewriteRuleTokenStream(adaptor,"token Semicolon");
         RewriteRuleTokenStream stream_Comma=new RewriteRuleTokenStream(adaptor,"token Comma");
-        RewriteRuleTokenStream stream_DoubleQuote=new RewriteRuleTokenStream(adaptor,"token DoubleQuote");
         RewriteRuleSubtreeStream stream_headerMode=new RewriteRuleSubtreeStream(adaptor,"rule headerMode");
         RewriteRuleSubtreeStream stream_headerModifierAssignment=new RewriteRuleSubtreeStream(adaptor,"rule headerModifierAssignment");
         RewriteRuleSubtreeStream stream_headerTypeName=new RewriteRuleSubtreeStream(adaptor,"rule headerTypeName");
+        RewriteRuleSubtreeStream stream_quote=new RewriteRuleSubtreeStream(adaptor,"rule quote");
         RewriteRuleSubtreeStream stream_attribute=new RewriteRuleSubtreeStream(adaptor,"rule attribute");
         try {
-            // com/lambda/impex/ast/Impex.g:192:2: ( headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
-            // com/lambda/impex/ast/Impex.g:192:4: headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
+            // com/lambda/impex/ast/Impex.g:270:2: ( headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | quote attribute quote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | quote attribute quote ) )* )? -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) ) )
+            // com/lambda/impex/ast/Impex.g:270:4: headerMode headerTypeName ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )* ( Semicolon ( attribute | quote attribute quote ) )* ( Semicolon DocumentID ( Semicolon ( attribute | quote attribute quote ) )* )?
             {
-            pushFollow(FOLLOW_headerMode_in_header284);
-            headerMode11=headerMode();
+            pushFollow(FOLLOW_headerMode_in_header301);
+            headerMode13=headerMode();
 
             state._fsp--;
 
-            stream_headerMode.add(headerMode11.getTree());
+            stream_headerMode.add(headerMode13.getTree());
 
-            pushFollow(FOLLOW_headerTypeName_in_header287);
-            headerTypeName12=headerTypeName();
+            pushFollow(FOLLOW_headerTypeName_in_header304);
+            headerTypeName14=headerTypeName();
 
             state._fsp--;
 
-            stream_headerTypeName.add(headerTypeName12.getTree());
+            stream_headerTypeName.add(headerTypeName14.getTree());
 
-            // com/lambda/impex/ast/Impex.g:192:31: ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )*
-            loop8:
+            // com/lambda/impex/ast/Impex.g:270:31: ( LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket )*
+            loop9:
             do {
-                int alt8=2;
+                int alt9=2;
                 switch ( input.LA(1) ) {
                 case LBracket:
                     {
-                    alt8=1;
+                    alt9=1;
                     }
                     break;
 
                 }
 
-                switch (alt8) {
+                switch (alt9) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:192:32: LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket
+            	    // com/lambda/impex/ast/Impex.g:270:32: LBracket headerModifierAssignment ( Comma headerModifierAssignment )* RBracket
             	    {
-            	    LBracket13=(Token)match(input,LBracket,FOLLOW_LBracket_in_header290);  
-            	    stream_LBracket.add(LBracket13);
+            	    LBracket15=(Token)match(input,LBracket,FOLLOW_LBracket_in_header307);  
+            	    stream_LBracket.add(LBracket15);
 
 
-            	    pushFollow(FOLLOW_headerModifierAssignment_in_header292);
-            	    headerModifierAssignment14=headerModifierAssignment();
+            	    pushFollow(FOLLOW_headerModifierAssignment_in_header309);
+            	    headerModifierAssignment16=headerModifierAssignment();
 
             	    state._fsp--;
 
-            	    stream_headerModifierAssignment.add(headerModifierAssignment14.getTree());
+            	    stream_headerModifierAssignment.add(headerModifierAssignment16.getTree());
 
-            	    // com/lambda/impex/ast/Impex.g:192:66: ( Comma headerModifierAssignment )*
-            	    loop7:
+            	    // com/lambda/impex/ast/Impex.g:270:66: ( Comma headerModifierAssignment )*
+            	    loop8:
             	    do {
-            	        int alt7=2;
+            	        int alt8=2;
             	        switch ( input.LA(1) ) {
             	        case Comma:
             	            {
-            	            alt7=1;
+            	            alt8=1;
             	            }
             	            break;
 
             	        }
 
-            	        switch (alt7) {
+            	        switch (alt8) {
             	    	case 1 :
-            	    	    // com/lambda/impex/ast/Impex.g:192:67: Comma headerModifierAssignment
+            	    	    // com/lambda/impex/ast/Impex.g:270:67: Comma headerModifierAssignment
             	    	    {
-            	    	    Comma15=(Token)match(input,Comma,FOLLOW_Comma_in_header295);  
-            	    	    stream_Comma.add(Comma15);
+            	    	    Comma17=(Token)match(input,Comma,FOLLOW_Comma_in_header312);  
+            	    	    stream_Comma.add(Comma17);
 
 
-            	    	    pushFollow(FOLLOW_headerModifierAssignment_in_header298);
-            	    	    headerModifierAssignment16=headerModifierAssignment();
+            	    	    pushFollow(FOLLOW_headerModifierAssignment_in_header315);
+            	    	    headerModifierAssignment18=headerModifierAssignment();
 
             	    	    state._fsp--;
 
-            	    	    stream_headerModifierAssignment.add(headerModifierAssignment16.getTree());
+            	    	    stream_headerModifierAssignment.add(headerModifierAssignment18.getTree());
 
             	    	    }
             	    	    break;
 
             	    	default :
-            	    	    break loop7;
+            	    	    break loop8;
             	        }
             	    } while (true);
 
 
-            	    RBracket17=(Token)match(input,RBracket,FOLLOW_RBracket_in_header302);  
-            	    stream_RBracket.add(RBracket17);
+            	    RBracket19=(Token)match(input,RBracket,FOLLOW_RBracket_in_header319);  
+            	    stream_RBracket.add(RBracket19);
 
 
             	    }
             	    break;
 
             	default :
-            	    break loop8;
+            	    break loop9;
                 }
             } while (true);
 
 
-            // com/lambda/impex/ast/Impex.g:192:113: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
-            loop10:
+            // com/lambda/impex/ast/Impex.g:270:113: ( Semicolon ( attribute | quote attribute quote ) )*
+            loop11:
             do {
-                int alt10=2;
+                int alt11=2;
                 switch ( input.LA(1) ) {
                 case Semicolon:
                     {
                     switch ( input.LA(2) ) {
+                    case EOF:
                     case DoubleQuote:
                     case Identifier:
+                    case Insert:
+                    case InsertUpdate:
                     case LBracket:
                     case LParenthesis:
                     case Lb:
                     case Macrodef:
+                    case Quote:
+                    case Remove:
                     case Semicolon:
                     case SpecialAttribute:
+                    case Update:
                         {
-                        alt10=1;
+                        alt11=1;
                         }
                         break;
 
@@ -952,71 +1084,83 @@ public TreeAdaptor getTreeAdaptor() {
 
                 }
 
-                switch (alt10) {
+                switch (alt11) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:192:114: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
+            	    // com/lambda/impex/ast/Impex.g:270:114: Semicolon ( attribute | quote attribute quote )
             	    {
-            	    Semicolon18=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header308);  
-            	    stream_Semicolon.add(Semicolon18);
+            	    Semicolon20=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header325);  
+            	    stream_Semicolon.add(Semicolon20);
 
 
-            	    // com/lambda/impex/ast/Impex.g:192:124: ( attribute | DoubleQuote attribute DoubleQuote )
-            	    int alt9=2;
+            	    // com/lambda/impex/ast/Impex.g:270:124: ( attribute | quote attribute quote )
+            	    int alt10=2;
             	    switch ( input.LA(1) ) {
+            	    case EOF:
             	    case Identifier:
+            	    case Insert:
+            	    case InsertUpdate:
             	    case LBracket:
             	    case LParenthesis:
             	    case Lb:
             	    case Macrodef:
+            	    case Remove:
             	    case Semicolon:
             	    case SpecialAttribute:
+            	    case Update:
             	        {
-            	        alt9=1;
+            	        alt10=1;
             	        }
             	        break;
             	    case DoubleQuote:
+            	    case Quote:
             	        {
-            	        alt9=2;
+            	        alt10=2;
             	        }
             	        break;
             	    default:
             	        NoViableAltException nvae =
-            	            new NoViableAltException("", 9, 0, input);
+            	            new NoViableAltException("", 10, 0, input);
 
             	        throw nvae;
 
             	    }
 
-            	    switch (alt9) {
+            	    switch (alt10) {
             	        case 1 :
-            	            // com/lambda/impex/ast/Impex.g:192:125: attribute
+            	            // com/lambda/impex/ast/Impex.g:270:125: attribute
             	            {
-            	            pushFollow(FOLLOW_attribute_in_header311);
-            	            attribute19=attribute();
-
-            	            state._fsp--;
-
-            	            stream_attribute.add(attribute19.getTree());
-
-            	            }
-            	            break;
-            	        case 2 :
-            	            // com/lambda/impex/ast/Impex.g:192:137: DoubleQuote attribute DoubleQuote
-            	            {
-            	            DoubleQuote20=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header315);  
-            	            stream_DoubleQuote.add(DoubleQuote20);
-
-
-            	            pushFollow(FOLLOW_attribute_in_header317);
+            	            pushFollow(FOLLOW_attribute_in_header328);
             	            attribute21=attribute();
 
             	            state._fsp--;
 
             	            stream_attribute.add(attribute21.getTree());
 
-            	            DoubleQuote22=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header319);  
-            	            stream_DoubleQuote.add(DoubleQuote22);
+            	            }
+            	            break;
+            	        case 2 :
+            	            // com/lambda/impex/ast/Impex.g:270:137: quote attribute quote
+            	            {
+            	            pushFollow(FOLLOW_quote_in_header332);
+            	            quote22=quote();
 
+            	            state._fsp--;
+
+            	            stream_quote.add(quote22.getTree());
+
+            	            pushFollow(FOLLOW_attribute_in_header334);
+            	            attribute23=attribute();
+
+            	            state._fsp--;
+
+            	            stream_attribute.add(attribute23.getTree());
+
+            	            pushFollow(FOLLOW_quote_in_header336);
+            	            quote24=quote();
+
+            	            state._fsp--;
+
+            	            stream_quote.add(quote24.getTree());
 
             	            }
             	            break;
@@ -1028,113 +1172,125 @@ public TreeAdaptor getTreeAdaptor() {
             	    break;
 
             	default :
-            	    break loop10;
+            	    break loop11;
                 }
             } while (true);
 
 
-            // com/lambda/impex/ast/Impex.g:192:174: ( Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )* )?
-            int alt13=2;
+            // com/lambda/impex/ast/Impex.g:270:162: ( Semicolon DocumentID ( Semicolon ( attribute | quote attribute quote ) )* )?
+            int alt14=2;
             switch ( input.LA(1) ) {
                 case Semicolon:
                     {
-                    alt13=1;
+                    alt14=1;
                     }
                     break;
             }
 
-            switch (alt13) {
+            switch (alt14) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:192:175: Semicolon DocumentID ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
+                    // com/lambda/impex/ast/Impex.g:270:163: Semicolon DocumentID ( Semicolon ( attribute | quote attribute quote ) )*
                     {
-                    Semicolon23=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header325);  
-                    stream_Semicolon.add(Semicolon23);
+                    Semicolon25=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header342);  
+                    stream_Semicolon.add(Semicolon25);
 
 
-                    DocumentID24=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_header327);  
-                    stream_DocumentID.add(DocumentID24);
+                    DocumentID26=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_header344);  
+                    stream_DocumentID.add(DocumentID26);
 
 
-                    context.registerDocumentID((CommonToken)DocumentID24);
+                    context.registerDocumentID((CommonToken)DocumentID26);
 
-                    // com/lambda/impex/ast/Impex.g:192:251: ( Semicolon ( attribute | DoubleQuote attribute DoubleQuote ) )*
-                    loop12:
+                    // com/lambda/impex/ast/Impex.g:270:239: ( Semicolon ( attribute | quote attribute quote ) )*
+                    loop13:
                     do {
-                        int alt12=2;
+                        int alt13=2;
                         switch ( input.LA(1) ) {
                         case Semicolon:
                             {
-                            alt12=1;
+                            alt13=1;
                             }
                             break;
 
                         }
 
-                        switch (alt12) {
+                        switch (alt13) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:192:252: Semicolon ( attribute | DoubleQuote attribute DoubleQuote )
+                    	    // com/lambda/impex/ast/Impex.g:270:240: Semicolon ( attribute | quote attribute quote )
                     	    {
-                    	    Semicolon25=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header331);  
-                    	    stream_Semicolon.add(Semicolon25);
+                    	    Semicolon27=(Token)match(input,Semicolon,FOLLOW_Semicolon_in_header348);  
+                    	    stream_Semicolon.add(Semicolon27);
 
 
-                    	    // com/lambda/impex/ast/Impex.g:192:262: ( attribute | DoubleQuote attribute DoubleQuote )
-                    	    int alt11=2;
+                    	    // com/lambda/impex/ast/Impex.g:270:250: ( attribute | quote attribute quote )
+                    	    int alt12=2;
                     	    switch ( input.LA(1) ) {
+                    	    case EOF:
                     	    case Identifier:
+                    	    case Insert:
+                    	    case InsertUpdate:
                     	    case LBracket:
                     	    case LParenthesis:
                     	    case Lb:
                     	    case Macrodef:
+                    	    case Remove:
                     	    case Semicolon:
                     	    case SpecialAttribute:
+                    	    case Update:
                     	        {
-                    	        alt11=1;
+                    	        alt12=1;
                     	        }
                     	        break;
                     	    case DoubleQuote:
+                    	    case Quote:
                     	        {
-                    	        alt11=2;
+                    	        alt12=2;
                     	        }
                     	        break;
                     	    default:
                     	        NoViableAltException nvae =
-                    	            new NoViableAltException("", 11, 0, input);
+                    	            new NoViableAltException("", 12, 0, input);
 
                     	        throw nvae;
 
                     	    }
 
-                    	    switch (alt11) {
+                    	    switch (alt12) {
                     	        case 1 :
-                    	            // com/lambda/impex/ast/Impex.g:192:263: attribute
+                    	            // com/lambda/impex/ast/Impex.g:270:251: attribute
                     	            {
-                    	            pushFollow(FOLLOW_attribute_in_header334);
-                    	            attribute26=attribute();
-
-                    	            state._fsp--;
-
-                    	            stream_attribute.add(attribute26.getTree());
-
-                    	            }
-                    	            break;
-                    	        case 2 :
-                    	            // com/lambda/impex/ast/Impex.g:192:275: DoubleQuote attribute DoubleQuote
-                    	            {
-                    	            DoubleQuote27=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header338);  
-                    	            stream_DoubleQuote.add(DoubleQuote27);
-
-
-                    	            pushFollow(FOLLOW_attribute_in_header340);
+                    	            pushFollow(FOLLOW_attribute_in_header351);
                     	            attribute28=attribute();
 
                     	            state._fsp--;
 
                     	            stream_attribute.add(attribute28.getTree());
 
-                    	            DoubleQuote29=(Token)match(input,DoubleQuote,FOLLOW_DoubleQuote_in_header342);  
-                    	            stream_DoubleQuote.add(DoubleQuote29);
+                    	            }
+                    	            break;
+                    	        case 2 :
+                    	            // com/lambda/impex/ast/Impex.g:270:263: quote attribute quote
+                    	            {
+                    	            pushFollow(FOLLOW_quote_in_header355);
+                    	            quote29=quote();
 
+                    	            state._fsp--;
+
+                    	            stream_quote.add(quote29.getTree());
+
+                    	            pushFollow(FOLLOW_attribute_in_header357);
+                    	            attribute30=attribute();
+
+                    	            state._fsp--;
+
+                    	            stream_attribute.add(attribute30.getTree());
+
+                    	            pushFollow(FOLLOW_quote_in_header359);
+                    	            quote31=quote();
+
+                    	            state._fsp--;
+
+                    	            stream_quote.add(quote31.getTree());
 
                     	            }
                     	            break;
@@ -1146,7 +1302,7 @@ public TreeAdaptor getTreeAdaptor() {
                     	    break;
 
                     	default :
-                    	    break loop12;
+                    	    break loop13;
                         }
                     } while (true);
 
@@ -1158,7 +1314,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: headerModifierAssignment, headerTypeName, headerMode, DocumentID, attribute
+            // elements: headerMode, attribute, headerTypeName, headerModifierAssignment, DocumentID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1168,9 +1324,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 193:2: -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+            // 271:2: -> ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
             {
-                // com/lambda/impex/ast/Impex.g:193:5: ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
+                // com/lambda/impex/ast/Impex.g:271:5: ^( HEADER headerMode ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1179,7 +1335,7 @@ public TreeAdaptor getTreeAdaptor() {
 
                 adaptor.addChild(root_1, stream_headerMode.nextTree());
 
-                // com/lambda/impex/ast/Impex.g:193:25: ^( TYPE headerTypeName )
+                // com/lambda/impex/ast/Impex.g:271:25: ^( TYPE headerTypeName )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
@@ -1191,14 +1347,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // com/lambda/impex/ast/Impex.g:193:48: ^( MODIFIERS ( headerModifierAssignment )* )
+                // com/lambda/impex/ast/Impex.g:271:48: ^( MODIFIERS ( headerModifierAssignment )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(MODIFIERS, "MODIFIERS")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:193:60: ( headerModifierAssignment )*
+                // com/lambda/impex/ast/Impex.g:271:60: ( headerModifierAssignment )*
                 while ( stream_headerModifierAssignment.hasNext() ) {
                     adaptor.addChild(root_2, stream_headerModifierAssignment.nextTree());
 
@@ -1208,14 +1364,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // com/lambda/impex/ast/Impex.g:193:87: ^( DOCUMENTID ( DocumentID )? )
+                // com/lambda/impex/ast/Impex.g:271:87: ^( DOCUMENTID ( DocumentID )? )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(DOCUMENTID, "DOCUMENTID")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:193:100: ( DocumentID )?
+                // com/lambda/impex/ast/Impex.g:271:100: ( DocumentID )?
                 if ( stream_DocumentID.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_DocumentID.nextNode()
@@ -1227,14 +1383,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // com/lambda/impex/ast/Impex.g:193:113: ^( ATTRIBUTES ( attribute )* )
+                // com/lambda/impex/ast/Impex.g:271:113: ^( ATTRIBUTES ( attribute )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(ATTRIBUTES, "ATTRIBUTES")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:193:126: ( attribute )*
+                // com/lambda/impex/ast/Impex.g:271:126: ( attribute )*
                 while ( stream_attribute.hasNext() ) {
                     adaptor.addChild(root_2, stream_attribute.nextTree());
 
@@ -1276,6 +1432,71 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "header"
 
 
+    public static class quote_return extends ParserRuleReturnScope {
+        CommonTree tree;
+        public Object getTree() { return tree; }
+    };
+
+
+    // $ANTLR start "quote"
+    // com/lambda/impex/ast/Impex.g:273:1: quote : ( DoubleQuote | Quote );
+    public final ImpexParser.quote_return quote() throws RecognitionException {
+        ImpexParser.quote_return retval = new ImpexParser.quote_return();
+        retval.start = input.LT(1);
+
+
+        CommonTree root_0 = null;
+
+        Token set32=null;
+
+        CommonTree set32_tree=null;
+
+        try {
+            // com/lambda/impex/ast/Impex.g:273:7: ( DoubleQuote | Quote )
+            // com/lambda/impex/ast/Impex.g:
+            {
+            root_0 = (CommonTree)adaptor.nil();
+
+
+            set32=(Token)input.LT(1);
+
+            if ( input.LA(1)==DoubleQuote||input.LA(1)==Quote ) {
+                input.consume();
+                adaptor.addChild(root_0, 
+                (CommonTree)adaptor.create(set32)
+                );
+                state.errorRecovery=false;
+            }
+            else {
+                MismatchedSetException mse = new MismatchedSetException(null,input);
+                throw mse;
+            }
+
+
+            }
+
+            retval.stop = input.LT(-1);
+
+
+            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
+            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+    	retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+
+        }
+
+        finally {
+        	// do for sure before leaving
+        }
+        return retval;
+    }
+    // $ANTLR end "quote"
+
+
     public static class headerModifierAssignment_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
@@ -1283,7 +1504,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "headerModifierAssignment"
-    // com/lambda/impex/ast/Impex.g:195:1: headerModifierAssignment : headerModifier Equals boolOrClassname -> ^( MODIFIER headerModifier boolOrClassname ) ;
+    // com/lambda/impex/ast/Impex.g:275:1: headerModifierAssignment : headerModifier ValueAssignment -> ^( MODIFIER headerModifier ValueAssignment ) ;
     public final ImpexParser.headerModifierAssignment_return headerModifierAssignment() throws RecognitionException {
         ImpexParser.headerModifierAssignment_return retval = new ImpexParser.headerModifierAssignment_return();
         retval.start = input.LT(1);
@@ -1291,40 +1512,30 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Equals31=null;
-        ImpexParser.headerModifier_return headerModifier30 =null;
-
-        ImpexParser.boolOrClassname_return boolOrClassname32 =null;
+        Token ValueAssignment34=null;
+        ImpexParser.headerModifier_return headerModifier33 =null;
 
 
-        CommonTree Equals31_tree=null;
-        RewriteRuleTokenStream stream_Equals=new RewriteRuleTokenStream(adaptor,"token Equals");
+        CommonTree ValueAssignment34_tree=null;
+        RewriteRuleTokenStream stream_ValueAssignment=new RewriteRuleTokenStream(adaptor,"token ValueAssignment");
         RewriteRuleSubtreeStream stream_headerModifier=new RewriteRuleSubtreeStream(adaptor,"rule headerModifier");
-        RewriteRuleSubtreeStream stream_boolOrClassname=new RewriteRuleSubtreeStream(adaptor,"rule boolOrClassname");
         try {
-            // com/lambda/impex/ast/Impex.g:195:25: ( headerModifier Equals boolOrClassname -> ^( MODIFIER headerModifier boolOrClassname ) )
-            // com/lambda/impex/ast/Impex.g:195:27: headerModifier Equals boolOrClassname
+            // com/lambda/impex/ast/Impex.g:275:25: ( headerModifier ValueAssignment -> ^( MODIFIER headerModifier ValueAssignment ) )
+            // com/lambda/impex/ast/Impex.g:275:27: headerModifier ValueAssignment
             {
-            pushFollow(FOLLOW_headerModifier_in_headerModifierAssignment392);
-            headerModifier30=headerModifier();
+            pushFollow(FOLLOW_headerModifier_in_headerModifierAssignment420);
+            headerModifier33=headerModifier();
 
             state._fsp--;
 
-            stream_headerModifier.add(headerModifier30.getTree());
+            stream_headerModifier.add(headerModifier33.getTree());
 
-            Equals31=(Token)match(input,Equals,FOLLOW_Equals_in_headerModifierAssignment394);  
-            stream_Equals.add(Equals31);
+            ValueAssignment34=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_headerModifierAssignment422);  
+            stream_ValueAssignment.add(ValueAssignment34);
 
-
-            pushFollow(FOLLOW_boolOrClassname_in_headerModifierAssignment396);
-            boolOrClassname32=boolOrClassname();
-
-            state._fsp--;
-
-            stream_boolOrClassname.add(boolOrClassname32.getTree());
 
             // AST REWRITE
-            // elements: headerModifier, boolOrClassname
+            // elements: ValueAssignment, headerModifier
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1334,9 +1545,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 196:2: -> ^( MODIFIER headerModifier boolOrClassname )
+            // 276:2: -> ^( MODIFIER headerModifier ValueAssignment )
             {
-                // com/lambda/impex/ast/Impex.g:196:5: ^( MODIFIER headerModifier boolOrClassname )
+                // com/lambda/impex/ast/Impex.g:276:5: ^( MODIFIER headerModifier ValueAssignment )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1345,7 +1556,9 @@ public TreeAdaptor getTreeAdaptor() {
 
                 adaptor.addChild(root_1, stream_headerModifier.nextTree());
 
-                adaptor.addChild(root_1, stream_boolOrClassname.nextTree());
+                adaptor.addChild(root_1, 
+                stream_ValueAssignment.nextNode()
+                );
 
                 adaptor.addChild(root_0, root_1);
                 }
@@ -1379,71 +1592,6 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "headerModifierAssignment"
 
 
-    public static class boolOrClassname_return extends ParserRuleReturnScope {
-        CommonTree tree;
-        public Object getTree() { return tree; }
-    };
-
-
-    // $ANTLR start "boolOrClassname"
-    // com/lambda/impex/ast/Impex.g:198:1: boolOrClassname : ( Bool | Classname );
-    public final ImpexParser.boolOrClassname_return boolOrClassname() throws RecognitionException {
-        ImpexParser.boolOrClassname_return retval = new ImpexParser.boolOrClassname_return();
-        retval.start = input.LT(1);
-
-
-        CommonTree root_0 = null;
-
-        Token set33=null;
-
-        CommonTree set33_tree=null;
-
-        try {
-            // com/lambda/impex/ast/Impex.g:199:2: ( Bool | Classname )
-            // com/lambda/impex/ast/Impex.g:
-            {
-            root_0 = (CommonTree)adaptor.nil();
-
-
-            set33=(Token)input.LT(1);
-
-            if ( input.LA(1)==Bool||input.LA(1)==Classname ) {
-                input.consume();
-                adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set33)
-                );
-                state.errorRecovery=false;
-            }
-            else {
-                MismatchedSetException mse = new MismatchedSetException(null,input);
-                throw mse;
-            }
-
-
-            }
-
-            retval.stop = input.LT(-1);
-
-
-            retval.tree = (CommonTree)adaptor.rulePostProcessing(root_0);
-            adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-    	retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
-
-        }
-
-        finally {
-        	// do for sure before leaving
-        }
-        return retval;
-    }
-    // $ANTLR end "boolOrClassname"
-
-
     public static class headerModifier_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
@@ -1451,7 +1599,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "headerModifier"
-    // com/lambda/impex/ast/Impex.g:201:1: headerModifier : ( BatchMode | CacheUnique | Processor );
+    // com/lambda/impex/ast/Impex.g:278:1: headerModifier : ( BatchMode | CacheUnique | Processor );
     public final ImpexParser.headerModifier_return headerModifier() throws RecognitionException {
         ImpexParser.headerModifier_return retval = new ImpexParser.headerModifier_return();
         retval.start = input.LT(1);
@@ -1459,23 +1607,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set34=null;
+        Token set35=null;
 
-        CommonTree set34_tree=null;
+        CommonTree set35_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:202:2: ( BatchMode | CacheUnique | Processor )
+            // com/lambda/impex/ast/Impex.g:279:2: ( BatchMode | CacheUnique | Processor )
             // com/lambda/impex/ast/Impex.g:
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set34=(Token)input.LT(1);
+            set35=(Token)input.LT(1);
 
             if ( input.LA(1)==BatchMode||input.LA(1)==CacheUnique||input.LA(1)==Processor ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set34)
+                (CommonTree)adaptor.create(set35)
                 );
                 state.errorRecovery=false;
             }
@@ -1516,7 +1664,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "record"
-    // com/lambda/impex/ast/Impex.g:205:1: record : ( Identifier )? ( field )+ -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) ;
+    // com/lambda/impex/ast/Impex.g:282:1: record : ( Identifier )? ( field )+ -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) ;
     public final ImpexParser.record_return record() throws RecognitionException {
         ImpexParser.record_return retval = new ImpexParser.record_return();
         retval.start = input.LT(1);
@@ -1524,33 +1672,33 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Identifier35=null;
-        ImpexParser.field_return field36 =null;
+        Token Identifier36=null;
+        ImpexParser.field_return field37 =null;
 
 
-        CommonTree Identifier35_tree=null;
+        CommonTree Identifier36_tree=null;
         RewriteRuleTokenStream stream_Identifier=new RewriteRuleTokenStream(adaptor,"token Identifier");
         RewriteRuleSubtreeStream stream_field=new RewriteRuleSubtreeStream(adaptor,"rule field");
         try {
-            // com/lambda/impex/ast/Impex.g:206:5: ( ( Identifier )? ( field )+ -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) )
-            // com/lambda/impex/ast/Impex.g:206:7: ( Identifier )? ( field )+
+            // com/lambda/impex/ast/Impex.g:283:5: ( ( Identifier )? ( field )+ -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) )
+            // com/lambda/impex/ast/Impex.g:283:7: ( Identifier )? ( field )+
             {
-            // com/lambda/impex/ast/Impex.g:206:7: ( Identifier )?
-            int alt14=2;
+            // com/lambda/impex/ast/Impex.g:283:7: ( Identifier )?
+            int alt15=2;
             switch ( input.LA(1) ) {
                 case Identifier:
                     {
-                    alt14=1;
+                    alt15=1;
                     }
                     break;
             }
 
-            switch (alt14) {
+            switch (alt15) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:206:7: Identifier
+                    // com/lambda/impex/ast/Impex.g:283:7: Identifier
                     {
-                    Identifier35=(Token)match(input,Identifier,FOLLOW_Identifier_in_record449);  
-                    stream_Identifier.add(Identifier35);
+                    Identifier36=(Token)match(input,Identifier,FOLLOW_Identifier_in_record462);  
+                    stream_Identifier.add(Identifier36);
 
 
                     }
@@ -1559,42 +1707,42 @@ public TreeAdaptor getTreeAdaptor() {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:206:19: ( field )+
-            int cnt15=0;
-            loop15:
+            // com/lambda/impex/ast/Impex.g:283:19: ( field )+
+            int cnt16=0;
+            loop16:
             do {
-                int alt15=2;
+                int alt16=2;
                 switch ( input.LA(1) ) {
                 case Field:
                 case QuotedField:
                     {
-                    alt15=1;
+                    alt16=1;
                     }
                     break;
 
                 }
 
-                switch (alt15) {
+                switch (alt16) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:206:19: field
+            	    // com/lambda/impex/ast/Impex.g:283:20: field
             	    {
-            	    pushFollow(FOLLOW_field_in_record452);
-            	    field36=field();
+            	    pushFollow(FOLLOW_field_in_record466);
+            	    field37=field();
 
             	    state._fsp--;
 
-            	    stream_field.add(field36.getTree());
+            	    stream_field.add(field37.getTree());
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt15 >= 1 ) break loop15;
+            	    if ( cnt16 >= 1 ) break loop16;
                         EarlyExitException eee =
-                            new EarlyExitException(15, input);
+                            new EarlyExitException(16, input);
                         throw eee;
                 }
-                cnt15++;
+                cnt16++;
             } while (true);
 
 
@@ -1609,23 +1757,23 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 207:6: -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
+            // 284:6: -> ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
             {
-                // com/lambda/impex/ast/Impex.g:207:9: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
+                // com/lambda/impex/ast/Impex.g:284:9: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(RECORD, "RECORD")
                 , root_1);
 
-                // com/lambda/impex/ast/Impex.g:207:18: ^( SUBTYPE ( Identifier )? )
+                // com/lambda/impex/ast/Impex.g:284:18: ^( SUBTYPE ( Identifier )? )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(SUBTYPE, "SUBTYPE")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:207:28: ( Identifier )?
+                // com/lambda/impex/ast/Impex.g:284:28: ( Identifier )?
                 if ( stream_Identifier.hasNext() ) {
                     adaptor.addChild(root_2, 
                     stream_Identifier.nextNode()
@@ -1637,7 +1785,7 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // com/lambda/impex/ast/Impex.g:207:41: ^( FIELDS ( field )+ )
+                // com/lambda/impex/ast/Impex.g:284:41: ^( FIELDS ( field )+ )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
@@ -1673,10 +1821,10 @@ public TreeAdaptor getTreeAdaptor() {
             adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
 
         }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-    	retval.tree = (CommonTree)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+        catch (RecognitionException ex) {
+
+                reportError(ex);
+                consumeUntil(input, new BitSet(new long[] { Lb }));
 
         }
 
@@ -1695,7 +1843,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "field"
-    // com/lambda/impex/ast/Impex.g:209:1: field : ( QuotedField | Field );
+    // com/lambda/impex/ast/Impex.g:290:1: field : ( QuotedField | Field );
     public final ImpexParser.field_return field() throws RecognitionException {
         ImpexParser.field_return retval = new ImpexParser.field_return();
         retval.start = input.LT(1);
@@ -1703,23 +1851,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set37=null;
+        Token set38=null;
 
-        CommonTree set37_tree=null;
+        CommonTree set38_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:209:7: ( QuotedField | Field )
+            // com/lambda/impex/ast/Impex.g:290:7: ( QuotedField | Field )
             // com/lambda/impex/ast/Impex.g:
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set37=(Token)input.LT(1);
+            set38=(Token)input.LT(1);
 
             if ( input.LA(1)==Field||input.LA(1)==QuotedField ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set37)
+                (CommonTree)adaptor.create(set38)
                 );
                 state.errorRecovery=false;
             }
@@ -1760,7 +1908,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "attributeName"
-    // com/lambda/impex/ast/Impex.g:234:1: attributeName : ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) | -> ^( ATTRIBUTE_NAME ) );
+    // com/lambda/impex/ast/Impex.g:315:1: attributeName : ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) | -> ^( ATTRIBUTE_NAME ) );
     public final ImpexParser.attributeName_return attributeName() throws RecognitionException {
         ImpexParser.attributeName_return retval = new ImpexParser.attributeName_return();
         retval.start = input.LT(1);
@@ -1768,66 +1916,104 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Macrodef38=null;
-        Token SpecialAttribute39=null;
-        Token Identifier40=null;
-        Token Dot41=null;
-        ImpexParser.attributeName_return attributeName42 =null;
+        Token Macrodef39=null;
+        Token SpecialAttribute40=null;
+        Token Identifier41=null;
+        Token Dot42=null;
+        ImpexParser.attributeName_return attributeName43 =null;
 
 
-        CommonTree Macrodef38_tree=null;
-        CommonTree SpecialAttribute39_tree=null;
-        CommonTree Identifier40_tree=null;
-        CommonTree Dot41_tree=null;
+        CommonTree Macrodef39_tree=null;
+        CommonTree SpecialAttribute40_tree=null;
+        CommonTree Identifier41_tree=null;
+        CommonTree Dot42_tree=null;
         RewriteRuleTokenStream stream_Dot=new RewriteRuleTokenStream(adaptor,"token Dot");
         RewriteRuleTokenStream stream_SpecialAttribute=new RewriteRuleTokenStream(adaptor,"token SpecialAttribute");
         RewriteRuleTokenStream stream_Macrodef=new RewriteRuleTokenStream(adaptor,"token Macrodef");
         RewriteRuleTokenStream stream_Identifier=new RewriteRuleTokenStream(adaptor,"token Identifier");
         RewriteRuleSubtreeStream stream_attributeName=new RewriteRuleSubtreeStream(adaptor,"rule attributeName");
         try {
-            // com/lambda/impex/ast/Impex.g:235:2: ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) | -> ^( ATTRIBUTE_NAME ) )
-            int alt17=4;
+            // com/lambda/impex/ast/Impex.g:316:2: ( Macrodef -> ^( ATTRIBUTE_NAME Macrodef ) | SpecialAttribute -> ^( ATTRIBUTE_NAME SpecialAttribute ) | ( Identifier ( Dot attributeName )? ) -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? ) | -> ^( ATTRIBUTE_NAME ) )
+            int alt18=4;
             switch ( input.LA(1) ) {
             case Macrodef:
                 {
-                alt17=1;
+                switch ( input.LA(2) ) {
+                case EOF:
+                case Comma:
+                case DoubleQuote:
+                case Insert:
+                case InsertUpdate:
+                case LBracket:
+                case LParenthesis:
+                case Lb:
+                case Macrodef:
+                case Quote:
+                case RParenthesis:
+                case Remove:
+                case Semicolon:
+                case Update:
+                    {
+                    alt18=1;
+                    }
+                    break;
+                case Equals:
+                case ValueAssignment:
+                    {
+                    alt18=4;
+                    }
+                    break;
+                default:
+                    NoViableAltException nvae =
+                        new NoViableAltException("", 18, 1, input);
+
+                    throw nvae;
+
+                }
+
                 }
                 break;
             case SpecialAttribute:
                 {
-                alt17=2;
+                alt18=2;
                 }
                 break;
             case Identifier:
                 {
-                alt17=3;
+                alt18=3;
                 }
                 break;
+            case EOF:
             case Comma:
             case DoubleQuote:
+            case Insert:
+            case InsertUpdate:
             case LBracket:
             case LParenthesis:
             case Lb:
+            case Quote:
             case RParenthesis:
+            case Remove:
             case Semicolon:
+            case Update:
                 {
-                alt17=4;
+                alt18=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 17, 0, input);
+                    new NoViableAltException("", 18, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt17) {
+            switch (alt18) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:235:3: Macrodef
+                    // com/lambda/impex/ast/Impex.g:316:3: Macrodef
                     {
-                    Macrodef38=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_attributeName527);  
-                    stream_Macrodef.add(Macrodef38);
+                    Macrodef39=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_attributeName545);  
+                    stream_Macrodef.add(Macrodef39);
 
 
                     // AST REWRITE
@@ -1841,9 +2027,9 @@ public TreeAdaptor getTreeAdaptor() {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 235:12: -> ^( ATTRIBUTE_NAME Macrodef )
+                    // 316:12: -> ^( ATTRIBUTE_NAME Macrodef )
                     {
-                        // com/lambda/impex/ast/Impex.g:235:15: ^( ATTRIBUTE_NAME Macrodef )
+                        // com/lambda/impex/ast/Impex.g:316:15: ^( ATTRIBUTE_NAME Macrodef )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1865,10 +2051,10 @@ public TreeAdaptor getTreeAdaptor() {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:236:4: SpecialAttribute
+                    // com/lambda/impex/ast/Impex.g:317:4: SpecialAttribute
                     {
-                    SpecialAttribute39=(Token)match(input,SpecialAttribute,FOLLOW_SpecialAttribute_in_attributeName541);  
-                    stream_SpecialAttribute.add(SpecialAttribute39);
+                    SpecialAttribute40=(Token)match(input,SpecialAttribute,FOLLOW_SpecialAttribute_in_attributeName559);  
+                    stream_SpecialAttribute.add(SpecialAttribute40);
 
 
                     // AST REWRITE
@@ -1882,9 +2068,9 @@ public TreeAdaptor getTreeAdaptor() {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 236:21: -> ^( ATTRIBUTE_NAME SpecialAttribute )
+                    // 317:21: -> ^( ATTRIBUTE_NAME SpecialAttribute )
                     {
-                        // com/lambda/impex/ast/Impex.g:236:24: ^( ATTRIBUTE_NAME SpecialAttribute )
+                        // com/lambda/impex/ast/Impex.g:317:24: ^( ATTRIBUTE_NAME SpecialAttribute )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1906,39 +2092,39 @@ public TreeAdaptor getTreeAdaptor() {
                     }
                     break;
                 case 3 :
-                    // com/lambda/impex/ast/Impex.g:237:3: ( Identifier ( Dot attributeName )? )
+                    // com/lambda/impex/ast/Impex.g:318:3: ( Identifier ( Dot attributeName )? )
                     {
-                    // com/lambda/impex/ast/Impex.g:237:3: ( Identifier ( Dot attributeName )? )
-                    // com/lambda/impex/ast/Impex.g:237:4: Identifier ( Dot attributeName )?
+                    // com/lambda/impex/ast/Impex.g:318:3: ( Identifier ( Dot attributeName )? )
+                    // com/lambda/impex/ast/Impex.g:318:4: Identifier ( Dot attributeName )?
                     {
-                    Identifier40=(Token)match(input,Identifier,FOLLOW_Identifier_in_attributeName554);  
-                    stream_Identifier.add(Identifier40);
+                    Identifier41=(Token)match(input,Identifier,FOLLOW_Identifier_in_attributeName572);  
+                    stream_Identifier.add(Identifier41);
 
 
-                    // com/lambda/impex/ast/Impex.g:237:15: ( Dot attributeName )?
-                    int alt16=2;
+                    // com/lambda/impex/ast/Impex.g:318:15: ( Dot attributeName )?
+                    int alt17=2;
                     switch ( input.LA(1) ) {
                         case Dot:
                             {
-                            alt16=1;
+                            alt17=1;
                             }
                             break;
                     }
 
-                    switch (alt16) {
+                    switch (alt17) {
                         case 1 :
-                            // com/lambda/impex/ast/Impex.g:237:16: Dot attributeName
+                            // com/lambda/impex/ast/Impex.g:318:16: Dot attributeName
                             {
-                            Dot41=(Token)match(input,Dot,FOLLOW_Dot_in_attributeName557);  
-                            stream_Dot.add(Dot41);
+                            Dot42=(Token)match(input,Dot,FOLLOW_Dot_in_attributeName575);  
+                            stream_Dot.add(Dot42);
 
 
-                            pushFollow(FOLLOW_attributeName_in_attributeName559);
-                            attributeName42=attributeName();
+                            pushFollow(FOLLOW_attributeName_in_attributeName577);
+                            attributeName43=attributeName();
 
                             state._fsp--;
 
-                            stream_attributeName.add(attributeName42.getTree());
+                            stream_attributeName.add(attributeName43.getTree());
 
                             }
                             break;
@@ -1960,9 +2146,9 @@ public TreeAdaptor getTreeAdaptor() {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 237:37: -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? )
+                    // 318:37: -> ^( ATTRIBUTE_NAME Identifier ( attributeName )? )
                     {
-                        // com/lambda/impex/ast/Impex.g:237:40: ^( ATTRIBUTE_NAME Identifier ( attributeName )? )
+                        // com/lambda/impex/ast/Impex.g:318:40: ^( ATTRIBUTE_NAME Identifier ( attributeName )? )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot(
@@ -1973,7 +2159,7 @@ public TreeAdaptor getTreeAdaptor() {
                         stream_Identifier.nextNode()
                         );
 
-                        // com/lambda/impex/ast/Impex.g:237:68: ( attributeName )?
+                        // com/lambda/impex/ast/Impex.g:318:68: ( attributeName )?
                         if ( stream_attributeName.hasNext() ) {
                             adaptor.addChild(root_1, stream_attributeName.nextTree());
 
@@ -1991,7 +2177,7 @@ public TreeAdaptor getTreeAdaptor() {
                     }
                     break;
                 case 4 :
-                    // com/lambda/impex/ast/Impex.g:238:18: 
+                    // com/lambda/impex/ast/Impex.g:319:18: 
                     {
                     // AST REWRITE
                     // elements: 
@@ -2004,9 +2190,9 @@ public TreeAdaptor getTreeAdaptor() {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 238:18: -> ^( ATTRIBUTE_NAME )
+                    // 319:18: -> ^( ATTRIBUTE_NAME )
                     {
-                        // com/lambda/impex/ast/Impex.g:238:20: ^( ATTRIBUTE_NAME )
+                        // com/lambda/impex/ast/Impex.g:319:20: ^( ATTRIBUTE_NAME )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot(
@@ -2054,7 +2240,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "attribute"
-    // com/lambda/impex/ast/Impex.g:240:1: attribute : attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )* -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) ;
+    // com/lambda/impex/ast/Impex.g:321:1: attribute : attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )* -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) ;
     public final ImpexParser.attribute_return attribute() throws RecognitionException {
         ImpexParser.attribute_return retval = new ImpexParser.attribute_return();
         retval.start = input.LT(1);
@@ -2062,33 +2248,33 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token LParenthesis44=null;
-        Token DocumentID45=null;
-        Token Comma47=null;
-        Token DocumentID48=null;
-        Token RParenthesis50=null;
-        Token LBracket51=null;
-        Token Comma53=null;
-        Token RBracket55=null;
-        ImpexParser.attributeName_return attributeName43 =null;
+        Token LParenthesis45=null;
+        Token DocumentID46=null;
+        Token Comma48=null;
+        Token DocumentID49=null;
+        Token RParenthesis51=null;
+        Token LBracket52=null;
+        Token Comma54=null;
+        Token RBracket56=null;
+        ImpexParser.attributeName_return attributeName44 =null;
 
-        ImpexParser.attribute_return attribute46 =null;
+        ImpexParser.attribute_return attribute47 =null;
 
-        ImpexParser.attribute_return attribute49 =null;
+        ImpexParser.attribute_return attribute50 =null;
 
-        ImpexParser.attributeModifierAssignment_return attributeModifierAssignment52 =null;
+        ImpexParser.attributeModifierAssignment_return attributeModifierAssignment53 =null;
 
-        ImpexParser.attributeModifierAssignment_return attributeModifierAssignment54 =null;
+        ImpexParser.attributeModifierAssignment_return attributeModifierAssignment55 =null;
 
 
-        CommonTree LParenthesis44_tree=null;
-        CommonTree DocumentID45_tree=null;
-        CommonTree Comma47_tree=null;
-        CommonTree DocumentID48_tree=null;
-        CommonTree RParenthesis50_tree=null;
-        CommonTree LBracket51_tree=null;
-        CommonTree Comma53_tree=null;
-        CommonTree RBracket55_tree=null;
+        CommonTree LParenthesis45_tree=null;
+        CommonTree DocumentID46_tree=null;
+        CommonTree Comma48_tree=null;
+        CommonTree DocumentID49_tree=null;
+        CommonTree RParenthesis51_tree=null;
+        CommonTree LBracket52_tree=null;
+        CommonTree Comma54_tree=null;
+        CommonTree RBracket56_tree=null;
         RewriteRuleTokenStream stream_DocumentID=new RewriteRuleTokenStream(adaptor,"token DocumentID");
         RewriteRuleTokenStream stream_RBracket=new RewriteRuleTokenStream(adaptor,"token RBracket");
         RewriteRuleTokenStream stream_LBracket=new RewriteRuleTokenStream(adaptor,"token LBracket");
@@ -2099,83 +2285,89 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleSubtreeStream stream_attribute=new RewriteRuleSubtreeStream(adaptor,"rule attribute");
         RewriteRuleSubtreeStream stream_attributeModifierAssignment=new RewriteRuleSubtreeStream(adaptor,"rule attributeModifierAssignment");
         try {
-            // com/lambda/impex/ast/Impex.g:241:2: ( attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )* -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) )
-            // com/lambda/impex/ast/Impex.g:241:3: attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )*
+            // com/lambda/impex/ast/Impex.g:322:2: ( attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )* -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) ) )
+            // com/lambda/impex/ast/Impex.g:322:3: attributeName ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )? ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )*
             {
-            pushFollow(FOLLOW_attributeName_in_attribute594);
-            attributeName43=attributeName();
+            pushFollow(FOLLOW_attributeName_in_attribute612);
+            attributeName44=attributeName();
 
             state._fsp--;
 
-            stream_attributeName.add(attributeName43.getTree());
+            stream_attributeName.add(attributeName44.getTree());
 
-            // com/lambda/impex/ast/Impex.g:241:17: ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )?
-            int alt21=2;
+            // com/lambda/impex/ast/Impex.g:322:17: ( LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis )?
+            int alt22=2;
             switch ( input.LA(1) ) {
                 case LParenthesis:
                     {
-                    alt21=1;
+                    alt22=1;
                     }
                     break;
             }
 
-            switch (alt21) {
+            switch (alt22) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:241:18: LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis
+                    // com/lambda/impex/ast/Impex.g:322:18: LParenthesis ( DocumentID | attribute ) ( Comma ( DocumentID | attribute ) )* RParenthesis
                     {
-                    LParenthesis44=(Token)match(input,LParenthesis,FOLLOW_LParenthesis_in_attribute597);  
-                    stream_LParenthesis.add(LParenthesis44);
+                    LParenthesis45=(Token)match(input,LParenthesis,FOLLOW_LParenthesis_in_attribute615);  
+                    stream_LParenthesis.add(LParenthesis45);
 
 
-                    // com/lambda/impex/ast/Impex.g:241:32: ( DocumentID | attribute )
-                    int alt18=2;
+                    // com/lambda/impex/ast/Impex.g:322:32: ( DocumentID | attribute )
+                    int alt19=2;
                     switch ( input.LA(1) ) {
                     case DocumentID:
                         {
-                        alt18=1;
+                        alt19=1;
                         }
                         break;
+                    case EOF:
                     case Comma:
                     case DoubleQuote:
                     case Identifier:
+                    case Insert:
+                    case InsertUpdate:
                     case LBracket:
                     case LParenthesis:
                     case Lb:
                     case Macrodef:
+                    case Quote:
                     case RParenthesis:
+                    case Remove:
                     case Semicolon:
                     case SpecialAttribute:
+                    case Update:
                         {
-                        alt18=2;
+                        alt19=2;
                         }
                         break;
                     default:
                         NoViableAltException nvae =
-                            new NoViableAltException("", 18, 0, input);
+                            new NoViableAltException("", 19, 0, input);
 
                         throw nvae;
 
                     }
 
-                    switch (alt18) {
+                    switch (alt19) {
                         case 1 :
-                            // com/lambda/impex/ast/Impex.g:241:33: DocumentID
+                            // com/lambda/impex/ast/Impex.g:322:33: DocumentID
                             {
-                            DocumentID45=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_attribute601);  
-                            stream_DocumentID.add(DocumentID45);
+                            DocumentID46=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_attribute619);  
+                            stream_DocumentID.add(DocumentID46);
 
 
                             }
                             break;
                         case 2 :
-                            // com/lambda/impex/ast/Impex.g:241:46: attribute
+                            // com/lambda/impex/ast/Impex.g:322:46: attribute
                             {
-                            pushFollow(FOLLOW_attribute_in_attribute605);
-                            attribute46=attribute();
+                            pushFollow(FOLLOW_attribute_in_attribute623);
+                            attribute47=attribute();
 
                             state._fsp--;
 
-                            stream_attribute.add(attribute46.getTree());
+                            stream_attribute.add(attribute47.getTree());
 
                             }
                             break;
@@ -2183,76 +2375,82 @@ public TreeAdaptor getTreeAdaptor() {
                     }
 
 
-                    // com/lambda/impex/ast/Impex.g:241:56: ( Comma ( DocumentID | attribute ) )*
-                    loop20:
+                    // com/lambda/impex/ast/Impex.g:322:56: ( Comma ( DocumentID | attribute ) )*
+                    loop21:
                     do {
-                        int alt20=2;
+                        int alt21=2;
                         switch ( input.LA(1) ) {
                         case Comma:
                             {
-                            alt20=1;
+                            alt21=1;
                             }
                             break;
 
                         }
 
-                        switch (alt20) {
+                        switch (alt21) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:241:57: Comma ( DocumentID | attribute )
+                    	    // com/lambda/impex/ast/Impex.g:322:57: Comma ( DocumentID | attribute )
                     	    {
-                    	    Comma47=(Token)match(input,Comma,FOLLOW_Comma_in_attribute608);  
-                    	    stream_Comma.add(Comma47);
+                    	    Comma48=(Token)match(input,Comma,FOLLOW_Comma_in_attribute626);  
+                    	    stream_Comma.add(Comma48);
 
 
-                    	    // com/lambda/impex/ast/Impex.g:241:63: ( DocumentID | attribute )
-                    	    int alt19=2;
+                    	    // com/lambda/impex/ast/Impex.g:322:63: ( DocumentID | attribute )
+                    	    int alt20=2;
                     	    switch ( input.LA(1) ) {
                     	    case DocumentID:
                     	        {
-                    	        alt19=1;
+                    	        alt20=1;
                     	        }
                     	        break;
+                    	    case EOF:
                     	    case Comma:
                     	    case DoubleQuote:
                     	    case Identifier:
+                    	    case Insert:
+                    	    case InsertUpdate:
                     	    case LBracket:
                     	    case LParenthesis:
                     	    case Lb:
                     	    case Macrodef:
+                    	    case Quote:
                     	    case RParenthesis:
+                    	    case Remove:
                     	    case Semicolon:
                     	    case SpecialAttribute:
+                    	    case Update:
                     	        {
-                    	        alt19=2;
+                    	        alt20=2;
                     	        }
                     	        break;
                     	    default:
                     	        NoViableAltException nvae =
-                    	            new NoViableAltException("", 19, 0, input);
+                    	            new NoViableAltException("", 20, 0, input);
 
                     	        throw nvae;
 
                     	    }
 
-                    	    switch (alt19) {
+                    	    switch (alt20) {
                     	        case 1 :
-                    	            // com/lambda/impex/ast/Impex.g:241:64: DocumentID
+                    	            // com/lambda/impex/ast/Impex.g:322:64: DocumentID
                     	            {
-                    	            DocumentID48=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_attribute611);  
-                    	            stream_DocumentID.add(DocumentID48);
+                    	            DocumentID49=(Token)match(input,DocumentID,FOLLOW_DocumentID_in_attribute629);  
+                    	            stream_DocumentID.add(DocumentID49);
 
 
                     	            }
                     	            break;
                     	        case 2 :
-                    	            // com/lambda/impex/ast/Impex.g:241:77: attribute
+                    	            // com/lambda/impex/ast/Impex.g:322:77: attribute
                     	            {
-                    	            pushFollow(FOLLOW_attribute_in_attribute615);
-                    	            attribute49=attribute();
+                    	            pushFollow(FOLLOW_attribute_in_attribute633);
+                    	            attribute50=attribute();
 
                     	            state._fsp--;
 
-                    	            stream_attribute.add(attribute49.getTree());
+                    	            stream_attribute.add(attribute50.getTree());
 
                     	            }
                     	            break;
@@ -2264,13 +2462,13 @@ public TreeAdaptor getTreeAdaptor() {
                     	    break;
 
                     	default :
-                    	    break loop20;
+                    	    break loop21;
                         }
                     } while (true);
 
 
-                    RParenthesis50=(Token)match(input,RParenthesis,FOLLOW_RParenthesis_in_attribute620);  
-                    stream_RParenthesis.add(RParenthesis50);
+                    RParenthesis51=(Token)match(input,RParenthesis,FOLLOW_RParenthesis_in_attribute638);  
+                    stream_RParenthesis.add(RParenthesis51);
 
 
                     }
@@ -2279,86 +2477,86 @@ public TreeAdaptor getTreeAdaptor() {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:241:106: ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )*
-            loop23:
+            // com/lambda/impex/ast/Impex.g:322:106: ( LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket )*
+            loop24:
             do {
-                int alt23=2;
+                int alt24=2;
                 switch ( input.LA(1) ) {
                 case LBracket:
                     {
-                    alt23=1;
+                    alt24=1;
                     }
                     break;
 
                 }
 
-                switch (alt23) {
+                switch (alt24) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:241:107: LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket
+            	    // com/lambda/impex/ast/Impex.g:322:107: LBracket attributeModifierAssignment ( Comma attributeModifierAssignment )* RBracket
             	    {
-            	    LBracket51=(Token)match(input,LBracket,FOLLOW_LBracket_in_attribute626);  
-            	    stream_LBracket.add(LBracket51);
+            	    LBracket52=(Token)match(input,LBracket,FOLLOW_LBracket_in_attribute644);  
+            	    stream_LBracket.add(LBracket52);
 
 
-            	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute628);
-            	    attributeModifierAssignment52=attributeModifierAssignment();
+            	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute646);
+            	    attributeModifierAssignment53=attributeModifierAssignment();
 
             	    state._fsp--;
 
-            	    stream_attributeModifierAssignment.add(attributeModifierAssignment52.getTree());
+            	    stream_attributeModifierAssignment.add(attributeModifierAssignment53.getTree());
 
-            	    // com/lambda/impex/ast/Impex.g:241:144: ( Comma attributeModifierAssignment )*
-            	    loop22:
+            	    // com/lambda/impex/ast/Impex.g:322:144: ( Comma attributeModifierAssignment )*
+            	    loop23:
             	    do {
-            	        int alt22=2;
+            	        int alt23=2;
             	        switch ( input.LA(1) ) {
             	        case Comma:
             	            {
-            	            alt22=1;
+            	            alt23=1;
             	            }
             	            break;
 
             	        }
 
-            	        switch (alt22) {
+            	        switch (alt23) {
             	    	case 1 :
-            	    	    // com/lambda/impex/ast/Impex.g:241:145: Comma attributeModifierAssignment
+            	    	    // com/lambda/impex/ast/Impex.g:322:145: Comma attributeModifierAssignment
             	    	    {
-            	    	    Comma53=(Token)match(input,Comma,FOLLOW_Comma_in_attribute631);  
-            	    	    stream_Comma.add(Comma53);
+            	    	    Comma54=(Token)match(input,Comma,FOLLOW_Comma_in_attribute649);  
+            	    	    stream_Comma.add(Comma54);
 
 
-            	    	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute634);
-            	    	    attributeModifierAssignment54=attributeModifierAssignment();
+            	    	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute652);
+            	    	    attributeModifierAssignment55=attributeModifierAssignment();
 
             	    	    state._fsp--;
 
-            	    	    stream_attributeModifierAssignment.add(attributeModifierAssignment54.getTree());
+            	    	    stream_attributeModifierAssignment.add(attributeModifierAssignment55.getTree());
 
             	    	    }
             	    	    break;
 
             	    	default :
-            	    	    break loop22;
+            	    	    break loop23;
             	        }
             	    } while (true);
 
 
-            	    RBracket55=(Token)match(input,RBracket,FOLLOW_RBracket_in_attribute638);  
-            	    stream_RBracket.add(RBracket55);
+            	    RBracket56=(Token)match(input,RBracket,FOLLOW_RBracket_in_attribute656);  
+            	    stream_RBracket.add(RBracket56);
 
 
             	    }
             	    break;
 
             	default :
-            	    break loop23;
+            	    break loop24;
                 }
             } while (true);
 
 
             // AST REWRITE
-            // elements: DocumentID, attribute, attributeModifierAssignment, attributeName
+            // elements: attributeName, DocumentID, attribute, attributeModifierAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2368,9 +2566,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 242:2: -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
+            // 323:2: -> ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
             {
-                // com/lambda/impex/ast/Impex.g:242:5: ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
+                // com/lambda/impex/ast/Impex.g:323:5: ^( ATTRIBUTE attributeName ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment )* ) )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -2379,28 +2577,28 @@ public TreeAdaptor getTreeAdaptor() {
 
                 adaptor.addChild(root_1, stream_attributeName.nextTree());
 
-                // com/lambda/impex/ast/Impex.g:242:31: ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) )
+                // com/lambda/impex/ast/Impex.g:323:31: ^( ITEM_EXPRESSION ( attribute )* ^( DOCUMENTID_REF ( DocumentID )* ) )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(ITEM_EXPRESSION, "ITEM_EXPRESSION")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:242:49: ( attribute )*
+                // com/lambda/impex/ast/Impex.g:323:49: ( attribute )*
                 while ( stream_attribute.hasNext() ) {
                     adaptor.addChild(root_2, stream_attribute.nextTree());
 
                 }
                 stream_attribute.reset();
 
-                // com/lambda/impex/ast/Impex.g:242:60: ^( DOCUMENTID_REF ( DocumentID )* )
+                // com/lambda/impex/ast/Impex.g:323:60: ^( DOCUMENTID_REF ( DocumentID )* )
                 {
                 CommonTree root_3 = (CommonTree)adaptor.nil();
                 root_3 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(DOCUMENTID_REF, "DOCUMENTID_REF")
                 , root_3);
 
-                // com/lambda/impex/ast/Impex.g:242:77: ( DocumentID )*
+                // com/lambda/impex/ast/Impex.g:323:77: ( DocumentID )*
                 while ( stream_DocumentID.hasNext() ) {
                     adaptor.addChild(root_3, 
                     stream_DocumentID.nextNode()
@@ -2415,14 +2613,14 @@ public TreeAdaptor getTreeAdaptor() {
                 adaptor.addChild(root_1, root_2);
                 }
 
-                // com/lambda/impex/ast/Impex.g:242:91: ^( MODIFIERS ( attributeModifierAssignment )* )
+                // com/lambda/impex/ast/Impex.g:323:91: ^( MODIFIERS ( attributeModifierAssignment )* )
                 {
                 CommonTree root_2 = (CommonTree)adaptor.nil();
                 root_2 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(MODIFIERS, "MODIFIERS")
                 , root_2);
 
-                // com/lambda/impex/ast/Impex.g:242:103: ( attributeModifierAssignment )*
+                // com/lambda/impex/ast/Impex.g:323:103: ( attributeModifierAssignment )*
                 while ( stream_attributeModifierAssignment.hasNext() ) {
                     adaptor.addChild(root_2, stream_attributeModifierAssignment.nextTree());
 
@@ -2471,7 +2669,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "attributeModifierAssignment"
-    // com/lambda/impex/ast/Impex.g:244:1: attributeModifierAssignment : attributeModifier ValueAssignment -> ^( MODIFIER attributeModifier ValueAssignment ) ;
+    // com/lambda/impex/ast/Impex.g:325:1: attributeModifierAssignment : attributeModifier ValueAssignment -> ^( MODIFIER attributeModifier ValueAssignment ) ;
     public final ImpexParser.attributeModifierAssignment_return attributeModifierAssignment() throws RecognitionException {
         ImpexParser.attributeModifierAssignment_return retval = new ImpexParser.attributeModifierAssignment_return();
         retval.start = input.LT(1);
@@ -2479,30 +2677,30 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token ValueAssignment57=null;
-        ImpexParser.attributeModifier_return attributeModifier56 =null;
+        Token ValueAssignment58=null;
+        ImpexParser.attributeModifier_return attributeModifier57 =null;
 
 
-        CommonTree ValueAssignment57_tree=null;
+        CommonTree ValueAssignment58_tree=null;
         RewriteRuleTokenStream stream_ValueAssignment=new RewriteRuleTokenStream(adaptor,"token ValueAssignment");
         RewriteRuleSubtreeStream stream_attributeModifier=new RewriteRuleSubtreeStream(adaptor,"rule attributeModifier");
         try {
-            // com/lambda/impex/ast/Impex.g:245:2: ( attributeModifier ValueAssignment -> ^( MODIFIER attributeModifier ValueAssignment ) )
-            // com/lambda/impex/ast/Impex.g:245:4: attributeModifier ValueAssignment
+            // com/lambda/impex/ast/Impex.g:326:2: ( attributeModifier ValueAssignment -> ^( MODIFIER attributeModifier ValueAssignment ) )
+            // com/lambda/impex/ast/Impex.g:326:4: attributeModifier ValueAssignment
             {
-            pushFollow(FOLLOW_attributeModifier_in_attributeModifierAssignment679);
-            attributeModifier56=attributeModifier();
+            pushFollow(FOLLOW_attributeModifier_in_attributeModifierAssignment697);
+            attributeModifier57=attributeModifier();
 
             state._fsp--;
 
-            stream_attributeModifier.add(attributeModifier56.getTree());
+            stream_attributeModifier.add(attributeModifier57.getTree());
 
-            ValueAssignment57=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_attributeModifierAssignment681);  
-            stream_ValueAssignment.add(ValueAssignment57);
+            ValueAssignment58=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_attributeModifierAssignment699);  
+            stream_ValueAssignment.add(ValueAssignment58);
 
 
             // AST REWRITE
-            // elements: attributeModifier, ValueAssignment
+            // elements: ValueAssignment, attributeModifier
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2512,9 +2710,9 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 246:2: -> ^( MODIFIER attributeModifier ValueAssignment )
+            // 327:2: -> ^( MODIFIER attributeModifier ValueAssignment )
             {
-                // com/lambda/impex/ast/Impex.g:246:5: ^( MODIFIER attributeModifier ValueAssignment )
+                // com/lambda/impex/ast/Impex.g:327:5: ^( MODIFIER attributeModifier ValueAssignment )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
@@ -2566,7 +2764,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "attributeModifier"
-    // com/lambda/impex/ast/Impex.g:251:1: attributeModifier : ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual );
+    // com/lambda/impex/ast/Impex.g:332:1: attributeModifier : ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual );
     public final ImpexParser.attributeModifier_return attributeModifier() throws RecognitionException {
         ImpexParser.attributeModifier_return retval = new ImpexParser.attributeModifier_return();
         retval.start = input.LT(1);
@@ -2574,23 +2772,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set58=null;
+        Token set59=null;
 
-        CommonTree set58_tree=null;
+        CommonTree set59_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:252:2: ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
+            // com/lambda/impex/ast/Impex.g:333:2: ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
             // com/lambda/impex/ast/Impex.g:
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set58=(Token)input.LT(1);
+            set59=(Token)input.LT(1);
 
             if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= NumberFormat)||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set58)
+                (CommonTree)adaptor.create(set59)
                 );
                 state.errorRecovery=false;
             }
@@ -2631,7 +2829,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "headerMode"
-    // com/lambda/impex/ast/Impex.g:255:1: headerMode : ( Insert | InsertUpdate | Update | Remove );
+    // com/lambda/impex/ast/Impex.g:336:1: headerMode : ( Insert | InsertUpdate | Update | Remove );
     public final ImpexParser.headerMode_return headerMode() throws RecognitionException {
         ImpexParser.headerMode_return retval = new ImpexParser.headerMode_return();
         retval.start = input.LT(1);
@@ -2639,23 +2837,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token set59=null;
+        Token set60=null;
 
-        CommonTree set59_tree=null;
+        CommonTree set60_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:256:2: ( Insert | InsertUpdate | Update | Remove )
+            // com/lambda/impex/ast/Impex.g:337:2: ( Insert | InsertUpdate | Update | Remove )
             // com/lambda/impex/ast/Impex.g:
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            set59=(Token)input.LT(1);
+            set60=(Token)input.LT(1);
 
             if ( (input.LA(1) >= Insert && input.LA(1) <= InsertUpdate)||input.LA(1)==Remove||input.LA(1)==Update ) {
                 input.consume();
                 adaptor.addChild(root_0, 
-                (CommonTree)adaptor.create(set59)
+                (CommonTree)adaptor.create(set60)
                 );
                 state.errorRecovery=false;
             }
@@ -2696,7 +2894,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "headerTypeName"
-    // com/lambda/impex/ast/Impex.g:258:1: headerTypeName : ( Identifier | headerMode | attributeModifier | headerModifier );
+    // com/lambda/impex/ast/Impex.g:339:1: headerTypeName : ( Identifier | headerMode | attributeModifier | headerModifier );
     public final ImpexParser.headerTypeName_return headerTypeName() throws RecognitionException {
         ImpexParser.headerTypeName_return retval = new ImpexParser.headerTypeName_return();
         retval.start = input.LT(1);
@@ -2704,23 +2902,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Identifier60=null;
-        ImpexParser.headerMode_return headerMode61 =null;
+        Token Identifier61=null;
+        ImpexParser.headerMode_return headerMode62 =null;
 
-        ImpexParser.attributeModifier_return attributeModifier62 =null;
+        ImpexParser.attributeModifier_return attributeModifier63 =null;
 
-        ImpexParser.headerModifier_return headerModifier63 =null;
+        ImpexParser.headerModifier_return headerModifier64 =null;
 
 
-        CommonTree Identifier60_tree=null;
+        CommonTree Identifier61_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:259:2: ( Identifier | headerMode | attributeModifier | headerModifier )
-            int alt24=4;
+            // com/lambda/impex/ast/Impex.g:340:2: ( Identifier | headerMode | attributeModifier | headerModifier )
+            int alt25=4;
             switch ( input.LA(1) ) {
             case Identifier:
                 {
-                alt24=1;
+                alt25=1;
                 }
                 break;
             case Insert:
@@ -2728,7 +2926,7 @@ public TreeAdaptor getTreeAdaptor() {
             case Remove:
             case Update:
                 {
-                alt24=2;
+                alt25=2;
                 }
                 break;
             case Alias:
@@ -2751,82 +2949,82 @@ public TreeAdaptor getTreeAdaptor() {
             case Unique:
             case Virtual:
                 {
-                alt24=3;
+                alt25=3;
                 }
                 break;
             case BatchMode:
             case CacheUnique:
             case Processor:
                 {
-                alt24=4;
+                alt25=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 24, 0, input);
+                    new NoViableAltException("", 25, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt24) {
+            switch (alt25) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:259:3: Identifier
+                    // com/lambda/impex/ast/Impex.g:340:3: Identifier
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
 
-                    Identifier60=(Token)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName806); 
-                    Identifier60_tree = 
-                    (CommonTree)adaptor.create(Identifier60)
+                    Identifier61=(Token)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName824); 
+                    Identifier61_tree = 
+                    (CommonTree)adaptor.create(Identifier61)
                     ;
-                    adaptor.addChild(root_0, Identifier60_tree);
+                    adaptor.addChild(root_0, Identifier61_tree);
 
 
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:259:16: headerMode
+                    // com/lambda/impex/ast/Impex.g:340:16: headerMode
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_headerMode_in_headerTypeName810);
-                    headerMode61=headerMode();
+                    pushFollow(FOLLOW_headerMode_in_headerTypeName828);
+                    headerMode62=headerMode();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, headerMode61.getTree());
+                    adaptor.addChild(root_0, headerMode62.getTree());
 
                     }
                     break;
                 case 3 :
-                    // com/lambda/impex/ast/Impex.g:259:29: attributeModifier
+                    // com/lambda/impex/ast/Impex.g:340:29: attributeModifier
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName814);
-                    attributeModifier62=attributeModifier();
+                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName832);
+                    attributeModifier63=attributeModifier();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, attributeModifier62.getTree());
+                    adaptor.addChild(root_0, attributeModifier63.getTree());
 
                     }
                     break;
                 case 4 :
-                    // com/lambda/impex/ast/Impex.g:259:49: headerModifier
+                    // com/lambda/impex/ast/Impex.g:340:49: headerModifier
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_headerModifier_in_headerTypeName818);
-                    headerModifier63=headerModifier();
+                    pushFollow(FOLLOW_headerModifier_in_headerTypeName836);
+                    headerModifier64=headerModifier();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, headerModifier63.getTree());
+                    adaptor.addChild(root_0, headerModifier64.getTree());
 
                     }
                     break;
@@ -2861,7 +3059,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "macro"
-    // com/lambda/impex/ast/Impex.g:271:1: macro : Macrodef ( ValueAssignment | Equals ) ;
+    // com/lambda/impex/ast/Impex.g:352:1: macro : Macrodef ( ValueAssignment | Equals ) ;
     public final ImpexParser.macro_return macro() throws RecognitionException {
         ImpexParser.macro_return retval = new ImpexParser.macro_return();
         retval.start = input.LT(1);
@@ -2869,75 +3067,75 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token Macrodef64=null;
-        Token ValueAssignment65=null;
-        Token Equals66=null;
+        Token Macrodef65=null;
+        Token ValueAssignment66=null;
+        Token Equals67=null;
 
-        CommonTree Macrodef64_tree=null;
-        CommonTree ValueAssignment65_tree=null;
-        CommonTree Equals66_tree=null;
+        CommonTree Macrodef65_tree=null;
+        CommonTree ValueAssignment66_tree=null;
+        CommonTree Equals67_tree=null;
 
         try {
-            // com/lambda/impex/ast/Impex.g:272:2: ( Macrodef ( ValueAssignment | Equals ) )
-            // com/lambda/impex/ast/Impex.g:272:3: Macrodef ( ValueAssignment | Equals )
+            // com/lambda/impex/ast/Impex.g:353:2: ( Macrodef ( ValueAssignment | Equals ) )
+            // com/lambda/impex/ast/Impex.g:353:3: Macrodef ( ValueAssignment | Equals )
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            Macrodef64=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro836); 
-            Macrodef64_tree = 
-            (CommonTree)adaptor.create(Macrodef64)
+            Macrodef65=(Token)match(input,Macrodef,FOLLOW_Macrodef_in_macro854); 
+            Macrodef65_tree = 
+            (CommonTree)adaptor.create(Macrodef65)
             ;
-            adaptor.addChild(root_0, Macrodef64_tree);
+            adaptor.addChild(root_0, Macrodef65_tree);
 
 
-            // com/lambda/impex/ast/Impex.g:273:2: ( ValueAssignment | Equals )
-            int alt25=2;
+            // com/lambda/impex/ast/Impex.g:354:2: ( ValueAssignment | Equals )
+            int alt26=2;
             switch ( input.LA(1) ) {
             case ValueAssignment:
                 {
-                alt25=1;
+                alt26=1;
                 }
                 break;
             case Equals:
                 {
-                alt25=2;
+                alt26=2;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 25, 0, input);
+                    new NoViableAltException("", 26, 0, input);
 
                 throw nvae;
 
             }
 
-            switch (alt25) {
+            switch (alt26) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:273:3: ValueAssignment
+                    // com/lambda/impex/ast/Impex.g:354:3: ValueAssignment
                     {
-                    ValueAssignment65=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_macro841); 
-                    ValueAssignment65_tree = 
-                    (CommonTree)adaptor.create(ValueAssignment65)
+                    ValueAssignment66=(Token)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_macro859); 
+                    ValueAssignment66_tree = 
+                    (CommonTree)adaptor.create(ValueAssignment66)
                     ;
-                    adaptor.addChild(root_0, ValueAssignment65_tree);
+                    adaptor.addChild(root_0, ValueAssignment66_tree);
 
 
-                    context.registerMacro(Macrodef64, (ValueAssignment65!=null?ValueAssignment65.getText():null));
+                    context.registerMacro(Macrodef65, (ValueAssignment66!=null?ValueAssignment66.getText():null));
 
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:274:3: Equals
+                    // com/lambda/impex/ast/Impex.g:355:3: Equals
                     {
-                    Equals66=(Token)match(input,Equals,FOLLOW_Equals_in_macro848); 
-                    Equals66_tree = 
-                    (CommonTree)adaptor.create(Equals66)
+                    Equals67=(Token)match(input,Equals,FOLLOW_Equals_in_macro866); 
+                    Equals67_tree = 
+                    (CommonTree)adaptor.create(Equals67)
                     ;
-                    adaptor.addChild(root_0, Equals66_tree);
+                    adaptor.addChild(root_0, Equals67_tree);
 
 
-                    context.registerMacro(Macrodef64, "");
+                    context.registerMacro(Macrodef65, "");
 
                     }
                     break;
@@ -2971,129 +3169,130 @@ public TreeAdaptor getTreeAdaptor() {
     // Delegated rules
 
 
-    protected DFA6 dfa6 = new DFA6(this);
-    static final String DFA6_eotS =
+    protected DFA7 dfa7 = new DFA7(this);
+    static final String DFA7_eotS =
         "\10\uffff";
-    static final String DFA6_eofS =
+    static final String DFA7_eofS =
         "\1\1\1\uffff\1\1\2\uffff\3\1";
-    static final String DFA6_minS =
+    static final String DFA7_minS =
         "\1\46\1\uffff\1\36\1\34\1\uffff\3\36";
-    static final String DFA6_maxS =
-        "\1\105\1\uffff\1\105\1\107\1\uffff\3\105";
-    static final String DFA6_acceptS =
+    static final String DFA7_maxS =
+        "\1\106\1\uffff\1\106\1\110\1\uffff\3\106";
+    static final String DFA7_acceptS =
         "\1\uffff\1\2\2\uffff\1\1\3\uffff";
-    static final String DFA6_specialS =
+    static final String DFA7_specialS =
         "\10\uffff}>";
-    static final String[] DFA6_transitionS = {
-            "\2\1\4\uffff\1\2\3\uffff\1\1\14\uffff\1\1\7\uffff\1\1",
+    static final String[] DFA7_transitionS = {
+            "\2\1\4\uffff\1\2\3\uffff\1\1\15\uffff\1\1\7\uffff\1\1",
             "",
-            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\2\3\uffff\1\3\7\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\2\3\uffff\1\3\10\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\6\52\uffff\1\5",
+            "\1\6\53\uffff\1\5",
             "",
-            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1",
-            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\7\uffff"+
+            "\1\4\4\uffff\1\4\2\uffff\2\1\4\uffff\1\7\3\uffff\1\3\10\uffff"+
             "\1\4\4\uffff\1\1\7\uffff\1\1"
     };
 
-    static final short[] DFA6_eot = DFA.unpackEncodedString(DFA6_eotS);
-    static final short[] DFA6_eof = DFA.unpackEncodedString(DFA6_eofS);
-    static final char[] DFA6_min = DFA.unpackEncodedStringToUnsignedChars(DFA6_minS);
-    static final char[] DFA6_max = DFA.unpackEncodedStringToUnsignedChars(DFA6_maxS);
-    static final short[] DFA6_accept = DFA.unpackEncodedString(DFA6_acceptS);
-    static final short[] DFA6_special = DFA.unpackEncodedString(DFA6_specialS);
-    static final short[][] DFA6_transition;
+    static final short[] DFA7_eot = DFA.unpackEncodedString(DFA7_eotS);
+    static final short[] DFA7_eof = DFA.unpackEncodedString(DFA7_eofS);
+    static final char[] DFA7_min = DFA.unpackEncodedStringToUnsignedChars(DFA7_minS);
+    static final char[] DFA7_max = DFA.unpackEncodedStringToUnsignedChars(DFA7_maxS);
+    static final short[] DFA7_accept = DFA.unpackEncodedString(DFA7_acceptS);
+    static final short[] DFA7_special = DFA.unpackEncodedString(DFA7_specialS);
+    static final short[][] DFA7_transition;
 
     static {
-        int numStates = DFA6_transitionS.length;
-        DFA6_transition = new short[numStates][];
+        int numStates = DFA7_transitionS.length;
+        DFA7_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA6_transition[i] = DFA.unpackEncodedString(DFA6_transitionS[i]);
+            DFA7_transition[i] = DFA.unpackEncodedString(DFA7_transitionS[i]);
         }
     }
 
-    class DFA6 extends DFA {
+    class DFA7 extends DFA {
 
-        public DFA6(BaseRecognizer recognizer) {
+        public DFA7(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 6;
-            this.eot = DFA6_eot;
-            this.eof = DFA6_eof;
-            this.min = DFA6_min;
-            this.max = DFA6_max;
-            this.accept = DFA6_accept;
-            this.special = DFA6_special;
-            this.transition = DFA6_transition;
+            this.decisionNumber = 7;
+            this.eot = DFA7_eot;
+            this.eof = DFA7_eof;
+            this.min = DFA7_min;
+            this.max = DFA7_max;
+            this.accept = DFA7_accept;
+            this.special = DFA7_special;
+            this.transition = DFA7_transition;
         }
         public String getDescription() {
-            return "()+ loopback of 188:16: ( ( Lb )+ ( macro ( Lb )* )* record )+";
+            return "()* loopback of 266:17: ( ( ( Lb )+ ( macro ( Lb )* )* record ) )*";
         }
     }
  
 
     public static final BitSet FOLLOW_EOF_in_parse178 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Lb_in_impex188 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_block_in_impex193 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_macro_in_impex197 = new BitSet(new long[]{0x200110C000000000L,0x0000000000000020L});
-    public static final BitSet FOLLOW_EOF_in_impex201 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_header_in_block243 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_Lb_in_block246 = new BitSet(new long[]{0x0101100840000000L});
-    public static final BitSet FOLLOW_macro_in_block250 = new BitSet(new long[]{0x0101100840000000L});
-    public static final BitSet FOLLOW_Lb_in_block252 = new BitSet(new long[]{0x0101100840000000L});
-    public static final BitSet FOLLOW_record_in_block257 = new BitSet(new long[]{0x0000100000000002L});
-    public static final BitSet FOLLOW_headerMode_in_header284 = new BitSet(new long[]{0x20EE09F88184C980L,0x0000000000000138L});
-    public static final BitSet FOLLOW_headerTypeName_in_header287 = new BitSet(new long[]{0x8000020000000002L});
-    public static final BitSet FOLLOW_LBracket_in_header290 = new BitSet(new long[]{0x0080000000004800L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header292 = new BitSet(new long[]{0x0200000000080000L});
-    public static final BitSet FOLLOW_Comma_in_header295 = new BitSet(new long[]{0x0080000000004800L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header298 = new BitSet(new long[]{0x0200000000080000L});
-    public static final BitSet FOLLOW_RBracket_in_header302 = new BitSet(new long[]{0x8000020000000002L});
-    public static final BitSet FOLLOW_Semicolon_in_header308 = new BitSet(new long[]{0x0001060808000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_attribute_in_header311 = new BitSet(new long[]{0x8000000000000002L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header315 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_attribute_in_header317 = new BitSet(new long[]{0x0000000008000000L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header319 = new BitSet(new long[]{0x8000000000000002L});
-    public static final BitSet FOLLOW_Semicolon_in_header325 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_DocumentID_in_header327 = new BitSet(new long[]{0x8000000000000002L});
-    public static final BitSet FOLLOW_Semicolon_in_header331 = new BitSet(new long[]{0x0001060808000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_attribute_in_header334 = new BitSet(new long[]{0x8000000000000002L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header338 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_attribute_in_header340 = new BitSet(new long[]{0x0000000008000000L});
-    public static final BitSet FOLLOW_DoubleQuote_in_header342 = new BitSet(new long[]{0x8000000000000002L});
-    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment392 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_Equals_in_headerModifierAssignment394 = new BitSet(new long[]{0x0000000000022000L});
-    public static final BitSet FOLLOW_boolOrClassname_in_headerModifierAssignment396 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_record449 = new BitSet(new long[]{0x0100000040000000L});
-    public static final BitSet FOLLOW_field_in_record452 = new BitSet(new long[]{0x0100000040000002L});
-    public static final BitSet FOLLOW_Macrodef_in_attributeName527 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName541 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_attributeName554 = new BitSet(new long[]{0x0000000004000002L});
-    public static final BitSet FOLLOW_Dot_in_attributeName557 = new BitSet(new long[]{0x0001000800000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_attributeName_in_attributeName559 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_attributeName_in_attribute594 = new BitSet(new long[]{0x0000060000000002L});
-    public static final BitSet FOLLOW_LParenthesis_in_attribute597 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute601 = new BitSet(new long[]{0x1000000000080000L});
-    public static final BitSet FOLLOW_attribute_in_attribute605 = new BitSet(new long[]{0x1000000000080000L});
-    public static final BitSet FOLLOW_Comma_in_attribute608 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute611 = new BitSet(new long[]{0x1000000000080000L});
-    public static final BitSet FOLLOW_attribute_in_attribute615 = new BitSet(new long[]{0x1000000000080000L});
-    public static final BitSet FOLLOW_RParenthesis_in_attribute620 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_LBracket_in_attribute626 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000118L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute628 = new BitSet(new long[]{0x0200000000080000L});
-    public static final BitSet FOLLOW_Comma_in_attribute631 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000118L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute634 = new BitSet(new long[]{0x0200000000080000L});
-    public static final BitSet FOLLOW_RBracket_in_attribute638 = new BitSet(new long[]{0x0000020000000002L});
-    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment679 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment681 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_headerTypeName806 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_headerMode_in_headerTypeName810 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName814 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_headerModifier_in_headerTypeName818 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Macrodef_in_macro836 = new BitSet(new long[]{0x0000000010000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_ValueAssignment_in_macro841 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Equals_in_macro848 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_sync_in_impex197 = new BitSet(new long[]{0x400110C000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_Lb_in_impex201 = new BitSet(new long[]{0x400110C000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_block_in_impex206 = new BitSet(new long[]{0x400110C000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_macro_in_impex210 = new BitSet(new long[]{0x400110C000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_sync_in_impex214 = new BitSet(new long[]{0x400110C000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_EOF_in_impex218 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_header_in_block249 = new BitSet(new long[]{0x0000100000000002L});
+    public static final BitSet FOLLOW_Lb_in_block255 = new BitSet(new long[]{0x0201100840000000L});
+    public static final BitSet FOLLOW_macro_in_block261 = new BitSet(new long[]{0x0201100840000000L});
+    public static final BitSet FOLLOW_Lb_in_block265 = new BitSet(new long[]{0x0201100840000000L});
+    public static final BitSet FOLLOW_record_in_block272 = new BitSet(new long[]{0x0000100000000002L});
+    public static final BitSet FOLLOW_headerMode_in_header301 = new BitSet(new long[]{0x40EE09F88184C980L,0x0000000000000270L});
+    public static final BitSet FOLLOW_headerTypeName_in_header304 = new BitSet(new long[]{0x0000020000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_LBracket_in_header307 = new BitSet(new long[]{0x0080000000004800L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header309 = new BitSet(new long[]{0x0400000000080000L});
+    public static final BitSet FOLLOW_Comma_in_header312 = new BitSet(new long[]{0x0080000000004800L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header315 = new BitSet(new long[]{0x0400000000080000L});
+    public static final BitSet FOLLOW_RBracket_in_header319 = new BitSet(new long[]{0x0000020000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_Semicolon_in_header325 = new BitSet(new long[]{0x0101060808000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_attribute_in_header328 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_quote_in_header332 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_attribute_in_header334 = new BitSet(new long[]{0x0100000008000000L});
+    public static final BitSet FOLLOW_quote_in_header336 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_Semicolon_in_header342 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_DocumentID_in_header344 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_Semicolon_in_header348 = new BitSet(new long[]{0x0101060808000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_attribute_in_header351 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_quote_in_header355 = new BitSet(new long[]{0x0001060800000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_attribute_in_header357 = new BitSet(new long[]{0x0100000008000000L});
+    public static final BitSet FOLLOW_quote_in_header359 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000001L});
+    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment420 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
+    public static final BitSet FOLLOW_ValueAssignment_in_headerModifierAssignment422 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_record462 = new BitSet(new long[]{0x0200000040000000L});
+    public static final BitSet FOLLOW_field_in_record466 = new BitSet(new long[]{0x0200000040000002L});
+    public static final BitSet FOLLOW_Macrodef_in_attributeName545 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName559 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_attributeName572 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_Dot_in_attributeName575 = new BitSet(new long[]{0x0001000800000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_attributeName_in_attributeName577 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attributeName_in_attribute612 = new BitSet(new long[]{0x0000060000000002L});
+    public static final BitSet FOLLOW_LParenthesis_in_attribute615 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DocumentID_in_attribute619 = new BitSet(new long[]{0x2000000000080000L});
+    public static final BitSet FOLLOW_attribute_in_attribute623 = new BitSet(new long[]{0x2000000000080000L});
+    public static final BitSet FOLLOW_Comma_in_attribute626 = new BitSet(new long[]{0x0001060802000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DocumentID_in_attribute629 = new BitSet(new long[]{0x2000000000080000L});
+    public static final BitSet FOLLOW_attribute_in_attribute633 = new BitSet(new long[]{0x2000000000080000L});
+    public static final BitSet FOLLOW_RParenthesis_in_attribute638 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_LBracket_in_attribute644 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000230L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute646 = new BitSet(new long[]{0x0400000000080000L});
+    public static final BitSet FOLLOW_Comma_in_attribute649 = new BitSet(new long[]{0x006E093081848180L,0x0000000000000230L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute652 = new BitSet(new long[]{0x0400000000080000L});
+    public static final BitSet FOLLOW_RBracket_in_attribute656 = new BitSet(new long[]{0x0000020000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment697 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
+    public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment699 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_headerTypeName824 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerMode_in_headerTypeName828 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName832 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerModifier_in_headerTypeName836 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Macrodef_in_macro854 = new BitSet(new long[]{0x0000000010000000L,0x0000000000000100L});
+    public static final BitSet FOLLOW_ValueAssignment_in_macro859 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Equals_in_macro866 = new BitSet(new long[]{0x0000000000000002L});
 
 }
