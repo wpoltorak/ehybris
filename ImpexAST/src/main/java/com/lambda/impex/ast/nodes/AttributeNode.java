@@ -1,21 +1,27 @@
 package com.lambda.impex.ast.nodes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.lambda.impex.ast.ImpexVisitor;
 
 public class AttributeNode extends ImpexASTNode {
 
-    private final List<ImpexASTNode> expression = new ArrayList<ImpexASTNode>();
-    private final List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
-    private ImpexASTNode name;
+    private final List<ImpexASTNode> expression;
+    private final List<ImpexASTNode> modifiers;
+    private final ImpexASTNode name;
 
-    public AttributeNode() {
+    public AttributeNode(final ImpexASTNode name, final List<ImpexASTNode> expression, final List<ImpexASTNode> modifiers) {
+        super(name.getStartPosition(), stopIndex(name, expression, modifiers));
+        this.name = name;
+        this.expression = expression;
+        this.modifiers = modifiers;
     }
 
-    public AttributeNode(final ImpexASTNode name) {
-        this.name = name;
+    private static int stopIndex(final ImpexASTNode name, final List<ImpexASTNode> expression, final List<ImpexASTNode> modifiers) {
+        if (modifiers.isEmpty()) {
+            return expression.isEmpty() ? name.getStopPosition() : expression.get(expression.size() - 1).getStopPosition();
+        }
+        return modifiers.get(modifiers.size() - 1).getStopPosition();
     }
 
     @Override
@@ -28,16 +34,15 @@ public class AttributeNode extends ImpexASTNode {
         }
     }
 
-    public void setName(final ImpexASTNode name) {
-        this.name = name;
+    public ImpexASTNode getName() {
+        return name;
     }
 
-    public void addAttribute(final ImpexASTNode attribute) {
-        this.expression.add(attribute);
+    public List<ImpexASTNode> getExpression() {
+        return expression;
     }
 
-    public void addModifier(final ImpexASTNode modifier) {
-        modifiers.add(modifier);
+    public List<ImpexASTNode> getModifiers() {
+        return modifiers;
     }
-
 }

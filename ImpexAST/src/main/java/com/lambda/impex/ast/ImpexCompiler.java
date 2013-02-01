@@ -4,15 +4,16 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 
-import com.lambda.impex.ast.ImpexError.Type;
+import com.lambda.impex.ast.ImpexProblem.Type;
 import com.lambda.impex.ast.nodes.ImpexASTNode;
 
 public class ImpexCompiler {
 
     private ImpexContext context;
     private ImpexVisitor visitor;
+    private CommonTree ast;
+    private ImpexASTNode impexASTNode;
 
     public ImpexCompiler() {
     }
@@ -21,9 +22,9 @@ public class ImpexCompiler {
         try {
             internalCompile(source);
         } catch (final RecognitionException e) {
-            final ImpexError error = new ImpexError(Type.GeneralSyntaxError);
+            final ImpexProblem error = new ImpexProblem(Type.GeneralSyntaxError);
             error.setText(e.getMessage());
-            context.addError(error);
+            context.addProblem(error);
             e.printStackTrace();
         }
     }
@@ -38,18 +39,25 @@ public class ImpexCompiler {
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final ImpexParser parser = new ImpexParser(context, tokens);
 
-        final CommonTree tree = (CommonTree) parser.impex().getTree();
+        ast = (CommonTree) parser.impex().getTree();
         visitor.prepare(context);
         if (parser.getNumberOfSyntaxErrors() <= 0) {
-            final CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-            final ImpexTreeWalker walker = new ImpexTreeWalker(nodes);
-            final ImpexASTNode impex = walker.walk(context);
-            impex.accept(visitor);
+            final ImpexTreeWalker walker = new ImpexTreeWalker(context, ast);
+            impexASTNode = walker.walk();
+            impexASTNode.accept(visitor);
         }
     }
 
     public ImpexContext getContext() {
         return context;
+    }
+
+    public CommonTree getAST() {
+        return ast;
+    }
+
+    public ImpexASTNode getImpexASTNode() {
+        return impexASTNode;
     }
 
     public void setVisitor(final ImpexVisitor visitor) {

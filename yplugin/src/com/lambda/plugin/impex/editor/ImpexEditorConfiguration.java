@@ -19,6 +19,8 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Shell;
 
+import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
+
 public class ImpexEditorConfiguration extends SourceViewerConfiguration {
 
     private static final String[] CONTENT_TYPES = contentTypes();
@@ -29,6 +31,7 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
     private final ColorManager colorManager;
     private final ImpexEditor editor;
     private BeanshellScanner beanshellScanner;
+    private CommentScanner commentScanner;
 
     public ImpexEditorConfiguration(final ImpexEditor editor, final ColorManager colorManager) {
         this.editor = editor;
@@ -84,8 +87,6 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
     protected ImpexScanner getImpexScanner() {
         if (scanner == null) {
             scanner = new ImpexScanner(colorManager);
-            scanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
-                    .getColor(ImpexColorConstants.DEFAULT))));
         }
         return scanner;
     }
@@ -102,17 +103,20 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
     protected BeanshellScanner getBeanshellScanner() {
         if (beanshellScanner == null) {
             beanshellScanner = new BeanshellScanner(colorManager);
-            beanshellScanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
-                    .getColor(ImpexColorConstants.PROC_INSTR))));
         }
         return beanshellScanner;
+    }
+
+    protected CommentScanner getCommentScanner() {
+        if (commentScanner == null) {
+            commentScanner = new CommentScanner(colorManager);
+        }
+        return commentScanner;
     }
 
     protected ImpexMacroScanner getMacroAssignementScanner() {
         if (macroAssignementScanner == null) {
             macroAssignementScanner = new ImpexMacroScanner(colorManager);
-            macroAssignementScanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
-                    .getColor(ImpexColorConstants.IMPEX_MACRO))));
         }
         return macroAssignementScanner;
     }
@@ -120,18 +124,14 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
     @Override
     public IPresentationReconciler getPresentationReconciler(final ISourceViewer sourceViewer) {
         final PresentationReconciler reconciler = new PresentationReconciler();
-
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getImpexScanner());
-        reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
-        reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
-
-        dr = new DefaultDamagerRepairer(getBeanshellScanner());
+        reconciler.setDocumentPartitioning(ImpexPartitioner.IMPEX_PARTITIONING);
+        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getBeanshellScanner());
         reconciler.setDamager(dr, ImpexPartitionScanner.BEANSHELL);
         reconciler.setRepairer(dr, ImpexPartitionScanner.BEANSHELL);
 
-        dr = new DefaultDamagerRepairer(getImpexScanner());
-        reconciler.setDamager(dr, ImpexPartitionScanner.COMMENT);
-        reconciler.setRepairer(dr, ImpexPartitionScanner.COMMENT);
+        // dr = new DefaultDamagerRepairer(getImpexScanner());
+        // reconciler.setDamager(dr, ImpexPartitionScanner.COMMENT);
+        // reconciler.setRepairer(dr, ImpexPartitionScanner.COMMENT);
 
         // dr = new DefaultDamagerRepairer(getImpexScanner());
         // reconciler.setDamager(dr, ImpexPartitionScanner.STRING);
@@ -142,6 +142,13 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
         // dr = new DefaultDamagerRepairer(getImpexScanner());
         // reconciler.setDamager(dr, ImpexScanner.IMPEX_COMMENT);
         // reconciler.setRepairer(dr, ImpexScanner.IMPEX_COMMENT);
+        dr = new DefaultDamagerRepairer(getCommentScanner());
+        reconciler.setDamager(dr, ImpexPartitionScanner.COMMENT);
+        reconciler.setRepairer(dr, ImpexPartitionScanner.COMMENT);
+
+        dr = new DefaultDamagerRepairer(getImpexScanner());
+        reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
+        reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
         return reconciler;
     }

@@ -3,6 +3,7 @@ package com.lambda.impex.ast;
 import com.lambda.impex.ast.nodes.AttributeNameNode;
 import com.lambda.impex.ast.nodes.AttributeNode;
 import com.lambda.impex.ast.nodes.BlockNode;
+import com.lambda.impex.ast.nodes.FieldNode;
 import com.lambda.impex.ast.nodes.HeaderNode;
 import com.lambda.impex.ast.nodes.ImpexASTNode;
 import com.lambda.impex.ast.nodes.ModifierNode;
@@ -54,6 +55,10 @@ public abstract class ImpexVisitor {
     }
 
     public boolean visit(final RefNode node) {
+        return true;
+    }
+
+    public boolean visit(final FieldNode node) {
         return true;
     }
 

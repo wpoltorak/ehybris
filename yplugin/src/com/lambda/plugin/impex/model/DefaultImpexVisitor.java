@@ -4,9 +4,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import com.lambda.impex.ast.ImpexError;
-import com.lambda.impex.ast.ImpexError.Type;
 import com.lambda.impex.ast.ImpexParser;
+import com.lambda.impex.ast.ImpexProblem;
+import com.lambda.impex.ast.ImpexProblem.Type;
 import com.lambda.impex.ast.ImpexVisitor;
 import com.lambda.impex.ast.nodes.AttributeNameNode;
 import com.lambda.impex.ast.nodes.AttributeNode;
@@ -60,7 +60,7 @@ public class DefaultImpexVisitor extends ImpexVisitor {
         case ImpexParser.Unique:
         case ImpexParser.Virtual:
             if (!Boolean.TRUE.toString().equalsIgnoreCase(value) && !Boolean.FALSE.toString().equalsIgnoreCase(value)) {
-                context.addError(new ImpexError(Type.InvalidBoolean));
+                context.addProblem(new ImpexProblem(Type.InvalidBoolean));
             }
             break;
 
@@ -78,18 +78,18 @@ public class DefaultImpexVisitor extends ImpexVisitor {
             try {
                 new SimpleDateFormat(value);
             } catch (final NullPointerException e) {
-                context.addError(new ImpexError(Type.InvalidDateFormat));
+                context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
             } catch (final IllegalArgumentException e) {
-                context.addError(new ImpexError(Type.InvalidDateFormat));
+                context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
             }
             break;
         case ImpexParser.NumberFormat:
             try {
                 new DecimalFormat(value);
             } catch (final NullPointerException e) {
-                context.addError(new ImpexError(Type.InvalidNumberFormat));
+                context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
             } catch (final IllegalArgumentException e) {
-                context.addError(new ImpexError(Type.InvalidNumberFormat));
+                context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
             }
             break;
         case ImpexParser.Default:
@@ -98,7 +98,7 @@ public class DefaultImpexVisitor extends ImpexVisitor {
             if (value.isEmpty()) {
                 //
             }
-            context.addError(new ImpexError(Type.InvalidNumberFormat));
+            context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
             break;
         case ImpexParser.Lang:
             try {
@@ -108,14 +108,14 @@ public class DefaultImpexVisitor extends ImpexVisitor {
                 try {
                     toLocale(value);
                 } catch (final IllegalArgumentException ex) {
-                    context.addError(new ImpexError(Type.InvalidLang));
+                    context.addProblem(new ImpexProblem(Type.InvalidLang));
                 }
             }
         case ImpexParser.MapDelimiter:
             break;
         case ImpexParser.Mode:
             if (!"append".equalsIgnoreCase(value) && !"remove".equalsIgnoreCase(value)) {
-                context.addError(new ImpexError(Type.InvalidMode));
+                context.addProblem(new ImpexProblem(Type.InvalidMode));
             }
             break;
         case ImpexParser.PathDelimiter:
@@ -125,10 +125,10 @@ public class DefaultImpexVisitor extends ImpexVisitor {
             try {
                 final Integer pos = Integer.valueOf(value);
                 if (pos.intValue() < 0) {
-                    context.addError(new ImpexError(Type.InvalidPosition));
+                    context.addProblem(new ImpexProblem(Type.InvalidPosition));
                 }
             } catch (final NumberFormatException e) {
-                context.addError(new ImpexError(Type.InvalidPosition));
+                context.addProblem(new ImpexProblem(Type.InvalidPosition));
             }
             break;
         }
@@ -143,6 +143,16 @@ public class DefaultImpexVisitor extends ImpexVisitor {
 
     @Override
     public boolean visit(final RefNode node) {
+        switch (node.getType()) {
+        case ImpexParser.DOCUMENTID_REF:
+            if (!context.hasDocumentID(node.getName())) {
+                context.addProblem(new ImpexProblem(Type.UnknownDocumentID));
+            }
+            break;
+        default:
+            break;
+        }
+
         return true;
     }
 

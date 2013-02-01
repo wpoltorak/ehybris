@@ -3,10 +3,8 @@ package com.lambda.impex.ast;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 import org.junit.Test;
@@ -50,9 +48,7 @@ public class HeaderModelTest extends ModelTest {
         assertEquals(0, getChildWithType(attribute, ImpexParser.ATTRIBUTE_NAME).getChildCount());
         assertEquals(0, getChildWithType(attribute, ImpexParser.MODIFIERS).getChildCount());
         final Tree itemExpr = getChildWithType(attribute, ImpexParser.ITEM_EXPRESSION);
-        assertEquals(1, itemExpr.getChildCount());
-        assertEquals(ImpexParser.DOCUMENTID_REF, itemExpr.getChild(0).getType());
-        assertEquals(0, itemExpr.getChild(0).getChildCount());
+        assertEquals(0, itemExpr.getChildCount());
     }
 
     @Test
@@ -167,16 +163,25 @@ public class HeaderModelTest extends ModelTest {
     @Test
     public void documentIDs() throws Exception {
         final Tree tree = init("/header/header-documentid.impex");
-        final Set<String> documentIDs = context.getDocumentIDs();
-        assertEquals(2, documentIDs.size());
-        assertTrue(documentIDs.contains("&addrID"));
-        assertTrue(documentIDs.contains("&addrID2"));
+        //        final Set<String> documentIDs = context.getDocumentIDs();
+        //        assertEquals(2, documentIDs.size());
+        //        assertTrue(documentIDs.contains("&addrID"));
+        //        assertTrue(documentIDs.contains("&addrID2"));
 
-        final Tree attribute = attribute(tree, 0, 2);
+        Tree attribute = attribute(tree, 0, 2);
         final Tree itemExpr = getChildWithType(attribute, ImpexParser.ITEM_EXPRESSION);
-        final Tree documentIDRef = getChildWithType(itemExpr, ImpexParser.DOCUMENTID_REF);
+        final Tree documentIDRef = getChildWithType(itemExpr, ImpexParser.ATTRIBUTE);
         assertEquals(1, documentIDRef.getChildCount());
         assertEquals("&addrID", documentIDRef.getChild(0).getText());
+
+        attribute = attribute(tree, 1, 0);
+        assertEquals(1, attribute.getChildCount());
+        assertEquals("&addrID", attribute.getChild(0).getText());
+
+        attribute = attribute(tree, 2, 1);
+        assertEquals(1, attribute.getChildCount());
+        assertEquals("&addrID2", attribute.getChild(0).getText());
+
     }
 
     private void assertModifiers(final Tree modifiers, final int[] types, final String[] values) {

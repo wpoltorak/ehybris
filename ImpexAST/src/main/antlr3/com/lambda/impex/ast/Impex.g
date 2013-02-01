@@ -8,10 +8,6 @@ options {
     ASTLabelType=CommonTree;
 }
 
-//@members{
-//}
-
-
 tokens{
 	ATTRIBUTES;
 	ATTRIBUTE;
@@ -27,8 +23,6 @@ tokens{
 	TYPE;
 	SUBTYPE;
 	FIELDS;
-	DOCUMENTID;
-	DOCUMENTID_REF;
 	MACRO_REF;
 	ITEM_EXPRESSION;
 }
@@ -72,7 +66,7 @@ public void reportError(final RecognitionException e) {
     if ( state.errorRecovery ) {
         return;
     }
-    context.registerError( (CommonToken)e.token);
+    context.registerProblem( (CommonToken)e.token);
     super.reportError(e);
 }
 
@@ -128,7 +122,7 @@ public void reportError(final RecognitionException e) {
                 final CommonToken token = (CommonToken) input.LT(1);
                 //register error only if token is not blank
                 if (token.getText() != null && token.getText().trim().length() != 0) {
-                    context.registerError(token);
+                    context.registerProblem(token);
                 }
 
                 input.consume();
@@ -168,7 +162,7 @@ public void reportError(final RecognitionException e) {
     if ( state.errorRecovery ) {
         return;
     }
-    context.registerError(e);
+    context.registerProblem(e);
     super.reportError(e);
  }
 
@@ -256,19 +250,19 @@ sync
 	    syncToSet();
 	}:/* nothing */;
 
-impex	: sync ((Lb |  block | macro)  sync)* EOF
-	 -> ^(IMPEX ^(BLOCKS block*));
+impex	: sync ((Lb |  v+=block | macro)  sync)* EOF
+	 -> ^(IMPEX/*<ImpexTree>*/ ^(BLOCKS block*));
 catch [RecognitionException ex] {
     reportError(ex);
     consumeUntil(input, new BitSet(new long[] { Insert, InsertUpdate, Update, Remove, Macrodef }));
 }
 	 
-block	: header  (((Lb )+ (macro  (Lb )*)* record) )*
+block	:  header  (((Lb )+ (macro  (Lb )*)* record) )*
 	-> ^(BLOCK header ^(RECORDS record*));
 
 header
-	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon (attribute | quote attribute quote))* (Semicolon DocumentID{context.registerDocumentID((CommonToken)$DocumentID);} (Semicolon (attribute | quote attribute quote))*)? 
-	-> ^(HEADER headerMode ^(TYPE headerTypeName) ^(MODIFIERS headerModifierAssignment*) ^(DOCUMENTID DocumentID?) ^(ATTRIBUTES attribute*)) ;
+	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon attribute)* 
+	-> ^(HEADER headerMode ^(TYPE headerTypeName) ^(MODIFIERS headerModifierAssignment*) ^(ATTRIBUTES attribute*)) ;
 
 quote	:DoubleQuote | Quote;
 
@@ -289,28 +283,8 @@ catch [RecognitionException ex] {
 	
 field	:QuotedField | Field ;
 
-//handles special attributes (e..g ;@media[...]), normal attributes (e.g. ;uid[unique=true]) or skipped attributes (;;)
-//attribute	: (specialAttribute | normalAttribute)?
-//	-> ^(ATTRIBUTE specialAttribute? normalAttribute?);
-
-
-//handles normal attributes (e.g. ;uid[unique=true])
-//normalAttribute
-//	: attributeName attributeModifiers?
-//	-> attributeName ^(MODIFIERS attributeModifiers)?;
-
-//attribute
-//	: attributeName attributeModifiers?
-//	-> attributeName ^(MODIFIERS attributeModifiers)?;
-
-//handles special attributes (e..g ;@media[...])
-//specialAttribute
-//	:SpecialAttribute LBracket attributeModifierAssignment RBracket
-//	-> SpecialAttribute ^(MODIFIERS ^(MODIFIER attributeModifierAssignment));
-
-//attributeName
-//	:Macrodef | (Identifier (Dot attributeName |  (LParenthesis  (DocumentID |  attributeName (Comma attributeName)*) RParenthesis ))?);
-
+attribute	:attributeValue | quote attributeValue quote
+	-> attributeValue;
 
 attributeName 
 	:Macrodef -> ^(ATTRIBUTE_NAME  Macrodef)
@@ -318,16 +292,14 @@ attributeName
 	|(Identifier (Dot attributeName)?) -> ^(ATTRIBUTE_NAME Identifier attributeName?)
 	| /* nothing */ ->^(ATTRIBUTE_NAME);  //In case there is an empty attribute
 	
-attribute
-	:attributeName (LParenthesis  (DocumentID | attribute)(Comma (DocumentID | attribute))* RParenthesis )? (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)*
-	-> ^(ATTRIBUTE attributeName ^(ITEM_EXPRESSION attribute* ^(DOCUMENTID_REF DocumentID*)) ^(MODIFIERS attributeModifierAssignment*));
+attributeValue
+	:DocumentID-> ^(ATTRIBUTE DocumentID)
+	| attributeName (LParenthesis  attributeValue (Comma attributeValue)* RParenthesis )? (LBracket attributeModifierAssignment (Comma  attributeModifierAssignment)* RBracket)*
+	-> ^(ATTRIBUTE attributeName ^(ITEM_EXPRESSION attributeValue*) ^(MODIFIERS attributeModifierAssignment*));
 
 attributeModifierAssignment
 	: attributeModifier ValueAssignment
 	-> ^(MODIFIER attributeModifier ValueAssignment);	
-
-//attributeSubType	:	;
-//attributeComposedType	:	;	
 
 attributeModifier
 	: Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
@@ -338,30 +310,11 @@ headerMode
 	
 headerTypeName
 	:Identifier | headerMode | attributeModifier | headerModifier;
-//block
-//	: header  (
-//	            options {
-//	                greedy=false;
-//	            } :   '\r' ('\n')? {newline();}
-//	               |   '\n'         {newline();}
-//	             )*
-//	;
-
-
-
 macro
 	:Macrodef 
 	(ValueAssignment {context.registerMacro($Macrodef, $ValueAssignment.text);} 
 	|Equals {context.registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
 
-// Insert		
- 		//@init { ((ImpexANTLRStringStream)input).caseInsensitive(); }
- 		//@after { ((ImpexANTLRStringStream)input).caseSensitive(); }
- //		:'INSERT';
- //InsertUpdate		:'INSERT_UPDATE';
-// Update		:'UPDATE';
-// Remove		:'REMOVE';
-	
  Insert		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T' | 't');
 InsertUpdate		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T' | 't') '_' ('U' | 'u') ('P' | 'p') ('D' | 'd') ('A' | 'a') ('T' | 't') ('E' | 'e');
  Update		:('U' | 'u') ('P' | 'p') ('D' | 'd') ('A' | 'a') ('T' | 't') ('E' | 'e');
@@ -370,10 +323,6 @@ InsertUpdate		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T'
  BatchMode		:('B' | 'b') ('A' | 'a') ('T' | 't') ('C' | 'c') ('H' | 'h') ('M' | 'm') ('O' | 'o') ('D' | 'd') ('E' | 'e');
  CacheUnique		:('C' | 'c') ('A' | 'a') ('C' | 'c') ('H' | 'h') ('E' | 'e') ('U' | 'u') ('N' | 'n') ('I' | 'i') ('Q' | 'q') ('U' | 'u') ('E' | 'e');
  Processor		:('P' | 'p') ('R' | 'r') ('O' | 'o') ('C' | 'c') ('E' | 'e') ('S' | 's') ('S' | 's') ('O' | 'o') ('R' | 'r');
-// BatchMode		:'batchmode';
- //CacheUnique	:'cacheUnique';
- //Processor		:'processor';
-
 
  Alias		:('A' | 'a') ('L' | 'l') ('I' | 'i') ('A' | 'a') ('S' | 's');
  AllowNull		:('A' | 'a') ('L' | 'l') ('L' | 'l') ('O' | 'o') ('W' | 'w') ('N' | 'n') ('U' | 'u') ('L' | 'l') ('L' | 'l');
@@ -395,27 +344,6 @@ InsertUpdate		:('I' | 'i') ('N' | 'n') ('S' | 's') ('E' | 'e') ('R' | 'r' ) ('T'
  Unique		:('U' | 'u') ('N' | 'n') ('I' | 'i') ('Q' | 'q') ('U' | 'u') ('E' | 'e');
  Virtual		:('V' | 'v') ('I' | 'i') ('R' | 'r') ('T' | 't') ('U' | 'u') ('A' | 'a') ('L' | 'l');
 
- /*
- Alias		:'alias';
- AllowNull		:'allownull';
- CellDecorator	:'cellDecorator';
- CollectionDelimiter 	:'collection-delimiter';
- Dateformat		:'dateformat';
-Default		:'default';
-/ForceWrite		:'forceWrite';
- IgnoreKeyCase	:'ignoreKeyCase';
-IgnoreNull		:'ignorenull';
-KeyToValueDelimiter	:'key2value-delimiter';
-Lang		:'lang';
-MapDelimiter		:'map-delimiter';
- Mode		:'mode';
-NumberFormat	:'numberformat';
-PathDelimiter		:'path-delimiter';
-Pos		:'pos';
-Translator		:'translator';
-Unique		:'unique';
-Virtual		:'virtual';
-*/
 //Ignore	:'<ignore>';
 Comma 	:',';
 Dot	:'.';
@@ -428,9 +356,6 @@ LParenthesis 	:'(';
 RParenthesis	:')';
 Equals	:'=';
 Or	:'|';
-
-Bool	
-	:'true' | 'false';
 
 //fragment HeaderMode	
 //	: Insert | InsertUpdate | Update | Remove;
@@ -445,8 +370,6 @@ Bool
 fragment Separator	
 	:'\\' Ws* Lb;
 
-//AttributeModifierAssignment
-//	:Ws* AttributeModifier Ws* Equals Ws* ~('\r' | '\n' | ';' | '[' | ']')* Comma Ws* AttributeModifier;	
 Macrodef
 	:'$' ('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
 
@@ -454,77 +377,6 @@ ValueAssignment
 	:{isMacroAssignment()}?		=> '=' (~('\r' | '\n') | Separator)*		{String text = removeSeparators(getText()); setText(text.substring(1, text.length()).trim());}
 	|{isModifierAssignment()}?	=> '=' ((' ' | '\t')* '"'(~('\r' | '\n' | '"') |  '"' '"')* '"' {String text = getText().substring(1, getText().length()).trim(); setText(text.substring(1, text.length() - 1));} | ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')* 	{setText(getText().substring(1, getText().length()).trim());} )
 	| /* nothing */;
-
-/*
-Macroval
-	@after {
-		String text = getText();
-		if (text.length() > 0){
-			text = text.substring(1, text.length()).trim();
-			if (text.startsWith("\"") && text.endsWith("\"")){
-				text.substring(1, text.length() -1);
-			}
-			setText(text);
-			
-		}
-	}
-	:{isMacroAssignment()}?=> '='~('\r' | '\n')*|;
-
-
-QuotedAttributeModifierval
-	@after {
- 	  String text = getText().substring(1, getText().length()).trim(); //remove leading equals and trim to remove any whitespace
- 	  text = text.substring(1, text.length() - 1);		//remove surrounding doublequotes		
-	  setText(text);
-	}
-	
-	:{isArgumentModifierAssignment()}?=>'=' (' ' | '\t')* '"'~('\r' | '\n' )* '"'|;
-
-fragment AttributeModifierval
-	@after {
- 	  String text = getText().substring(1, getText().length()).trim();
-	  setText(text);
-	}
-	
-	:{isArgumentModifierAssignment()}?=>'=' ~('\r' | '\n' | ';' | '"' |'[' | ']' | ',')*|;
-
-*/	
-/*	:{isArgumentModifierAssignment()}?=> (equals = '=' val+=Xxx* (comma=Comma Ws* modifier=AttributeModifier)?)
-	{
-	 
-	   $equals.setType(Equals); emit($equals);
-	  
-	  if ($comma != null) {	
-	    $comma.setType(Comma); emit($comma);
-	   }
-	   if (modifier != null){
-	    $modifier.setType(Default); emit($modifier);
-	   }
-	   skip(); 
-	} |;
-
-*/
-/*
-	:{isArgumentModifierAssignment()}?=>( 
-		(Equals Xxx* Comma Ws* AttributeModifier)=> equals = Equals val+=Xxx* comma=Comma Ws* modifier=AttributeModifier 
-	{
-	   $equals.setType(Equals); emit($equals);
-	   $val.setType(AttributeModifierval); emit($val);
-	    $comma.setType(Comma); emit($comma);
-	    $modifier.setType(Default); emit($modifier);
-	   skip(); 
-	} 
-	|(Equals Xxx* RBracket)=> equals=Equals val+=Xxx* bracket=RBracket
-	{
-	   $equals.setType(Equals); emit($equals);
-	   $val.setType(AttributeModifierval); emit($val);
-	    $bracket.setType(RBracket); emit($bracket);
-	   skip(); 
-	} 
-
-	)|;
-*/
-//fragment Xxx :~('\r' | '\n' | ';' | '[' | ']');
 
 // There can be meaningless ;;;;;;;; at the end of  user rights section
 UserRights
@@ -541,9 +393,6 @@ DocumentID
 	
 Identifier
 	:('a' .. 'z' | 'A' .. 'Z' | '_') ('a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_')*;
-
-Classname
-	:(('a' .. 'z')+ '.')+ 'A' .. 'Z' ('A' .. 'Z' | 'a' .. 'z')+;
 
 Comment	
 	@after { setText(getText().substring(1, getText().length())); }
@@ -568,20 +417,6 @@ Field
 	    setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
 	}
 	:{isHeader() == false}?=> (';' (Char| Separator)*) | /* nothing */;
-
-//Block
-//CURLY_BLOCK_SCARF
-//    :   '{'
-//        (
-//            options {
-//                greedy=false;
-//            }
-//        :   '\r' ('\n')? {newline();}
-//        |   '\n'         {newline();}
-//        |   .
-//        )*
-//        '}'
-//    ;	
 
  Ws	
  	:(' ' | '\t') {$channel=HIDDEN;};

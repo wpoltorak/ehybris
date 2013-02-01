@@ -14,29 +14,29 @@ import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 
-import com.lambda.impex.ast.ImpexError.Type;
+import com.lambda.impex.ast.ImpexProblem.Type;
 
 public class ImpexContext {
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
     private final Map<String, CommonToken> documentIDs = new HashMap<String, CommonToken>();
     private final Set<String> duplicateDocumentIDs = new HashSet<String>();
-
     private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
-    private final List<ImpexError> errors = new ArrayList<ImpexError>();
+    private final List<ImpexProblem> problems = new ArrayList<ImpexProblem>();
+    private int[] lineEndNumbers;
 
     public ImpexContext() {
     }
 
-    public boolean hasErrors() {
-        return !errors.isEmpty();
+    public boolean hasProblems() {
+        return !problems.isEmpty();
     }
 
-    public List<ImpexError> getErrors() {
-        return errors;
+    public List<ImpexProblem> getProblems() {
+        return problems;
     }
 
-    public void addError(final ImpexError error) {
-        errors.add(error);
+    public void addProblem(final ImpexProblem problem) {
+        problems.add(problem);
     }
 
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
@@ -54,10 +54,10 @@ public class ImpexContext {
     public String getMacroVal(final String macroDef, final int refLine) {
         final List<SimpleImmutableEntry<Integer, String>> list = macros.get(macroDef);
         if (list == null) {
-            final ImpexError error = new ImpexError(Type.UnknownMacro);
+            final ImpexProblem error = new ImpexProblem(Type.UnknownMacro);
             error.setLineNumber(refLine);
             error.setLength(macroDef.length());
-            errors.add(error);
+            problems.add(error);
             return macroDef;
         }
 
@@ -77,30 +77,30 @@ public class ImpexContext {
         return macroDef;
     }
 
-    void registerError(final RecognitionException e) {
-        final ImpexError error = new ImpexError(ImpexError.Type.LexerSyntaxError);
-        error.setLineNumber(e.line);
-        error.setPositionInRow(e.charPositionInLine);
-        error.setLength(1);
-        error.setStartIndex(e.index);
-        error.setStopIndex(e.index + 1);
+    void registerProblem(final RecognitionException e) {
+        final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.LexerSyntaxError);
+        problem.setLineNumber(e.line);
+        problem.setPositionInRow(e.charPositionInLine);
+        problem.setLength(1);
+        problem.setStartIndex(e.index);
+        problem.setStopIndex(e.index + 1);
 
-        addError(error);
+        addProblem(problem);
     }
 
-    void registerError(final CommonToken token) {
-        registerError(token, ImpexError.Type.ParserSyntaxError);
+    void registerProblem(final CommonToken token) {
+        registerProblem(token, ImpexProblem.Type.ParserSyntaxError);
     }
 
-    void registerError(final CommonToken token, final ImpexError.Type type) {
-        final ImpexError error = new ImpexError(type);
-        error.setLineNumber(token.getLine());
-        error.setPositionInRow(token.getCharPositionInLine());
-        error.setLength(token.getText().length());
-        error.setStartIndex(token.getStartIndex());
-        error.setStopIndex(token.getStopIndex());
-        error.setText(token.getText());
-        addError(error);
+    void registerProblem(final CommonToken token, final ImpexProblem.Type type) {
+        final ImpexProblem problem = new ImpexProblem(type);
+        problem.setLineNumber(token.getLine());
+        problem.setPositionInRow(token.getCharPositionInLine());
+        problem.setLength(token.getText().length());
+        problem.setStartIndex(token.getStartIndex());
+        problem.setStopIndex(token.getStopIndex());
+        problem.setText(token.getText());
+        addProblem(problem);
     }
 
     void registerMacro(final Token def, final String val) {
@@ -116,11 +116,11 @@ public class ImpexContext {
     void registerDocumentID(final CommonToken documentID) {
         final String text = documentID.getText();
         if (documentIDs.containsKey(text)) {
-            registerError(documentID, ImpexError.Type.DuplicateDocumentID);
+            registerProblem(documentID, ImpexProblem.Type.DuplicateDocumentID);
 
             //if it is the first duplicate report error for original documentID as well 
             if (!duplicateDocumentIDs.contains(text)) {
-                registerError(documentIDs.get(text), ImpexError.Type.DuplicateDocumentID);
+                registerProblem(documentIDs.get(text), ImpexProblem.Type.DuplicateDocumentID);
                 duplicateDocumentIDs.add(text);
             }
             return;

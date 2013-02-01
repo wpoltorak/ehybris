@@ -48,6 +48,11 @@ public class ImpexEditor extends TextEditor {
 
         final ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
         projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
+        // projectionSupport.setHoverControlCreator(new IInformationControlCreator() {
+        // public IInformationControl createInformationControl(Shell shell) {
+        // return new CustomSourceInformationControl(shell, IDocument.DEFAULT_CONTENT_TYPE);
+        // }
+        // });
         projectionSupport.install();
 
         // turn projection mode on
@@ -120,8 +125,8 @@ public class ImpexEditor extends TextEditor {
     @Override
     public void doSave(final IProgressMonitor monitor) {
         super.doSave(monitor);
-        final IImpexModel model = getImpexModel();
-        model.reconcile();
+        // final IImpexModel model = getImpexModel();
+        // model.reconcile();
         // TODO need to update editor image
         // updateEditorImage(model);
     }

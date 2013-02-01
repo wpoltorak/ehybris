@@ -12,15 +12,22 @@ public class HeaderNode extends ImpexASTNode {
     private final List<ImpexASTNode> attributes;
     private final int mode;
     private final String type;
-    private final String documentID;
 
-    public HeaderNode(final CommonToken mode, final CommonToken type, final CommonToken documentID, final List<ImpexASTNode> modifiers,
+    public HeaderNode(final CommonToken mode, final CommonToken type, final List<ImpexASTNode> modifiers,
             final List<ImpexASTNode> attributes) {
+        super(mode.getStartIndex(), getStopPosition(mode, type, modifiers, attributes));
         this.type = type.getText();
         this.mode = mode.getType();
-        this.documentID = documentID != null ? documentID.getText() : null;
         this.modifiers = modifiers;
         this.attributes = attributes;
+    }
+
+    private static int getStopPosition(final CommonToken mode, final CommonToken type, final List<ImpexASTNode> modifiers,
+            final List<ImpexASTNode> attributes) {
+        final int attribStop = attributes.isEmpty() ? 0 : attributes.get(attributes.size() - 1).getStopPosition();
+        final int modifiersStop = modifiers.isEmpty() ? 0 : modifiers.get(modifiers.size() - 1).getStopPosition();
+        final int typeStop = type.getStopIndex();
+        return Math.max(attribStop, Math.max(modifiersStop, typeStop));
     }
 
     @Override
@@ -42,10 +49,6 @@ public class HeaderNode extends ImpexASTNode {
 
     public String getType() {
         return type;
-    }
-
-    public String getDocumentID() {
-        return documentID;
     }
 
     public List<ImpexASTNode> getAttributes() {

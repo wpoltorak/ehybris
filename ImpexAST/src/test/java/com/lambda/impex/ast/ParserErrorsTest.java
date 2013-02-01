@@ -12,7 +12,7 @@ public class ParserErrorsTest extends ModelTest {
     @Test
     public void yy() throws Exception {
         final CommonTree tree = init("/errors/parser-lines-with-chars.impex");
-        final List<ImpexError> errors = context.getErrors();
+        final List<ImpexProblem> errors = context.getProblems();
         assertEquals(2, errors.size());
         assertEquals("xxx", errors.get(0).getText());
         //      assertEquals("yyy", errors.get(1).getText());

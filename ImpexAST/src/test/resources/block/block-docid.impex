@@ -1,0 +1,10 @@
+#Customer groups
+INSERT_UPDATE Usergroup;uid[unique=true];locname;description;&groupID;groups(uid)[mode=append]
+;customertestgroup;Customer Test Group;Customer Test Group;g1;customergroup
+
+INSERT_UPDATE Address;&addId;streetname;streetnumber;postalcode[unique=true];town[unique=true];country(isocode);phone1;email;owner(&userId)[unique=true]
+;a1;64 Ealing Broadway Centre;;W5 5JY;London;GB;0843 290 8295;manager@ealing.waterstones.com;u1
+
+# Customers
+INSERT_UPDATE Customer;uid[unique=true];title(code);name;description;sessionLanguage(isocode);sessionCurrency(isocode);groups(&groupID)[mode=append];&userId;defaultPaymentAddress(&addId);defaultShipmentAddress(&addId)
+;customer@test.com;;Test Customer;Customer for testing purposes;en;GBP;g1;u1;a1;a1

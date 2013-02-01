@@ -10,6 +10,7 @@ public class ImpexNode extends ImpexASTNode {
     private final List<ImpexASTNode> blocks = new ArrayList<ImpexASTNode>();
 
     public ImpexNode() {
+
     }
 
     @Override

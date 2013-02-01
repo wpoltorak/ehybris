@@ -7,14 +7,13 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.swt.graphics.Color;
 
-public class BeanshellScanner extends RuleBasedScanner {
+public class CommentScanner extends RuleBasedScanner {
 
-    public BeanshellScanner(final ColorManager colorManager) {
-        Color defaultColor = colorManager.getColor(ImpexColorConstants.BEANSHELL);
+    public CommentScanner(final ColorManager colorManager) {
+        Color defaultColor = colorManager.getColor(ImpexColorConstants.COMMENT);
         Token defaultToken = new Token(new TextAttribute(defaultColor));
         setDefaultReturnToken(defaultToken);
 
-        // final IToken beanshell = new Token(new TextAttribute(manager.getColor(ImpexColorConstants.PROC_INSTR)));
         final IRule[] rules = new IRule[1];
         // Add rule for multiple line beanshell script
         // rules[0] = new BeanshellRule(beanshell);

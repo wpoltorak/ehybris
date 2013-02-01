@@ -10,17 +10,16 @@ public class BlockNode extends ImpexASTNode {
     private final List<ImpexASTNode> records;
 
     public BlockNode(final ImpexASTNode header, final List<ImpexASTNode> records) {
-        super(header.getStartPosition(), getLength(header, records));
+        super(header.getStartPosition(), getStopPosition(header, records));
         this.header = header;
         this.records = records;
     }
 
-    private static int getLength(final ImpexASTNode header, final List<ImpexASTNode> records) {
+    private static int getStopPosition(final ImpexASTNode header, final List<ImpexASTNode> records) {
         if (records.isEmpty()) {
-            return header.getLength();
+            return header.getStopPosition();
         }
-        final ImpexASTNode last = records.get(records.size() - 1);
-        return last.getStartPosition() + last.getLength() - header.getStartPosition();
+        return records.get(records.size() - 1).getStopPosition();
     }
 
     @Override

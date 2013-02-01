@@ -9,8 +9,9 @@ public class ModifierNode extends ImpexASTNode {
     private final int type;
     private final String value;
 
-    public ModifierNode(final int type, final CommonToken valueToken) {
-        this.type = type;
+    public ModifierNode(final CommonToken typeToken, final CommonToken valueToken) {
+        super(typeToken.getStartIndex(), valueToken.getStopIndex());
+        this.type = typeToken.getType();
         this.value = valueToken.getText();
     }
 

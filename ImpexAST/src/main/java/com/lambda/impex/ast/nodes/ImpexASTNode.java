@@ -7,12 +7,12 @@ import com.lambda.impex.ast.ImpexVisitor;
 public abstract class ImpexASTNode {
 
     private int startPosition;
+    private int stopPosition;
     private int length;
-    private ImpexASTNode parent;
 
-    public ImpexASTNode(final int startPosition, final int length) {
+    public ImpexASTNode(final int startPosition, final int stopPosition) {
         this.startPosition = startPosition;
-        this.length = length;
+        this.stopPosition = stopPosition;
     }
 
     public ImpexASTNode() {
@@ -56,11 +56,11 @@ public abstract class ImpexASTNode {
         return startPosition;
     }
 
-    public final int getLength() {
-        return length;
+    public final int getStopPosition() {
+        return stopPosition;
     }
 
-    public final ImpexASTNode getParent() {
-        return parent;
+    public final int getLength() {
+        return length;
     }
 }

@@ -1,6 +1,6 @@
 package com.lambda.impex.ast;
 
-public class ImpexError {
+public class ImpexProblem {
     public enum Type {
         InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode, InvalidLang, InvalidNumberFormat, InvalidDateFormat,
         General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, DuplicateDocumentID, ParserSyntaxError, LexerSyntaxError;
@@ -15,7 +15,7 @@ public class ImpexError {
     private String text;
     private String messageCode;
 
-    public ImpexError(final Type type) {
+    public ImpexProblem(final Type type) {
         this.type = type;
     }
 

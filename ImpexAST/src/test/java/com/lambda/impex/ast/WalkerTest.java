@@ -16,12 +16,12 @@ public class WalkerTest {
         final ImpexCompiler compiler = new ImpexCompiler();
         compiler.setVisitor(new TestImpexVisitor());
         compiler.compile(impexData);
-        assertHasNoGeneralSyntaxError(compiler.getContext().getErrors());
+        assertHasNoGeneralSyntaxError(compiler.getContext().getProblems());
     }
 
-    private void assertHasNoGeneralSyntaxError(final List<ImpexError> errors) {
-        for (final ImpexError error : errors) {
-            if (error.getType() == ImpexError.Type.GeneralSyntaxError) {
+    private void assertHasNoGeneralSyntaxError(final List<ImpexProblem> errors) {
+        for (final ImpexProblem error : errors) {
+            if (error.getType() == ImpexProblem.Type.GeneralSyntaxError) {
                 fail(error.getText());
             }
         }

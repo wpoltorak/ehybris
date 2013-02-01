@@ -1,0 +1,16 @@
+# Tests type name
+
+$unique=true
+$lang=en
+$processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor
+
+INSERT_UPDATE Usergroup[cacheUnique=$unique];uid[unique=$unique];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+INSERT_UPDATE Usergroup[ processor=$processor];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;
+
+$processor=DefaultImportProcessor
+
+INSERT_UPDATE Usergroup[ processor=de.hybris.platform.impex.jalo.imp.$processor];uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;$customerGroup;

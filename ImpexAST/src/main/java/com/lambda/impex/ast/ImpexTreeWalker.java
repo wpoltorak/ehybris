@@ -1,4 +1,4 @@
-// $ANTLR 3.4 com/lambda/impex/ast/ImpexTreeWalker.g 2013-01-17 17:55:47
+// $ANTLR 3.4 com/lambda/impex/ast/ImpexTreeWalker.g 2013-01-26 20:11:18
 
 package com.lambda.impex.ast;
 
@@ -12,6 +12,7 @@ import java.util.Set;
 import com.lambda.impex.ast.nodes.AttributeNameNode;
 import com.lambda.impex.ast.nodes.AttributeNode;
 import com.lambda.impex.ast.nodes.BlockNode;
+import com.lambda.impex.ast.nodes.FieldNode;
 import com.lambda.impex.ast.nodes.HeaderNode;
 import com.lambda.impex.ast.nodes.ImpexASTNode;
 import com.lambda.impex.ast.nodes.ImpexNode;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexTreeWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "Bool", "CacheUnique", "CellDecorator", "Char", "Classname", "CollectionDelimiter", "Comma", "Comment", "DOCUMENTID", "DOCUMENTID_REF", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "Quote", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "CacheUnique", "CellDecorator", "Char", "CollectionDelimiter", "Comma", "Comment", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "Quote", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
@@ -42,68 +43,64 @@ public class ImpexTreeWalker extends TreeParser {
     public static final int BLOCKS=10;
     public static final int BatchMode=11;
     public static final int BeanShell=12;
-    public static final int Bool=13;
-    public static final int CacheUnique=14;
-    public static final int CellDecorator=15;
-    public static final int Char=16;
-    public static final int Classname=17;
-    public static final int CollectionDelimiter=18;
-    public static final int Comma=19;
-    public static final int Comment=20;
-    public static final int DOCUMENTID=21;
-    public static final int DOCUMENTID_REF=22;
-    public static final int Dateformat=23;
-    public static final int Default=24;
-    public static final int DocumentID=25;
-    public static final int Dot=26;
-    public static final int DoubleQuote=27;
-    public static final int Equals=28;
-    public static final int FIELDS=29;
-    public static final int Field=30;
-    public static final int ForceWrite=31;
-    public static final int HEADER=32;
-    public static final int IMPEX=33;
-    public static final int ITEM_EXPRESSION=34;
-    public static final int Identifier=35;
-    public static final int IgnoreKeyCase=36;
-    public static final int IgnoreNull=37;
-    public static final int Insert=38;
-    public static final int InsertUpdate=39;
-    public static final int KeyToValueDelimiter=40;
-    public static final int LBracket=41;
-    public static final int LParenthesis=42;
-    public static final int Lang=43;
-    public static final int Lb=44;
-    public static final int MACRO_REF=45;
-    public static final int MODIFIER=46;
-    public static final int MODIFIERS=47;
-    public static final int Macrodef=48;
-    public static final int MapDelimiter=49;
-    public static final int Mode=50;
-    public static final int NumberFormat=51;
-    public static final int Or=52;
-    public static final int PathDelimiter=53;
-    public static final int Pos=54;
-    public static final int Processor=55;
-    public static final int Quote=56;
-    public static final int QuotedField=57;
-    public static final int RBracket=58;
-    public static final int RECORD=59;
-    public static final int RECORDS=60;
-    public static final int RParenthesis=61;
-    public static final int Remove=62;
-    public static final int SUBTYPE=63;
-    public static final int Semicolon=64;
-    public static final int Separator=65;
-    public static final int SpecialAttribute=66;
-    public static final int TYPE=67;
-    public static final int Translator=68;
-    public static final int Unique=69;
-    public static final int Update=70;
-    public static final int UserRights=71;
-    public static final int ValueAssignment=72;
-    public static final int Virtual=73;
-    public static final int Ws=74;
+    public static final int CacheUnique=13;
+    public static final int CellDecorator=14;
+    public static final int Char=15;
+    public static final int CollectionDelimiter=16;
+    public static final int Comma=17;
+    public static final int Comment=18;
+    public static final int Dateformat=19;
+    public static final int Default=20;
+    public static final int DocumentID=21;
+    public static final int Dot=22;
+    public static final int DoubleQuote=23;
+    public static final int Equals=24;
+    public static final int FIELDS=25;
+    public static final int Field=26;
+    public static final int ForceWrite=27;
+    public static final int HEADER=28;
+    public static final int IMPEX=29;
+    public static final int ITEM_EXPRESSION=30;
+    public static final int Identifier=31;
+    public static final int IgnoreKeyCase=32;
+    public static final int IgnoreNull=33;
+    public static final int Insert=34;
+    public static final int InsertUpdate=35;
+    public static final int KeyToValueDelimiter=36;
+    public static final int LBracket=37;
+    public static final int LParenthesis=38;
+    public static final int Lang=39;
+    public static final int Lb=40;
+    public static final int MACRO_REF=41;
+    public static final int MODIFIER=42;
+    public static final int MODIFIERS=43;
+    public static final int Macrodef=44;
+    public static final int MapDelimiter=45;
+    public static final int Mode=46;
+    public static final int NumberFormat=47;
+    public static final int Or=48;
+    public static final int PathDelimiter=49;
+    public static final int Pos=50;
+    public static final int Processor=51;
+    public static final int Quote=52;
+    public static final int QuotedField=53;
+    public static final int RBracket=54;
+    public static final int RECORD=55;
+    public static final int RECORDS=56;
+    public static final int RParenthesis=57;
+    public static final int Remove=58;
+    public static final int SUBTYPE=59;
+    public static final int Semicolon=60;
+    public static final int Separator=61;
+    public static final int SpecialAttribute=62;
+    public static final int TYPE=63;
+    public static final int Translator=64;
+    public static final int Unique=65;
+    public static final int Update=66;
+    public static final int UserRights=67;
+    public static final int ValueAssignment=68;
+    public static final int Virtual=69;
+    public static final int Ws=70;
 
     // delegates
     public TreeParser[] getDelegates() {
@@ -124,10 +121,18 @@ public class ImpexTreeWalker extends TreeParser {
     public String getGrammarFileName() { return "com/lambda/impex/ast/ImpexTreeWalker.g"; }
 
 
+    protected ImpexContext context;
+
+    public ImpexTreeWalker(ImpexContext context, CommonTree ast){
+    this(new CommonTreeNodeStream(ast));
+    this.context = context;
+    }
+
+
 
     // $ANTLR start "walk"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:29:1: walk[ImpexContext context] returns [ImpexASTNode impex] : impex[context] ;
-    public final ImpexASTNode walk(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:39:1: walk returns [ImpexASTNode impex] : impex ;
+    public final ImpexASTNode walk() throws RecognitionException {
         ImpexASTNode impex = null;
 
 
@@ -135,11 +140,11 @@ public class ImpexTreeWalker extends TreeParser {
 
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:30:2: ( impex[context] )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:30:3: impex[context]
+            // com/lambda/impex/ast/ImpexTreeWalker.g:40:2: ( impex )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:40:3: impex
             {
-            pushFollow(FOLLOW_impex_in_walk47);
-            impex1=impex(context);
+            pushFollow(FOLLOW_impex_in_walk51);
+            impex1=impex();
 
             state._fsp--;
 
@@ -164,8 +169,8 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "impex"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:32:1: impex[ImpexContext context] returns [ImpexNode node] : ^( IMPEX ^( BLOCKS ( block[context] )* ) ) ;
-    public final ImpexNode impex(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:42:1: impex returns [ImpexNode node] : ^( IMPEX ^( BLOCKS ( block )* ) ) ;
+    public final ImpexNode impex() throws RecognitionException {
         ImpexNode node = null;
 
 
@@ -177,8 +182,8 @@ public class ImpexTreeWalker extends TreeParser {
         		node = in;
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:37:2: ( ^( IMPEX ^( BLOCKS ( block[context] )* ) ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:37:3: ^( IMPEX ^( BLOCKS ( block[context] )* ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:47:2: ( ^( IMPEX ^( BLOCKS ( block )* ) ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:47:3: ^( IMPEX ^( BLOCKS ( block )* ) )
             {
             match(input,IMPEX,FOLLOW_IMPEX_in_impex71); 
 
@@ -187,7 +192,7 @@ public class ImpexTreeWalker extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:37:21: ( block[context] )*
+                // com/lambda/impex/ast/ImpexTreeWalker.g:47:21: ( block )*
                 loop1:
                 do {
                     int alt1=2;
@@ -202,10 +207,10 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt1) {
                 	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:37:22: block[context]
+                	    // com/lambda/impex/ast/ImpexTreeWalker.g:47:22: block
                 	    {
                 	    pushFollow(FOLLOW_block_in_impex78);
-                	    block2=block(context);
+                	    block2=block();
 
                 	    state._fsp--;
 
@@ -246,8 +251,8 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "block"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:39:1: block[ImpexContext context] returns [ImpexASTNode node] : ^( BLOCK ( header[context] ) ^( RECORDS ( record[context] )* ) ) ;
-    public final ImpexASTNode block(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:49:1: block returns [ImpexASTNode node] : ^( BLOCK ( header ) ^( RECORDS ( record )* ) ) ;
+    public final ImpexASTNode block() throws RecognitionException {
         ImpexASTNode node = null;
 
 
@@ -261,17 +266,17 @@ public class ImpexTreeWalker extends TreeParser {
         		List<ImpexASTNode> records = new ArrayList<ImpexASTNode>();
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:48:2: ( ^( BLOCK ( header[context] ) ^( RECORDS ( record[context] )* ) ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:48:3: ^( BLOCK ( header[context] ) ^( RECORDS ( record[context] )* ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:58:2: ( ^( BLOCK ( header ) ^( RECORDS ( record )* ) ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:58:3: ^( BLOCK ( header ) ^( RECORDS ( record )* ) )
             {
-            match(input,BLOCK,FOLLOW_BLOCK_in_block115); 
+            match(input,BLOCK,FOLLOW_BLOCK_in_block111); 
 
             match(input, Token.DOWN, null); 
-            // com/lambda/impex/ast/ImpexTreeWalker.g:48:11: ( header[context] )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:48:12: header[context]
+            // com/lambda/impex/ast/ImpexTreeWalker.g:58:11: ( header )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:58:12: header
             {
-            pushFollow(FOLLOW_header_in_block118);
-            header3=header(context);
+            pushFollow(FOLLOW_header_in_block114);
+            header3=header();
 
             state._fsp--;
 
@@ -281,11 +286,11 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            match(input,RECORDS,FOLLOW_RECORDS_in_block127); 
+            match(input,RECORDS,FOLLOW_RECORDS_in_block121); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:49:12: ( record[context] )*
+                // com/lambda/impex/ast/ImpexTreeWalker.g:59:12: ( record )*
                 loop2:
                 do {
                     int alt2=2;
@@ -300,10 +305,10 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt2) {
                 	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:49:13: record[context]
+                	    // com/lambda/impex/ast/ImpexTreeWalker.g:59:13: record
                 	    {
-                	    pushFollow(FOLLOW_record_in_block130);
-                	    record4=record(context);
+                	    pushFollow(FOLLOW_record_in_block124);
+                	    record4=record();
 
                 	    state._fsp--;
 
@@ -347,39 +352,37 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "header"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:52:1: header[ImpexContext context] returns [ImpexASTNode node] : ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment[context] )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute[context] )* ) ) ;
-    public final ImpexASTNode header(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:62:1: header returns [ImpexASTNode node] : ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( ATTRIBUTES ( attributeValue )* ) ) ;
+    public final ImpexASTNode header() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree DocumentID8=null;
         CommonTree headerMode5 =null;
 
         CommonToken headerTypeName6 =null;
 
         ImpexASTNode headerModifierAssignment7 =null;
 
-        ImpexASTNode attribute9 =null;
+        ImpexASTNode attributeValue8 =null;
 
 
 
         		CommonToken mode;
         		CommonToken type;
-        		CommonToken documentID = null;
         		List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
         		List<ImpexASTNode> attributes = new ArrayList<ImpexASTNode>();
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:63:2: ( ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment[context] )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute[context] )* ) ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:63:3: ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment[context] )* ) ^( DOCUMENTID ( DocumentID )? ) ^( ATTRIBUTES ( attribute[context] )* ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:72:2: ( ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( ATTRIBUTES ( attributeValue )* ) ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:72:3: ^( HEADER ( headerMode ) ^( TYPE headerTypeName ) ^( MODIFIERS ( headerModifierAssignment )* ) ^( ATTRIBUTES ( attributeValue )* ) )
             {
-            match(input,HEADER,FOLLOW_HEADER_in_header165); 
+            match(input,HEADER,FOLLOW_HEADER_in_header155); 
 
             match(input, Token.DOWN, null); 
-            // com/lambda/impex/ast/ImpexTreeWalker.g:63:12: ( headerMode )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:63:13: headerMode
+            // com/lambda/impex/ast/ImpexTreeWalker.g:72:12: ( headerMode )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:72:13: headerMode
             {
-            pushFollow(FOLLOW_headerMode_in_header168);
+            pushFollow(FOLLOW_headerMode_in_header158);
             headerMode5=headerMode();
 
             state._fsp--;
@@ -390,10 +393,10 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            match(input,TYPE,FOLLOW_TYPE_in_header175); 
+            match(input,TYPE,FOLLOW_TYPE_in_header165); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_headerTypeName_in_header177);
+            pushFollow(FOLLOW_headerTypeName_in_header167);
             headerTypeName6=headerTypeName();
 
             state._fsp--;
@@ -404,11 +407,11 @@ public class ImpexTreeWalker extends TreeParser {
             match(input, Token.UP, null); 
 
 
-            match(input,MODIFIERS,FOLLOW_MODIFIERS_in_header185); 
+            match(input,MODIFIERS,FOLLOW_MODIFIERS_in_header175); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:65:14: ( headerModifierAssignment[context] )*
+                // com/lambda/impex/ast/ImpexTreeWalker.g:74:14: ( headerModifierAssignment )*
                 loop3:
                 do {
                     int alt3=2;
@@ -423,10 +426,10 @@ public class ImpexTreeWalker extends TreeParser {
 
                     switch (alt3) {
                 	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:65:15: headerModifierAssignment[context]
+                	    // com/lambda/impex/ast/ImpexTreeWalker.g:74:15: headerModifierAssignment
                 	    {
-                	    pushFollow(FOLLOW_headerModifierAssignment_in_header188);
-                	    headerModifierAssignment7=headerModifierAssignment(context);
+                	    pushFollow(FOLLOW_headerModifierAssignment_in_header178);
+                	    headerModifierAssignment7=headerModifierAssignment();
 
                 	    state._fsp--;
 
@@ -446,72 +449,40 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            match(input,DOCUMENTID,FOLLOW_DOCUMENTID_in_header200); 
+            match(input,ATTRIBUTES,FOLLOW_ATTRIBUTES_in_header188); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:66:14: ( DocumentID )?
-                int alt4=2;
-                switch ( input.LA(1) ) {
-                    case DocumentID:
-                        {
-                        alt4=1;
-                        }
-                        break;
-                }
-
-                switch (alt4) {
-                    case 1 :
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:66:15: DocumentID
-                        {
-                        DocumentID8=(CommonTree)match(input,DocumentID,FOLLOW_DocumentID_in_header202); 
-
-                        documentID = (CommonToken)DocumentID8.token;
-
-                        }
-                        break;
-
-                }
-
-
-                match(input, Token.UP, null); 
-            }
-
-
-            match(input,ATTRIBUTES,FOLLOW_ATTRIBUTES_in_header211); 
-
-            if ( input.LA(1)==Token.DOWN ) {
-                match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:67:15: ( attribute[context] )*
-                loop5:
+                // com/lambda/impex/ast/ImpexTreeWalker.g:75:15: ( attributeValue )*
+                loop4:
                 do {
-                    int alt5=2;
+                    int alt4=2;
                     switch ( input.LA(1) ) {
                     case ATTRIBUTE:
                         {
-                        alt5=1;
+                        alt4=1;
                         }
                         break;
 
                     }
 
-                    switch (alt5) {
+                    switch (alt4) {
                 	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:67:16: attribute[context]
+                	    // com/lambda/impex/ast/ImpexTreeWalker.g:75:16: attributeValue
                 	    {
-                	    pushFollow(FOLLOW_attribute_in_header214);
-                	    attribute9=attribute(context);
+                	    pushFollow(FOLLOW_attributeValue_in_header191);
+                	    attributeValue8=attributeValue();
 
                 	    state._fsp--;
 
 
-                	    attributes.add(attribute9);
+                	    attributes.add(attributeValue8);
 
                 	    }
                 	    break;
 
                 	default :
-                	    break loop5;
+                	    break loop4;
                     }
                 } while (true);
 
@@ -526,7 +497,7 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            		node = new HeaderNode(mode, type, documentID, modifiers, attributes);
+            		node = new HeaderNode(mode, type,  modifiers, attributes);
             	
         }
         catch (RecognitionException re) {
@@ -544,34 +515,34 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerModifierAssignment"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:70:1: headerModifierAssignment[ImpexContext context] returns [ImpexASTNode node] : ^( MODIFIER headerModifier ValueAssignment ) ;
-    public final ImpexASTNode headerModifierAssignment(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:78:1: headerModifierAssignment returns [ImpexASTNode node] : ^( MODIFIER headerModifier ValueAssignment ) ;
+    public final ImpexASTNode headerModifierAssignment() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree ValueAssignment11=null;
-        CommonTree headerModifier10 =null;
+        CommonTree ValueAssignment10=null;
+        CommonTree headerModifier9 =null;
 
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:71:3: ( ^( MODIFIER headerModifier ValueAssignment ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:71:5: ^( MODIFIER headerModifier ValueAssignment )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:79:3: ( ^( MODIFIER headerModifier ValueAssignment ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:79:5: ^( MODIFIER headerModifier ValueAssignment )
             {
-            match(input,MODIFIER,FOLLOW_MODIFIER_in_headerModifierAssignment242); 
+            match(input,MODIFIER,FOLLOW_MODIFIER_in_headerModifierAssignment215); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_headerModifier_in_headerModifierAssignment244);
-            headerModifier10=headerModifier();
+            pushFollow(FOLLOW_headerModifier_in_headerModifierAssignment217);
+            headerModifier9=headerModifier();
 
             state._fsp--;
 
 
-            ValueAssignment11=(CommonTree)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_headerModifierAssignment246); 
+            ValueAssignment10=(CommonTree)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_headerModifierAssignment219); 
 
             match(input, Token.UP, null); 
 
 
-            node = new ModifierNode(headerModifier10.getType(), (CommonToken)ValueAssignment11.token);
+            node = new ModifierNode((CommonToken)headerModifier9.getToken(), (CommonToken)ValueAssignment10.token);
 
             }
 
@@ -591,7 +562,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerModifier"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:73:1: headerModifier returns [CommonTree modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
+    // com/lambda/impex/ast/ImpexTreeWalker.g:81:1: headerModifier returns [CommonTree modifier] : v= ( BatchMode | CacheUnique | Processor ) ;
     public final CommonTree headerModifier() throws RecognitionException {
         CommonTree modifier = null;
 
@@ -599,8 +570,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:74:2: (v= ( BatchMode | CacheUnique | Processor ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:74:3: v= ( BatchMode | CacheUnique | Processor )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:82:2: (v= ( BatchMode | CacheUnique | Processor ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:82:3: v= ( BatchMode | CacheUnique | Processor )
             {
             v=(CommonTree)input.LT(1);
 
@@ -634,47 +605,47 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "record"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:76:1: record[ImpexContext context] returns [ImpexASTNode node] : ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field[context] )+ ) ) ;
-    public final ImpexASTNode record(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:84:1: record returns [ImpexASTNode node] : ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) ;
+    public final ImpexASTNode record() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree Identifier12=null;
-        String field13 =null;
+        CommonTree Identifier11=null;
+        ImpexASTNode field12 =null;
 
 
 
-        	    RecordNode rn = new RecordNode(); 
-         	    node = rn; 
+        	    CommonToken subType = null;
+        	    List<ImpexASTNode> fields = new ArrayList<ImpexASTNode>();
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:81:5: ( ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field[context] )+ ) ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:81:7: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field[context] )+ ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:92:5: ( ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:92:7: ^( RECORD ^( SUBTYPE ( Identifier )? ) ^( FIELDS ( field )+ ) )
             {
-            match(input,RECORD,FOLLOW_RECORD_in_record299); 
+            match(input,RECORD,FOLLOW_RECORD_in_record275); 
 
             match(input, Token.DOWN, null); 
-            match(input,SUBTYPE,FOLLOW_SUBTYPE_in_record307); 
+            match(input,SUBTYPE,FOLLOW_SUBTYPE_in_record283); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:82:15: ( Identifier )?
-                int alt6=2;
+                // com/lambda/impex/ast/ImpexTreeWalker.g:93:15: ( Identifier )?
+                int alt5=2;
                 switch ( input.LA(1) ) {
                     case Identifier:
                         {
-                        alt6=1;
+                        alt5=1;
                         }
                         break;
                 }
 
-                switch (alt6) {
+                switch (alt5) {
                     case 1 :
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:82:16: Identifier
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:93:16: Identifier
                         {
-                        Identifier12=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_record310); 
+                        Identifier11=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_record286); 
 
-                        rn.setSubType((Identifier12!=null?Identifier12.getText():null));
+                        subType = (CommonToken)Identifier11.token;
 
                         }
                         break;
@@ -686,46 +657,46 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            match(input,FIELDS,FOLLOW_FIELDS_in_record323); 
+            match(input,FIELDS,FOLLOW_FIELDS_in_record299); 
 
             match(input, Token.DOWN, null); 
-            // com/lambda/impex/ast/ImpexTreeWalker.g:83:14: ( field[context] )+
-            int cnt7=0;
-            loop7:
+            // com/lambda/impex/ast/ImpexTreeWalker.g:94:14: ( field )+
+            int cnt6=0;
+            loop6:
             do {
-                int alt7=2;
+                int alt6=2;
                 switch ( input.LA(1) ) {
                 case Field:
                 case QuotedField:
                     {
-                    alt7=1;
+                    alt6=1;
                     }
                     break;
 
                 }
 
-                switch (alt7) {
+                switch (alt6) {
             	case 1 :
-            	    // com/lambda/impex/ast/ImpexTreeWalker.g:83:15: field[context]
+            	    // com/lambda/impex/ast/ImpexTreeWalker.g:94:15: field
             	    {
-            	    pushFollow(FOLLOW_field_in_record326);
-            	    field13=field(context);
+            	    pushFollow(FOLLOW_field_in_record302);
+            	    field12=field();
 
             	    state._fsp--;
 
 
-            	    rn.addField(field13);
+            	    fields.add(field12);
 
             	    }
             	    break;
 
             	default :
-            	    if ( cnt7 >= 1 ) break loop7;
+            	    if ( cnt6 >= 1 ) break loop6;
                         EarlyExitException eee =
-                            new EarlyExitException(7, input);
+                            new EarlyExitException(6, input);
                         throw eee;
                 }
-                cnt7++;
+                cnt6++;
             } while (true);
 
 
@@ -737,6 +708,9 @@ public class ImpexTreeWalker extends TreeParser {
 
             }
 
+
+             	    node = new RecordNode(subType, fields); 
+            	
         }
         catch (RecognitionException re) {
             reportError(re);
@@ -753,16 +727,16 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "field"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:86:1: field[ImpexContext context] returns [String text] : v= ( QuotedField | Field ) ;
-    public final String field(ImpexContext context) throws RecognitionException {
-        String text = null;
+    // com/lambda/impex/ast/ImpexTreeWalker.g:97:1: field returns [ImpexASTNode node] : v= ( QuotedField | Field ) ;
+    public final ImpexASTNode field() throws RecognitionException {
+        ImpexASTNode node = null;
 
 
         CommonTree v=null;
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:87:2: (v= ( QuotedField | Field ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:87:3: v= ( QuotedField | Field )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:98:2: (v= ( QuotedField | Field ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:98:3: v= ( QuotedField | Field )
             {
             v=(CommonTree)input.LT(1);
 
@@ -776,7 +750,7 @@ public class ImpexTreeWalker extends TreeParser {
             }
 
 
-            text = (v!=null?v.getText():null);
+            node = new FieldNode((CommonToken)v.token);
 
             }
 
@@ -789,40 +763,65 @@ public class ImpexTreeWalker extends TreeParser {
         finally {
         	// do for sure before leaving
         }
-        return text;
+        return node;
     }
     // $ANTLR end "field"
 
 
 
     // $ANTLR start "attributeName"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:90:1: attributeName[ImpexContext context] returns [ImpexASTNode node] : ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName[context] )? )? ) ;
-    public final ImpexASTNode attributeName(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:100:1: attributeName returns [ImpexASTNode node] : ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) ;
+    public final ImpexASTNode attributeName() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree Macrodef14=null;
-        CommonTree SpecialAttribute15=null;
-        CommonTree Identifier16=null;
+        CommonTree Macrodef13=null;
+        CommonTree SpecialAttribute14=null;
+        CommonTree Identifier15=null;
         ImpexASTNode attrName =null;
 
 
 
-        	    AttributeNameNode ann = new AttributeNameNode(); 
-         	    node = ann; 
+        	    ImpexASTNode subName = null;
+        	    //can be null if blank attribute
+         	    CommonToken name = null;
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:95:2: ( ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName[context] )? )? ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:95:3: ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName[context] )? )? )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:111:2: ( ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:111:3: ^( ATTRIBUTE_NAME ( Macrodef )? ( SpecialAttribute )? ( Identifier (attrName= attributeName )? )? )
             {
-            match(input,ATTRIBUTE_NAME,FOLLOW_ATTRIBUTE_NAME_in_attributeName387); 
+            match(input,ATTRIBUTE_NAME,FOLLOW_ATTRIBUTE_NAME_in_attributeName362); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:96:2: ( Macrodef )?
-                int alt8=2;
+                // com/lambda/impex/ast/ImpexTreeWalker.g:112:2: ( Macrodef )?
+                int alt7=2;
                 switch ( input.LA(1) ) {
                     case Macrodef:
+                        {
+                        alt7=1;
+                        }
+                        break;
+                }
+
+                switch (alt7) {
+                    case 1 :
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:112:3: Macrodef
+                        {
+                        Macrodef13=(CommonTree)match(input,Macrodef,FOLLOW_Macrodef_in_attributeName368); 
+
+                        name = (CommonToken)Macrodef13.token;
+
+                        }
+                        break;
+
+                }
+
+
+                // com/lambda/impex/ast/ImpexTreeWalker.g:113:2: ( SpecialAttribute )?
+                int alt8=2;
+                switch ( input.LA(1) ) {
+                    case SpecialAttribute:
                         {
                         alt8=1;
                         }
@@ -831,11 +830,11 @@ public class ImpexTreeWalker extends TreeParser {
 
                 switch (alt8) {
                     case 1 :
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:96:3: Macrodef
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:113:3: SpecialAttribute
                         {
-                        Macrodef14=(CommonTree)match(input,Macrodef,FOLLOW_Macrodef_in_attributeName393); 
+                        SpecialAttribute14=(CommonTree)match(input,SpecialAttribute,FOLLOW_SpecialAttribute_in_attributeName377); 
 
-                        ann.init((CommonToken)Macrodef14.token);
+                        name = (CommonToken)SpecialAttribute14.token;
 
                         }
                         break;
@@ -843,69 +842,45 @@ public class ImpexTreeWalker extends TreeParser {
                 }
 
 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:97:2: ( SpecialAttribute )?
-                int alt9=2;
-                switch ( input.LA(1) ) {
-                    case SpecialAttribute:
-                        {
-                        alt9=1;
-                        }
-                        break;
-                }
-
-                switch (alt9) {
-                    case 1 :
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:97:3: SpecialAttribute
-                        {
-                        SpecialAttribute15=(CommonTree)match(input,SpecialAttribute,FOLLOW_SpecialAttribute_in_attributeName402); 
-
-                        ann.init((CommonToken)SpecialAttribute15.token);
-
-                        }
-                        break;
-
-                }
-
-
-                // com/lambda/impex/ast/ImpexTreeWalker.g:98:2: ( Identifier (attrName= attributeName[context] )? )?
-                int alt11=2;
+                // com/lambda/impex/ast/ImpexTreeWalker.g:114:2: ( Identifier (attrName= attributeName )? )?
+                int alt10=2;
                 switch ( input.LA(1) ) {
                     case Identifier:
                         {
-                        alt11=1;
+                        alt10=1;
                         }
                         break;
                 }
 
-                switch (alt11) {
+                switch (alt10) {
                     case 1 :
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:98:3: Identifier (attrName= attributeName[context] )?
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:114:3: Identifier (attrName= attributeName )?
                         {
-                        Identifier16=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_attributeName411); 
+                        Identifier15=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_attributeName386); 
 
-                        ann.init((CommonToken)Identifier16.token);
+                        name = (CommonToken)Identifier15.token;
 
-                        // com/lambda/impex/ast/ImpexTreeWalker.g:98:58: (attrName= attributeName[context] )?
-                        int alt10=2;
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:114:55: (attrName= attributeName )?
+                        int alt9=2;
                         switch ( input.LA(1) ) {
                             case ATTRIBUTE_NAME:
                                 {
-                                alt10=1;
+                                alt9=1;
                                 }
                                 break;
                         }
 
-                        switch (alt10) {
+                        switch (alt9) {
                             case 1 :
-                                // com/lambda/impex/ast/ImpexTreeWalker.g:98:59: attrName= attributeName[context]
+                                // com/lambda/impex/ast/ImpexTreeWalker.g:114:56: attrName= attributeName
                                 {
-                                pushFollow(FOLLOW_attributeName_in_attributeName420);
-                                attrName=attributeName(context);
+                                pushFollow(FOLLOW_attributeName_in_attributeName395);
+                                attrName=attributeName();
 
                                 state._fsp--;
 
 
-                                ann.setSubName(attrName);
+                                subName = attrName;
 
                                 }
                                 break;
@@ -925,6 +900,9 @@ public class ImpexTreeWalker extends TreeParser {
 
             }
 
+
+            	    node = new AttributeNameNode(name, subName);
+            	
         }
         catch (RecognitionException re) {
             reportError(re);
@@ -940,164 +918,179 @@ public class ImpexTreeWalker extends TreeParser {
 
 
 
-    // $ANTLR start "attribute"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:100:1: attribute[ImpexContext context] returns [ImpexASTNode node] : ^( ATTRIBUTE attributeName[context] ^( ITEM_EXPRESSION (attr= attribute[context] )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment[context] )* ) ) ;
-    public final ImpexASTNode attribute(ImpexContext context) throws RecognitionException {
+    // $ANTLR start "attributeValue"
+    // com/lambda/impex/ast/ImpexTreeWalker.g:116:1: attributeValue returns [ImpexASTNode node] : ^( ATTRIBUTE ( DocumentID )? ( attributeName ^( ITEM_EXPRESSION (attr= attributeValue )* ) ^( MODIFIERS ( attributeModifierAssignment )* ) )? ) ;
+    public final ImpexASTNode attributeValue() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree DocumentID18=null;
+        CommonTree DocumentID16=null;
         ImpexASTNode attr =null;
 
         ImpexASTNode attributeName17 =null;
 
-        ImpexASTNode attributeModifierAssignment19 =null;
+        ImpexASTNode attributeModifierAssignment18 =null;
 
 
 
-        	    AttributeNode an = new AttributeNode(); 
-         	    node = an; 
+        	    //will never be null
+         	    ImpexASTNode name = null;
+         	    List<ImpexASTNode> expression = new ArrayList<ImpexASTNode>();
+         	    List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
         	
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:106:2: ( ^( ATTRIBUTE attributeName[context] ^( ITEM_EXPRESSION (attr= attribute[context] )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment[context] )* ) ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:106:3: ^( ATTRIBUTE attributeName[context] ^( ITEM_EXPRESSION (attr= attribute[context] )* ^( DOCUMENTID_REF ( DocumentID )* ) ) ^( MODIFIERS ( attributeModifierAssignment[context] )* ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:128:2: ( ^( ATTRIBUTE ( DocumentID )? ( attributeName ^( ITEM_EXPRESSION (attr= attributeValue )* ) ^( MODIFIERS ( attributeModifierAssignment )* ) )? ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:128:3: ^( ATTRIBUTE ( DocumentID )? ( attributeName ^( ITEM_EXPRESSION (attr= attributeValue )* ) ^( MODIFIERS ( attributeModifierAssignment )* ) )? )
             {
-            match(input,ATTRIBUTE,FOLLOW_ATTRIBUTE_in_attribute450); 
-
-            match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_attributeName_in_attribute452);
-            attributeName17=attributeName(context);
-
-            state._fsp--;
-
-
-            an.setName(attributeName17);
-
-            match(input,ITEM_EXPRESSION,FOLLOW_ITEM_EXPRESSION_in_attribute461); 
-
-            match(input, Token.DOWN, null); 
-            // com/lambda/impex/ast/ImpexTreeWalker.g:107:21: (attr= attribute[context] )*
-            loop12:
-            do {
-                int alt12=2;
-                switch ( input.LA(1) ) {
-                case ATTRIBUTE:
-                    {
-                    alt12=1;
-                    }
-                    break;
-
-                }
-
-                switch (alt12) {
-            	case 1 :
-            	    // com/lambda/impex/ast/ImpexTreeWalker.g:107:22: attr= attribute[context]
-            	    {
-            	    pushFollow(FOLLOW_attribute_in_attribute468);
-            	    attr=attribute(context);
-
-            	    state._fsp--;
-
-
-            	    an.addAttribute(attr);
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop12;
-                }
-            } while (true);
-
-
-            match(input,DOCUMENTID_REF,FOLLOW_DOCUMENTID_REF_in_attribute479); 
+            match(input,ATTRIBUTE,FOLLOW_ATTRIBUTE_in_attributeValue429); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:108:20: ( DocumentID )*
-                loop13:
-                do {
-                    int alt13=2;
-                    switch ( input.LA(1) ) {
+                // com/lambda/impex/ast/ImpexTreeWalker.g:128:15: ( DocumentID )?
+                int alt11=2;
+                switch ( input.LA(1) ) {
                     case DocumentID:
                         {
-                        alt13=1;
+                        alt11=1;
+                        }
+                        break;
+                }
+
+                switch (alt11) {
+                    case 1 :
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:128:16: DocumentID
+                        {
+                        DocumentID16=(CommonTree)match(input,DocumentID,FOLLOW_DocumentID_in_attributeValue432); 
+
+                        name = new RefNode((CommonToken)DocumentID16.token);
+
                         }
                         break;
 
-                    }
-
-                    switch (alt13) {
-                	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:108:21: DocumentID
-                	    {
-                	    DocumentID18=(CommonTree)match(input,DocumentID,FOLLOW_DocumentID_in_attribute482); 
-
-                	    an.addAttribute(new RefNode((CommonToken)DocumentID18.token));
-
-                	    }
-                	    break;
-
-                	default :
-                	    break loop13;
-                    }
-                } while (true);
+                }
 
 
-                match(input, Token.UP, null); 
-            }
-
-
-            match(input, Token.UP, null); 
-
-
-            match(input,MODIFIERS,FOLLOW_MODIFIERS_in_attribute498); 
-
-            if ( input.LA(1)==Token.DOWN ) {
-                match(input, Token.DOWN, null); 
-                // com/lambda/impex/ast/ImpexTreeWalker.g:111:14: ( attributeModifierAssignment[context] )*
-                loop14:
-                do {
-                    int alt14=2;
-                    switch ( input.LA(1) ) {
-                    case MODIFIER:
+                // com/lambda/impex/ast/ImpexTreeWalker.g:129:2: ( attributeName ^( ITEM_EXPRESSION (attr= attributeValue )* ) ^( MODIFIERS ( attributeModifierAssignment )* ) )?
+                int alt14=2;
+                switch ( input.LA(1) ) {
+                    case ATTRIBUTE_NAME:
                         {
                         alt14=1;
                         }
                         break;
+                }
 
-                    }
+                switch (alt14) {
+                    case 1 :
+                        // com/lambda/impex/ast/ImpexTreeWalker.g:129:3: attributeName ^( ITEM_EXPRESSION (attr= attributeValue )* ) ^( MODIFIERS ( attributeModifierAssignment )* )
+                        {
+                        pushFollow(FOLLOW_attributeName_in_attributeValue440);
+                        attributeName17=attributeName();
 
-                    switch (alt14) {
-                	case 1 :
-                	    // com/lambda/impex/ast/ImpexTreeWalker.g:111:15: attributeModifierAssignment[context]
-                	    {
-                	    pushFollow(FOLLOW_attributeModifierAssignment_in_attribute501);
-                	    attributeModifierAssignment19=attributeModifierAssignment(context);
-
-                	    state._fsp--;
+                        state._fsp--;
 
 
-                	    an.addModifier(attributeModifierAssignment19);
+                        name = attributeName17;
 
-                	    }
-                	    break;
+                        match(input,ITEM_EXPRESSION,FOLLOW_ITEM_EXPRESSION_in_attributeValue445); 
 
-                	default :
-                	    break loop14;
-                    }
-                } while (true);
+                        if ( input.LA(1)==Token.DOWN ) {
+                            match(input, Token.DOWN, null); 
+                            // com/lambda/impex/ast/ImpexTreeWalker.g:129:65: (attr= attributeValue )*
+                            loop12:
+                            do {
+                                int alt12=2;
+                                switch ( input.LA(1) ) {
+                                case ATTRIBUTE:
+                                    {
+                                    alt12=1;
+                                    }
+                                    break;
+
+                                }
+
+                                switch (alt12) {
+                            	case 1 :
+                            	    // com/lambda/impex/ast/ImpexTreeWalker.g:129:66: attr= attributeValue
+                            	    {
+                            	    pushFollow(FOLLOW_attributeValue_in_attributeValue452);
+                            	    attr=attributeValue();
+
+                            	    state._fsp--;
+
+
+                            	    expression.add(attr);
+
+                            	    }
+                            	    break;
+
+                            	default :
+                            	    break loop12;
+                                }
+                            } while (true);
+
+
+                            match(input, Token.UP, null); 
+                        }
+
+
+                        match(input,MODIFIERS,FOLLOW_MODIFIERS_in_attributeValue461); 
+
+                        if ( input.LA(1)==Token.DOWN ) {
+                            match(input, Token.DOWN, null); 
+                            // com/lambda/impex/ast/ImpexTreeWalker.g:129:134: ( attributeModifierAssignment )*
+                            loop13:
+                            do {
+                                int alt13=2;
+                                switch ( input.LA(1) ) {
+                                case MODIFIER:
+                                    {
+                                    alt13=1;
+                                    }
+                                    break;
+
+                                }
+
+                                switch (alt13) {
+                            	case 1 :
+                            	    // com/lambda/impex/ast/ImpexTreeWalker.g:129:135: attributeModifierAssignment
+                            	    {
+                            	    pushFollow(FOLLOW_attributeModifierAssignment_in_attributeValue464);
+                            	    attributeModifierAssignment18=attributeModifierAssignment();
+
+                            	    state._fsp--;
+
+
+                            	    modifiers.add(attributeModifierAssignment18);
+
+                            	    }
+                            	    break;
+
+                            	default :
+                            	    break loop13;
+                                }
+                            } while (true);
+
+
+                            match(input, Token.UP, null); 
+                        }
+
+
+                        }
+                        break;
+
+                }
 
 
                 match(input, Token.UP, null); 
             }
 
 
-            match(input, Token.UP, null); 
-
-
             }
 
+
+            	   node = new AttributeNode(name,  expression, modifiers); 
+            	
         }
         catch (RecognitionException re) {
             reportError(re);
@@ -1109,39 +1102,39 @@ public class ImpexTreeWalker extends TreeParser {
         }
         return node;
     }
-    // $ANTLR end "attribute"
+    // $ANTLR end "attributeValue"
 
 
 
     // $ANTLR start "attributeModifierAssignment"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:114:1: attributeModifierAssignment[ImpexContext context] returns [ImpexASTNode node] : ^( MODIFIER attributeModifier ValueAssignment ) ;
-    public final ImpexASTNode attributeModifierAssignment(ImpexContext context) throws RecognitionException {
+    // com/lambda/impex/ast/ImpexTreeWalker.g:132:1: attributeModifierAssignment returns [ImpexASTNode node] : ^( MODIFIER attributeModifier ValueAssignment ) ;
+    public final ImpexASTNode attributeModifierAssignment() throws RecognitionException {
         ImpexASTNode node = null;
 
 
-        CommonTree ValueAssignment21=null;
-        CommonTree attributeModifier20 =null;
+        CommonTree ValueAssignment20=null;
+        CommonTree attributeModifier19 =null;
 
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:115:2: ( ^( MODIFIER attributeModifier ValueAssignment ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:115:4: ^( MODIFIER attributeModifier ValueAssignment )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:133:2: ( ^( MODIFIER attributeModifier ValueAssignment ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:133:4: ^( MODIFIER attributeModifier ValueAssignment )
             {
-            match(input,MODIFIER,FOLLOW_MODIFIER_in_attributeModifierAssignment528); 
+            match(input,MODIFIER,FOLLOW_MODIFIER_in_attributeModifierAssignment490); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_attributeModifier_in_attributeModifierAssignment530);
-            attributeModifier20=attributeModifier();
+            pushFollow(FOLLOW_attributeModifier_in_attributeModifierAssignment492);
+            attributeModifier19=attributeModifier();
 
             state._fsp--;
 
 
-            ValueAssignment21=(CommonTree)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_attributeModifierAssignment532); 
+            ValueAssignment20=(CommonTree)match(input,ValueAssignment,FOLLOW_ValueAssignment_in_attributeModifierAssignment494); 
 
             match(input, Token.UP, null); 
 
 
-            node = new ModifierNode(attributeModifier20.getType(), (CommonToken)ValueAssignment21.token);
+            node = new ModifierNode((CommonToken)attributeModifier19.getToken(), (CommonToken)ValueAssignment20.token);
 
             }
 
@@ -1161,7 +1154,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "attributeModifier"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:117:1: attributeModifier returns [CommonTree modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
+    // com/lambda/impex/ast/ImpexTreeWalker.g:135:1: attributeModifier returns [CommonTree modifier] : v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) ;
     public final CommonTree attributeModifier() throws RecognitionException {
         CommonTree modifier = null;
 
@@ -1169,8 +1162,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:118:2: (v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:118:4: v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:136:2: (v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:136:4: v= ( Alias | AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull | KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual )
             {
             v=(CommonTree)input.LT(1);
 
@@ -1204,7 +1197,7 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerMode"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:121:1: headerMode returns [CommonTree mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
+    // com/lambda/impex/ast/ImpexTreeWalker.g:139:1: headerMode returns [CommonTree mode] : v= ( Insert | InsertUpdate | Update | Remove ) ;
     public final CommonTree headerMode() throws RecognitionException {
         CommonTree mode = null;
 
@@ -1212,8 +1205,8 @@ public class ImpexTreeWalker extends TreeParser {
         CommonTree v=null;
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:122:2: (v= ( Insert | InsertUpdate | Update | Remove ) )
-            // com/lambda/impex/ast/ImpexTreeWalker.g:122:3: v= ( Insert | InsertUpdate | Update | Remove )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:140:2: (v= ( Insert | InsertUpdate | Update | Remove ) )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:140:3: v= ( Insert | InsertUpdate | Update | Remove )
             {
             v=(CommonTree)input.LT(1);
 
@@ -1247,21 +1240,21 @@ public class ImpexTreeWalker extends TreeParser {
 
 
     // $ANTLR start "headerTypeName"
-    // com/lambda/impex/ast/ImpexTreeWalker.g:124:1: headerTypeName returns [CommonToken type] : ( Identifier | headerMode | attributeModifier | headerModifier );
+    // com/lambda/impex/ast/ImpexTreeWalker.g:142:1: headerTypeName returns [CommonToken type] : ( Identifier | headerMode | attributeModifier | headerModifier );
     public final CommonToken headerTypeName() throws RecognitionException {
         CommonToken type = null;
 
 
-        CommonTree Identifier22=null;
-        CommonTree headerMode23 =null;
+        CommonTree Identifier21=null;
+        CommonTree headerMode22 =null;
 
-        CommonTree attributeModifier24 =null;
+        CommonTree attributeModifier23 =null;
 
-        CommonTree headerModifier25 =null;
+        CommonTree headerModifier24 =null;
 
 
         try {
-            // com/lambda/impex/ast/ImpexTreeWalker.g:125:2: ( Identifier | headerMode | attributeModifier | headerModifier )
+            // com/lambda/impex/ast/ImpexTreeWalker.g:143:2: ( Identifier | headerMode | attributeModifier | headerModifier )
             int alt15=4;
             switch ( input.LA(1) ) {
             case Identifier:
@@ -1317,50 +1310,50 @@ public class ImpexTreeWalker extends TreeParser {
 
             switch (alt15) {
                 case 1 :
-                    // com/lambda/impex/ast/ImpexTreeWalker.g:125:4: Identifier
+                    // com/lambda/impex/ast/ImpexTreeWalker.g:143:4: Identifier
                     {
-                    Identifier22=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName671); 
+                    Identifier21=(CommonTree)match(input,Identifier,FOLLOW_Identifier_in_headerTypeName633); 
 
-                    type = (CommonToken)Identifier22.token;
+                    type = (CommonToken)Identifier21.token;
 
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/ImpexTreeWalker.g:126:3: headerMode
+                    // com/lambda/impex/ast/ImpexTreeWalker.g:144:3: headerMode
                     {
-                    pushFollow(FOLLOW_headerMode_in_headerTypeName677);
-                    headerMode23=headerMode();
+                    pushFollow(FOLLOW_headerMode_in_headerTypeName639);
+                    headerMode22=headerMode();
 
                     state._fsp--;
 
 
-                    type = (CommonToken)headerMode23.getToken();
+                    type = (CommonToken)headerMode22.getToken();
 
                     }
                     break;
                 case 3 :
-                    // com/lambda/impex/ast/ImpexTreeWalker.g:127:3: attributeModifier
+                    // com/lambda/impex/ast/ImpexTreeWalker.g:145:3: attributeModifier
                     {
-                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName683);
-                    attributeModifier24=attributeModifier();
+                    pushFollow(FOLLOW_attributeModifier_in_headerTypeName645);
+                    attributeModifier23=attributeModifier();
 
                     state._fsp--;
 
 
-                    type = (CommonToken)attributeModifier24.getToken();
+                    type = (CommonToken)attributeModifier23.getToken();
 
                     }
                     break;
                 case 4 :
-                    // com/lambda/impex/ast/ImpexTreeWalker.g:128:3: headerModifier
+                    // com/lambda/impex/ast/ImpexTreeWalker.g:146:3: headerModifier
                     {
-                    pushFollow(FOLLOW_headerModifier_in_headerTypeName689);
-                    headerModifier25=headerModifier();
+                    pushFollow(FOLLOW_headerModifier_in_headerTypeName651);
+                    headerModifier24=headerModifier();
 
                     state._fsp--;
 
 
-                    type = (CommonToken)headerModifier25.getToken();
+                    type = (CommonToken)headerModifier24.getToken();
 
                     }
                     break;
@@ -1384,55 +1377,52 @@ public class ImpexTreeWalker extends TreeParser {
 
  
 
-    public static final BitSet FOLLOW_impex_in_walk47 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_impex_in_walk51 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_IMPEX_in_impex71 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_BLOCKS_in_impex75 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_block_in_impex78 = new BitSet(new long[]{0x0000000000000208L});
-    public static final BitSet FOLLOW_BLOCK_in_block115 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_header_in_block118 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_RECORDS_in_block127 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_record_in_block130 = new BitSet(new long[]{0x0800000000000008L});
-    public static final BitSet FOLLOW_HEADER_in_header165 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerMode_in_header168 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_TYPE_in_header175 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerTypeName_in_header177 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_MODIFIERS_in_header185 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header188 = new BitSet(new long[]{0x0000400000000008L});
-    public static final BitSet FOLLOW_DOCUMENTID_in_header200 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_DocumentID_in_header202 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ATTRIBUTES_in_header211 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attribute_in_header214 = new BitSet(new long[]{0x0000000000000018L});
-    public static final BitSet FOLLOW_MODIFIER_in_headerModifierAssignment242 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment244 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
-    public static final BitSet FOLLOW_ValueAssignment_in_headerModifierAssignment246 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_set_in_headerModifier263 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RECORD_in_record299 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_SUBTYPE_in_record307 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_Identifier_in_record310 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FIELDS_in_record323 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_field_in_record326 = new BitSet(new long[]{0x0200000040000008L});
-    public static final BitSet FOLLOW_set_in_field356 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ATTRIBUTE_NAME_in_attributeName387 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_Macrodef_in_attributeName393 = new BitSet(new long[]{0x0000000800000008L,0x0000000000000004L});
-    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName402 = new BitSet(new long[]{0x0000000800000008L});
-    public static final BitSet FOLLOW_Identifier_in_attributeName411 = new BitSet(new long[]{0x0000000000000048L});
-    public static final BitSet FOLLOW_attributeName_in_attributeName420 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ATTRIBUTE_in_attribute450 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeName_in_attribute452 = new BitSet(new long[]{0x0000000400000000L});
-    public static final BitSet FOLLOW_ITEM_EXPRESSION_in_attribute461 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attribute_in_attribute468 = new BitSet(new long[]{0x0000000000400010L});
-    public static final BitSet FOLLOW_DOCUMENTID_REF_in_attribute479 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_DocumentID_in_attribute482 = new BitSet(new long[]{0x0000000002000008L});
-    public static final BitSet FOLLOW_MODIFIERS_in_attribute498 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attribute501 = new BitSet(new long[]{0x0000400000000008L});
-    public static final BitSet FOLLOW_MODIFIER_in_attributeModifierAssignment528 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment530 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000100L});
-    public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment532 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_set_in_attributeModifier551 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_set_in_headerMode641 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_Identifier_in_headerTypeName671 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_headerMode_in_headerTypeName677 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName683 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_headerModifier_in_headerTypeName689 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BLOCK_in_block111 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_header_in_block114 = new BitSet(new long[]{0x0100000000000000L});
+    public static final BitSet FOLLOW_RECORDS_in_block121 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_record_in_block124 = new BitSet(new long[]{0x0080000000000008L});
+    public static final BitSet FOLLOW_HEADER_in_header155 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_headerMode_in_header158 = new BitSet(new long[]{0x8000000000000000L});
+    public static final BitSet FOLLOW_TYPE_in_header165 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_headerTypeName_in_header167 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_MODIFIERS_in_header175 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header178 = new BitSet(new long[]{0x0000040000000008L});
+    public static final BitSet FOLLOW_ATTRIBUTES_in_header188 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_attributeValue_in_header191 = new BitSet(new long[]{0x0000000000000018L});
+    public static final BitSet FOLLOW_MODIFIER_in_headerModifierAssignment215 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment217 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_ValueAssignment_in_headerModifierAssignment219 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_set_in_headerModifier236 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RECORD_in_record275 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_SUBTYPE_in_record283 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_Identifier_in_record286 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FIELDS_in_record299 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_field_in_record302 = new BitSet(new long[]{0x0020000004000008L});
+    public static final BitSet FOLLOW_set_in_field328 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ATTRIBUTE_NAME_in_attributeName362 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_Macrodef_in_attributeName368 = new BitSet(new long[]{0x4000000080000008L});
+    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName377 = new BitSet(new long[]{0x0000000080000008L});
+    public static final BitSet FOLLOW_Identifier_in_attributeName386 = new BitSet(new long[]{0x0000000000000048L});
+    public static final BitSet FOLLOW_attributeName_in_attributeName395 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ATTRIBUTE_in_attributeValue429 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_DocumentID_in_attributeValue432 = new BitSet(new long[]{0x0000000000000048L});
+    public static final BitSet FOLLOW_attributeName_in_attributeValue440 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_ITEM_EXPRESSION_in_attributeValue445 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_attributeValue_in_attributeValue452 = new BitSet(new long[]{0x0000000000000018L});
+    public static final BitSet FOLLOW_MODIFIERS_in_attributeValue461 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attributeValue464 = new BitSet(new long[]{0x0000040000000008L});
+    public static final BitSet FOLLOW_MODIFIER_in_attributeModifierAssignment490 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment492 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment494 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_set_in_attributeModifier513 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_set_in_headerMode603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_Identifier_in_headerTypeName633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerMode_in_headerTypeName639 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_attributeModifier_in_headerTypeName645 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_headerModifier_in_headerTypeName651 = new BitSet(new long[]{0x0000000000000002L});
 
 }

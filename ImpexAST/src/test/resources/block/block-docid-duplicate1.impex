@@ -1,0 +1,6 @@
+#Customer groups
+INSERT_UPDATE Usergroup;uid[unique=true];locname;description;&groupID;groups(uid)[mode=append]
+;customertestgroup;Customer Test Group;Customer Test Group;g1;customergroup
+
+INSERT_UPDATE Usergroup;uid[unique=true];description;&groupID
+;customertestgroup1;Customer Test Group 1;g1

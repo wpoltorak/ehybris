@@ -18,6 +18,7 @@ import java.util.Set;
 import com.lambda.impex.ast.nodes.AttributeNameNode;
 import com.lambda.impex.ast.nodes.AttributeNode;
 import com.lambda.impex.ast.nodes.BlockNode;
+import com.lambda.impex.ast.nodes.FieldNode;
 import com.lambda.impex.ast.nodes.HeaderNode;
 import com.lambda.impex.ast.nodes.ImpexASTNode;
 import com.lambda.impex.ast.nodes.ImpexNode;
@@ -26,17 +27,26 @@ import com.lambda.impex.ast.nodes.RecordNode;
 import com.lambda.impex.ast.nodes.RefNode;
 }
 
-walk	[ImpexContext context] returns [ImpexASTNode impex]
-	:impex [context] {impex = $impex.node;};
+@members{
+protected ImpexContext context;
 
-impex	[ImpexContext context] returns [ImpexNode node]
+public ImpexTreeWalker(ImpexContext context, CommonTree ast){
+this(new CommonTreeNodeStream(ast));
+this.context = context;
+}
+}
+
+walk	 returns [ImpexASTNode impex]
+	:impex {impex = $impex.node;};
+
+impex	returns [ImpexNode node]
 	@init{
 		ImpexNode in = new ImpexNode();
 		node = in;
 	}
-	:^(IMPEX  ^(BLOCKS (block[context] {in.addBlock($block.node);})*));
+	:^(IMPEX  ^(BLOCKS (block{in.addBlock($block.node);})*));
 
-block	[ImpexContext context] returns [ImpexASTNode node]
+block	returns [ImpexASTNode node]
 	@init { 
 		ImpexASTNode header;
 		List<ImpexASTNode> records = new ArrayList<ImpexASTNode>();
@@ -45,74 +55,82 @@ block	[ImpexContext context] returns [ImpexASTNode node]
  		 node = new BlockNode(header, records); 
 	}
 	
-	:^(BLOCK (header [context] {header = $header.node;})
-	^(RECORDS (record [context] {records.add($record.node);})*)
+	:^(BLOCK (header {header = $header.node;})
+	^(RECORDS (record {records.add($record.node);})*)
 	);
 
-header	[ImpexContext context] returns [ImpexASTNode node]
+header	returns [ImpexASTNode node]
 	@init{
 		CommonToken mode;
 		CommonToken type;
-		CommonToken documentID = null;
 		List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
 		List<ImpexASTNode> attributes = new ArrayList<ImpexASTNode>();
 	}
 	@after{
-		node = new HeaderNode(mode, type, documentID, modifiers, attributes);
+		node = new HeaderNode(mode, type,  modifiers, attributes);
 	}
 	:^(HEADER (headerMode {mode = (CommonToken)$headerMode.mode.getToken();})
 	^(TYPE headerTypeName {type = (CommonToken)$headerTypeName.type;}) 
-	^(MODIFIERS (headerModifierAssignment [context] {modifiers.add($headerModifierAssignment.node);})*) 
-	^(DOCUMENTID(DocumentID{documentID = (CommonToken)$DocumentID.token;})?) 
-	^(ATTRIBUTES (attribute [context] {attributes.add($attribute.node);})*)) ;
+	^(MODIFIERS (headerModifierAssignment {modifiers.add($headerModifierAssignment.node);})*) 
+	^(ATTRIBUTES (attributeValue {attributes.add($attributeValue.node);})*)) ;
 
 
-headerModifierAssignment	 [ImpexContext context] returns [ImpexASTNode node]
-		: ^(MODIFIER headerModifier ValueAssignment){node = new ModifierNode($headerModifier.modifier.getType(), (CommonToken)$ValueAssignment.token);};
+headerModifierAssignment	 returns [ImpexASTNode node]
+		: ^(MODIFIER headerModifier ValueAssignment){node = new ModifierNode((CommonToken)$headerModifier.modifier.getToken(), (CommonToken)$ValueAssignment.token);};
 
 headerModifier  returns [CommonTree modifier]
 	:v=(BatchMode | CacheUnique | Processor) {modifier = $v;};
 
-record	[ImpexContext context] returns [ImpexASTNode node]
+record	returns [ImpexASTNode node]
 	@init{
-	    RecordNode rn = new RecordNode(); 
- 	    node = rn; 
+	    CommonToken subType = null;
+	    List<ImpexASTNode> fields = new ArrayList<ImpexASTNode>();
+	}
+	@after{
+ 	    node = new RecordNode(subType, fields); 
 	}
    	: ^(RECORD 
-   	^(SUBTYPE (Identifier {rn.setSubType($Identifier.text);})?) 
-   	^(FIELDS (field [context]  {rn.addField($field.text);})+)
+   	^(SUBTYPE (Identifier {subType = (CommonToken)$Identifier.token;})?) 
+   	^(FIELDS (field  {fields.add($field.node);})+)
    	);
 
-field	[ImpexContext context] returns [String text]
-	:v=(QuotedField | Field){text = $v.text;};
-			
+field	returns [ImpexASTNode node]
+	:v=(QuotedField | Field){node = new FieldNode((CommonToken)$v.token);};
 
-attributeName [ImpexContext context] returns [ImpexASTNode node]
+attributeName returns [ImpexASTNode node]
 	@init{
-	    AttributeNameNode ann = new AttributeNameNode(); 
- 	    node = ann; 
+	    ImpexASTNode subName = null;
+	    //can be null if blank attribute
+ 	    CommonToken name = null;
 	}
-	:^(ATTRIBUTE_NAME  
-	(Macrodef {ann.init((CommonToken)$Macrodef.token);})? 
-	(SpecialAttribute {ann.init((CommonToken)$SpecialAttribute.token);})? 
-	(Identifier {ann.init((CommonToken)$Identifier.token);} (attrName = attributeName [context]{ann.setSubName($attrName.node);})?)?);
 	
-attribute	[ImpexContext context] returns [ImpexASTNode node]
+	@after{
+	    node = new AttributeNameNode(name, subName);
+	}
+	
+	:^(ATTRIBUTE_NAME  
+	(Macrodef {name = (CommonToken)$Macrodef.token;})? 
+	(SpecialAttribute {name = (CommonToken)$SpecialAttribute.token;})? 
+	(Identifier {name = (CommonToken)$Identifier.token;} (attrName = attributeName {subName = $attrName.node;})?)?);
+	
+attributeValue returns [ImpexASTNode node]
 	@init{
-	    AttributeNode an = new AttributeNode(); 
- 	    node = an; 
+	    //will never be null
+ 	    ImpexASTNode name = null;
+ 	    List<ImpexASTNode> expression = new ArrayList<ImpexASTNode>();
+ 	    List<ImpexASTNode> modifiers = new ArrayList<ImpexASTNode>();
+	}
+	
+	@after{
+	   node = new AttributeNode(name,  expression, modifiers); 
 	}
 
-	:^(ATTRIBUTE attributeName [context] {an.setName($attributeName.node);}
-	 ^(ITEM_EXPRESSION (attr = attribute [context]{an.addAttribute($attr.node);})* 
-	 ^(DOCUMENTID_REF (DocumentID{an.addAttribute(new RefNode((CommonToken)$DocumentID.token));})*
-	 )
-	 ) 
-	^(MODIFIERS (attributeModifierAssignment [context]{an.addModifier($attributeModifierAssignment.node);})*)
+	:^(ATTRIBUTE (DocumentID {name = new RefNode((CommonToken)$DocumentID.token);})?
+	(attributeName {name = $attributeName.node;} ^(ITEM_EXPRESSION (attr = attributeValue {expression.add($attr.node);})* ) ^(MODIFIERS (attributeModifierAssignment {modifiers.add($attributeModifierAssignment.node);})*))?
 	);
 	
-attributeModifierAssignment [ImpexContext context]	 returns [ImpexASTNode node]
-	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode($attributeModifier.modifier.getType(), (CommonToken)$ValueAssignment.token);};
+attributeModifierAssignment  returns [ImpexASTNode node]
+	: ^(MODIFIER attributeModifier ValueAssignment){node = new ModifierNode((CommonToken)$attributeModifier.modifier.getToken(), (CommonToken)$ValueAssignment.token);};
 	
 attributeModifier  returns [CommonTree  modifier]
 	: v=(Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull

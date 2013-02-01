@@ -14,10 +14,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
-import com.lambda.impex.ast.ImpexCompiler;
-import com.lambda.impex.ast.ImpexContext;
-import com.lambda.impex.ast.ImpexError;
+import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.editor.ImpexProblemAnnotation;
 
 public class ImpexModel implements IImpexModel {
 
@@ -29,24 +28,17 @@ public class ImpexModel implements IImpexModel {
         this.editorInput = editorInput;
     }
 
-    public void reconcile() {
-        final long start = System.currentTimeMillis();
-        try {
-            System.out.println("===> RECONCILE " + editorInput.getName() + "##################################");
-            removeMarkers();
-            final char[] source = document.get().toCharArray();
-
-            final ImpexCompiler compiler = new ImpexCompiler();
-            DefaultImpexVisitor visitor = new DefaultImpexVisitor();
-            compiler.setVisitor(visitor);
-            compiler.compile(source);
-
-            ImpexContext context = compiler.getContext();
-            createMarkers(context.getErrors());
-        } finally {
-            System.out.println("===> TOOK " + (System.currentTimeMillis() - start) / 1000);
+    private void createProblemAnnotations(List<ImpexProblem> problems) {
+        for (ImpexProblem problem : problems) {
+            ImpexProblemAnnotation impexProblemAnnotation = new ImpexProblemAnnotation(new ImpexModelProblem(problem,
+                    IMarker.SEVERITY_ERROR));
 
         }
+    }
+
+    public void updateMarkers(List<ImpexProblem> problems) {
+        removeMarkers();
+        createMarkers(problems);
     }
 
     private void removeMarkers() {
@@ -57,15 +49,15 @@ public class ImpexModel implements IImpexModel {
         }
     }
 
-    private void createMarkers(final List<ImpexError> errors) {
+    private void createMarkers(final List<ImpexProblem> problems) {
         final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
             public void run(final IProgressMonitor monitor) throws CoreException {
-                for (final ImpexError error : errors) {
+                for (final ImpexProblem problem : problems) {
                     Map<String, Object> map = new HashMap<String, Object>();
-                    MarkerUtilities.setLineNumber(map, error.getLineNumber());
-                    MarkerUtilities.setMessage(map, error.getType().toString());
-                    MarkerUtilities.setCharStart(map, error.getStartIndex());
-                    MarkerUtilities.setCharEnd(map, error.getStartIndex() + error.getLength());
+                    MarkerUtilities.setLineNumber(map, problem.getLineNumber());
+                    MarkerUtilities.setMessage(map, problem.getType().toString());
+                    MarkerUtilities.setCharStart(map, problem.getStartIndex());
+                    MarkerUtilities.setCharEnd(map, problem.getStartIndex() + problem.getLength());
                     map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));
 
                     final IFile file = editorInput.getFile();
