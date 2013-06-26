@@ -2,8 +2,8 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         id="com.lambda.plugin.yunit.nature"
-         name="Functest Nature"
+         id="com.lambda.ynature"
+         name="Hybris Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
@@ -82,9 +82,33 @@
       </wizard>
       <wizard
             category="com.lambda.plugin.wizard"
-            class="com.lambda.plugin.impex.wizards.ImpexNewWizard"
+            class="com.lambda.plugin.wizards.hybris.NewExtensionWizard"
+            hasPages="true"
+            icon="icons/full/etool16/newfunctest_wiz.png"
+            id="com.lambda.plugin.wizards.hybris.NewExtensionWizard"
+            name="Hybris Extension"
+            project="true">
+         <description>
+            Create Hybris module
+         </description>
+      </wizard>
+      <wizard
+            category="com.lambda.plugin.wizard"
+            class="com.lambda.plugin.wizards.hybris.NewModuleWizard"
+            hasPages="true"
+            icon="icons/full/etool16/newfunctest_wiz.png"
+            id="com.lambda.plugin.wizards.hybris.NewModuleWizard"
+            name="Hybris Module"
+            project="true">
+         <description>
+            Create Hybris module
+         </description>
+      </wizard>
+      <wizard
+            category="com.lambda.plugin.wizard"
+            class="com.lambda.plugin.wizards.impex.ImpexNewWizard"
             icon="icons/sample.gif"
-            id="com.lambda.plugin.impex.wizards.ImpexNewWizard"
+            id="com.lambda.plugin.wizards.impex.ImpexNewWizard"
             name="Impex file">
          <description>
             Create new impex file
@@ -120,7 +144,7 @@
                </objectClass>
                <objectState
                      name="nature"
-                     value="com.lambda.plugin.yunit.nature">
+                     value="com.lambda.ynature">
                </objectState>
             </and>
          </enablement>
@@ -140,16 +164,22 @@
             name="ImpEx">
       </page>
       <page
-            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            class="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
-            id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
-            name="Mark Occurrences">
-      </page>
-      <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             id="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             name="YUnit Tests">
+      </page>
+      <page
+            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
+            id="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
+            name="Syntax coloring">
+      </page>
+      <page
+            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
+            id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
+            name="Mark occurrences">
       </page>
    </extension>
    <extension
@@ -516,7 +546,7 @@
                <and>
                   <test
                         property="projectNature"
-                        value="com.lambda.plugin.yunit.nature">
+                        value="com.lambda.ynature">
                   </test>
                   <adapt
                         type="org.eclipse.core.resources.IProject">
@@ -585,5 +615,14 @@
     </super> 
   			<persistent value="true" /> 
 	</extension>
+ <extension
+       point="org.eclipse.core.contenttype.contentTypes">
+    <content-type
+          file-extensions="impex"
+          id="com.lambda.plugin.impexFile"
+          name="Impex File"
+          priority="normal">
+    </content-type>
+ </extension>
 
 </plugin>

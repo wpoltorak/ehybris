@@ -5,12 +5,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.core.JavaModel;
 import org.eclipse.jdt.internal.core.JavaModelManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -18,6 +21,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -27,6 +31,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.PackageAdmin;
 
+import com.lambda.plugin.nature.IYNatureManager;
+import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.template.ITemplateManager;
 import com.lambda.plugin.template.TemplateManager;
 import com.lambda.plugin.yunit.IYUnitManager;
@@ -58,6 +64,8 @@ public class YPlugin extends AbstractUIPlugin {
     private BundleContext fBundleContext;
 
     private IPreferenceStore fCombinedPreferenceStore;
+
+    private IYNatureManager natureManager;
 
     /**
      * The constructor
@@ -119,6 +127,13 @@ public class YPlugin extends AbstractUIPlugin {
         return getDefault().functestModel;
     }
 
+    public IYNatureManager getNatureManager() {
+        if (natureManager == null) {
+            natureManager = new YNatureManager();
+        }
+        return natureManager;
+    }
+
     public IYUnitManager getFunctestManager() {
         if (functestManager == null) {
             functestManager = new YUnitManager();
@@ -141,8 +156,28 @@ public class YPlugin extends AbstractUIPlugin {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException, InterruptedException {
-        final JavaModel javaModel = JavaModelManager.getJavaModelManager().getJavaModel();
+    public List<IProject> getProjects(String natureId) throws CoreException, InvocationTargetException,
+            InterruptedException {
+        final List<IProject> projects = new ArrayList<IProject>();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        for (IProject project : root.getProjects()) {
+            if (project.getProject().isOpen() && project.getProject().hasNature(natureId)) {
+                projects.add(project);
+            }
+        }
+        return projects;
+    }
+
+    /**
+     * 
+     * @return functional test existing in workspace
+     * @throws CoreException
+     * @throws InvocationTargetException
+     * @throws InterruptedException
+     */
+    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException,
+            InterruptedException {
+        final IJavaModel javaModel = JavaModelManager.getJavaModelManager().getJavaModel();
         final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
         for (final IJavaProject project : javaModel.getJavaProjects()) {
             if (project.getProject().isOpen() && project.getProject().hasNature(YNature.NATURE_ID)) {
@@ -174,6 +209,17 @@ public class YPlugin extends AbstractUIPlugin {
 
     public static IWorkbenchWindow getActiveWorkbenchWindow() {
         return getDefault().getWorkbench().getActiveWorkbenchWindow();
+    }
+
+    public static IWorkbenchPart getActivePart() {
+        final IWorkbenchWindow activeWindow = YPlugin.getActiveWorkbenchWindow();
+        if (activeWindow != null) {
+            final IWorkbenchPage activePage = activeWindow.getActivePage();
+            if (activePage != null) {
+                return activePage.getActivePart();
+            }
+        }
+        return null;
     }
 
     public static Shell getActiveWorkbenchShell() {
@@ -227,7 +273,8 @@ public class YPlugin extends AbstractUIPlugin {
     public IPreferenceStore getCombinedPreferenceStore() {
         if (fCombinedPreferenceStore == null) {
             final IPreferenceStore generalTextStore = EditorsUI.getPreferenceStore();
-            fCombinedPreferenceStore = new ChainedPreferenceStore(new IPreferenceStore[] { getPreferenceStore(), generalTextStore });
+            fCombinedPreferenceStore = new ChainedPreferenceStore(new IPreferenceStore[] { getPreferenceStore(),
+                    generalTextStore });
         }
         return fCombinedPreferenceStore;
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.lambda.yplugin"
+      id="com.lambda.yfeature"
       label="Hybris Plugin"
-      version="1.0.0"
+      version="0.0.1"
       provider-name="Wojciech Poltorak">
 
    <description url="http://www.example.com/description">
@@ -44,7 +44,7 @@
          id="com.lambda.yplugin"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

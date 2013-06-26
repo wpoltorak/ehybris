@@ -1,4 +1,4 @@
-package com.lambda.plugin.impex.wizards;
+package com.lambda.plugin.wizards.impex;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;

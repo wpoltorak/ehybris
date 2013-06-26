@@ -12,5 +12,5 @@ INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
 $customergroup=customergroup
 $description =   	description								  
 # Create Customer Group
-INSERT_UPDATE Usergroup;uid[unique=true];description
+INSERT_UPDATE Usergroup;uid[unique=true];description;$description
 ;$customergroup;"		   descrddiption		   "
