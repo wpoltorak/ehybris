@@ -35,7 +35,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
@@ -116,14 +118,21 @@ public class NewExtensionWizardPage extends WizardPage {
         private final ModifyListener fModifyListener;
         private ContentProposalAdapter fContentAssistAdapter;
         private String fText;
-        private final String fPackageText;
+        private String fPackageText;
 
         public NamePackageGroup() {
             fText = "";
             fPackageText = "";
             fModifyListener = new ModifyListener() {
                 public void modifyText(ModifyEvent e) {
-                    if (isOkToUse((Composite) e.getSource())) {
+                    if (e.getSource() == fTextControl) {
+                        fText = fTextControl.getText();
+                    }
+                    if (e.getSource() == fPackageTextControl) {
+                        fPackageText = fPackageTextControl.getText();
+                    }
+
+                    if (isOkToUse((Control) e.getSource())) {
                         fireEvent();
                     }
                 }
@@ -176,7 +185,6 @@ public class NewExtensionWizardPage extends WizardPage {
         public Text getNameTextControl(Composite parent) {
             if (fTextControl == null) {
                 fTextControl = new Text(parent, SWT.SINGLE | SWT.BORDER);
-                // moved up due to 1GEUNW2
                 fTextControl.setText(fText);
                 fTextControl.setFont(parent.getFont());
                 fTextControl.addModifyListener(fModifyListener);
@@ -684,7 +692,18 @@ public class NewExtensionWizardPage extends WizardPage {
     private final class Validator implements Observer {
 
         public void update(Observable o, Object arg) {
+            validatePackageAndExtensionName();
+        }
 
+        private IStatus validatePackageName(String packName) {
+            IJavaProject project = getJavaProject();
+            if (project == null || !project.exists()) {
+                return JavaConventions.validatePackageName(packName, JavaCore.VERSION_1_3, JavaCore.VERSION_1_3);
+            }
+            return JavaConventionsUtil.validatePackageName(packName, project);
+        }
+
+        private void validatePackageAndExtensionName() {
             final IWorkspace workspace = JavaPlugin.getWorkspace();
 
             final String name = fNamePackageGroup.getName();
@@ -772,8 +791,29 @@ public class NewExtensionWizardPage extends WizardPage {
                 return;
             }
 
-            setPageComplete(true);
+            String packName = fNamePackageGroup.getPackageName();
+            if (packName.length() > 0) {
+                IStatus val = validatePackageName(packName);
+                if (val.getSeverity() == IStatus.ERROR) {
+                    setErrorMessage(Messages.format(NewWizardMessages.NewPackageWizardPage_error_InvalidPackageName,
+                            val.getMessage()));
+                    setPageComplete(false);
+                    return;
+                } else if (val.getSeverity() == IStatus.WARNING) {
+                    setErrorMessage(null);
+                    setMessage(Messages.format(NewWizardMessages.NewPackageWizardPage_warning_DiscouragedPackageName,
+                            val.getMessage()));
+                    setPageComplete(true);
+                    return;
+                }
+            } else {
+                setMessage(NewWizardMessages.NewPackageWizardPage_error_EnterName);
+                setErrorMessage(null);
+                setPageComplete(false);
+                return;
+            }
 
+            setPageComplete(true);
             setErrorMessage(null);
             setMessage(null);
         }
@@ -1156,9 +1196,6 @@ public class NewExtensionWizardPage extends WizardPage {
             if (fCurrProject == null) {
                 updateProject(new SubProgressMonitor(monitor, 1));
             }
-            String newProjectCompliance = null; // default
-            configureJavaProject(newProjectCompliance, new SubProgressMonitor(monitor, 2));
-
         } finally {
             monitor.done();
             fCurrProject = null;
@@ -1265,10 +1302,6 @@ public class NewExtensionWizardPage extends WizardPage {
             // getProjectLocationURI();
 
             URI realLocation = getRealLocation(projectName, fCurrProjectLocation);
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();

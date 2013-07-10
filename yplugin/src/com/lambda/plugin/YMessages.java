@@ -244,4 +244,8 @@ public final class YMessages extends NLS {
 
     public static String TestSelectionElementsLabelProvider_testElementName_projectName;
     public static String TestSearchEngine_message_searching;
+
+    // Extension Wizard
+    NewExtensionPage_WorkingSets_group=Working sets
+
 }
