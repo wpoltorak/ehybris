@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,12 +17,11 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,7 +50,6 @@ import org.eclipse.jdt.internal.ui.util.ExceptionHandler;
 import org.eclipse.jdt.internal.ui.viewsupport.BasicElementLabels;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathSupport;
-import org.eclipse.jdt.internal.ui.wizards.buildpaths.BuildPathsBlock;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
@@ -63,13 +60,8 @@ import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jface.bindings.keys.KeyStroke;
-import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.fieldassist.ContentProposalAdapter;
-import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
-import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
@@ -97,6 +89,7 @@ import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.utils.StringUtils;
 
 public class NewExtensionWizardPage extends WizardPage {
@@ -105,18 +98,18 @@ public class NewExtensionWizardPage extends WizardPage {
     private static final String FILENAME_CLASSPATH = ".classpath"; //$NON-NLS-1$
 
     /**
-     * Request a project name. Fires an event whenever the text field is changed, regardless of its content.
+     * Request a project name and default package. Fires an event whenever the text field is changed, regardless of its
+     * content.
      */
     private final class NamePackageGroup extends Observable {
 
         private Label fLabel;
         private Label fPackageLabel;
-        private final String fLabelText = NewWizardMessages.NewJavaProjectWizardPageOne_NameGroup_label_text;
-        private final String fPackageLabelText = NewWizardMessages.NewTypeWizardPage_package_label;
+        private final String fLabelText = YMessages.NewExtensionPage_NamePackageGroup_label_text;
+        private final String fPackageLabelText = YMessages.NewExtensionPage_NamePackageGroup_package_label;
         private Text fTextControl;
         private Text fPackageTextControl;
         private final ModifyListener fModifyListener;
-        private ContentProposalAdapter fContentAssistAdapter;
         private String fText;
         private String fPackageText;
 
@@ -189,22 +182,6 @@ public class NewExtensionWizardPage extends WizardPage {
                 fTextControl.setFont(parent.getFont());
                 fTextControl.addModifyListener(fModifyListener);
                 fTextControl.setEnabled(true);
-                if (fContentAssistAdapter != null) {
-                    char[] autoActivationCharacters = new char[] { '#', '(' };
-                    KeyStroke keyStroke;
-                    try {
-                        keyStroke = KeyStroke.getInstance("Ctrl+Space");
-                        // assume that myTextControl has already been created in some way
-                        fContentAssistAdapter = new ContentProposalAdapter(fTextControl, new TextContentAdapter(),
-                                new SimpleContentProposalProvider(new String[] { "ProposalOne", "ProposalTwo",
-                                        "ProposalThree" }), keyStroke, autoActivationCharacters);
-                    } catch (ParseException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-                    // ControlContentAssistHelper.createTextContentAssistant(fTextControl, fContentAssistProcessor);
-                }
             }
             return fTextControl;
         }
@@ -212,28 +189,10 @@ public class NewExtensionWizardPage extends WizardPage {
         public Text getPackageTextControl(Composite parent) {
             if (fPackageTextControl == null) {
                 fPackageTextControl = new Text(parent, SWT.SINGLE | SWT.BORDER);
-                // moved up due to 1GEUNW2
                 fPackageTextControl.setText(fPackageText);
                 fPackageTextControl.setFont(parent.getFont());
                 fPackageTextControl.addModifyListener(fModifyListener);
                 fPackageTextControl.setEnabled(true);
-                if (fContentAssistAdapter != null) {
-                    char[] autoActivationCharacters = new char[] { '#', '(' };
-                    KeyStroke keyStroke;
-                    try {
-                        keyStroke = KeyStroke.getInstance("Ctrl+Space");
-                        // assume that myTextControl has already been created in some way
-                        fContentAssistAdapter = new ContentProposalAdapter(fPackageTextControl,
-                                new TextContentAdapter(), new SimpleContentProposalProvider(new String[] {
-                                        "ProposalOne", "ProposalTwo", "ProposalThree" }), keyStroke,
-                                autoActivationCharacters);
-                    } catch (ParseException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-
-                    // ControlContentAssistHelper.createTextContentAssistant(fTextControl, fContentAssistProcessor);
-                }
             }
             return fPackageTextControl;
         }
@@ -313,7 +272,7 @@ public class NewExtensionWizardPage extends WizardPage {
         public Control createControl(Composite composite) {
             Group workingSetGroup = new Group(composite, SWT.NONE);
             workingSetGroup.setFont(composite.getFont());
-            workingSetGroup.setText(NewWizardMessages.NewJavaProjectWizardPageOne_WorkingSets_group);
+            workingSetGroup.setText(YMessages.NewExtensionPage_WorkingSets_group);
             workingSetGroup.setLayout(new GridLayout(1, false));
 
             fWorkingSetBlock.createContent(workingSetGroup);
@@ -347,12 +306,12 @@ public class NewExtensionWizardPage extends WizardPage {
         public LocationGroup() {
             fUseDefaults = new SelectionButtonDialogField(SWT.CHECK);
             fUseDefaults.setDialogFieldListener(this);
-            fUseDefaults.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_LocationGroup_location_desc);
+            fUseDefaults.setLabelText(YMessages.NewExtensionPage_LocationGroup_location_desc);
 
             fLocation = new StringButtonDialogField(this);
             fLocation.setDialogFieldListener(this);
-            fLocation.setLabelText(NewWizardMessages.NewJavaProjectWizardPageOne_LocationGroup_locationLabel_desc);
-            fLocation.setButtonLabel(NewWizardMessages.NewJavaProjectWizardPageOne_LocationGroup_browseButton_desc);
+            fLocation.setLabelText(YMessages.NewExtensionPage_LocationGroup_locationLabel_desc);
+            fLocation.setButtonLabel(YMessages.NewExtensionPage_LocationGroup_browseButton_desc);
 
             fUseDefaults.setSelection(true);
 
@@ -687,7 +646,7 @@ public class NewExtensionWizardPage extends WizardPage {
     }
 
     /**
-     * Validate this page and show appropriate warnings and error NewWizardMessages.
+     * Validate this page and show appropriate warnings and error YMessages.
      */
     private final class Validator implements Observer {
 
@@ -839,9 +798,7 @@ public class NewExtensionWizardPage extends WizardPage {
     private final WorkingSetGroup fWorkingSetGroup;
     private final JavaPackageCompletionProcessor fCurrPackageCompletionProcessor;
 
-    private IProject fCurrProject;
-
-    private URI fCurrProjectLocation;
+    private IJavaProject fCurrProject;
 
     /**
      * Creates a new {@link NewExtensionWizardPage}.
@@ -1198,7 +1155,6 @@ public class NewExtensionWizardPage extends WizardPage {
             }
         } finally {
             monitor.done();
-            fCurrProject = null;
         }
     }
 
@@ -1216,7 +1172,7 @@ public class NewExtensionWizardPage extends WizardPage {
      * goes back to the first page.
      */
     protected void removeProvisonalProject() {
-        if (!fCurrProject.exists()) {
+        if (!fCurrProject.getProject().exists()) {
             fCurrProject = null;
             return;
         }
@@ -1239,14 +1195,14 @@ public class NewExtensionWizardPage extends WizardPage {
     }
 
     private final void doRemoveProject(IProgressMonitor monitor) throws InvocationTargetException {
-        final boolean noProgressMonitor = (fCurrProjectLocation == null); // inside workspace
+        final boolean noProgressMonitor = true; // inside workspace
         if (monitor == null || noProgressMonitor) {
             monitor = new NullProgressMonitor();
         }
         monitor.beginTask(NewWizardMessages.NewJavaProjectWizardPageTwo_operation_remove, 3);
         try {
             try {
-                fCurrProject.delete(true, false, new SubProgressMonitor(monitor, 2));
+                fCurrProject.getProject().delete(true, false, new SubProgressMonitor(monitor, 2));
             } finally {
             }
         } catch (CoreException e) {
@@ -1254,31 +1210,6 @@ public class NewExtensionWizardPage extends WizardPage {
         } finally {
             monitor.done();
             fCurrProject = null;
-        }
-    }
-
-    // TODO compiler compliance null = default workspace - in future use from platform
-    public void configureJavaProject(String newProjectCompliance, IProgressMonitor monitor) throws CoreException,
-            InterruptedException {
-        if (monitor == null) {
-            monitor = new NullProgressMonitor();
-        }
-
-        int nSteps = 6;
-        monitor.beginTask(NewWizardMessages.JavaCapabilityConfigurationPage_op_desc_java, nSteps);
-
-        try {
-            IProject project = fCurrProject.getProject();
-            BuildPathsBlock.addJavaNature(project, new SubProgressMonitor(monitor, 1));
-            // TODO sprawdzić jak działa flush i ustawić default project compliance z platformy hybris
-
-            // List<IClasspathEntry> classPathEntries = Arrays.asList(((IJavaProject) fCurrProject).getRawClasspath());
-            // BuildPathsBlock.flush(classPathEntries, getOutputLocation(), project, newProjectCompliance,
-            // new SubProgressMonitor(monitor, 5));
-        } catch (OperationCanceledException e) {
-            throw new InterruptedException();
-        } finally {
-            monitor.done();
         }
     }
 
@@ -1294,49 +1225,49 @@ public class NewExtensionWizardPage extends WizardPage {
             }
 
             String projectName = getProjectName();
-
-            fCurrProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-            // TODO initially project location will be defaulted to hybris structure, e.g. in custom folder, for now set
-            // in workspace
-            fCurrProjectLocation = null;
-            // getProjectLocationURI();
-
-            URI realLocation = getRealLocation(projectName, fCurrProjectLocation);
+            fCurrProject = createJavaProject(projectName, new SubProgressMonitor(monitor, 2));
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
 
-            try {
-                BuildPathsBlock.createProject(fCurrProject, fCurrProjectLocation, new SubProgressMonitor(monitor, 2));
-            } catch (CoreException e) {
-                if (e.getStatus().getCode() == IResourceStatus.FAILED_READ_METADATA) {
-                    result = new StatusInfo(IStatus.INFO, Messages.format(
-                            NewWizardMessages.NewJavaProjectWizardPageTwo_DeleteCorruptProjectFile_message,
-                            e.getLocalizedMessage()));
-
-                    deleteProjectFile(realLocation);
-                    if (fCurrProject.exists())
-                        fCurrProject.delete(true, null);
-
-                    BuildPathsBlock.createProject(fCurrProject, fCurrProjectLocation, null);
-                } else {
-                    throw e;
-                }
-            }
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-
-            initializeBuildPath(JavaCore.create(fCurrProject), new SubProgressMonitor(monitor, 2));
-            configureJavaProject(null, new SubProgressMonitor(monitor, 3)); // create the Java project to allow the use
-                                                                            // of the
-            // new source folder page
+            initializeBuildPath(fCurrProject, new SubProgressMonitor(monitor, 2));
         } finally {
             monitor.done();
         }
         return result;
+    }
+
+    private IJavaProject createJavaProject(String projectName, IProgressMonitor monitor) throws CoreException {
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        IProject project = root.getProject(projectName);
+        if (!project.exists()) {
+            project.create(monitor);
+        } else {
+            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
+
+        if (!project.isOpen()) {
+            project.open(monitor);
+        }
+
+        if (!project.hasNature(JavaCore.NATURE_ID)) {
+            addNatureToProject(project, JavaCore.NATURE_ID, monitor);
+        }
+
+        IJavaProject jproject = JavaCore.create(project);
+
+        return jproject;
+    }
+
+    private void addNatureToProject(IProject proj, String natureId, IProgressMonitor monitor) throws CoreException {
+        IProjectDescription description = proj.getDescription();
+        String[] prevNatures = description.getNatureIds();
+        String[] newNatures = new String[prevNatures.length + 1];
+        System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
+        newNatures[prevNatures.length] = natureId;
+        description.setNatureIds(newNatures);
+        proj.setDescription(description, monitor);
     }
 
     /**
@@ -1356,7 +1287,6 @@ public class NewExtensionWizardPage extends WizardPage {
 
         try {
             IClasspathEntry[] entries = null;
-            IPath outputLocation = null;
             IProject project = javaProject.getProject();
 
             List<IClasspathEntry> cpEntries = new ArrayList<IClasspathEntry>();
@@ -1377,7 +1307,7 @@ public class NewExtensionWizardPage extends WizardPage {
 
             entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
-            outputLocation = getOutputLocation();
+            IPath outputLocation = getOutputLocation();
             if (outputLocation.segmentCount() > 1) {
                 IFolder folder = root.getFolder(outputLocation);
                 CoreUtility.createDerivedFolder(folder, true, true, new SubProgressMonitor(monitor, 1));
@@ -1388,22 +1318,11 @@ public class NewExtensionWizardPage extends WizardPage {
 
             // TODO sprawdz init()
             // init(javaProject, outputLocation, entries, false);
+            javaProject.setRawClasspath(cpEntries.toArray(new IClasspathEntry[cpEntries.size()]), outputLocation,
+                    monitor);
         } finally {
             monitor.done();
         }
-    }
-
-    private static URI getRealLocation(String projectName, URI location) {
-        if (location == null) { // inside workspace
-            try {
-                URI rootLocation = ResourcesPlugin.getWorkspace().getRoot().getLocationURI();
-                location = new URI(rootLocation.getScheme(), null, Path.fromPortableString(rootLocation.getPath())
-                        .append(projectName).toString(), null);
-            } catch (URISyntaxException e) {
-                Assert.isTrue(false, "Can't happen"); //$NON-NLS-1$
-            }
-        }
-        return location;
     }
 
     private void deleteProjectFile(URI projectLocation) throws CoreException {
@@ -1417,6 +1336,6 @@ public class NewExtensionWizardPage extends WizardPage {
     }
 
     IJavaProject getJavaProject() {
-        return (IJavaProject) fCurrProject;
+        return fCurrProject;
     }
 }

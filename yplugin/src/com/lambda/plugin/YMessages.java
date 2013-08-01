@@ -246,6 +246,11 @@ public final class YMessages extends NLS {
     public static String TestSearchEngine_message_searching;
 
     // Extension Wizard
-    NewExtensionPage_WorkingSets_group=Working sets
+    public static String NewExtensionPage_WorkingSets_group;
+    public static String NewExtensionPage_LocationGroup_location_desc;
+    public static String NewExtensionPage_LocationGroup_locationLabel_desc;
+    public static String NewExtensionPage_LocationGroup_browseButton_desc;
+    public static String NewExtensionPage_NamePackageGroup_label_text;
+    public static String NewExtensionPage_NamePackageGroup_package_label;
 
 }
