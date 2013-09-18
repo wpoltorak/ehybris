@@ -9,6 +9,7 @@ public final class YMessages extends NLS {
 
     private static final String BUNDLE_NAME = "com.lambda.plugin.YMessages";//$NON-NLS-1$
     private static final String IMPEX_EDITOR_ACTIONS_BUNDLE_NAME = "com.lambda.plugin.impex.editor.actions.ImpexActionMessages";
+
     private static ResourceBundle impexEditorActionsBundle = ResourceBundle.getBundle(IMPEX_EDITOR_ACTIONS_BUNDLE_NAME);
 
     static {
@@ -57,7 +58,6 @@ public final class YMessages extends NLS {
     public static String JUnitLaunchConfigurationTab_tab_label;
     public static String FunctestLaunchConfigurationTab_folderdialog_title;
     public static String FunctestLaunchConfigurationTab_folderdialog_message;
-
     public static String ExpandAllAction_text;
     public static String ExpandAllAction_tooltip;
     public static String FunctestModel_could_not_read;
@@ -253,4 +253,24 @@ public final class YMessages extends NLS {
     public static String NewExtensionPage_NamePackageGroup_label_text;
     public static String NewExtensionPage_NamePackageGroup_package_label;
 
+    // Platform preference page
+    public static String PlatformPreferencePage_Title;
+    public static String PlatformPreferencePage_Description;
+    public static String PlatformPreferencePage_ErrorNoDefaultPlatform;
+    public static String PlatformPreferencePage_ErrorPlatformNotExists;
+    public static String PlatformPreferencePage_ErrorInvalidPlatformDirectory;
+    public static String PlatformPreferencePage_Column_Location;
+    public static String PlatformPreferencePage_Column_Name;
+    public static String PlatformPreferencePage_Column_Description;
+    public static String PlatformPreferencePage_Column_Version;
+    public static String PlatformPreferencePage_Button_Add;
+    public static String PlatformPreferencePage_Button_Edit;
+    public static String PlatformPreferencePage_Button_Remove;
+
+    // Platform definitions
+    public static String PlatformDefinitions_invalid_nameAndPath;
+    public static String PlatformDefinitions_invalid_name;
+    public static String PlatformDefinitions_invalid_path;
+    public static String PlatformDefinitions_invalid_id;
+    public static String PlatformDefinitions_invalid_idNameAndPath;
 }

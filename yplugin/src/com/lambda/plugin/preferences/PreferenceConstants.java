@@ -10,6 +10,12 @@ import com.lambda.plugin.YPlugin;
  */
 public class PreferenceConstants {
 
+    private static final String PREFIX = YPlugin.PLUGIN_ID + ".";
+
+    // Platform preferences
+    public static final String PLATFORMS_PREFERENCE_PAGE = PREFIX + "platforms_preference_page_context"; //$NON-NLS-1$
+    public static final String PLATFORMS_XML = PREFIX + "platforms_xml";
+
     // Impex Editor Preferences
     /**
      * Preference key suffix for bold text style preference keys.
@@ -25,72 +31,77 @@ public class PreferenceConstants {
     /**
      * Mark occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_occurrences";
+    public static final String IMPEX_EDITOR_MARK_OCCURRENCES = PREFIX + "impex_mark_occurrences";
 
     /**
      * Mark macro occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_MACRO_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_macro_occurrences";
+    public static final String IMPEX_EDITOR_MARK_MACRO_OCCURRENCES = YPlugin.PLUGIN_ID
+            + ".impex_mark_macro_occurrences";
 
     /**
      * Mark table name occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_TABLE_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_table_occurrences";
+    public static final String IMPEX_EDITOR_MARK_TABLE_OCCURRENCES = YPlugin.PLUGIN_ID
+            + ".impex_mark_table_occurrences";
 
     /**
      * Mark column name occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_COLUMN_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_column_occurrences";
+    public static final String IMPEX_EDITOR_MARK_COLUMN_OCCURRENCES = YPlugin.PLUGIN_ID
+            + ".impex_mark_column_occurrences";
 
     /**
      * Mark column name occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = YPlugin.PLUGIN_ID + ".impex_mark_value_occurrences";
+    public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = YPlugin.PLUGIN_ID
+            + ".impex_mark_value_occurrences";
 
     //
 
     public static final String YUNIT_PERSIST_FUNCTEST_RESULTS = "persistFunctestResults";
 
-    public static final String YUNIT_DEFAULT_JUNIT_VERSION = YPlugin.PLUGIN_ID + ".default_junit_version"; //$NON-NLS-1$ 
+    public static final String YUNIT_DEFAULT_JUNIT_VERSION = PREFIX + "default_junit_version"; //$NON-NLS-1$ 
     /**
      * Boolean preference controlling whether the failure stack should be filtered.
      */
-    public static final String YUNIT_DO_FILTER_STACK = YPlugin.PLUGIN_ID + ".do_filter_stack"; //$NON-NLS-1$
+    public static final String YUNIT_DO_FILTER_STACK = PREFIX + "do_filter_stack"; //$NON-NLS-1$
 
     /**
      * Boolean preference controlling whether the YUnit view should be shown on errors only.
      */
-    public static final String YUNIT_SHOW_ON_ERROR_ONLY = YPlugin.PLUGIN_ID + ".show_on_error"; //$NON-NLS-1$
+    public static final String YUNIT_SHOW_ON_ERROR_ONLY = PREFIX + "show_on_error"; //$NON-NLS-1$
 
     /**
      * Boolean preference controlling whether the YUnit should have assertions enabled.
      */
-    public static final String YUNIT_ENABLE_ASSERTIONS = YPlugin.PLUGIN_ID + ".enable_assertions"; //$NON-NLS-1$
+    public static final String YUNIT_ENABLE_ASSERTIONS = PREFIX + "enable_assertions"; //$NON-NLS-1$
 
     /**
      * List of active stack filters. A String containing a comma separated list of fully qualified type names/patterns.
      */
-    public static final String YUNIT_PREF_ACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".active_stack_filters"; //$NON-NLS-1$
+    public static final String YUNIT_PREF_ACTIVE_STACK_FILTERS_LIST = PREFIX + "active_stack_filters"; //$NON-NLS-1$
 
     /**
-     * List of inactive stack filters. A String containing a comma separated list of fully qualified type names/patterns.
+     * List of inactive stack filters. A String containing a comma separated list of fully qualified type
+     * names/patterns.
      */
-    public static final String YUNIT_PREF_INACTIVE_STACK_FILTERS_LIST = YPlugin.PLUGIN_ID + ".inactive_stack_filters"; //$NON-NLS-1$  
+    public static final String YUNIT_PREF_INACTIVE_STACK_FILTERS_LIST = PREFIX + "inactive_stack_filters"; //$NON-NLS-1$  
 
     /**
      * Maximum number of remembered test runs.
      */
-    public static final String YUNIT_MAX_TEST_RUNS = YPlugin.PLUGIN_ID + ".max_test_runs"; //$NON-NLS-1$
+    public static final String YUNIT_MAX_TEST_RUNS = PREFIX + "max_test_runs"; //$NON-NLS-1$
 
     /**
      * Javadoc location for JUnit 3
      */
-    public static final String YUNIT_JUNIT3_JAVADOC = YPlugin.PLUGIN_ID + ".junit3.javadoclocation"; //$NON-NLS-1$
+    public static final String YUNIT_JUNIT3_JAVADOC = PREFIX + "junit3.javadoclocation"; //$NON-NLS-1$
 
     /**
      * Javadoc location for JUnit 4
      */
-    public static final String YUNIT_JUNIT4_JAVADOC = YPlugin.PLUGIN_ID + ".junit4.javadoclocation"; //$NON-NLS-1$
+    public static final String YUNIT_JUNIT4_JAVADOC = PREFIX + "junit4.javadoclocation"; //$NON-NLS-1$
 
     private static final String[] fgDefaultFilterPatterns = new String[] { "com.kizoom.functest.avantgo.*", //$NON-NLS-1$
             "com.kizoom.functest.chtml.*", //$NON-NLS-1$

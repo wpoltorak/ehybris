@@ -39,7 +39,6 @@ import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
-import org.eclipse.jdt.internal.ui.dialogs.StatusInfo;
 import org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart;
 import org.eclipse.jdt.internal.ui.preferences.CompliancePreferencePage;
 import org.eclipse.jdt.internal.ui.preferences.NewJavaProjectPreferencePage;
@@ -90,6 +89,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetConfigurationBlock;
 
 import com.lambda.plugin.YMessages;
+import com.lambda.plugin.ui.YUIStatus;
 import com.lambda.plugin.utils.StringUtils;
 
 public class NewExtensionWizardPage extends WizardPage {
@@ -1214,7 +1214,7 @@ public class NewExtensionWizardPage extends WizardPage {
     }
 
     private final IStatus updateProject(IProgressMonitor monitor) throws CoreException, InterruptedException {
-        IStatus result = StatusInfo.OK_STATUS;
+        IStatus result = YUIStatus.OK_STATUS;
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }

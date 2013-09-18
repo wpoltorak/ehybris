@@ -31,6 +31,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.PackageAdmin;
 
+import com.lambda.plugin.core.IPlatformInstallation;
+import com.lambda.plugin.core.PlatformContainer;
 import com.lambda.plugin.nature.IYNatureManager;
 import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.template.ITemplateManager;
@@ -56,6 +58,7 @@ public class YPlugin extends AbstractUIPlugin {
 
     // The shared instance
     private static YPlugin plugin;
+    private static Object fPlatformTypeLock = new Object();
 
     // private ImageDescriptorRegistry imageDescriptorRegistry;
 
@@ -66,6 +69,7 @@ public class YPlugin extends AbstractUIPlugin {
     private IPreferenceStore fCombinedPreferenceStore;
 
     private IYNatureManager natureManager;
+    private static PlatformContainer platformContainer = new PlatformContainer();
 
     /**
      * The constructor
@@ -96,6 +100,7 @@ public class YPlugin extends AbstractUIPlugin {
         try {
             functestModel.stop();
             ((YUnitManager) getFunctestManager()).dispose();
+            getPlatformContainer().dispose();
             plugin = null;
         } finally {
             super.stop(context);
@@ -112,11 +117,7 @@ public class YPlugin extends AbstractUIPlugin {
     }
 
     public static IWorkbenchPage getActivePage() {
-        return getDefault().internalGetActivePage();
-    }
-
-    private IWorkbenchPage internalGetActivePage() {
-        final IWorkbenchWindow window = getWorkbench().getActiveWorkbenchWindow();
+        final IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
         if (window == null) {
             return null;
         }
@@ -303,4 +304,35 @@ public class YPlugin extends AbstractUIPlugin {
         return null;
     }
 
+    public static IPlatformInstallation[] getPlatformInstallations() {
+        initplatformInstallations();
+        List<IPlatformInstallation> platformInstallatons = platformContainer.getPlatforms();
+        return platformInstallatons.toArray(new IPlatformInstallation[platformInstallatons.size()]);
+    }
+
+    private static void initplatformInstallations() {
+        synchronized (fPlatformTypeLock) {
+            platformContainer.initializePlatforms();
+        }
+    }
+
+    @Override
+    public IPreferenceStore getPreferenceStore() {
+        return super.getPreferenceStore();
+    }
+
+    public static IPlatformInstallation getDefaultPlatform() {
+        initplatformInstallations();
+        return platformContainer.getDefaultPlatform();
+        // try {
+        // InstanceScope.INSTANCE.getNode(YPlugin.PLUGIN_ID).flush();
+        // } catch (BackingStoreException e) {
+        // logError(e);
+        // }
+        // return null;
+    }
+
+    public static PlatformContainer getPlatformContainer() {
+        return platformContainer;
+    }
 }
