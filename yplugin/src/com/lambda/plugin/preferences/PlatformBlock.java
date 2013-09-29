@@ -127,7 +127,7 @@ public class PlatformBlock implements ISelectionProvider {
                 case 1:
                     return vm.getVersion();
                 case 2:
-                    return vm.getInstallLocation().getAbsolutePath();
+                    return vm.getRootLocation().toOSString();
                 case 3:
                     return vm.getDescription();
 
@@ -400,8 +400,7 @@ public class PlatformBlock implements ISelectionProvider {
                 if ((e1 instanceof IPlatformInstallation) && (e2 instanceof IPlatformInstallation)) {
                     IPlatformInstallation left = (IPlatformInstallation) e1;
                     IPlatformInstallation right = (IPlatformInstallation) e2;
-                    return left.getInstallLocation().getAbsolutePath()
-                            .compareToIgnoreCase(right.getInstallLocation().getAbsolutePath());
+                    return left.getRootLocation().toOSString().compareTo(right.getRootLocation().toOSString());
                 }
                 return super.compare(viewer, e1, e2);
             }
@@ -494,7 +493,8 @@ public class PlatformBlock implements ISelectionProvider {
         if (path == null) {
             return;
         }
-        IPlatformInstallation platform = YPlugin.getPlatformContainer().verifyPlatformLocation(new File(path));
+        IPlatformInstallation platform = YPlugin.getDefault().getPlatformContainer()
+                .verifyPlatformLocation(new File(path));
 
         if (platform == null) {
             MessageDialog.openError(control.getShell(), YMessages.PlatformPreferencePage_Title,
@@ -522,7 +522,8 @@ public class PlatformBlock implements ISelectionProvider {
             return;
         }
 
-        IPlatformInstallation newPlatform = YPlugin.getPlatformContainer().verifyPlatformLocation(new File(path));
+        IPlatformInstallation newPlatform = YPlugin.getDefault().getPlatformContainer()
+                .verifyPlatformLocation(new File(path));
         if (newPlatform == null) {
             MessageDialog.openError(control.getShell(), YMessages.PlatformPreferencePage_Title,
                     YMessages.PlatformPreferencePage_ErrorInvalidPlatformDirectory);
@@ -678,7 +679,6 @@ public class PlatformBlock implements ISelectionProvider {
      */
     protected void fillWithWorkspacePlatforms() {
         // fill with JREs
-        setPlatforms(YPlugin.getPlatformInstallations());
+        setPlatforms(YPlugin.getDefault().getPlatformInstallations());
     }
-
 }

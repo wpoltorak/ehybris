@@ -3,7 +3,7 @@
 <plugin>
    <extension
          id="com.lambda.ynature"
-         name="Hybris Nature"
+         name="eCommerce Nature"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
@@ -15,7 +15,7 @@
          point="org.eclipse.ui.importWizards">
       <category
             id="com.lambda.plugin.importWizard"
-            name="Hybris">
+            name="eCommerce">
       </category>
    </extension>
    <extension
@@ -23,7 +23,7 @@
          point="org.eclipse.ui.views">
       <category
             id="com.lambda.plugin"
-            name="Hybris">
+            name="eCommerce">
       </category>
       <view
             allowMultiple="false"
@@ -45,7 +45,7 @@
                class="com.lambda.plugin.actions.YActionsMenu"
                icon="icons/full/kizoom.png"
                id="com.lambda.plugin.project.menu"
-               label="&amp;Hybris"
+               label="e&amp;Commerce"
                menubarPath="additions"
                style="pulldown">
          </action>
@@ -66,7 +66,7 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="com.lambda.plugin.wizard"
-            name="Hybris">
+            name="eCommerce">
       </category>
       <wizard
             category="com.lambda.plugin.wizard"
@@ -86,10 +86,10 @@
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.hybris.NewExtensionWizard"
-            name="Hybris Extension"
+            name="eCommerce Extension"
             project="true">
          <description>
-            Create Hybris module
+            Create eCommerce module
          </description>
       </wizard>
       <wizard
@@ -98,10 +98,10 @@
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.hybris.NewModuleWizard"
-            name="Hybris Module"
+            name="eCommerce Module"
             project="true">
          <description>
-            Create Hybris module
+            Create eCommerce module
          </description>
       </wizard>
       <wizard
@@ -155,7 +155,7 @@
       <page
             class="com.lambda.plugin.preferences.YPreferencePage"
             id="com.lambda.plugin.preferences.YPreferencePage"
-            name="Hybris">
+            name="eCommerce">
       </page>
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
@@ -190,7 +190,7 @@
    </extension>
    <extension
          id="com.lambda.plugin.preferences"
-         name="Hybris Preferences"
+         name="eCommerce Preferences"
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="com.lambda.plugin.preferences.PreferenceInitializer">
@@ -442,8 +442,8 @@
             locationURI="menu:org.eclipse.ui.main.menu">
         	<menu
                id="com.lambda.plugin.menu"
-               label="Hybris"
-               tooltip="Hybris">
+               label="eCommerce"
+               tooltip="eCommerce">
          	</menu>
       	 </menuContribution>
          <menuContribution

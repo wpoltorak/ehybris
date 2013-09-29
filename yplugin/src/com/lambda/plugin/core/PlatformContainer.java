@@ -4,11 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,24 +16,24 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.osgi.util.NLS;
-import org.osgi.service.prefs.BackingStoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.lambda.plugin.YMessages;
@@ -55,8 +52,10 @@ public class PlatformContainer {
     private static final String TAG_PLATFORM_SETTINGS = "platformSettings";
     private List<IPlatformInstallation> platforms;
     private IPlatformInstallation defaultPlatform;
+    private PropertiesLoader propertiesLoader;
 
     public PlatformContainer() {
+        setPropertiesLoader(new PropertiesLoader());
     }
 
     public List<IPlatformInstallation> getPlatforms() {
@@ -80,23 +79,24 @@ public class PlatformContainer {
                 return;
             }
 
+            ByteArrayInputStream inputStream = null;
+            InputStream stream = null;
             try {
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(xml.getBytes("UTF8")); //$NON-NLS-1$
-                // Wrapper the stream for efficient parsing
-                InputStream stream = new BufferedInputStream(inputStream);
-
                 Element config = null;
                 try {
+                    inputStream = new ByteArrayInputStream(xml.getBytes("UTF8")); //$NON-NLS-1$
+                    // Wrapper the stream for efficient parsing
+                    stream = new BufferedInputStream(inputStream);
                     DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                     parser.setErrorHandler(new DefaultHandler());
                     config = parser.parse(new InputSource(stream)).getDocumentElement();
-                } catch (SAXException e) {
-                    throw new IOException("Invalid format");
-                } catch (ParserConfigurationException e) {
-                    stream.close();
-                    throw new IOException("Invalid format");
                 } finally {
-                    stream.close();
+                    if (stream != null) {
+                        stream.close();
+                    }
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
                 }
 
                 if (!config.getNodeName().equalsIgnoreCase(TAG_PLATFORM_SETTINGS)) { //$NON-NLS-1$
@@ -143,13 +143,9 @@ public class PlatformContainer {
                                     continue;
                                 }
 
+                                IPlatformInstallation platform = createPlatform(name, longid, description, version,
+                                        installPath);
                                 // Create a VMStandin for the node and set its 'name' & 'installLocation' attributes
-                                StandardPlatformType platform = new StandardPlatformType(longid);
-                                File installLocation = new File(installPath);
-                                platform.setName(name);
-                                platform.setDescription(description);
-                                platform.setVersion(version);
-                                platform.setInstallLocation(installLocation);
                                 platforms.add(platform);
 
                                 if (longid == defaultPlatformId) {
@@ -175,11 +171,51 @@ public class PlatformContainer {
                 if (this.defaultPlatform == null && !platforms.isEmpty()) {
                     this.defaultPlatform = platforms.get(0);
                 }
-
-            } catch (IOException ioe) {
-                YPlugin.logError(ioe);
+            } catch (Exception e) {
+                YPlugin.logError(e);
             }
         }
+    }
+
+    StandardPlatformType createPlatform(String name, long longid, String description, String version, String installPath) {
+        StandardPlatformType platform = new StandardPlatformType(longid);
+        platform.setName(name);
+        platform.setDescription(description);
+        platform.setVersion(version);
+        Path root = new Path(installPath);
+        platform.setRootLocation(root);
+        platform.setCustomExtensionLocation(customExtensionLocation(root));
+        IPath platformLocation = platformLocation(root);
+        platform.setPlatformLocation(platformLocation);
+        platform.setTempLocation(tempLocation(root));
+        platform.setDataLocation(dataLocation(root));
+        platform.setConfigLocation(configLocation(root));
+
+        // TODO set up properties page
+        Properties properties = new Properties();
+        properties.setProperty("platformhome", platformLocation.toOSString());
+        platform.setProperties(loadEnvProperties(properties, platformLocation));
+        return platform;
+    }
+
+    private IPath platformLocation(IPath root) {
+        return root.append("bin").append("platform");
+    }
+
+    private IPath customExtensionLocation(IPath root) {
+        return root.append("bin").append("custom");
+    }
+
+    private IPath tempLocation(IPath root) {
+        return root.append("temp");
+    }
+
+    private IPath configLocation(IPath root) {
+        return root.append("config");
+    }
+
+    private IPath dataLocation(IPath root) {
+        return root.append("data");
     }
 
     private void storePlatforms() {
@@ -208,7 +244,7 @@ public class PlatformContainer {
             platformTag.setAttribute(ATTRIB_ID, "" + platform.getId()); //$NON-NLS-1$
             platformTag.setAttribute(ATTRIB_NAME, platform.getName());
             platformTag.setAttribute(ATTRIB_VERSION, platform.getVersion());
-            platformTag.setAttribute(ATTRIB_PATH, platform.getInstallLocation().getAbsolutePath());
+            platformTag.setAttribute(ATTRIB_PATH, platform.getRootLocation().toOSString());
             platformTag.setAttribute(ATTRIB_DESCRIPTION, platform.getDescription());
             config.appendChild(platformTag);
         }
@@ -237,15 +273,7 @@ public class PlatformContainer {
                     s.close();
                 }
             }
-        } catch (BackingStoreException e) {
-            YPlugin.logError("Failed to store platforms xml preference: " + PreferenceConstants.PLATFORMS_XML, e);
-        } catch (TransformerConfigurationException e) {
-            YPlugin.logError("Failed to store platforms xml preference: " + PreferenceConstants.PLATFORMS_XML, e);
-        } catch (TransformerException e) {
-            YPlugin.logError("Failed to store platforms xml preference: " + PreferenceConstants.PLATFORMS_XML, e);
-        } catch (UnsupportedEncodingException e) {
-            YPlugin.logError("Failed to store platforms xml preference: " + PreferenceConstants.PLATFORMS_XML, e);
-        } catch (IOException e) {
+        } catch (Exception e) {
             YPlugin.logError("Failed to store platforms xml preference: " + PreferenceConstants.PLATFORMS_XML, e);
         }
     }
@@ -264,7 +292,7 @@ public class PlatformContainer {
         }
 
         // TODO wojtek walidacja zawartości foldera bin/platform i/lub load nowego projektu do worklspacea
-        Properties properties = loadBuildProperties(installLocation);
+        Properties properties = loadBuildNumber(platformLocation(new Path(installLocation.getAbsolutePath())));
         if (properties == null) {
             return null;
         }
@@ -276,40 +304,59 @@ public class PlatformContainer {
             return null;
         }
 
-        StandardPlatformType platform = new StandardPlatformType(System.currentTimeMillis());
-        platform.setInstallLocation(installLocation);
-        platform.setName(name);
-        platform.setVersion(version);
-        platform.setDescription(description);
+        StandardPlatformType platform = createPlatform(name, System.currentTimeMillis(), description, version,
+                installLocation.getAbsolutePath());
         return platform;
     }
 
-    private Properties loadBuildProperties(File installLocation) {
-        try {
-            File platformBuildProperties = new File(installLocation, "bin" + File.separator + TAG_PLATFORM
-                    + File.separator + "build.number");
-            Properties properties = new Properties();
-            FileInputStream platformBuildPropertiesInputStream = null;
-            try {
-                platformBuildPropertiesInputStream = new FileInputStream(platformBuildProperties);
-                properties.load(platformBuildPropertiesInputStream);
-            } finally {
-                if (platformBuildPropertiesInputStream != null) {
-                    platformBuildPropertiesInputStream.close();
-                }
-            }
-            return properties;
-        } catch (FileNotFoundException e) {
-            YPlugin.logError(e);
-            return null;
-        } catch (IOException e) {
-            YPlugin.logError(e);
-            return null;
-        }
+    private Properties loadBuildNumber(IPath platformLocation) {
+        IPath location = platformLocation.append("build.number");
+        return propertiesLoader.loadProperties(null, location);
+    }
+
+    public Properties loadExtgenProjectProperties(IPlatformInstallation platform) {
+        IPath platformLocation = platform.getPlatformLocation();
+        IPath extgenDir = platformLocation.append("extgen");
+        // Project project = getAntProject(extgenDir.append("build.xml"));
+        // Properties buildFileProperties = loadPropertiesFromBuildFile(project);
+        Properties projectProperties = propertiesLoader.loadProperties(platform.getProperties(),
+                extgenDir.append("project.properties"));
+        // Object p2 = projectProperties.get("extgen.template.path.yempty");
+        return projectProperties;
+    }
+
+    // private Properties loadPropertiesFromBuildFile(Project project) {
+    // Properties properties = new Properties();
+    // Object p1 = PropertyHelper.getProperty(project, "extgen.template.path.yempty");
+    // Object p2 = project.getProperty("extgen.template.path.yempty");
+    // properties.putAll(project.getProperties());
+    // return properties;
+    // }
+
+    public Project loadExtgenProject(IPlatformInstallation platform) {
+        return getAntProject(platform.getPlatformLocation().append("extgen").append("build.xml"));
+    }
+
+    public Properties loadExtgenProperties(IPlatformInstallation platform) {
+        IPath location = platform.getPlatformLocation().append("extgen").append("templates").append("yempty")
+                .append("extgen.properties");
+        return propertiesLoader.loadProperties(platform.getProperties(), location);
+    }
+
+    private Properties loadEnvProperties(Properties properties, IPath platformLocation) {
+        IPath location = platformLocation.append("env.properties");
+        return propertiesLoader.loadProperties(properties, location);
+    }
+
+    private Project getAntProject(IPath buildFile) {
+        Project project = new Project();
+        project.init();
+        ProjectHelper.configureProject(project, buildFile.toFile());
+        return project;
     }
 
     public boolean verifyPlatform(IPlatformInstallation platform) {
-        return platform != null && verifyPlatformLocation(platform.getInstallLocation()) != null;
+        return platform != null && verifyPlatformLocation(platform.getRootLocation().toFile()) != null;
     }
 
     public boolean updatePlatformConfiguration(IPlatformInstallation defaultPlatform, IPlatformInstallation[] platforms) {
@@ -325,5 +372,9 @@ public class PlatformContainer {
 
     public void dispose() {
         storePlatforms();
+    }
+
+    void setPropertiesLoader(PropertiesLoader propertiesLoader) {
+        this.propertiesLoader = propertiesLoader;
     }
 }

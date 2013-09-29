@@ -1,7 +1,9 @@
 package com.lambda.plugin.core;
 
 import java.io.File;
+import java.util.Properties;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 
 public interface IPlatformInstallation {
@@ -37,18 +39,32 @@ public interface IPlatformInstallation {
     void setVersion(String version);
 
     /**
-     * Returns the root directory of the install location of this Platform.
+     * Returns absolute path of the root directory of the install location of this Platform.
      * 
-     * @return the root directory of this Platform installation. May return <code>null</code>.
+     * 
+     * @return the root directory of this Platform installation.
      */
-    File getInstallLocation();
+    IPath getRootLocation();
+
+    IPath getTempLocation();
+
+    IPath getDataLocation();
+
+    IPath getConfigLocation();
+
+    /**
+     * Returns absolute path of the custom extensions directory of this Platform.
+     * 
+     * @return the custom extensions directory of this Platform.
+     */
+    IPath getCustomExtensionLocation();
 
     /**
      * Sets the root directory of the install location of this Platform.
      * 
      * @param installLocation the root directory of this Platform installation
      */
-    void setInstallLocation(File installLocation);
+    void setRootLocation(IPath location);
 
     /**
      * Validates the given location of a Platform installation.
@@ -60,5 +76,9 @@ public interface IPlatformInstallation {
      * @return a status object describing whether the install location is valid
      */
     IStatus validateInstallLocation(File installLocation);
+
+    IPath getPlatformLocation();
+
+    Properties getProperties();
 
 }

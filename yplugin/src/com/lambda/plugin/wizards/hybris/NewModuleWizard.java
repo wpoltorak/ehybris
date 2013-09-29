@@ -36,6 +36,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YImages;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
@@ -100,8 +101,8 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
     public void addPages() {
         if (fFirstPage == null) {
             fFirstPage = new NewJavaProjectWizardPageOne();
-            fFirstPage.setTitle("Create a Hybris Module");
-            fFirstPage.setDescription("Create a Hybris Module in the workspace or in an external location.");
+            fFirstPage.setTitle(YMessages.NewModulePage_title);
+            fFirstPage.setDescription(YMessages.NewModulePage_description);
         }
         addPage(fFirstPage);
 
@@ -131,7 +132,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
                 YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
             }
         } catch (final CoreException e) {
-            ExceptionHandler.handle(e, getShell(), "Error", "Couldn't set Hybris Module Nature");
+            ExceptionHandler.handle(e, getShell(), "Error", "Couldn't set eCommerce Module Nature");
         }
 
     }

@@ -245,15 +245,52 @@ public final class YMessages extends NLS {
     public static String TestSelectionElementsLabelProvider_testElementName_projectName;
     public static String TestSearchEngine_message_searching;
 
-    // Extension Wizard
-    public static String NewExtensionPage_WorkingSets_group;
+    // eCommerce Extension wizard
+    public static String NewExtensionProject_title;
     public static String NewExtensionPage_LocationGroup_location_desc;
     public static String NewExtensionPage_LocationGroup_locationLabel_desc;
     public static String NewExtensionPage_LocationGroup_browseButton_desc;
+    public static String NewExtensionPage_TemplateGroup_title;
+    public static String NewExtensionPage_TemplateGroup_template_desc;
+    public static String NewExtensionPage_TemplateGroup_templateLabel_desc;
     public static String NewExtensionPage_NamePackageGroup_label_text;
     public static String NewExtensionPage_NamePackageGroup_package_label;
+    public static String NewExtensionPage_title;
+    public static String NewExtensionPage_description;
+    public static String NewExtensionPage_NoPlatform_link;
+    public static String NewExtensionPage_DetectGroup_message;
+    public static String NewExtensionPage_operation_create;
+    public static String NewExtensionPage_error_remove_title;
+    public static String NewExtensionPage_error_remove_message;
+    public static String NewExtensionPage_operation_remove;
+    public static String NewExtensionPage_operation_initialize;
+    public static String NewExtensionPage_operation_copying_template;
+    public static String NewExtensionPage_error_EnterPackageName;
+    public static String NewExtensionPage_error_InvalidPackageName;
+    public static String NewExtensionPage_error_IsOutputFolder;
+    public static String NewExtensionPage_error_PackageExists;
+    public static String NewExtensionPage_error_PackageExistsDifferentCase;
+    public static String NewExtensionPage_error_EnterName;
+    public static String NewExtensionPage_error_PackageNotShown;
+    public static String NewExtensionPage_error_PackageNameFiltered;
+    public static String NewExtensionPage_warning_DiscouragedPackageName;
+    public static String NewExtensionPage_Message_enterProjectName;
+    public static String NewExtensionPage_Message_projectAlreadyExists;
+    public static String NewExtensionPage_Message_invalidProjectNameForWorkspaceRoot;
+    public static String NewExtensionPage_Message_enterLocation;
+    public static String NewExtensionPage_Message_invalidDirectory;
+    public static String NewExtensionPage_Message_cannotCreateAtExternalLocation;
+    public static String NewExtensionPage_Message_defaultTemplateDoesNotExist;
+    public static String NewExtensionPage_Message_noTemplates;
 
-    // Platform preference page
+    public static String NewExtensionPage_directory_message;
+
+    // eCommerce Module wizard
+    public static String NewModulePage_title;
+    public static String NewModulePage_description;
+    public static String NewModuleProject_title;
+
+    // eCommerce Platform preference page
     public static String PlatformPreferencePage_Title;
     public static String PlatformPreferencePage_Description;
     public static String PlatformPreferencePage_ErrorNoDefaultPlatform;

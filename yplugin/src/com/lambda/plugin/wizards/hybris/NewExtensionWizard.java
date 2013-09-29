@@ -3,7 +3,6 @@ package com.lambda.plugin.wizards.hybris;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -32,32 +31,27 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
-import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YImages;
-import com.lambda.plugin.YNature;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
 public class NewExtensionWizard extends Wizard implements IExecutableExtension, INewWizard {
 
     private static final String FUNCTEST_TEMPLATE_NAME = "functest";
-    private NewExtensionWizardPage fFirstPage;
+    private final NewExtensionWizardPage wizardPage;
 
     private IConfigurationElement fConfigElement;
     private IWorkbench fWorkbench;
     private IStructuredSelection fSelection;
 
     public NewExtensionWizard() {
-        this(null);
-    }
-
-    public NewExtensionWizard(final NewExtensionWizardPage pageOne) {
         setDefaultPageImageDescriptor(YImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
         setDialogSettings(YPlugin.getDefault().getDialogSettings());
-        setWindowTitle("New Functest Project");
+        setWindowTitle(YMessages.NewExtensionProject_title);
         setNeedsProgressMonitor(true);
 
-        fFirstPage = pageOne;
+        wizardPage = new NewExtensionWizardPage();
     }
 
     protected void openResource(final IFile resource) {
@@ -94,14 +88,7 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
      */
     @Override
     public void addPages() {
-        if (fFirstPage == null) {
-            fFirstPage = new NewExtensionWizardPage();
-            fFirstPage.setTitle("Create a Hybris Module");
-            fFirstPage.setDescription("Create a Hybris Module.");
-        }
-        addPage(fFirstPage);
-
-        fFirstPage.init(getSelection(), YPlugin.getActivePart());
+        addPage(wizardPage);
     }
 
     /*
@@ -110,20 +97,7 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
      * @see org.eclipse.jdt.internal.ui.wizards.NewElementWizard#finishPage(org.eclipse .core.runtime.IProgressMonitor)
      */
     protected void finishPage(final IProgressMonitor monitor) throws InterruptedException, CoreException {
-        fFirstPage.performFinish(monitor); // use the full progress monitor
-        try {
-            final IJavaProject javaProject = getCreatedElement();
-            if (javaProject != null) {
-                final IProject project = javaProject.getProject();
-                YPlugin.getDefault()
-                        .getTemplateManager()
-                        .createTemplateFiles(YPlugin.getDefault().getBundle(), FUNCTEST_TEMPLATE_NAME, project, monitor);
-                YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
-            }
-        } catch (final CoreException e) {
-            ExceptionHandler.handle(e, getShell(), "Error", "Couldn't set Hybris Module Nature");
-        }
-
+        wizardPage.performFinish(monitor); // use the full progress monitor
     }
 
     /*
@@ -137,13 +111,13 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
         if (res) {
             final IJavaProject newElement = getCreatedElement();
 
-            final IWorkingSet[] workingSets = fFirstPage.getWorkingSets();
+            final IWorkingSet[] workingSets = wizardPage.getWorkingSets();
             if (workingSets.length > 0) {
                 PlatformUI.getWorkbench().getWorkingSetManager().addToWorkingSets(newElement, workingSets);
             }
 
             BasicNewProjectResourceWizard.updatePerspective(fConfigElement);
-            selectAndReveal(fFirstPage.getJavaProject().getProject());
+            selectAndReveal(wizardPage.getJavaProject().getProject());
 
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
@@ -217,7 +191,7 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
      */
     @Override
     public boolean performCancel() {
-        fFirstPage.performCancel();
+        wizardPage.performCancel();
         return super.performCancel();
     }
 
@@ -227,7 +201,7 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
      * @see org.eclipse.jdt.internal.ui.wizards.NewElementWizard#getCreatedElement()
      */
     public IJavaProject getCreatedElement() {
-        return fFirstPage.getJavaProject();
+        return wizardPage.getJavaProject();
     }
 
     public void init(final IWorkbench workbench, final IStructuredSelection currentSelection) {

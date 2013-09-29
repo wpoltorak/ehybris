@@ -50,7 +50,7 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
      * Find & verify the default platform
      */
     private void initDefaultPlatform() {
-        verifyDefaultPlatform(YPlugin.getDefaultPlatform());
+        verifyDefaultPlatform(YPlugin.getDefault().getDefaultPlatform());
     }
 
     /*
@@ -116,7 +116,8 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
             public void run() {
                 IPlatformInstallation defaultPlatform = getCurrentDefaultPlatform();
                 IPlatformInstallation[] platforms = platformBlock.getPlatforms();
-                if (!YPlugin.getPlatformContainer().updatePlatformConfiguration(defaultPlatform, platforms)) {
+                if (!YPlugin.getDefault().getPlatformContainer()
+                        .updatePlatformConfiguration(defaultPlatform, platforms)) {
                     canceled[0] = true;
                 }
             }
@@ -144,7 +145,7 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
     private void verifyDefaultPlatform(IPlatformInstallation platform) {
         if (platform != null) {
             // Verify that all of the specified platform's library/properties locations actually exist
-            boolean ok = YPlugin.getPlatformContainer().verifyPlatform(platform);
+            boolean ok = YPlugin.getDefault().getPlatformContainer().verifyPlatform(platform);
 
             // If all library locations exist, check the corresponding entry in the list,
             // otherwise remove the platform

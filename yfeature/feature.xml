@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.lambda.yfeature"
-      label="Hybris Plugin"
+      label="eCommerce Plugin"
       version="0.0.1"
       provider-name="Wojciech Poltorak">
 

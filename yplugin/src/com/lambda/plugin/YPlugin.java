@@ -69,7 +69,7 @@ public class YPlugin extends AbstractUIPlugin {
     private IPreferenceStore fCombinedPreferenceStore;
 
     private IYNatureManager natureManager;
-    private static PlatformContainer platformContainer = new PlatformContainer();
+    private PlatformContainer platformContainer;
 
     /**
      * The constructor
@@ -304,15 +304,15 @@ public class YPlugin extends AbstractUIPlugin {
         return null;
     }
 
-    public static IPlatformInstallation[] getPlatformInstallations() {
+    public IPlatformInstallation[] getPlatformInstallations() {
         initplatformInstallations();
-        List<IPlatformInstallation> platformInstallatons = platformContainer.getPlatforms();
+        List<IPlatformInstallation> platformInstallatons = getPlatformContainer().getPlatforms();
         return platformInstallatons.toArray(new IPlatformInstallation[platformInstallatons.size()]);
     }
 
-    private static void initplatformInstallations() {
+    private void initplatformInstallations() {
         synchronized (fPlatformTypeLock) {
-            platformContainer.initializePlatforms();
+            getPlatformContainer().initializePlatforms();
         }
     }
 
@@ -321,18 +321,15 @@ public class YPlugin extends AbstractUIPlugin {
         return super.getPreferenceStore();
     }
 
-    public static IPlatformInstallation getDefaultPlatform() {
+    public IPlatformInstallation getDefaultPlatform() {
         initplatformInstallations();
-        return platformContainer.getDefaultPlatform();
-        // try {
-        // InstanceScope.INSTANCE.getNode(YPlugin.PLUGIN_ID).flush();
-        // } catch (BackingStoreException e) {
-        // logError(e);
-        // }
-        // return null;
+        return getPlatformContainer().getDefaultPlatform();
     }
 
-    public static PlatformContainer getPlatformContainer() {
+    public PlatformContainer getPlatformContainer() {
+        if (platformContainer == null) {
+            platformContainer = new PlatformContainer();
+        }
         return platformContainer;
     }
 }
