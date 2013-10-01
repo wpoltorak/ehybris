@@ -38,7 +38,6 @@ import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
 public class NewExtensionWizard extends Wizard implements IExecutableExtension, INewWizard {
 
-    private static final String FUNCTEST_TEMPLATE_NAME = "functest";
     private final NewExtensionWizardPage wizardPage;
 
     private IConfigurationElement fConfigElement;

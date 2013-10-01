@@ -244,8 +244,20 @@ public final class YMessages extends NLS {
 
     public static String TestSelectionElementsLabelProvider_testElementName_projectName;
     public static String TestSearchEngine_message_searching;
+    // import eCommerce Platform wizard
+    public static String ImportPlatformPage_title;
+    public static String ImportPlatformPage_description;
+    public static String ImportPlatformPage_refresh;
+    public static String ImportPlatformPage_selectAll;
+    public static String ImportPlatformPage_deselectAll;
+    public static String ImportPlatformPage_projects;
+    public static String ImportPlatformPage_selectPlatformRoot;
+    public static String ImportPlatformPage_browse;
+    public static String ImportPlatformPage_selectPlatformRootFolder;
 
-    // eCommerce Extension wizard
+    public static String ImportPlatformProject_title;
+
+    // new eCommerce Extension wizard
     public static String NewExtensionProject_title;
     public static String NewExtensionPage_LocationGroup_location_desc;
     public static String NewExtensionPage_LocationGroup_locationLabel_desc;

@@ -17,6 +17,13 @@
             id="com.lambda.plugin.importWizard"
             name="eCommerce">
       </category>
+      <wizard
+            category="com.lambda.plugin.importWizard"
+            class="com.lambda.plugin.wizards.hybris.ImportPlatformWizard"
+            icon="icons/sample.gif"
+            id="com.lambda.plugin.wizards.hybris.ImportPlatformWizard"
+            name="eCommerce Platform">
+      </wizard>
    </extension>
    <extension
          id="com.lambda.plugin.views"
