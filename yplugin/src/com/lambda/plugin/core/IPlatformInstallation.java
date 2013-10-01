@@ -80,5 +80,4 @@ public interface IPlatformInstallation {
     IPath getPlatformLocation();
 
     Properties getProperties();
-
 }

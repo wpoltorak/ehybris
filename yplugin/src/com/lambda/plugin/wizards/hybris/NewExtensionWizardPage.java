@@ -13,7 +13,6 @@ import java.util.Observer;
 import java.util.Properties;
 
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.ProjectHelper;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -355,7 +354,7 @@ public class NewExtensionWizardPage extends WizardPage {
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-
+            // TODO create sub monitor for loading project
             String projectName = getProjectName();
             URI location = URIUtil.toURI(fLocationGroup.getLocation());
             fCurrProject = createJavaProject(projectName, location, new SubProgressMonitor(monitor, 2));
@@ -365,7 +364,7 @@ public class NewExtensionWizardPage extends WizardPage {
             }
 
             // initializeBuildPath(fCurrProject, new SubProgressMonitor(monitor, 2));
-            // fCurrProject.getProject().touch(new NullProgressMonitor());
+            fCurrProject.getProject().touch(new NullProgressMonitor());
         } finally {
             monitor.done();
         }
@@ -443,13 +442,6 @@ public class NewExtensionWizardPage extends WizardPage {
         // project, monitor);
 
         return jproject;
-    }
-
-    private Project getAntProject(IPath buildFile) {
-        Project project = new Project();
-        project.init();
-        ProjectHelper.configureProject(project, buildFile.toFile());
-        return project;
     }
 
     /**
