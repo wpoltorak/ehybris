@@ -13,6 +13,10 @@ public class ImportPlatformWizard extends Wizard implements IExecutableExtension
     private IConfigurationElement config;
     private ImportPlatformWizardPage page;
 
+    public ImportPlatformWizard() {
+        setNeedsProgressMonitor(true);
+    }
+
     public void init(IWorkbench workbench, IStructuredSelection selection) {
 
     }

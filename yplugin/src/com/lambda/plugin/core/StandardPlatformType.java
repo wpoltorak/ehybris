@@ -20,6 +20,7 @@ public class StandardPlatformType implements IPlatformInstallation {
     private String description;
     private String version;
     private Properties properties;
+    private IPath binLocation;
 
     public StandardPlatformType(long id) {
         this.id = id;
@@ -101,6 +102,10 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.configLocation = configLocation;
     }
 
+    public void setBinLocation(IPath binLocation) {
+        this.binLocation = binLocation;
+    }
+
     public IPath getTempLocation() {
         return tempLocation;
     }
@@ -111,6 +116,10 @@ public class StandardPlatformType implements IPlatformInstallation {
 
     public IPath getConfigLocation() {
         return configLocation;
+    }
+
+    public IPath getBinLocation() {
+        return binLocation;
     }
 
     public IStatus validateInstallLocation(IPath installLocation) {

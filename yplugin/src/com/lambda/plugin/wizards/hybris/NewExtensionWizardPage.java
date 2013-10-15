@@ -45,7 +45,6 @@ import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -80,7 +79,7 @@ import com.lambda.plugin.ui.SwtUtil;
 import com.lambda.plugin.ui.YUIStatus;
 import com.lambda.plugin.utils.StringUtils;
 
-public class NewExtensionWizardPage extends WizardPage {
+public class NewExtensionWizardPage extends AbstractWizardPage {
 
     private static final String PAGE_NAME = "NewExtensionWizardPage"; //$NON-NLS-1$
 
@@ -264,19 +263,6 @@ public class NewExtensionWizardPage extends WizardPage {
         if (visible) {
             fNamePackageGroup.postSetFocus();
         }
-    }
-
-    private GridLayout initGridLayout(GridLayout layout, boolean margins) {
-        layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
-        layout.verticalSpacing = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
-        if (margins) {
-            layout.marginWidth = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN);
-            layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-        } else {
-            layout.marginWidth = 0;
-            layout.marginHeight = 0;
-        }
-        return layout;
     }
 
     public void performFinish(IProgressMonitor monitor) throws CoreException, InterruptedException {
@@ -545,14 +531,14 @@ public class NewExtensionWizardPage extends WizardPage {
             nameComposite.setLayout(new GridLayout(columns, false));
 
             Label label = getNameLabelControl(nameComposite);
-            label.setLayoutData(gridDataForLabel(1));
+            label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             Text text = getNameTextControl(nameComposite);
-            text.setLayoutData(gridDataForText(columns - 1));
+            text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
             label = getPackageLabelControl(nameComposite);
-            label.setLayoutData(gridDataForLabel(1));
+            label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             text = getPackageTextControl(nameComposite);
-            text.setLayoutData(gridDataForText(columns - 1));
+            text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
             return nameComposite;
         }
@@ -601,21 +587,6 @@ public class NewExtensionWizardPage extends WizardPage {
                 fPackageTextControl.setEnabled(true);
             }
             return fPackageTextControl;
-        }
-
-        private GridData gridDataForLabel(int span) {
-            GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-            gd.horizontalSpan = span;
-            return gd;
-        }
-
-        private GridData gridDataForText(int span) {
-            GridData gd = new GridData();
-            gd.horizontalAlignment = GridData.FILL;
-            gd.grabExcessHorizontalSpace = false;
-            gd.grabExcessHorizontalSpace = true;
-            gd.horizontalSpan = span;
-            return gd;
         }
 
         protected void fireEvent() {

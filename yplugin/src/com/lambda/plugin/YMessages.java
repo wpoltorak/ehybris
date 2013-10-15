@@ -251,10 +251,15 @@ public final class YMessages extends NLS {
     public static String ImportPlatformPage_selectAll;
     public static String ImportPlatformPage_deselectAll;
     public static String ImportPlatformPage_projects;
-    public static String ImportPlatformPage_selectPlatformRoot;
+    public static String ImportPlatformPage_platformRootFolder;
     public static String ImportPlatformPage_browse;
     public static String ImportPlatformPage_selectPlatformRootFolder;
-
+    public static String ImportPlatformPage_error_ExtensionNotExists;
+    public static String ImportPlatformPage_error_ExtensionAlreadyImported;
+    public static String ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
+    public static String ImportPlatformPage_error_ExtensionNotExistsInFS;
+    public static String ImportPlatformPage_error_PlatformAlreadyImported;
+    public static String ImportPlatformPage_error_InvalidPlatformDirectory;
     public static String ImportPlatformProject_title;
 
     // new eCommerce Extension wizard

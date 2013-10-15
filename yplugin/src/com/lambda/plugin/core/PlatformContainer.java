@@ -10,12 +10,14 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBIntrospector;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,9 +30,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -48,6 +47,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.core.model.PlatformExtension;
+import com.lambda.plugin.core.model.extensioninfo.Extensioninfo;
+import com.lambda.plugin.core.model.extensions.ExtensionType;
+import com.lambda.plugin.core.model.extensions.Hybrisconfig;
 import com.lambda.plugin.preferences.PreferenceConstants;
 import com.lambda.plugin.utils.StringUtils;
 
@@ -64,6 +67,7 @@ public class PlatformContainer {
     private static final String TAG_EXTENSIONS_CONFIG = "hybrisconfig";
     private static final String TAG_EXTENSIONS = "extensions";
     private static final String TAG_EXTENSION = "extension";
+    private static final String TAG_EXTENSION_INFO = "extensioninfo";
 
     private List<IPlatformInstallation> platforms;
     private IPlatformInstallation defaultPlatform;
@@ -175,6 +179,7 @@ public class PlatformContainer {
         if (xml.length() == 0) {
             throw new ParserConfigurationException("No platforms xml configuration");
         }
+
         ByteArrayInputStream inputStream = null;
         InputStream stream = null;
         Element config;
@@ -236,20 +241,17 @@ public class PlatformContainer {
         }
         Path path = new Path(evaluated);
         if (path.toFile().isDirectory()) {
-            extensions.put(path, new PlatformExtension(path));
+            extensions.put(path, new PlatformExtension(path, null));
         }
     }
 
-    private Element readExtensions(IPlatformInstallation platform) throws UnsupportedEncodingException,
-            ParserConfigurationException, SAXException, IOException {
-        if (platform == null) {
-            return null;
-        }
+    private Element readXML(File file) throws UnsupportedEncodingException, ParserConfigurationException, SAXException,
+            IOException {
         FileInputStream inputStream = null;
         InputStream stream = null;
         Element extensions;
         try {
-            inputStream = new FileInputStream(platform.getPlatformLocation().append("extensions.xml").toFile()); //$NON-NLS-1$
+            inputStream = new FileInputStream(file); //$NON-NLS-1$
             // Wrapper the stream for efficient parsing
             stream = new BufferedInputStream(inputStream);
             DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -270,6 +272,7 @@ public class PlatformContainer {
         Path root = new Path(installPath);
         platform.setRootLocation(root);
         platform.setCustomExtensionLocation(customExtensionLocation(root));
+        platform.setBinLocation(binLocation(root));
         IPath platformLocation = platformLocation(root);
         platform.setPlatformLocation(platformLocation);
         platform.setTempLocation(tempLocation(root));
@@ -281,6 +284,10 @@ public class PlatformContainer {
         properties.setProperty("platformhome", platformLocation.toOSString());
         platform.setProperties(loadEnvProperties(properties, platformLocation));
         return platform;
+    }
+
+    private IPath binLocation(IPath root) {
+        return root.append("bin");
     }
 
     private IPath platformLocation(IPath root) {
@@ -449,13 +456,13 @@ public class PlatformContainer {
             return false;
         }
 
-        Map<IPath, PlatformExtension> extensions = loadExtensions(getDefaultPlatform());
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        for (IProject project : root.getProjects()) {
-            if (extensions.containsKey(project.getFullPath())) {
-                // TODO remove project from workspace
-            }
-        }
+        // Map<IPath, PlatformExtension> extensions = loadExtensions(getDefaultPlatform());
+        // IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        // for (IProject project : root.getProjects()) {
+        // if (extensions.containsKey(project.getFullPath())) {
+        // // TODO remove project from workspace
+        // }
+        // }
 
         setDefaultPlatform(defaultPlatform);
 
@@ -464,13 +471,27 @@ public class PlatformContainer {
         return true;
     }
 
-    private Map<IPath, PlatformExtension> loadExtensions(IPlatformInstallation platform) {
+    public Hybrisconfig loadExtensions(IPlatformInstallation platform) {
+        if (platform == null) {
+            return null;
+        }
         try {
-            Element extensions = readExtensions(platform);
-            return parseExtensionsConfig(platform, extensions);
+            File extensions = platform.getConfigLocation().append("localextensions.xml").toFile();
+            if (!extensions.exists()) {
+                extensions = platform.getPlatformLocation().append("extensions.xml").toFile();
+            }
+
+            JAXBContext jc = JAXBContext.newInstance(Hybrisconfig.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            Hybrisconfig config = (Hybrisconfig) JAXBIntrospector.getValue(unmarshaller.unmarshal(extensions));
+            List<ExtensionType> extension = config.getExtensions().getExtension();
+            for (ExtensionType extensionType : extension) {
+                extensionType.setDir(PropertiesSubstitution.evaluate(platform.getProperties(), extensionType.getDir()));
+            }
+            return config;
         } catch (Exception e) {
             YPlugin.logError(e);
-            return Collections.<IPath, PlatformExtension> emptyMap();
+            return null;
         }
     }
 
@@ -480,5 +501,16 @@ public class PlatformContainer {
 
     void setPropertiesLoader(PropertiesLoader propertiesLoader) {
         this.propertiesLoader = propertiesLoader;
+    }
+
+    public Extensioninfo loadExtensionInfo(File extInfo) {
+        try {
+            JAXBContext jc = JAXBContext.newInstance(Extensioninfo.class);
+            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            return (Extensioninfo) JAXBIntrospector.getValue(unmarshaller.unmarshal(extInfo));
+        } catch (Exception e) {
+            YPlugin.logError(e);
+            return null;
+        }
     }
 }

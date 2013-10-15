@@ -52,6 +52,8 @@ public interface IPlatformInstallation {
 
     IPath getConfigLocation();
 
+    IPath getBinLocation();
+
     /**
      * Returns absolute path of the custom extensions directory of this Platform.
      * 
@@ -64,7 +66,7 @@ public interface IPlatformInstallation {
      * 
      * @param installLocation the root directory of this Platform installation
      */
-    void setRootLocation(IPath location);
+    // void setRootLocation(IPath location);
 
     /**
      * Validates the given location of a Platform installation.
