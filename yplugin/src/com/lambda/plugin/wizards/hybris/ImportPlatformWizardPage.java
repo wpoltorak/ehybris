@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -45,8 +44,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.dialogs.WorkingSetGroup;
@@ -62,9 +59,10 @@ import com.lambda.plugin.utils.StringUtils;
 public class ImportPlatformWizardPage extends AbstractWizardPage {
 
     private static final String PAGE_NAME = "ImportPlatformWizardPage";//$NON-NLS-1$
+
     private Combo rootDirectoryCombo;
-    private CheckboxTreeViewer projectTreeViewer;
     private WorkingSetGroup fWorkingSetGroup;
+    private CheckboxTreeViewer projectTreeViewer;
 
     protected ImportPlatformWizardPage() {
         super(PAGE_NAME);
@@ -92,7 +90,6 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         rootDirectoryCombo = new Combo(platformComposite, SWT.NONE);
         rootDirectoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         rootDirectoryCombo.setFocus();
-        //addFieldWithHistory("rootDirectory", rootDirectoryCombo); //$NON-NLS-1$
 
         final Button browseButton = new Button(platformComposite, SWT.NONE);
         browseButton.setText(YMessages.ImportPlatformPage_browse);
@@ -111,9 +108,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 String result = dialog.open();
                 if (result != null) {
                     rootDirectoryCombo.setText(result);
-                    // if (rootDirectoryChanged()) {
                     scanProjects();
-                    // }
                 }
             }
         });
@@ -126,8 +121,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         projectTreeViewer.addCheckStateListener(new ICheckStateListener() {
             public void checkStateChanged(CheckStateChangedEvent event) {
-                // updateCheckedState();
-                // setPageComplete();
+                updateCheckedState();
+                setPageComplete();
             }
         });
 
@@ -137,12 +132,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 if (selection.getFirstElement() != null) {
                     String errorMsg = validateExtension((PlatformExtension) selection.getFirstElement());
-                    if (errorMsg != null) {
-                        setMessage(errorMsg, IMessageProvider.WARNING);
-                    } else {
-                        // TODO if no error on current, shall show any existing general errors if found..
-                        // setMessage(loadingErrorMessage, IMessageProvider.WARNING);
-                    }
+                    setMessage(errorMsg, IMessageProvider.WARNING);
                 } else {
                     // TODO if on current selection, shall show any existing general errors if existing..
                     // setMessage(loadingErrorMessage, IMessageProvider.WARNING);
@@ -205,27 +195,6 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         projectTreeData.widthHint = 500;
         projectTree.setLayoutData(projectTreeData);
 
-        Menu menu = new Menu(projectTree);
-        projectTree.setMenu(menu);
-
-        MenuItem mntmSelectTree = new MenuItem(menu, SWT.NONE);
-        mntmSelectTree.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // setProjectSubtreeChecked(true);
-            }
-        });
-        mntmSelectTree.setText("Select tree");
-
-        MenuItem mntmDeselectTree = new MenuItem(menu, SWT.NONE);
-        mntmDeselectTree.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                // setProjectSubtreeChecked(false);
-            }
-        });
-        mntmDeselectTree.setText("DeselectTree");
-
         final Button selectAllButton = new Button(platformComposite, SWT.NONE);
         selectAllButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
         selectAllButton.setText(YMessages.ImportPlatformPage_selectAll);
@@ -233,8 +202,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 projectTreeViewer.expandAll();
-                // setAllChecked(true);
-                // validate();
+                setAllChecked(true);
+                setPageComplete();
             }
         });
 
@@ -244,9 +213,10 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         deselectAllButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // setAllChecked(false);
+                setAllChecked(false);
                 setPageComplete(false);
             }
+
         });
 
         final Button refreshButton = new Button(platformComposite, SWT.NONE);
@@ -255,13 +225,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         refreshButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                // scanProjects();
+                scanProjects();
             }
         });
 
         fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
                 IWorkingSetIDs.RESOURCE });
-
     }
 
     /**
@@ -281,9 +250,19 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(ext.projectName);
         if (project.exists()) {
             if (project.getFullPath().equals(ext.path)) {
+                if (ext instanceof PlatformRoot) {
+                    return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
+                }
                 return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
+            } else {
+                IPlatformInstallation existingPlatform = YPlugin.getDefault().getPlatformContainer()
+                        .getDefaultPlatform();
+
+                if (existingPlatform != null && project.getFullPath().equals(existingPlatform.getPlatformLocation())) {
+                    return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
+                }
+                return YMessages.ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
             }
-            return YMessages.ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
         }
         return null;
     }
@@ -297,13 +276,16 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         } catch (CoreException e) {
             YPlugin.logError(e);
         }
-
         return null;
     }
 
     private void scanProjects() {
+        projectTreeViewer.setInput(null);
+
         final String text = rootDirectoryCombo.getText();
         if (StringUtils.isEmpty(text)) {
+            setPageComplete(false);
+            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
             return;
         }
 
@@ -311,8 +293,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 .verifyPlatformLocation(new File(text));
 
         if (platform == null) {
-            MessageDialog.openError(getControl().getShell(), YMessages.ImportPlatformPage_title,
-                    YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
+            setPageComplete(false);
+            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
             return;
         }
         String projectName = getProjectName(platform.getPlatformLocation().append(".project"));
@@ -388,16 +370,41 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             YPlugin.logError(e);
         }
 
-        // TODO potrzeba singleton list??
         projectTreeViewer.setInput(Collections.singletonList(root));
         projectTreeViewer.expandAll();
+
         checkPlatformAndReferencedExtensions();
-        // setPageComplete();
+        setPageComplete();
         setErrorMessage(null);
         setMessage(null);
-        // loadingErrorMessage = null;
     }
 
+    private void setPageComplete() {
+        Object[] elements = projectTreeViewer.getCheckedElements();
+        for (Object element : elements) {
+            if (element instanceof PlatformRoot) {
+                setPageComplete(true);
+                return;
+            }
+        }
+        setPageComplete(false);
+    }
+
+    private void setAllChecked(boolean checked) {
+        List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
+        if (input != null) {
+            for (PlatformRoot root : input) {
+                projectTreeViewer.setChecked(root, checked);
+                for (PlatformExtension ext : root.children) {
+                    projectTreeViewer.setChecked(ext, checked);
+                }
+                updateCheckedState();
+            }
+            updateCheckedState();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     private void checkPlatformAndReferencedExtensions() {
         // TODO inaczej sprawdzenie, instanceof?
         List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
@@ -407,22 +414,42 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 for (PlatformExtension ext : root.children) {
                     projectTreeViewer.setChecked(ext, ext.referenced);
                 }
-                updateCheckedState();
             }
+            updateCheckedState();
         }
     }
 
     private void updateCheckedState() {
+
         Object[] elements = projectTreeViewer.getCheckedElements();
         for (int i = 0; i < elements.length; i++) {
             Object element = elements[i];
             if (element instanceof PlatformExtension) {
                 PlatformExtension ext = (PlatformExtension) element;
-                if (validateExtension(ext) != null) {
+                if (parentUnchecked(ext) || validateExtension(ext) != null) {
                     projectTreeViewer.setChecked(ext, false);
                 }
             }
         }
+        projectTreeViewer.refresh();
+    }
+
+    private boolean parentUnchecked(PlatformExtension ext) {
+        return ext.parent != null && projectTreeViewer.getChecked(ext.parent) == false;
+    }
+
+    boolean createExtensions() {
+        Object[] elements = projectTreeViewer.getCheckedElements();
+        for (int i = 0; i < elements.length; i++) {
+            Object element = elements[i];
+            if (element instanceof PlatformRoot) {
+                PlatformRoot ext = (PlatformRoot) element;
+            }
+            if (element instanceof PlatformExtension) {
+                PlatformExtension ext = (PlatformExtension) element;
+            }
+        }
+        return true;
     }
 
     private class PlatformRoot extends PlatformExtension {
@@ -489,7 +516,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 // if (isWorkspaceFolder(ext)) {
                 // return Display.getDefault().getSystemColor(SWT.COLOR_RED);
                 // } else
-                if (validateExtension(ext) != null) {
+                if (parentUnchecked(ext) || validateExtension(ext) != null) {
                     return Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
                 }
             }

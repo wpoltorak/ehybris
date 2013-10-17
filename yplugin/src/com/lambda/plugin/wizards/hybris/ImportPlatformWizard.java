@@ -39,7 +39,11 @@ public class ImportPlatformWizard extends Wizard implements IExecutableExtension
 
     @Override
     public boolean performFinish() {
-        return false;
+        if (!page.isPageComplete()) {
+            return false;
+        }
+
+        return page.createExtensions();
     }
 
 }

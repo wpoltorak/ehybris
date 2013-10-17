@@ -26,7 +26,7 @@ public class PropertiesLoader {
             PropertiesSubstitution.evaluate(properties);
             return properties;
         } catch (FileNotFoundException e) {
-            YPlugin.logError(e);
+            YPlugin.logWarning("Unable to find Platform properties.", e);
             return null;
         } catch (IOException e) {
             YPlugin.logError(e);
