@@ -1,25 +1,15 @@
 package com.lambda.plugin.wizards.hybris;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.IPackagesViewPart;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -34,9 +24,8 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 import com.lambda.plugin.YImages;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
-public class NewExtensionWizard extends Wizard implements IExecutableExtension, INewWizard {
+public class NewExtensionWizard extends AbstractWizard implements IExecutableExtension, INewWizard {
 
     private final NewExtensionWizardPage wizardPage;
 
@@ -71,15 +60,6 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
         }
     }
 
-    /**
-     * Returns the scheduling rule for creating the element.
-     * 
-     * @return returns the scheduling rule
-     */
-    protected ISchedulingRule getSchedulingRule() {
-        return ResourcesPlugin.getWorkspace().getRoot(); // look all by default
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -95,6 +75,7 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
      * 
      * @see org.eclipse.jdt.internal.ui.wizards.NewElementWizard#finishPage(org.eclipse .core.runtime.IProgressMonitor)
      */
+    @Override
     protected void finishPage(final IProgressMonitor monitor) throws InterruptedException, CoreException {
         wizardPage.performFinish(monitor); // use the full progress monitor
     }
@@ -128,51 +109,6 @@ public class NewExtensionWizard extends Wizard implements IExecutableExtension, 
             });
         }
         return res;
-    }
-
-    public boolean doPerformFinish() {
-        final IWorkspaceRunnable op = new IWorkspaceRunnable() {
-            public void run(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
-                try {
-                    finishPage(monitor);
-                } catch (InterruptedException e) {
-                    throw new OperationCanceledException(e.getMessage());
-                }
-            }
-        };
-        final ISchedulingRule rule = getCurrentSchedulingRule();
-
-        try {
-            IRunnableWithProgress runnable = null;
-            if (rule != null) {
-                runnable = new WorkbenchRunnableAdapter(op, rule, true);
-            } else {
-                runnable = new WorkbenchRunnableAdapter(op, getSchedulingRule());
-            }
-
-            getContainer().run(true, true, runnable);
-        } catch (InvocationTargetException e) {
-            handleFinishException(getShell(), e);
-            return false;
-        } catch (InterruptedException e) {
-            return false;
-        }
-        return true;
-    }
-
-    private ISchedulingRule getCurrentSchedulingRule() {
-        ISchedulingRule rule = null;
-        Job job = Job.getJobManager().currentJob();
-        if (job != null) {
-            rule = job.getRule();
-        }
-        return rule;
-    }
-
-    protected void handleFinishException(final Shell shell, final InvocationTargetException e) {
-        final String title = "Error Creating Functest Project";
-        final String message = "An error occurred while creating the Functest project";
-        com.lambda.plugin.ExceptionHandler.handle(e, getShell(), title, message);
     }
 
     /*

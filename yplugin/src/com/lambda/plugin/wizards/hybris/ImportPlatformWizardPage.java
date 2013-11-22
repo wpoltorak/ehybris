@@ -4,19 +4,25 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -49,6 +55,7 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.dialogs.WorkingSetGroup;
 
 import com.lambda.plugin.YMessages;
+import com.lambda.plugin.YNature;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.model.extensioninfo.Extensioninfo;
@@ -438,18 +445,48 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         return ext.parent != null && projectTreeViewer.getChecked(ext.parent) == false;
     }
 
-    boolean createExtensions() {
+    boolean createExtensions(IProgressMonitor monitor) throws CoreException {
         Object[] elements = projectTreeViewer.getCheckedElements();
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+
         for (int i = 0; i < elements.length; i++) {
             Object element = elements[i];
             if (element instanceof PlatformRoot) {
                 PlatformRoot ext = (PlatformRoot) element;
+                createExtension(root, ext, new SubProgressMonitor(monitor, 2));
             }
             if (element instanceof PlatformExtension) {
                 PlatformExtension ext = (PlatformExtension) element;
+                createExtension(root, ext, new SubProgressMonitor(monitor, 2));
             }
         }
         return true;
+    }
+
+    private void createExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+            throws CoreException {
+        IProject project = root.getProject(ext.projectName);
+
+        if (!project.exists()) {
+            IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
+            URI locationURI = URIUtil.toURI(ext.path);
+            if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
+                locationURI = null;
+            }
+            desc.setLocationURI(locationURI);
+            project.create(desc, monitor);
+        } else {
+            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
+
+        if (!project.isOpen()) {
+            project.open(monitor);
+        }
+
+        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+
+        JavaCore.create(project);
     }
 
     private class PlatformRoot extends PlatformExtension {

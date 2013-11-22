@@ -446,7 +446,6 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         monitor.beginTask(YMessages.NewExtensionPage_operation_copying_template, 2);
 
         try {
-            IClasspathEntry[] entries = null;
             IProject project = javaProject.getProject();
 
             List<IClasspathEntry> cpEntries = new ArrayList<IClasspathEntry>();
@@ -464,8 +463,6 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
 
             // TODO use JRE container from platform
             cpEntries.addAll(Arrays.asList(PreferenceConstants.getDefaultJRELibrary()));
-
-            entries = cpEntries.toArray(new IClasspathEntry[cpEntries.size()]);
 
             IPath outputLocation = getOutputLocation();
             if (outputLocation.segmentCount() > 1) {

@@ -3,12 +3,12 @@ package com.lambda.plugin.wizards.hybris;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class ImportPlatformWizard extends Wizard implements IExecutableExtension, IImportWizard {
+public class ImportPlatformWizard extends AbstractWizard implements IExecutableExtension, IImportWizard {
 
     private IConfigurationElement config;
     private ImportPlatformWizardPage page;
@@ -42,8 +42,13 @@ public class ImportPlatformWizard extends Wizard implements IExecutableExtension
         if (!page.isPageComplete()) {
             return false;
         }
+        final boolean res = doPerformFinish();
+        return res;
+    }
 
-        return page.createExtensions();
+    @Override
+    protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
+        page.createExtensions(monitor);
     }
 
 }
