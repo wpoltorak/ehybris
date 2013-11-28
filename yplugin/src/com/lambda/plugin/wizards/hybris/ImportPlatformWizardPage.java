@@ -259,6 +259,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             if (project.getFullPath().equals(ext.path)) {
                 if (ext instanceof PlatformRoot) {
                     return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
+                } else if (ext instanceof PlatformConfig) {
+                    return YMessages.ImportPlatformPage_error_PlatformConfigAlreadyImported;
                 }
                 return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
             } else {
@@ -304,8 +306,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
             return;
         }
-        String projectName = getProjectName(platform.getPlatformLocation().append(".project"));
-        final PlatformExtension root = new PlatformRoot(platform, projectName);
+        String platformProjectName = getProjectName(platform.getPlatformLocation().append(".project"));
+        final PlatformExtension root = new PlatformRoot(platform, platformProjectName);
+
+        // TODO sprawdzic czy nazwa configa jest taka sama jak nazwa project eclipsowego configa
+        String configProjectName = getProjectName(platform.getConfigLocation().append(".project"));
+        root.addExtension(new PlatformConfig(platform.getConfigLocation(), configProjectName, configProjectName));
 
         IRunnableWithProgress runnable = new IRunnableWithProgress() {
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -398,6 +404,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     }
 
     private void setAllChecked(boolean checked) {
+        @SuppressWarnings("unchecked")
         List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
         if (input != null) {
             for (PlatformRoot root : input) {
@@ -446,21 +453,34 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     }
 
     boolean createExtensions(IProgressMonitor monitor) throws CoreException {
-        Object[] elements = projectTreeViewer.getCheckedElements();
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-
-        for (int i = 0; i < elements.length; i++) {
-            Object element = elements[i];
-            if (element instanceof PlatformRoot) {
-                PlatformRoot ext = (PlatformRoot) element;
-                createExtension(root, ext, new SubProgressMonitor(monitor, 2));
+        final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
+        Display.getDefault().syncExec(new Runnable() {
+            public void run() {
+                Object[] elements = projectTreeViewer.getCheckedElements();
+                for (int i = 0; i < elements.length; i++) {
+                    Object element = elements[i];
+                    if (element instanceof PlatformExtension) {
+                        extensions.add((PlatformExtension) element);
+                    }
+                }
             }
-            if (element instanceof PlatformExtension) {
-                PlatformExtension ext = (PlatformExtension) element;
-                createExtension(root, ext, new SubProgressMonitor(monitor, 2));
+        });
+
+        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+        for (PlatformExtension extension : extensions) {
+            if (extension instanceof PlatformConfig) {
+                createConfig(root, (PlatformConfig) extension, new SubProgressMonitor(monitor, 2));
+            } else if (extension instanceof PlatformRoot) {
+                createPlatform(root, (PlatformRoot) extension, new SubProgressMonitor(monitor, 2));
+            } else {
+                createExtension(root, extension, new SubProgressMonitor(monitor, 2));
             }
         }
         return true;
+    }
+
+    private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, IProgressMonitor monitor) throws CoreException {
+        createExtension(root, ext, monitor);
     }
 
     private void createExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
@@ -489,6 +509,29 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         JavaCore.create(project);
     }
 
+    private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
+        IProject project = root.getProject(ext.projectName);
+
+        if (!project.exists()) {
+            IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
+            URI locationURI = URIUtil.toURI(ext.path);
+            if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
+                locationURI = null;
+            }
+            desc.setLocationURI(locationURI);
+            project.create(desc, monitor);
+        } else {
+            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+        }
+
+        if (!project.isOpen()) {
+            project.open(monitor);
+        }
+
+        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        JavaCore.create(project);
+    }
+
     private class PlatformRoot extends PlatformExtension {
 
         private final String description;
@@ -498,6 +541,30 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             super(platform.getPlatformLocation(), platform.getName(), projectName, true);
             description = platform.getDescription();
             version = platform.getVersion();
+        }
+
+        @Override
+        protected StyledString styledText() {
+            StyledString ss = new StyledString();
+            ss.append(name);
+            ss.append(" - "); //$NON-NLS-1$
+            ss.append(description + " (" + version + ")", StyledString.DECORATIONS_STYLER); //$NON-NLS-2$ //$NON-NLS-3$
+            return ss;
+        }
+    }
+
+    private class PlatformConfig extends PlatformExtension {
+
+        private PlatformConfig(IPath path, String name, String projectName) {
+            super(path, name, projectName, true);
+        }
+
+        @Override
+        protected StyledString styledText() {
+            StyledString ss = new StyledString();
+            ss.append(name);
+            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.COUNTER_STYLER); //$NON-NLS-1$
+            return ss;
         }
     }
 
@@ -510,6 +577,9 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 new Comparator<PlatformExtension>() {
                     public int compare(PlatformExtension o1, PlatformExtension o2) {
                         if (o1.parent == null) {
+                            return 1;
+                        }
+                        if (o1 instanceof PlatformConfig) {
                             return 1;
                         }
                         return o1.name.compareTo(o2.name);
@@ -527,6 +597,14 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         private void addExtension(PlatformExtension extension) {
             extension.parent = this;
             children.add(extension);
+        }
+
+        protected StyledString styledText() {
+            StyledString ss = new StyledString();
+            ss.append(name);
+            ss.append(" - "); //$NON-NLS-1$
+            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.QUALIFIER_STYLER);
+            return ss;
         }
     }
 
@@ -577,29 +655,10 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
          * Object)
          */
         public StyledString getStyledText(Object element) {
-            if (element instanceof PlatformRoot) {
-                PlatformRoot ext = (PlatformRoot) element;
-                StyledString ss = new StyledString();
-                ss.append(ext.name); //$NON-NLS-1$
-                ss.append(getDetails(ext), StyledString.DECORATIONS_STYLER);
-                return ss;
-
-            } else if (element instanceof PlatformExtension) {
-                PlatformExtension ext = (PlatformExtension) element;
-                StyledString ss = new StyledString();
-                ss.append(ext.name); //$NON-NLS-1$
-                ss.append(getPath(ext), StyledString.QUALIFIER_STYLER); //$NON-NLS-1$
-                return ss;
+            if (element instanceof PlatformExtension) {
+                return ((PlatformExtension) element).styledText();
             }
             return null;
-        }
-
-        private String getPath(PlatformExtension ext) {
-            return " - " + ext.path.makeRelativeTo(ext.parent.path.removeLastSegments(1));
-        }
-
-        private String getDetails(PlatformRoot ext) {
-            return " - " + ext.description + " (" + ext.version + ")";
         }
     }
 }

@@ -259,6 +259,7 @@ public final class YMessages extends NLS {
     public static String ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
     public static String ImportPlatformPage_error_ExtensionNotExistsInFS;
     public static String ImportPlatformPage_error_PlatformAlreadyImported;
+    public static String ImportPlatformPage_error_PlatformConfigAlreadyImported;
     public static String ImportPlatformPage_error_InvalidPlatformDirectory;
     public static String ImportPlatformProject_title;
 
