@@ -291,10 +291,11 @@ public final class YMessages extends NLS {
     public static String NewExtensionPage_error_EnterName;
     public static String NewExtensionPage_error_PackageNotShown;
     public static String NewExtensionPage_error_PackageNameFiltered;
+    public static String NewExtensionPage_error_TemplateFolderDoesNotExist;
+    public static String NewExtensionPage_error_TemplateNotChosen;
     public static String NewExtensionPage_warning_DiscouragedPackageName;
     public static String NewExtensionPage_Message_enterProjectName;
     public static String NewExtensionPage_Message_projectAlreadyExists;
-    public static String NewExtensionPage_Message_invalidProjectNameForWorkspaceRoot;
     public static String NewExtensionPage_Message_enterLocation;
     public static String NewExtensionPage_Message_invalidDirectory;
     public static String NewExtensionPage_Message_cannotCreateAtExternalLocation;

@@ -481,6 +481,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
     private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, IProgressMonitor monitor) throws CoreException {
         createExtension(root, ext, monitor);
+        YPlugin.getDefault().getPlatformContainer().setDefaultPlatform(defaultPlatform);
     }
 
     private void createExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)

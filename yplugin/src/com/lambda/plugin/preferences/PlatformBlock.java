@@ -58,7 +58,7 @@ import com.lambda.plugin.core.IPlatformInstallation;
  * changes, or when the "use default" button check state changes.
  * </p>
  */
-public class PlatformBlock implements ISelectionProvider {
+class PlatformBlock implements ISelectionProvider {
 
     /**
      * This block's control

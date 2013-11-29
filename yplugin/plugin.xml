@@ -164,12 +164,14 @@
             id="com.lambda.plugin.preferences.YPreferencePage"
             name="eCommerce">
       </page>
+      <!--
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.preferences.PlatformPreferencePage"
             id="com.lambda.plugin.preferences.PlatformPreferencePage"
             name="Installation">
       </page>
+      -->
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.impex.preferences.ImpexPreferencePage"

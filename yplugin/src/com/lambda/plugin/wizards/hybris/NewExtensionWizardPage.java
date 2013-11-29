@@ -5,16 +5,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.tools.ant.Project;
 import org.eclipse.core.filesystem.URIUtil;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -34,8 +32,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.IJavaHelpContextIds;
-import org.eclipse.jdt.internal.ui.util.CoreUtility;
-import org.eclipse.jdt.internal.ui.viewsupport.BasicElementLabels;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.ui.PreferenceConstants;
@@ -80,6 +76,8 @@ import com.lambda.plugin.ui.YUIStatus;
 import com.lambda.plugin.utils.StringUtils;
 
 public class NewExtensionWizardPage extends AbstractWizardPage {
+
+    private static final String EXTGEN_TEMPLATE_PATH = "extgen.template.path.";
 
     private static final String PAGE_NAME = "NewExtensionWizardPage"; //$NON-NLS-1$
 
@@ -342,14 +340,18 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             }
             // TODO create sub monitor for loading project
             String projectName = getProjectName();
+            String packageName = getPackageName();
+            String templateName = fTemplateGroup.getTemplate();
             URI location = URIUtil.toURI(fLocationGroup.getLocation());
-            fCurrProject = createJavaProject(projectName, location, new SubProgressMonitor(monitor, 2));
+            IPlatformInstallation defaultPlatform = YPlugin.getDefault().getDefaultPlatform();
+            setupExtensionData(defaultPlatform, projectName, packageName, templateName, new SubProgressMonitor(monitor,
+                    2));
+            fCurrProject = createJavaProject(defaultPlatform, projectName, packageName, location,
+                    new SubProgressMonitor(monitor, 2));
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-
-            // initializeBuildPath(fCurrProject, new SubProgressMonitor(monitor, 2));
             fCurrProject.getProject().touch(new NullProgressMonitor());
         } finally {
             monitor.done();
@@ -357,49 +359,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         return result;
     }
 
-    private IJavaProject createJavaProject(String projectName, URI locationURI, IProgressMonitor monitor)
-            throws CoreException {
-        String templateName = fTemplateGroup.getTemplate();
-
-        if (fProperties != null) {
-            String templatePathKey = "extgen.template.path." + templateName;
-            String templatePath = fProperties.getProperty(templatePathKey);
-
-            IPlatformInstallation defaultPlatform = YPlugin.getDefault().getDefaultPlatform();
-            Project antProject = YPlugin.getDefault().getPlatformContainer().loadExtgenProject(defaultPlatform);
-            antProject.setProperty("extgen.extension.name", projectName);
-            antProject.setProperty("extgen.extension.package", getPackageName());
-            antProject.setProperty("extgen.directory.source", templatePath);
-            antProject.setProperty("extgen.directory.tmp",
-                    defaultPlatform.getTempLocation().append("hybris").append("extgen").toOSString());
-            antProject.setProperty("extension.directory.target", fLocationGroup.getLocation().toOSString());
-
-            antProject.createTask("clean_extgen_temp").perform();
-            antProject.createTask("prepare_extgen_temp").perform();
-            antProject.createTask("filter_extgen_files").perform();
-            antProject.createTask("extgen_copy_extension").perform();
-
-            System.out.println();
-            // try {
-            // File tmp = new Path(System.getProperty("java.io.tmpdir")).append("extgen").toFile();
-            // FileUtils.deleteDirectory(tmp);
-            //
-            // // FileUtils.copyDirectory(new File(templatePath), project.getLocation().toFile());
-            // FileUtils.copyDirectory(new File(templatePath), tmp);
-            // FileUtils.listFiles(tmp, new fileFilter, dirFilter)
-            // } catch (IOException e) {
-            // e.printStackTrace();
-            // }
-
-            //
-            // <!-- in generated extension, disable jspcompile as default value -->
-            // <replaceregexp file="${extgen.directory.tmp}/extensioninfo.xml"
-            // match='jspcompile="true"'
-            // replace='jspcompile="false"'
-            // byline="true"/>
-
-        }
-
+    private IJavaProject createJavaProject(IPlatformInstallation defaultPlatform, String projectName,
+            String packageName, URI locationURI, IProgressMonitor monitor) throws CoreException {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IProject project = root.getProject(projectName);
         if (!project.exists()) {
@@ -421,64 +382,62 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
 
         IJavaProject jproject = JavaCore.create(project);
-
-        // TODO wojtek: załaduj templejty
-        // YPlugin.getDefaultPlatform().get.createTemplateFiles(YPlugin.getDefault().getBundle(),
-        // FUNCTEST_TEMPLATE_NAME,
-        // project, monitor);
-
         return jproject;
     }
 
-    /**
-     * Evaluates the new build path and output folder according to the settings on the first page. The resulting build
-     * path is set by calling {@link #init(IJavaProject, IPath, IClasspathEntry[], boolean)}. Clients can override this
-     * method.
-     * 
-     * @param javaProject the new project which is already created when this method is called.
-     * @param monitor the progress monitor
-     * @throws CoreException thrown when initializing the build path failed
-     */
-    protected void initializeBuildPath(IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
-        if (monitor == null) {
-            monitor = new NullProgressMonitor();
-        }
-        monitor.beginTask(YMessages.NewExtensionPage_operation_copying_template, 2);
+    private void setupExtensionData(IPlatformInstallation defaultPlatform, String projectName, String packageName,
+            String templateName, SubProgressMonitor subProgressMonitor) {
 
-        try {
-            IProject project = javaProject.getProject();
+        if (fProperties != null) {
+            String templatePathKey = EXTGEN_TEMPLATE_PATH + templateName;
+            String templatePath = fProperties.getProperty(templatePathKey);
 
-            List<IClasspathEntry> cpEntries = new ArrayList<IClasspathEntry>();
-            IWorkspaceRoot root = project.getWorkspace().getRoot();
+            Project antProject = YPlugin.getDefault().getPlatformContainer().loadExtgenProject(defaultPlatform);
+            antProject.setProperty("extgen.extension.name", projectName);
+            antProject.setProperty("extgen.package", packageName);
+            antProject.setProperty("extgen.package.directory", packageName.replaceAll("\\.", "/"));
+            antProject.setProperty("extgen.directory.source", templatePath);
 
-            IClasspathEntry[] sourceClasspathEntries = getSourceClasspathEntries();
-            for (int i = 0; i < sourceClasspathEntries.length; i++) {
-                IPath path = sourceClasspathEntries[i].getPath();
-                if (path.segmentCount() > 1) {
-                    IFolder folder = root.getFolder(path);
-                    CoreUtility.createFolder(folder, true, true, new SubProgressMonitor(monitor, 1));
-                }
-                cpEntries.add(sourceClasspathEntries[i]);
+            // TODO provide input in front end
+            // default if not specified in second page
+            String classprefix = StringUtils.capitalize(projectName);
+            antProject.setProperty("extension.classprefix", classprefix);
+            antProject.setProperty("extension.managername", classprefix + "Manager");
+            String managersuperclass = "de.hybris.platform.jalo.extension.Extension";
+            antProject.setProperty("extension.managersuperclass", managersuperclass);
+            Matcher m = Pattern.compile("^.*\\.([^\\.]*)$").matcher(managersuperclass);
+            if (m.find()) {
+                String managersuperclassname = m.group(1);
+                antProject.setProperty("extension.managersuperclassname", managersuperclassname);
+                antProject.setProperty("extension.managersuperclassimpl", managersuperclass + "."
+                        + managersuperclassname + "Impl");
             }
 
-            // TODO use JRE container from platform
-            cpEntries.addAll(Arrays.asList(PreferenceConstants.getDefaultJRELibrary()));
-
-            IPath outputLocation = getOutputLocation();
-            if (outputLocation.segmentCount() > 1) {
-                IFolder folder = root.getFolder(outputLocation);
-                CoreUtility.createDerivedFolder(folder, true, true, new SubProgressMonitor(monitor, 1));
-            }
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
+            m = Pattern.compile("^(.*\\.)jalo(\\..*)$$").matcher(managersuperclass);
+            if (m.find()) {
+                String prefix = m.group(1);
+                String suffix = m.group(2);
+                antProject.setProperty("extension.managersuperclassejbimpl", prefix + "jaloimpl" + suffix + "EJBImpl");
+                antProject.setProperty("extension.managersuperclassejb", prefix + "session" + suffix + "EJB");
+                antProject.setProperty("extension.managersuperclasshome", prefix + "session" + suffix + "Home");
+                antProject.setProperty("extension.managersuperclassremote", prefix + "session" + suffix + "Remote");
             }
 
-            // TODO sprawdz init()
-            // init(javaProject, outputLocation, entries, false);
-            javaProject.setRawClasspath(cpEntries.toArray(new IClasspathEntry[cpEntries.size()]), outputLocation,
-                    monitor);
-        } finally {
-            monitor.done();
+            antProject.setProperty("extgen.directory.tmp",
+                    defaultPlatform.getTempLocation().append("hybris").append("extgen").toOSString());
+            antProject.setProperty("extension.directory.target", fLocationGroup.getLocation().toOSString());
+
+            //
+            // <!-- in generated extension, disable jspcompile as default value -->
+            // <replaceregexp file="${extgen.directory.tmp}/extensioninfo.xml"
+            // match='jspcompile="true"'
+            // replace='jspcompile="false"'
+            // byline="true"/>
+            antProject.createTask("clean_extgen_temp").perform();
+            antProject.createTask("prepare_extgen_temp").perform();
+            antProject.createTask("filter_extgen_files").perform();
+            antProject.createTask("extgen_copy_extension").perform();
+
         }
     }
 
@@ -921,6 +880,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             fSelection = true;
         }
 
+        /**
+         * 
+         * @param options
+         * @param defaultOption
+         * @return
+         */
         private String[] includeDefaultOption(String[] options, String defaultOption) {
             if (defaultOption == null) {
                 return options;
@@ -1245,27 +1210,6 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 return;
             }
 
-            IPath projectLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().append(name);
-            if (projectLocation.toFile().exists()) {
-                try {
-                    // correct casing
-                    String canonicalPath = projectLocation.toFile().getCanonicalPath();
-                    projectLocation = new Path(canonicalPath);
-                } catch (IOException e) {
-                    YPlugin.logError(e);
-                }
-
-                String existingName = projectLocation.lastSegment();
-                if (!existingName.equals(fNamePackageGroup.getName())) {
-                    setErrorMessage(MessageFormat.format(
-                            YMessages.NewExtensionPage_Message_invalidProjectNameForWorkspaceRoot,
-                            BasicElementLabels.getResourceName(existingName)));
-                    setPageComplete(false);
-                    return;
-                }
-
-            }
-
             final String location = fLocationGroup.getLocation().toOSString();
 
             // check whether location is empty
@@ -1283,17 +1227,16 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 return;
             }
 
-            IPath projectPath = null;
-            if (!fLocationGroup.isUseDefaultSelected()) {
-                projectPath = Path.fromOSString(location);
-                if (!projectPath.toFile().exists()) {
-                    // check non-existing external location
-                    if (!canCreate(projectPath.toFile())) {
-                        setErrorMessage(YMessages.NewExtensionPage_Message_cannotCreateAtExternalLocation);
-                        setPageComplete(false);
-                        return;
-                    }
-                }
+            // check whether external location exists or cannot be created
+            IPath projectPath = Path.fromOSString(location);
+            if (projectPath.toFile().exists()) {
+                setErrorMessage(YMessages.NewExtensionPage_Message_cannotCreateAtExternalLocation);
+                setPageComplete(false);
+                return;
+            } else if (!canCreate(projectPath.toFile())) {
+                setErrorMessage(YMessages.NewExtensionPage_Message_cannotCreateAtExternalLocation);
+                setPageComplete(false);
+                return;
             }
 
             // validate the location
@@ -1305,18 +1248,13 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             }
 
             String packName = fNamePackageGroup.getPackageName();
+            IStatus val = null;
             if (packName.length() > 0) {
-                IStatus val = validatePackageName(packName);
+                val = validatePackageName(packName);
                 if (val.getSeverity() == IStatus.ERROR) {
                     setErrorMessage(MessageFormat.format(YMessages.NewExtensionPage_error_InvalidPackageName,
                             val.getMessage()));
                     setPageComplete(false);
-                    return;
-                } else if (val.getSeverity() == IStatus.WARNING) {
-                    setErrorMessage(null);
-                    setMessage(MessageFormat.format(YMessages.NewExtensionPage_warning_DiscouragedPackageName,
-                            val.getMessage()));
-                    setPageComplete(true);
                     return;
                 }
             } else {
@@ -1326,25 +1264,50 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 return;
             }
 
-            // validate template group
-            if (fTemplateGroup.isUseDefaultSelected() && fTemplateGroup.fDefaultOption == null) {
-                if (fTemplateGroup.fOptions.length > 0) {
-                    // display info only if there are no errors registered
-                    if (StringUtils.isEmpty(getErrorMessage())) {
-                        setErrorMessage(null);
-                        setMessage(YMessages.NewExtensionPage_Message_defaultTemplateDoesNotExist);
-                        setPageComplete(true);
-                    }
-                    return;
-                } else {
-                    setErrorMessage(YMessages.NewExtensionPage_Message_noTemplates);
-                    setPageComplete(false);
-                    return;
-                }
-            }
-            if (!fTemplateGroup.isUseDefaultSelected() && fTemplateGroup.fOptions.length == 0) {
+            // check whether no templates defined
+            if (fTemplateGroup.fOptions.length == 0) {
                 setErrorMessage(YMessages.NewExtensionPage_Message_noTemplates);
                 setPageComplete(false);
+                return;
+            }
+
+            // check whether no template has been chosen
+            if (StringUtils.isEmpty(fTemplateGroup.getTemplate())) {
+                setErrorMessage(YMessages.NewExtensionPage_error_TemplateNotChosen);
+                setPageComplete(false);
+                return;
+            }
+
+            // check whether extension template folder exists
+            File templatePath = new File(fProperties.getProperty(EXTGEN_TEMPLATE_PATH + fTemplateGroup.getTemplate()));
+            if (!templatePath.exists()) {
+                try {
+                    setErrorMessage(MessageFormat.format(YMessages.NewExtensionPage_error_TemplateFolderDoesNotExist,
+                            templatePath.getCanonicalPath()));
+                } catch (IOException e) {
+                    setErrorMessage(MessageFormat.format(YMessages.NewExtensionPage_error_TemplateFolderDoesNotExist,
+                            templatePath.getPath()));
+                }
+                setPageComplete(false);
+                return;
+            }
+
+            // WARNINGS go here
+            if (val.getSeverity() == IStatus.WARNING) {
+                setErrorMessage(null);
+                setMessage(MessageFormat.format(YMessages.NewExtensionPage_warning_DiscouragedPackageName,
+                        val.getMessage()));
+                setPageComplete(true);
+                return;
+            }
+
+            // check whether no template selected. display info only if there are no errors registered
+            if (fTemplateGroup.isUseDefaultSelected() && fTemplateGroup.fDefaultOption == null) {
+                if (StringUtils.isEmpty(getErrorMessage())) {
+                    setErrorMessage(null);
+                    setMessage(YMessages.NewExtensionPage_Message_defaultTemplateDoesNotExist);
+                    setPageComplete(true);
+                }
                 return;
             }
 
