@@ -56,13 +56,11 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.WorkingSetGroup;
 
 import com.lambda.plugin.ExceptionHandler;
@@ -70,7 +68,6 @@ import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.core.IPlatformInstallation;
-import com.lambda.plugin.preferences.PlatformPreferencePage;
 import com.lambda.plugin.ui.SwtUtil;
 import com.lambda.plugin.ui.YUIStatus;
 import com.lambda.plugin.utils.StringUtils;
@@ -84,11 +81,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
     private final NamePackageGroup fNamePackageGroup;
     private final LocationGroup fLocationGroup;
     private final TemplateGroup fTemplateGroup;
-    private final DetectGroup fDetectGroup;
     private final Validator fValidator;
     private WorkingSetGroup fWorkingSetGroup;
     private final Properties fProperties;
     private IJavaProject fCurrProject;
+
+    private final IPlatformInstallation platform;
 
     /**
      * Creates a new {@link NewExtensionWizardPage}.
@@ -98,18 +96,15 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         setPageComplete(false);
         setTitle(YMessages.NewExtensionPage_title);
         setDescription(YMessages.NewExtensionPage_description);
-
-        fProperties = YPlugin.getDefault().getPlatformContainer()
-                .loadExtgenProjectProperties(YPlugin.getDefault().getDefaultPlatform());
-
+        platform = YPlugin.getDefault().getDefaultPlatform();
+        fProperties = platform == null ? null : YPlugin.getDefault().getPlatformContainer()
+                .loadExtgenProjectProperties(platform);
         fNamePackageGroup = new NamePackageGroup();
         fLocationGroup = new LocationGroup();
         fTemplateGroup = new TemplateGroup(fProperties);
-        fDetectGroup = new DetectGroup();
 
         // establish connections
         fNamePackageGroup.addObserver(fLocationGroup);
-        fLocationGroup.addObserver(fDetectGroup);
 
         // initialize all elements
         fNamePackageGroup.notifyObservers();
@@ -166,17 +161,13 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
 
         fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
                 IWorkingSetIDs.RESOURCE });
-
-        Control infoControl = fDetectGroup.createControl(composite);
-        infoControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
         setControl(composite);
     }
 
     @Override
     protected void setControl(Control newControl) {
         Dialog.applyDialogFont(newControl);
-
+        // TODO help for new extension
         PlatformUI.getWorkbench().getHelpSystem().setHelp(newControl, IJavaHelpContextIds.NEW_JAVAPROJECT_WIZARD_PAGE);
 
         super.setControl(newControl);
@@ -265,9 +256,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
 
     public void performFinish(IProgressMonitor monitor) throws CoreException, InterruptedException {
         try {
-            monitor.beginTask(YMessages.NewExtensionPage_operation_create, 3);
             if (fCurrProject == null) {
-                updateProject(new SubProgressMonitor(monitor, 1));
+                updateProject(monitor);
             }
         } finally {
             monitor.done();
@@ -334,20 +324,18 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             monitor = new NullProgressMonitor();
         }
         try {
-            monitor.beginTask(YMessages.NewExtensionPage_operation_initialize, 7);
+            monitor.beginTask(YMessages.NewExtensionPage_operation_create, IProgressMonitor.UNKNOWN);
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
-            // TODO create sub monitor for loading project
             String projectName = getProjectName();
             String packageName = getPackageName();
             String templateName = fTemplateGroup.getTemplate();
             URI location = URIUtil.toURI(fLocationGroup.getLocation());
-            IPlatformInstallation defaultPlatform = YPlugin.getDefault().getDefaultPlatform();
-            setupExtensionData(defaultPlatform, projectName, packageName, templateName, new SubProgressMonitor(monitor,
-                    2));
-            fCurrProject = createJavaProject(defaultPlatform, projectName, packageName, location,
-                    new SubProgressMonitor(monitor, 2));
+            setupExtensionData(platform, projectName, packageName, templateName, new SubProgressMonitor(monitor,
+                    IProgressMonitor.UNKNOWN, SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK));
+            fCurrProject = createJavaProject(platform, projectName, packageName, location, new SubProgressMonitor(
+                    monitor, IProgressMonitor.UNKNOWN, SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK));
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
@@ -361,38 +349,49 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
 
     private IJavaProject createJavaProject(IPlatformInstallation defaultPlatform, String projectName,
             String packageName, URI locationURI, IProgressMonitor monitor) throws CoreException {
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        IProject project = root.getProject(projectName);
-        if (!project.exists()) {
-            IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
-            if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
-                locationURI = null;
+        try {
+            monitor.subTask(YMessages.NewExtensionPage_operation_createproject);
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            IProject project = root.getProject(projectName);
+            if (!project.exists()) {
+                IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
+                if (locationURI != null
+                        && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
+                    locationURI = null;
+                }
+                desc.setLocationURI(locationURI);
+                project.create(desc, monitor);
+            } else {
+                project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
             }
-            desc.setLocationURI(locationURI);
-            project.create(desc, monitor);
-        } else {
-            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+
+            if (!project.isOpen()) {
+                project.open(monitor);
+            }
+
+            YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+            YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+
+            IJavaProject jproject = JavaCore.create(project);
+            return jproject;
+        } finally {
+            monitor.done();
         }
-
-        if (!project.isOpen()) {
-            project.open(monitor);
-        }
-
-        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
-
-        IJavaProject jproject = JavaCore.create(project);
-        return jproject;
     }
 
-    private void setupExtensionData(IPlatformInstallation defaultPlatform, String projectName, String packageName,
-            String templateName, SubProgressMonitor subProgressMonitor) {
-
-        if (fProperties != null) {
+    private void setupExtensionData(IPlatformInstallation platform, String projectName, String packageName,
+            String templateName, IProgressMonitor monitor) {
+        try {
+            monitor.subTask(YMessages.NewExtensionPage_operation_copytemplate);
             String templatePathKey = EXTGEN_TEMPLATE_PATH + templateName;
             String templatePath = fProperties.getProperty(templatePathKey);
 
-            Project antProject = YPlugin.getDefault().getPlatformContainer().loadExtgenProject(defaultPlatform);
+            Project antProject = YPlugin.getDefault().getPlatformContainer().loadExtgenProject(platform);
+
+            if (monitor.isCanceled()) {
+                throw new OperationCanceledException();
+            }
+
             antProject.setProperty("extgen.extension.name", projectName);
             antProject.setProperty("extgen.package", packageName);
             antProject.setProperty("extgen.package.directory", packageName.replaceAll("\\.", "/"));
@@ -423,10 +422,9 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 antProject.setProperty("extension.managersuperclassremote", prefix + "session" + suffix + "Remote");
             }
 
-            antProject.setProperty("extgen.directory.tmp",
-                    defaultPlatform.getTempLocation().append("hybris").append("extgen").toOSString());
+            antProject.setProperty("extgen.directory.tmp", platform.getTempLocation().append("hybris").append("extgen")
+                    .toOSString());
             antProject.setProperty("extension.directory.target", fLocationGroup.getLocation().toOSString());
-
             //
             // <!-- in generated extension, disable jspcompile as default value -->
             // <replaceregexp file="${extgen.directory.tmp}/extensioninfo.xml"
@@ -437,7 +435,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             antProject.createTask("prepare_extgen_temp").perform();
             antProject.createTask("filter_extgen_files").perform();
             antProject.createTask("extgen_copy_extension").perform();
-
+        } finally {
+            monitor.done();
         }
     }
 
@@ -753,11 +752,14 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         }
 
         private IPath getCustomExtensionFolder(String name) {
-            IPath location = YPlugin.getDefault().getDefaultPlatform().getCustomExtensionLocation();
-            if (StringUtils.isEmpty(name)) {
-                return location;
+            if (platform != null) {
+                IPath location = platform.getCustomExtensionLocation();
+                if (StringUtils.isEmpty(name)) {
+                    return location;
+                }
+                return location.append(name);
             }
-            return location.append(name);
+            return new Path(name);
         }
 
         /*
@@ -1056,114 +1058,6 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
     }
 
     /**
-     * Show a warning when the project location contains files.
-     */
-    private final class DetectGroup extends Observable implements Observer, SelectionListener {
-
-        private Link fHintText;
-        private Label fIcon;
-        private boolean fDetect;
-
-        public DetectGroup() {
-            fDetect = false;
-        }
-
-        public Control createControl(Composite parent) {
-
-            Composite composite = new Composite(parent, SWT.NONE);
-            composite.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-            GridLayout layout = new GridLayout(2, false);
-            layout.horizontalSpacing = 10;
-            composite.setLayout(layout);
-
-            fIcon = new Label(composite, SWT.LEFT);
-            fIcon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
-            GridData gridData = new GridData(SWT.LEFT, SWT.TOP, false, false);
-            fIcon.setLayoutData(gridData);
-            fIcon.setVisible(false);
-            fHintText = new Link(composite, SWT.WRAP);
-            fHintText.setFont(composite.getFont());
-            fHintText.addSelectionListener(this);
-            gridData = new GridData(GridData.FILL, SWT.FILL, true, true);
-            gridData.widthHint = convertWidthInCharsToPixels(50);
-            gridData.heightHint = convertHeightInCharsToPixels(3);
-            fHintText.setLayoutData(gridData);
-
-            handlePossiblePlatformChange();
-            return composite;
-        }
-
-        public void handlePossiblePlatformChange() {
-            if (YPlugin.getDefault().getDefaultPlatform() == null) {
-                fHintText.setText(YMessages.NewExtensionPage_NoPlatform_link);
-                fHintText.setVisible(true);
-                fIcon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_WARNING));
-                fIcon.setVisible(true);
-                return;
-            } else {
-                fHintText.setVisible(false);
-                fIcon.setVisible(false);
-            }
-        }
-
-        private boolean computeDetectState() {
-            if (fLocationGroup.isUseDefaultSelected()) {
-                String name = fNamePackageGroup.getName();
-                if (name.length() == 0 || ResourcesPlugin.getWorkspace().getRoot().findMember(name) != null) {
-                    return false;
-                } else {
-                    final File directory = fLocationGroup.getLocation().append(name).toFile();
-                    return directory.isDirectory();
-                }
-            } else {
-                final File directory = fLocationGroup.getLocation().toFile();
-                return directory.isDirectory();
-            }
-        }
-
-        public void update(Observable o, Object arg) {
-            if (o instanceof LocationGroup) {
-                boolean oldDetectState = fDetect;
-                fDetect = computeDetectState();
-
-                if (oldDetectState != fDetect) {
-                    setChanged();
-                    notifyObservers();
-
-                    if (fDetect) {
-                        fHintText.setVisible(true);
-                        fHintText.setText(YMessages.NewExtensionPage_DetectGroup_message);
-                        fIcon.setImage(Dialog.getImage(Dialog.DLG_IMG_MESSAGE_INFO));
-                        fIcon.setVisible(true);
-                    } else {
-                        handlePossiblePlatformChange();
-                    }
-                }
-            }
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.events.SelectionListener#widgetSelected(org.eclipse.swt.events.SelectionEvent)
-         */
-        public void widgetSelected(SelectionEvent e) {
-            widgetDefaultSelected(e);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.swt.events.SelectionListener#widgetDefaultSelected(org.eclipse.swt.events.SelectionEvent)
-         */
-        public void widgetDefaultSelected(SelectionEvent e) {
-            String platformID = PlatformPreferencePage.ID;
-            PreferencesUtil.createPreferenceDialogOn(getShell(), platformID, new String[] { platformID }, null).open();
-            handlePossiblePlatformChange();
-        }
-    }
-
-    /**
      * Validate this page and show appropriate warnings and error YMessages.
      */
     private final class Validator implements Observer {
@@ -1182,6 +1076,13 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         }
 
         private void validateForm() {
+            // check if there is eCommerce platform
+            if (platform == null) {
+                setErrorMessage(YMessages.NewExtensionPage_error_PlatformDoesNotExist);
+                setPageComplete(false);
+                return;
+            }
+
             final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
             final String name = fNamePackageGroup.getName();

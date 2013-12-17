@@ -276,13 +276,12 @@ public final class YMessages extends NLS {
     public static String NewExtensionPage_title;
     public static String NewExtensionPage_description;
     public static String NewExtensionPage_NoPlatform_link;
-    public static String NewExtensionPage_DetectGroup_message;
     public static String NewExtensionPage_operation_create;
+    public static String NewExtensionPage_operation_copytemplate;
+    public static String NewExtensionPage_operation_createproject;
     public static String NewExtensionPage_error_remove_title;
     public static String NewExtensionPage_error_remove_message;
     public static String NewExtensionPage_operation_remove;
-    public static String NewExtensionPage_operation_initialize;
-    public static String NewExtensionPage_operation_copying_template;
     public static String NewExtensionPage_error_EnterPackageName;
     public static String NewExtensionPage_error_InvalidPackageName;
     public static String NewExtensionPage_error_IsOutputFolder;
@@ -292,6 +291,7 @@ public final class YMessages extends NLS {
     public static String NewExtensionPage_error_PackageNotShown;
     public static String NewExtensionPage_error_PackageNameFiltered;
     public static String NewExtensionPage_error_TemplateFolderDoesNotExist;
+    public static String NewExtensionPage_error_PlatformDoesNotExist;
     public static String NewExtensionPage_error_TemplateNotChosen;
     public static String NewExtensionPage_warning_DiscouragedPackageName;
     public static String NewExtensionPage_Message_enterProjectName;

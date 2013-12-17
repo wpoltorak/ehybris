@@ -20,6 +20,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
@@ -345,6 +346,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
                         Extensioninfo info = YPlugin.getDefault().getPlatformContainer().loadExtensionInfo(extInfo);
                         // TODO provide convertion between jaxb model and internal model - use map<Ipath,Info> here
+                        // TODO support autoload attribute + hybris5 features
                         boolean referenced = false;
                         for (ExtensionType extensionType : linkedExtensions) {
                             if (new Path(new File(extensionType.getDir()).getAbsolutePath()).equals(path)) {
@@ -453,6 +455,9 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     }
 
     boolean createExtensions(IProgressMonitor monitor) throws CoreException {
+        if (monitor == null) {
+            monitor = new NullProgressMonitor();
+        }
         final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
         Display.getDefault().syncExec(new Runnable() {
             public void run() {
@@ -466,53 +471,62 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             }
         });
 
-        IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        for (PlatformExtension extension : extensions) {
-            if (extension instanceof PlatformConfig) {
-                createConfig(root, (PlatformConfig) extension, new SubProgressMonitor(monitor, 2));
-            } else if (extension instanceof PlatformRoot) {
-                createPlatform(root, (PlatformRoot) extension, new SubProgressMonitor(monitor, 2));
-            } else {
-                createExtension(root, extension, new SubProgressMonitor(monitor, 2));
+        try {
+            monitor.beginTask("Importing eCommerce platform...", extensions.size());
+            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+            for (PlatformExtension extension : extensions) {
+                SubProgressMonitor submonitor = new SubProgressMonitor(monitor, 1,
+                        SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
+                try {
+                    submonitor.subTask("importing " + extension.projectName);
+                    if (extension instanceof PlatformConfig) {
+                        createConfig(root, (PlatformConfig) extension, submonitor);
+                    } else if (extension instanceof PlatformRoot) {
+                        createPlatform(root, (PlatformRoot) extension, submonitor);
+                    } else {
+                        createExtension(root, extension, submonitor);
+                    }
+                } finally {
+                    submonitor.done();
+                }
             }
+            return true;
+        } finally {
+            monitor.done();
         }
-        return true;
     }
 
     private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, IProgressMonitor monitor) throws CoreException {
-        createExtension(root, ext, monitor);
-        YPlugin.getDefault().getPlatformContainer().setDefaultPlatform(defaultPlatform);
+        doCreateExtension(root, ext, monitor);
+        IPlatformInstallation platform = YPlugin.getDefault().getPlatformContainer()
+                .verifyPlatformLocation(ext.path.toFile());
+        if (platform != null) {
+            YPlugin.getDefault().getPlatformContainer().setDefaultPlatform(platform);
+        }
     }
 
     private void createExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
             throws CoreException {
-        IProject project = root.getProject(ext.projectName);
-
-        if (!project.exists()) {
-            IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
-            URI locationURI = URIUtil.toURI(ext.path);
-            if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
-                locationURI = null;
-            }
-            desc.setLocationURI(locationURI);
-            project.create(desc, monitor);
-        } else {
-            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-        }
-
-        if (!project.isOpen()) {
-            project.open(monitor);
-        }
-
-        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
-
-        JavaCore.create(project);
+        doCreateExtension(root, ext, monitor);
     }
 
     private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
-        IProject project = root.getProject(ext.projectName);
+        IProject project = createProject(root, ext, monitor);
+        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        JavaCore.create(project);
+    }
 
+    private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+            throws CoreException {
+        IProject project = createProject(root, ext, monitor);
+        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+        JavaCore.create(project);
+    }
+
+    private IProject createProject(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+            throws CoreException {
+        IProject project = root.getProject(ext.projectName);
         if (!project.exists()) {
             IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
             URI locationURI = URIUtil.toURI(ext.path);
@@ -524,13 +538,10 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         } else {
             project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
         }
-
         if (!project.isOpen()) {
             project.open(monitor);
         }
-
-        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        JavaCore.create(project);
+        return project;
     }
 
     private class PlatformRoot extends PlatformExtension {

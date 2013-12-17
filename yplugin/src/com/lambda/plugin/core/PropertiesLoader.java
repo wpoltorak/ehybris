@@ -1,10 +1,12 @@
 package com.lambda.plugin.core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 
 import com.lambda.plugin.YPlugin;
@@ -12,17 +14,15 @@ import com.lambda.plugin.YPlugin;
 public class PropertiesLoader {
 
     Properties loadProperties(Properties baseProperties, IPath propertiesLocation) {
+        FileInputStream in = null;
         try {
             Properties properties = new Properties(baseProperties);
-            FileInputStream in = null;
-            try {
-                in = new FileInputStream(propertiesLocation.toFile());
-                properties.load(in);
-            } finally {
-                if (in != null) {
-                    in.close();
-                }
+            File file = propertiesLocation.toFile();
+            if (!file.exists()) {
+                return null;
             }
+            in = new FileInputStream(file);
+            properties.load(in);
             PropertiesSubstitution.evaluate(properties);
             return properties;
         } catch (FileNotFoundException e) {
@@ -31,6 +31,8 @@ public class PropertiesLoader {
         } catch (IOException e) {
             YPlugin.logError(e);
             return null;
+        } finally {
+            IOUtils.closeQuietly(in);
         }
     }
 

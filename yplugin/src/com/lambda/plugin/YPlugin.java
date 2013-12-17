@@ -304,15 +304,17 @@ public class YPlugin extends AbstractUIPlugin {
         return null;
     }
 
+    @Deprecated
     public IPlatformInstallation[] getPlatformInstallations() {
-        initplatformInstallations();
-        List<IPlatformInstallation> platformInstallatons = getPlatformContainer().getPlatforms();
-        return platformInstallatons.toArray(new IPlatformInstallation[platformInstallatons.size()]);
+        initplatformInstallation();
+        // List<IPlatformInstallation> platformInstallatons = getPlatformContainer().getPlatforms();
+        // return platformInstallatons.toArray(new IPlatformInstallation[platformInstallatons.size()]);
+        return new IPlatformInstallation[0];
     }
 
-    private void initplatformInstallations() {
+    private void initplatformInstallation() {
         synchronized (fPlatformTypeLock) {
-            getPlatformContainer().initializePlatforms();
+            getPlatformContainer().initializePlatform();
         }
     }
 
@@ -322,7 +324,7 @@ public class YPlugin extends AbstractUIPlugin {
     }
 
     public IPlatformInstallation getDefaultPlatform() {
-        initplatformInstallations();
+        initplatformInstallation();
         return getPlatformContainer().getDefaultPlatform();
     }
 
