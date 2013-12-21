@@ -56,10 +56,10 @@ block	returns [ImpexASTNode node]
 	}
 	
 	:^(BLOCK (header {header = $header.node;})
-	^(RECORDS (record {records.add($record.node);})*)
+	^(RECORDS (record[$header.node] {records.add($record.node);})*)
 	);
 
-header	returns [ImpexASTNode node]
+header	returns [HeaderNode node]
 	@init{
 		CommonToken mode;
 		CommonToken type;
@@ -81,7 +81,7 @@ headerModifierAssignment	 returns [ImpexASTNode node]
 headerModifier  returns [CommonTree modifier]
 	:v=(BatchMode | CacheUnique | Processor) {modifier = $v;};
 
-record	returns [ImpexASTNode node]
+record	[HeaderNode header] returns [ImpexASTNode node]
 	@init{
 	    CommonToken subType = null;
 	    List<ImpexASTNode> fields = new ArrayList<ImpexASTNode>();

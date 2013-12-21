@@ -49,13 +49,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+//import com.lambda.impex.ast.tree.*;
 }
 
 @parser::members {
 
 private ImpexContext context = new ImpexContext();
 
-// comment out this constructor if you need to debug in ANTLRWorks
 public ImpexParser(final ImpexContext context, final TokenStream input) {
    this(input);
    this.context = context;
@@ -245,20 +245,28 @@ private String removeLineBreaks(final String text){
 parse
   :  (t=.{System.out.printf("\%s: \%-7s \n", tokenNames[$t.type], $t.text);})* EOF;
 
-sync
-	@init{
-	    syncToSet();
-	}:/* nothing */;
+//sync
+//	@init{
+//	    syncToSet();
+//	}:/* nothing */
+//	;
 
-impex	: sync ((Lb |  v+=block | macro)  sync)* EOF
+impex	: /*sync*/ (( Lb | macro |  v+=block)  /*sync*/)* EOF
 	 -> ^(IMPEX/*<ImpexTree>*/ ^(BLOCKS block*));
-catch [RecognitionException ex] {
-    reportError(ex);
-    consumeUntil(input, new BitSet(new long[] { Insert, InsertUpdate, Update, Remove, Macrodef }));
-}
+//catch [RecognitionException ex] {
+//    reportError(ex);
+//    consumeUntil(input, new BitSet(new long[] { Insert, InsertUpdate, Update, Remove, Macrodef }));
+//}
 	 
-block	:  header  (((Lb )+ (macro  (Lb )*)* record) )*
-	-> ^(BLOCK header ^(RECORDS record*));
+
+block	:  header  ((Lb+ (macro  Lb*)* record) )*
+//block	:  header  (
+//		(Lb+ macro)=> Lb+ macro
+//		|
+//		(Lb+ record)=> Lb+ record
+//	)*
+//block	:  header  ((Lb+ macro) | (Lb+ record))+ (Lb+ record)
+	-> ^(BLOCK/*<BlockTree>*/ header ^(RECORDS/*<RecordTree>*/ record*));
 
 header
 	: headerMode  headerTypeName (LBracket headerModifierAssignment (Comma  headerModifierAssignment)* RBracket)*  (Semicolon attribute)* 
@@ -274,12 +282,12 @@ headerModifier
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? (field )+
+   	: /*sync*/ (Identifier /*sync*/)? (field )+
     	-> ^(RECORD ^(SUBTYPE Identifier?) ^(FIELDS field+));
-catch [RecognitionException ex] {
-    reportError(ex);
-    consumeUntil(input, new BitSet(new long[] { Lb }));
-}
+//catch [RecognitionException ex] {
+//    reportError(ex);
+//    consumeUntil(input, new BitSet(new long[] { Lb }));
+//}
 	
 field	:QuotedField | Field ;
 

@@ -1,4 +1,4 @@
-// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-01-26 20:11:18
+// $ANTLR 3.4 com/lambda/impex/ast/Impex.g 2013-02-04 22:08:39
 
  package com.lambda.impex.ast;  
 
@@ -199,8 +199,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Insert;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:318:9: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) )
-            // com/lambda/impex/ast/Impex.g:318:10: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' )
+            // com/lambda/impex/ast/Impex.g:326:9: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) )
+            // com/lambda/impex/ast/Impex.g:326:10: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -278,8 +278,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = InsertUpdate;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:319:15: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:319:16: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:327:15: ( ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:327:16: ( 'I' | 'i' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'T' | 't' ) '_' ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -419,8 +419,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Update;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:320:9: ( ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:320:10: ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:328:9: ( ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:328:10: ( 'U' | 'u' ) ( 'P' | 'p' ) ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
                 input.consume();
@@ -498,8 +498,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Remove;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:321:9: ( ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:321:10: ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:329:9: ( ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:329:10: ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'V' | 'v' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='R'||input.LA(1)=='r' ) {
                 input.consume();
@@ -577,8 +577,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = BatchMode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:323:12: ( ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:323:13: ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:331:12: ( ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:331:13: ( 'B' | 'b' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                 input.consume();
@@ -686,8 +686,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CacheUnique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:324:14: ( ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:324:15: ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:332:14: ( ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:332:15: ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'C' | 'c' ) ( 'H' | 'h' ) ( 'E' | 'e' ) ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -815,8 +815,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Processor;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:325:12: ( ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:325:13: ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:333:12: ( ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:333:13: ( 'P' | 'p' ) ( 'R' | 'r' ) ( 'O' | 'o' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'S' | 's' ) ( 'S' | 's' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -924,8 +924,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Alias;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:327:8: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' ) )
-            // com/lambda/impex/ast/Impex.g:327:9: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' )
+            // com/lambda/impex/ast/Impex.g:335:8: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' ) )
+            // com/lambda/impex/ast/Impex.g:335:9: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'A' | 'a' ) ( 'S' | 's' )
             {
             if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
                 input.consume();
@@ -993,8 +993,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = AllowNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:328:12: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
-            // com/lambda/impex/ast/Impex.g:328:13: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
+            // com/lambda/impex/ast/Impex.g:336:12: ( ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
+            // com/lambda/impex/ast/Impex.g:336:13: ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'O' | 'o' ) ( 'W' | 'w' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
                 input.consume();
@@ -1102,8 +1102,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CellDecorator;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:329:15: ( ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:329:16: ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:337:15: ( ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:337:16: ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -1251,8 +1251,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = CollectionDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:330:22: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:330:23: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:338:22: ( ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:338:23: ( 'C' | 'c' ) ( 'O' | 'o' ) ( 'L' | 'l' ) ( 'L' | 'l' ) ( 'E' | 'e' ) ( 'C' | 'c' ) ( 'T' | 't' ) ( 'I' | 'i' ) ( 'O' | 'o' ) ( 'N' | 'n' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='C'||input.LA(1)=='c' ) {
                 input.consume();
@@ -1462,8 +1462,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Dateformat;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:331:13: ( ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
-            // com/lambda/impex/ast/Impex.g:331:14: ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
+            // com/lambda/impex/ast/Impex.g:339:13: ( ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
+            // com/lambda/impex/ast/Impex.g:339:14: ( 'D' | 'd' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
                 input.consume();
@@ -1581,8 +1581,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Default;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:332:10: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
-            // com/lambda/impex/ast/Impex.g:332:11: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
+            // com/lambda/impex/ast/Impex.g:340:10: ( ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' ) )
+            // com/lambda/impex/ast/Impex.g:340:11: ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'F' | 'f' ) ( 'A' | 'a' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
                 input.consume();
@@ -1670,8 +1670,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = ForceWrite;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:333:13: ( ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:333:14: ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:341:13: ( ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:341:14: ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'C' | 'c' ) ( 'E' | 'e' ) ( 'W' | 'w' ) ( 'R' | 'r' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
                 input.consume();
@@ -1789,8 +1789,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreKeyCase;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:334:15: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:334:16: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:342:15: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:342:16: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) ( 'C' | 'c' ) ( 'A' | 'a' ) ( 'S' | 's' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -1938,8 +1938,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = IgnoreNull;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:335:13: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
-            // com/lambda/impex/ast/Impex.g:335:14: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
+            // com/lambda/impex/ast/Impex.g:343:13: ( ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' ) )
+            // com/lambda/impex/ast/Impex.g:343:14: ( 'I' | 'i' ) ( 'G' | 'g' ) ( 'N' | 'n' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'E' | 'e' ) ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'L' | 'l' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='I'||input.LA(1)=='i' ) {
                 input.consume();
@@ -2057,8 +2057,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = KeyToValueDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:336:21: ( ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:336:22: ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:344:21: ( ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:344:22: ( 'K' | 'k' ) ( 'E' | 'e' ) ( 'Y' | 'y' ) '2' ( 'V' | 'v' ) ( 'A' | 'a' ) ( 'L' | 'l' ) ( 'U' | 'u' ) ( 'E' | 'e' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='K'||input.LA(1)=='k' ) {
                 input.consume();
@@ -2250,8 +2250,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Lang;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:337:7: ( ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' ) )
-            // com/lambda/impex/ast/Impex.g:337:8: ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' )
+            // com/lambda/impex/ast/Impex.g:345:7: ( ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' ) )
+            // com/lambda/impex/ast/Impex.g:345:8: ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'G' | 'g' )
             {
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                 input.consume();
@@ -2309,8 +2309,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = MapDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:338:14: ( ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:338:15: ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:346:14: ( ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:346:15: ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'P' | 'p' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='M'||input.LA(1)=='m' ) {
                 input.consume();
@@ -2450,8 +2450,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Mode;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:339:7: ( ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:339:8: ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:347:7: ( ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:347:8: ( 'M' | 'm' ) ( 'O' | 'o' ) ( 'D' | 'd' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='M'||input.LA(1)=='m' ) {
                 input.consume();
@@ -2509,8 +2509,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = NumberFormat;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:340:14: ( ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
-            // com/lambda/impex/ast/Impex.g:340:15: ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
+            // com/lambda/impex/ast/Impex.g:348:14: ( ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' ) )
+            // com/lambda/impex/ast/Impex.g:348:15: ( 'N' | 'n' ) ( 'U' | 'u' ) ( 'M' | 'm' ) ( 'B' | 'b' ) ( 'E' | 'e' ) ( 'R' | 'r' ) ( 'F' | 'f' ) ( 'O' | 'o' ) ( 'R' | 'r' ) ( 'M' | 'm' ) ( 'A' | 'a' ) ( 'T' | 't' )
             {
             if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
                 input.consume();
@@ -2648,8 +2648,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = PathDelimiter;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:341:15: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:341:16: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:349:15: ( ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:349:16: ( 'P' | 'p' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'H' | 'h' ) '-' ( 'D' | 'd' ) ( 'E' | 'e' ) ( 'L' | 'l' ) ( 'I' | 'i' ) ( 'M' | 'm' ) ( 'I' | 'i' ) ( 'T' | 't' ) ( 'E' | 'e' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -2799,8 +2799,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Pos;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:342:6: ( ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' ) )
-            // com/lambda/impex/ast/Impex.g:342:7: ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' )
+            // com/lambda/impex/ast/Impex.g:350:6: ( ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' ) )
+            // com/lambda/impex/ast/Impex.g:350:7: ( 'P' | 'p' ) ( 'O' | 'o' ) ( 'S' | 's' )
             {
             if ( input.LA(1)=='P'||input.LA(1)=='p' ) {
                 input.consume();
@@ -2848,8 +2848,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Translator;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:343:13: ( ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
-            // com/lambda/impex/ast/Impex.g:343:14: ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
+            // com/lambda/impex/ast/Impex.g:351:13: ( ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' ) )
+            // com/lambda/impex/ast/Impex.g:351:14: ( 'T' | 't' ) ( 'R' | 'r' ) ( 'A' | 'a' ) ( 'N' | 'n' ) ( 'S' | 's' ) ( 'L' | 'l' ) ( 'A' | 'a' ) ( 'T' | 't' ) ( 'O' | 'o' ) ( 'R' | 'r' )
             {
             if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
                 input.consume();
@@ -2967,8 +2967,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Unique;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:344:9: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
-            // com/lambda/impex/ast/Impex.g:344:10: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
+            // com/lambda/impex/ast/Impex.g:352:9: ( ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' ) )
+            // com/lambda/impex/ast/Impex.g:352:10: ( 'U' | 'u' ) ( 'N' | 'n' ) ( 'I' | 'i' ) ( 'Q' | 'q' ) ( 'U' | 'u' ) ( 'E' | 'e' )
             {
             if ( input.LA(1)=='U'||input.LA(1)=='u' ) {
                 input.consume();
@@ -3046,8 +3046,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Virtual;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:345:10: ( ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' ) )
-            // com/lambda/impex/ast/Impex.g:345:11: ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' )
+            // com/lambda/impex/ast/Impex.g:353:10: ( ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' ) )
+            // com/lambda/impex/ast/Impex.g:353:11: ( 'V' | 'v' ) ( 'I' | 'i' ) ( 'R' | 'r' ) ( 'T' | 't' ) ( 'U' | 'u' ) ( 'A' | 'a' ) ( 'L' | 'l' )
             {
             if ( input.LA(1)=='V'||input.LA(1)=='v' ) {
                 input.consume();
@@ -3135,8 +3135,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Comma;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:348:8: ( ',' )
-            // com/lambda/impex/ast/Impex.g:348:9: ','
+            // com/lambda/impex/ast/Impex.g:356:8: ( ',' )
+            // com/lambda/impex/ast/Impex.g:356:9: ','
             {
             match(','); 
 
@@ -3156,8 +3156,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Dot;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:349:5: ( '.' )
-            // com/lambda/impex/ast/Impex.g:349:6: '.'
+            // com/lambda/impex/ast/Impex.g:357:5: ( '.' )
+            // com/lambda/impex/ast/Impex.g:357:6: '.'
             {
             match('.'); 
 
@@ -3177,8 +3177,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = DoubleQuote;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:350:13: ( '\"' )
-            // com/lambda/impex/ast/Impex.g:350:14: '\"'
+            // com/lambda/impex/ast/Impex.g:358:13: ( '\"' )
+            // com/lambda/impex/ast/Impex.g:358:14: '\"'
             {
             match('\"'); 
 
@@ -3198,8 +3198,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Quote;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:351:7: ( '\\'' )
-            // com/lambda/impex/ast/Impex.g:351:8: '\\''
+            // com/lambda/impex/ast/Impex.g:359:7: ( '\\'' )
+            // com/lambda/impex/ast/Impex.g:359:8: '\\''
             {
             match('\''); 
 
@@ -3219,8 +3219,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Semicolon;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:352:11: ( ';' )
-            // com/lambda/impex/ast/Impex.g:352:12: ';'
+            // com/lambda/impex/ast/Impex.g:360:11: ( ';' )
+            // com/lambda/impex/ast/Impex.g:360:12: ';'
             {
             match(';'); 
 
@@ -3240,8 +3240,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:353:10: ( ']' )
-            // com/lambda/impex/ast/Impex.g:353:11: ']'
+            // com/lambda/impex/ast/Impex.g:361:10: ( ']' )
+            // com/lambda/impex/ast/Impex.g:361:11: ']'
             {
             match(']'); 
 
@@ -3261,8 +3261,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LBracket;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:354:10: ( '[' )
-            // com/lambda/impex/ast/Impex.g:354:11: '['
+            // com/lambda/impex/ast/Impex.g:362:10: ( '[' )
+            // com/lambda/impex/ast/Impex.g:362:11: '['
             {
             match('['); 
 
@@ -3282,8 +3282,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = LParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:355:15: ( '(' )
-            // com/lambda/impex/ast/Impex.g:355:16: '('
+            // com/lambda/impex/ast/Impex.g:363:15: ( '(' )
+            // com/lambda/impex/ast/Impex.g:363:16: '('
             {
             match('('); 
 
@@ -3303,8 +3303,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = RParenthesis;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:356:14: ( ')' )
-            // com/lambda/impex/ast/Impex.g:356:15: ')'
+            // com/lambda/impex/ast/Impex.g:364:14: ( ')' )
+            // com/lambda/impex/ast/Impex.g:364:15: ')'
             {
             match(')'); 
 
@@ -3324,8 +3324,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Equals;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:357:8: ( '=' )
-            // com/lambda/impex/ast/Impex.g:357:9: '='
+            // com/lambda/impex/ast/Impex.g:365:8: ( '=' )
+            // com/lambda/impex/ast/Impex.g:365:9: '='
             {
             match('='); 
 
@@ -3345,8 +3345,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Or;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:358:4: ( '|' )
-            // com/lambda/impex/ast/Impex.g:358:5: '|'
+            // com/lambda/impex/ast/Impex.g:366:4: ( '|' )
+            // com/lambda/impex/ast/Impex.g:366:5: '|'
             {
             match('|'); 
 
@@ -3364,12 +3364,12 @@ public class ImpexLexer extends Lexer {
     // $ANTLR start "Separator"
     public final void mSeparator() throws RecognitionException {
         try {
-            // com/lambda/impex/ast/Impex.g:371:2: ( '\\\\' ( Ws )* Lb )
-            // com/lambda/impex/ast/Impex.g:371:3: '\\\\' ( Ws )* Lb
+            // com/lambda/impex/ast/Impex.g:379:2: ( '\\\\' ( Ws )* Lb )
+            // com/lambda/impex/ast/Impex.g:379:3: '\\\\' ( Ws )* Lb
             {
             match('\\'); 
 
-            // com/lambda/impex/ast/Impex.g:371:8: ( Ws )*
+            // com/lambda/impex/ast/Impex.g:379:8: ( Ws )*
             loop1:
             do {
                 int alt1=2;
@@ -3385,7 +3385,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:371:8: Ws
+            	    // com/lambda/impex/ast/Impex.g:379:8: Ws
             	    {
             	    mWs(); 
 
@@ -3417,8 +3417,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Macrodef;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:374:2: ( '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // com/lambda/impex/ast/Impex.g:374:3: '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:382:2: ( '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // com/lambda/impex/ast/Impex.g:382:3: '$' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('$'); 
 
@@ -3432,7 +3432,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:374:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:382:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop2:
             do {
                 int alt2=2;
@@ -3546,7 +3546,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = ValueAssignment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:377:2: ({...}? => '=' (~ ( '\\r' | '\\n' ) | Separator )* |{...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* ) |)
+            // com/lambda/impex/ast/Impex.g:385:2: ({...}? => '=' (~ ( '\\r' | '\\n' ) | Separator )* |{...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* ) |)
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -3572,7 +3572,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:377:3: {...}? => '=' (~ ( '\\r' | '\\n' ) | Separator )*
+                    // com/lambda/impex/ast/Impex.g:385:3: {...}? => '=' (~ ( '\\r' | '\\n' ) | Separator )*
                     {
                     if ( !((isMacroAssignment())) ) {
                         throw new FailedPredicateException(input, "ValueAssignment", "isMacroAssignment()");
@@ -3580,14 +3580,14 @@ public class ImpexLexer extends Lexer {
 
                     match('='); 
 
-                    // com/lambda/impex/ast/Impex.g:377:34: (~ ( '\\r' | '\\n' ) | Separator )*
+                    // com/lambda/impex/ast/Impex.g:385:34: (~ ( '\\r' | '\\n' ) | Separator )*
                     loop3:
                     do {
                         int alt3=3;
                         alt3 = dfa3.predict(input);
                         switch (alt3) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:377:35: ~ ( '\\r' | '\\n' )
+                    	    // com/lambda/impex/ast/Impex.g:385:35: ~ ( '\\r' | '\\n' )
                     	    {
                     	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) {
                     	        input.consume();
@@ -3602,7 +3602,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // com/lambda/impex/ast/Impex.g:377:52: Separator
+                    	    // com/lambda/impex/ast/Impex.g:385:52: Separator
                     	    {
                     	    mSeparator(); 
 
@@ -3621,7 +3621,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:378:3: {...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
+                    // com/lambda/impex/ast/Impex.g:386:3: {...}? => '=' ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
                     {
                     if ( !((isModifierAssignment())) ) {
                         throw new FailedPredicateException(input, "ValueAssignment", "isModifierAssignment()");
@@ -3629,14 +3629,14 @@ public class ImpexLexer extends Lexer {
 
                     match('='); 
 
-                    // com/lambda/impex/ast/Impex.g:378:36: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
+                    // com/lambda/impex/ast/Impex.g:386:36: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )
                     int alt7=2;
                     alt7 = dfa7.predict(input);
                     switch (alt7) {
                         case 1 :
-                            // com/lambda/impex/ast/Impex.g:378:37: ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"'
+                            // com/lambda/impex/ast/Impex.g:386:37: ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"'
                             {
-                            // com/lambda/impex/ast/Impex.g:378:37: ( ' ' | '\\t' )*
+                            // com/lambda/impex/ast/Impex.g:386:37: ( ' ' | '\\t' )*
                             loop4:
                             do {
                                 int alt4=2;
@@ -3675,7 +3675,7 @@ public class ImpexLexer extends Lexer {
 
                             match('\"'); 
 
-                            // com/lambda/impex/ast/Impex.g:378:54: (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )*
+                            // com/lambda/impex/ast/Impex.g:386:54: (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )*
                             loop5:
                             do {
                                 int alt5=3;
@@ -3699,7 +3699,7 @@ public class ImpexLexer extends Lexer {
 
                                 switch (alt5) {
                             	case 1 :
-                            	    // com/lambda/impex/ast/Impex.g:378:55: ~ ( '\\r' | '\\n' | '\"' )
+                            	    // com/lambda/impex/ast/Impex.g:386:55: ~ ( '\\r' | '\\n' | '\"' )
                             	    {
                             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) {
                             	        input.consume();
@@ -3714,7 +3714,7 @@ public class ImpexLexer extends Lexer {
                             	    }
                             	    break;
                             	case 2 :
-                            	    // com/lambda/impex/ast/Impex.g:378:79: '\"' '\"'
+                            	    // com/lambda/impex/ast/Impex.g:386:79: '\"' '\"'
                             	    {
                             	    match('\"'); 
 
@@ -3736,9 +3736,9 @@ public class ImpexLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // com/lambda/impex/ast/Impex.g:378:209: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
+                            // com/lambda/impex/ast/Impex.g:386:209: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
                             {
-                            // com/lambda/impex/ast/Impex.g:378:209: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
+                            // com/lambda/impex/ast/Impex.g:386:209: (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )*
                             loop6:
                             do {
                                 int alt6=2;
@@ -3783,7 +3783,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // com/lambda/impex/ast/Impex.g:379:17: 
+                    // com/lambda/impex/ast/Impex.g:387:17: 
                     {
                     }
                     break;
@@ -3803,14 +3803,14 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = UserRights;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:383:2: ( '$START_USERRIGHTS' ( . )* '$END_USERRIGHTS' ( Semicolon | Ws )* )
-            // com/lambda/impex/ast/Impex.g:383:3: '$START_USERRIGHTS' ( . )* '$END_USERRIGHTS' ( Semicolon | Ws )*
+            // com/lambda/impex/ast/Impex.g:391:2: ( '$START_USERRIGHTS' ( . )* '$END_USERRIGHTS' ( Semicolon | Ws )* )
+            // com/lambda/impex/ast/Impex.g:391:3: '$START_USERRIGHTS' ( . )* '$END_USERRIGHTS' ( Semicolon | Ws )*
             {
             match("$START_USERRIGHTS"); 
 
 
 
-            // com/lambda/impex/ast/Impex.g:383:23: ( . )*
+            // com/lambda/impex/ast/Impex.g:391:23: ( . )*
             loop9:
             do {
                 int alt9=2;
@@ -3952,7 +3952,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt9) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:383:23: .
+            	    // com/lambda/impex/ast/Impex.g:391:23: .
             	    {
             	    matchAny(); 
 
@@ -3969,7 +3969,7 @@ public class ImpexLexer extends Lexer {
 
 
 
-            // com/lambda/impex/ast/Impex.g:383:44: ( Semicolon | Ws )*
+            // com/lambda/impex/ast/Impex.g:391:44: ( Semicolon | Ws )*
             loop10:
             do {
                 int alt10=3;
@@ -3990,7 +3990,7 @@ public class ImpexLexer extends Lexer {
 
                 switch (alt10) {
             	case 1 :
-            	    // com/lambda/impex/ast/Impex.g:383:45: Semicolon
+            	    // com/lambda/impex/ast/Impex.g:391:45: Semicolon
             	    {
             	    mSemicolon(); 
 
@@ -3998,7 +3998,7 @@ public class ImpexLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // com/lambda/impex/ast/Impex.g:383:57: Ws
+            	    // com/lambda/impex/ast/Impex.g:391:57: Ws
             	    {
             	    mWs(); 
 
@@ -4030,13 +4030,13 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = BeanShell;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:386:2: ( ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? ) )
-            // com/lambda/impex/ast/Impex.g:386:3: ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? )
+            // com/lambda/impex/ast/Impex.g:394:2: ( ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? ) )
+            // com/lambda/impex/ast/Impex.g:394:3: ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? )
             {
-            // com/lambda/impex/ast/Impex.g:386:3: ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? )
-            // com/lambda/impex/ast/Impex.g:386:4: ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )?
+            // com/lambda/impex/ast/Impex.g:394:3: ( ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )? )
+            // com/lambda/impex/ast/Impex.g:394:4: ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' ) ( Lb )?
             {
-            // com/lambda/impex/ast/Impex.g:386:4: ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' )
+            // com/lambda/impex/ast/Impex.g:394:4: ( '#%' (~ ( '\\r' | '\\n' ) )* | '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"' )
             int alt13=2;
             switch ( input.LA(1) ) {
             case '#':
@@ -4059,13 +4059,13 @@ public class ImpexLexer extends Lexer {
 
             switch (alt13) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:386:5: '#%' (~ ( '\\r' | '\\n' ) )*
+                    // com/lambda/impex/ast/Impex.g:394:5: '#%' (~ ( '\\r' | '\\n' ) )*
                     {
                     match("#%"); 
 
 
 
-                    // com/lambda/impex/ast/Impex.g:386:10: (~ ( '\\r' | '\\n' ) )*
+                    // com/lambda/impex/ast/Impex.g:394:10: (~ ( '\\r' | '\\n' ) )*
                     loop11:
                     do {
                         int alt11=2;
@@ -4102,13 +4102,13 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:386:28: '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"'
+                    // com/lambda/impex/ast/Impex.g:394:28: '\"#%' (~ ( '\"' ) | '\"' '\"' )* '\"'
                     {
                     match("\"#%"); 
 
 
 
-                    // com/lambda/impex/ast/Impex.g:386:34: (~ ( '\"' ) | '\"' '\"' )*
+                    // com/lambda/impex/ast/Impex.g:394:34: (~ ( '\"' ) | '\"' '\"' )*
                     loop12:
                     do {
                         int alt12=3;
@@ -4132,7 +4132,7 @@ public class ImpexLexer extends Lexer {
 
                         switch (alt12) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:386:35: ~ ( '\"' )
+                    	    // com/lambda/impex/ast/Impex.g:394:35: ~ ( '\"' )
                     	    {
                     	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) {
                     	        input.consume();
@@ -4147,7 +4147,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // com/lambda/impex/ast/Impex.g:386:44: '\"' '\"'
+                    	    // com/lambda/impex/ast/Impex.g:394:44: '\"' '\"'
                     	    {
                     	    match('\"'); 
 
@@ -4170,7 +4170,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:386:59: ( Lb )?
+            // com/lambda/impex/ast/Impex.g:394:59: ( Lb )?
             int alt14=2;
             switch ( input.LA(1) ) {
                 case '\n':
@@ -4183,7 +4183,7 @@ public class ImpexLexer extends Lexer {
 
             switch (alt14) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:386:59: Lb
+                    // com/lambda/impex/ast/Impex.g:394:59: Lb
                     {
                     mLb(); 
 
@@ -4215,8 +4215,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = SpecialAttribute;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:389:2: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // com/lambda/impex/ast/Impex.g:389:3: '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:397:2: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // com/lambda/impex/ast/Impex.g:397:3: '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('@'); 
 
@@ -4230,7 +4230,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:389:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:397:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop15:
             do {
                 int alt15=2;
@@ -4344,8 +4344,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = DocumentID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:392:2: ( '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // com/lambda/impex/ast/Impex.g:392:3: '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:400:2: ( '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // com/lambda/impex/ast/Impex.g:400:3: '&' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             match('&'); 
 
@@ -4359,7 +4359,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:392:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:400:39: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop16:
             do {
                 int alt16=2;
@@ -4473,8 +4473,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Identifier;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:395:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // com/lambda/impex/ast/Impex.g:395:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:403:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // com/lambda/impex/ast/Impex.g:403:3: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
                 input.consume();
@@ -4486,7 +4486,7 @@ public class ImpexLexer extends Lexer {
             }
 
 
-            // com/lambda/impex/ast/Impex.g:395:35: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // com/lambda/impex/ast/Impex.g:403:35: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop17:
             do {
                 int alt17=2;
@@ -4600,12 +4600,12 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Comment;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:399:2: ( '#' (~ ( '\\r' | '\\n' ) )* ( Lb )? )
-            // com/lambda/impex/ast/Impex.g:399:3: '#' (~ ( '\\r' | '\\n' ) )* ( Lb )?
+            // com/lambda/impex/ast/Impex.g:407:2: ( '#' (~ ( '\\r' | '\\n' ) )* ( Lb )? )
+            // com/lambda/impex/ast/Impex.g:407:3: '#' (~ ( '\\r' | '\\n' ) )* ( Lb )?
             {
             match('#'); 
 
-            // com/lambda/impex/ast/Impex.g:399:7: (~ ( '\\r' | '\\n' ) )*
+            // com/lambda/impex/ast/Impex.g:407:7: (~ ( '\\r' | '\\n' ) )*
             loop18:
             do {
                 int alt18=2;
@@ -4639,7 +4639,7 @@ public class ImpexLexer extends Lexer {
             } while (true);
 
 
-            // com/lambda/impex/ast/Impex.g:399:23: ( Lb )?
+            // com/lambda/impex/ast/Impex.g:407:23: ( Lb )?
             int alt19=2;
             switch ( input.LA(1) ) {
                 case '\n':
@@ -4652,7 +4652,7 @@ public class ImpexLexer extends Lexer {
 
             switch (alt19) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:399:23: Lb
+                    // com/lambda/impex/ast/Impex.g:407:23: Lb
                     {
                     mLb(); 
 
@@ -4682,7 +4682,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = QuotedField;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:412:2: ({...}? => ';' ( Ws )* '\"' (~ '\"' | '\"' '\"' )* '\"' |)
+            // com/lambda/impex/ast/Impex.g:420:2: ({...}? => ';' ( Ws )* '\"' (~ '\"' | '\"' '\"' )* '\"' |)
             int alt22=2;
             int LA22_0 = input.LA(1);
 
@@ -4694,7 +4694,7 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt22) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:412:3: {...}? => ';' ( Ws )* '\"' (~ '\"' | '\"' '\"' )* '\"'
+                    // com/lambda/impex/ast/Impex.g:420:3: {...}? => ';' ( Ws )* '\"' (~ '\"' | '\"' '\"' )* '\"'
                     {
                     if ( !((isHeader() == false)) ) {
                         throw new FailedPredicateException(input, "QuotedField", "isHeader() == false");
@@ -4702,7 +4702,7 @@ public class ImpexLexer extends Lexer {
 
                     match(';'); 
 
-                    // com/lambda/impex/ast/Impex.g:412:32: ( Ws )*
+                    // com/lambda/impex/ast/Impex.g:420:32: ( Ws )*
                     loop20:
                     do {
                         int alt20=2;
@@ -4718,7 +4718,7 @@ public class ImpexLexer extends Lexer {
 
                         switch (alt20) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:412:32: Ws
+                    	    // com/lambda/impex/ast/Impex.g:420:32: Ws
                     	    {
                     	    mWs(); 
 
@@ -4734,7 +4734,7 @@ public class ImpexLexer extends Lexer {
 
                     match('\"'); 
 
-                    // com/lambda/impex/ast/Impex.g:412:40: (~ '\"' | '\"' '\"' )*
+                    // com/lambda/impex/ast/Impex.g:420:40: (~ '\"' | '\"' '\"' )*
                     loop21:
                     do {
                         int alt21=3;
@@ -4758,7 +4758,7 @@ public class ImpexLexer extends Lexer {
 
                         switch (alt21) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:412:41: ~ '\"'
+                    	    // com/lambda/impex/ast/Impex.g:420:41: ~ '\"'
                     	    {
                     	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) {
                     	        input.consume();
@@ -4773,7 +4773,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // com/lambda/impex/ast/Impex.g:412:48: '\"' '\"'
+                    	    // com/lambda/impex/ast/Impex.g:420:48: '\"' '\"'
                     	    {
                     	    match('\"'); 
 
@@ -4793,7 +4793,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:412:78: 
+                    // com/lambda/impex/ast/Impex.g:420:78: 
                     {
                     }
                     break;
@@ -4821,7 +4821,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Field;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:419:2: ({...}? => ( ';' ( Char | Separator )* ) |)
+            // com/lambda/impex/ast/Impex.g:427:2: ({...}? => ( ';' ( Char | Separator )* ) |)
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -4833,25 +4833,25 @@ public class ImpexLexer extends Lexer {
             }
             switch (alt24) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:419:3: {...}? => ( ';' ( Char | Separator )* )
+                    // com/lambda/impex/ast/Impex.g:427:3: {...}? => ( ';' ( Char | Separator )* )
                     {
                     if ( !((isHeader() == false)) ) {
                         throw new FailedPredicateException(input, "Field", "isHeader() == false");
                     }
 
-                    // com/lambda/impex/ast/Impex.g:419:28: ( ';' ( Char | Separator )* )
-                    // com/lambda/impex/ast/Impex.g:419:29: ';' ( Char | Separator )*
+                    // com/lambda/impex/ast/Impex.g:427:28: ( ';' ( Char | Separator )* )
+                    // com/lambda/impex/ast/Impex.g:427:29: ';' ( Char | Separator )*
                     {
                     match(';'); 
 
-                    // com/lambda/impex/ast/Impex.g:419:33: ( Char | Separator )*
+                    // com/lambda/impex/ast/Impex.g:427:33: ( Char | Separator )*
                     loop23:
                     do {
                         int alt23=3;
                         alt23 = dfa23.predict(input);
                         switch (alt23) {
                     	case 1 :
-                    	    // com/lambda/impex/ast/Impex.g:419:34: Char
+                    	    // com/lambda/impex/ast/Impex.g:427:34: Char
                     	    {
                     	    mChar(); 
 
@@ -4859,7 +4859,7 @@ public class ImpexLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // com/lambda/impex/ast/Impex.g:419:40: Separator
+                    	    // com/lambda/impex/ast/Impex.g:427:40: Separator
                     	    {
                     	    mSeparator(); 
 
@@ -4879,7 +4879,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:419:68: 
+                    // com/lambda/impex/ast/Impex.g:427:68: 
                     {
                     }
                     break;
@@ -4903,8 +4903,8 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Ws;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:422:3: ( ( ' ' | '\\t' ) )
-            // com/lambda/impex/ast/Impex.g:422:4: ( ' ' | '\\t' )
+            // com/lambda/impex/ast/Impex.g:430:3: ( ( ' ' | '\\t' ) )
+            // com/lambda/impex/ast/Impex.g:430:4: ( ' ' | '\\t' )
             {
             if ( input.LA(1)=='\t'||input.LA(1)==' ' ) {
                 input.consume();
@@ -4934,10 +4934,10 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Lb;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:424:4: ( ( ( '\\r' )? '\\n' | '\\r' ) )
-            // com/lambda/impex/ast/Impex.g:424:5: ( ( '\\r' )? '\\n' | '\\r' )
+            // com/lambda/impex/ast/Impex.g:432:4: ( ( ( '\\r' )? '\\n' | '\\r' ) )
+            // com/lambda/impex/ast/Impex.g:432:5: ( ( '\\r' )? '\\n' | '\\r' )
             {
-            // com/lambda/impex/ast/Impex.g:424:5: ( ( '\\r' )? '\\n' | '\\r' )
+            // com/lambda/impex/ast/Impex.g:432:5: ( ( '\\r' )? '\\n' | '\\r' )
             int alt26=2;
             switch ( input.LA(1) ) {
             case '\r':
@@ -4969,9 +4969,9 @@ public class ImpexLexer extends Lexer {
 
             switch (alt26) {
                 case 1 :
-                    // com/lambda/impex/ast/Impex.g:424:6: ( '\\r' )? '\\n'
+                    // com/lambda/impex/ast/Impex.g:432:6: ( '\\r' )? '\\n'
                     {
-                    // com/lambda/impex/ast/Impex.g:424:6: ( '\\r' )?
+                    // com/lambda/impex/ast/Impex.g:432:6: ( '\\r' )?
                     int alt25=2;
                     switch ( input.LA(1) ) {
                         case '\r':
@@ -4983,7 +4983,7 @@ public class ImpexLexer extends Lexer {
 
                     switch (alt25) {
                         case 1 :
-                            // com/lambda/impex/ast/Impex.g:424:6: '\\r'
+                            // com/lambda/impex/ast/Impex.g:432:6: '\\r'
                             {
                             match('\r'); 
 
@@ -4998,7 +4998,7 @@ public class ImpexLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // com/lambda/impex/ast/Impex.g:424:19: '\\r'
+                    // com/lambda/impex/ast/Impex.g:432:19: '\\r'
                     {
                     match('\r'); 
 
@@ -5024,7 +5024,7 @@ public class ImpexLexer extends Lexer {
         try {
             int _type = Char;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // com/lambda/impex/ast/Impex.g:426:2: (~ ( '\\r' | '\\n' | '\"' | ';' ) )
+            // com/lambda/impex/ast/Impex.g:434:2: (~ ( '\\r' | '\\n' | '\"' | ';' ) )
             // com/lambda/impex/ast/Impex.g:
             {
             if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= ':')||(input.LA(1) >= '<' && input.LA(1) <= '\uFFFF') ) {
@@ -5514,7 +5514,7 @@ public class ImpexLexer extends Lexer {
             this.transition = DFA3_transition;
         }
         public String getDescription() {
-            return "()* loopback of 377:34: (~ ( '\\r' | '\\n' ) | Separator )*";
+            return "()* loopback of 385:34: (~ ( '\\r' | '\\n' ) | Separator )*";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
@@ -5589,7 +5589,7 @@ public class ImpexLexer extends Lexer {
             this.transition = DFA7_transition;
         }
         public String getDescription() {
-            return "378:36: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )";
+            return "386:36: ( ( ' ' | '\\t' )* '\"' (~ ( '\\r' | '\\n' | '\"' ) | '\"' '\"' )* '\"' | (~ ( '\\r' | '\\n' | ';' | '\"' | '[' | ']' | ',' ) )* )";
         }
     }
     static final String DFA23_eotS =
@@ -5644,7 +5644,7 @@ public class ImpexLexer extends Lexer {
             this.transition = DFA23_transition;
         }
         public String getDescription() {
-            return "()* loopback of 419:33: ( Char | Separator )*";
+            return "()* loopback of 427:33: ( Char | Separator )*";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;

@@ -6,6 +6,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.runtime.tree.CommonTree;
 import org.junit.Test;
 
 public class MacroModelTest extends ModelTest {
@@ -101,32 +102,37 @@ public class MacroModelTest extends ModelTest {
 
     @Test
     public void macroInsideBlock() throws Exception {
-        init("/macro/macro-inside-block.impex");
+        final CommonTree tree = init("/macro/macro-inside-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(2, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 3, "This is a macro");
         assertEntries(macros.get("$macro_def1"), new int[] { 6, 7 }, new String[] { "This is a macro1", "This is a macro2" });
+        assertEquals(3, records(tree, 0).getChildCount());
     }
 
     @Test
     public void macroFirstInBlock() throws Exception {
-        init("/macro/macro-first-in-block.impex");
+        final CommonTree tree = init("/macro/macro-first-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro");
+        assertEquals(1, records(tree, 0).getChildCount());
     }
 
     @Test
     public void macroLastInBlock() throws Exception {
-        init("/macro/macro-last-in-block.impex");
+        final CommonTree tree = init("/macro/macro-last-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
         assertEntries(macros.get("$macro_def"), new int[] { 6, 10 }, new String[] { "This is a macro", "This is a $macro_def" });
+        assertEquals(2, blocks(tree).getChildCount());
+        assertEquals(3, records(tree, 0).getChildCount());
+        assertEquals(1, records(tree, 1).getChildCount());
     }
 
     @Test
