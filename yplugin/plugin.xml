@@ -19,9 +19,9 @@
       </category>
       <wizard
             category="com.lambda.plugin.importWizard"
-            class="com.lambda.plugin.wizards.hybris.ImportPlatformWizard"
+            class="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             icon="icons/sample.gif"
-            id="com.lambda.plugin.wizards.hybris.ImportPlatformWizard"
+            id="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             name="eCommerce Platform">
       </wizard>
    </extension>
@@ -89,10 +89,10 @@
       </wizard>
       <wizard
             category="com.lambda.plugin.wizard"
-            class="com.lambda.plugin.wizards.hybris.NewExtensionWizard"
+            class="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
-            id="com.lambda.plugin.wizards.hybris.NewExtensionWizard"
+            id="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
             name="eCommerce Extension"
             project="true">
          <description>
@@ -101,10 +101,10 @@
       </wizard>
       <wizard
             category="com.lambda.plugin.wizard"
-            class="com.lambda.plugin.wizards.hybris.NewModuleWizard"
+            class="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
-            id="com.lambda.plugin.wizards.hybris.NewModuleWizard"
+            id="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
             name="eCommerce Module"
             project="true">
          <description>

@@ -1,4 +1,4 @@
-package com.lambda.plugin.wizards.hybris;
+package com.lambda.plugin.wizards.ecommerce;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -346,7 +346,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
                         Extensioninfo info = YPlugin.getDefault().getPlatformContainer().loadExtensionInfo(extInfo);
                         // TODO provide convertion between jaxb model and internal model - use map<Ipath,Info> here
-                        // TODO support autoload attribute + hybris5 features
+                        // TODO support autoload attribute + v5 features
                         boolean referenced = false;
                         for (ExtensionType extensionType : linkedExtensions) {
                             if (new Path(new File(extensionType.getDir()).getAbsolutePath()).equals(path)) {

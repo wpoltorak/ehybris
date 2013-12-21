@@ -1,4 +1,4 @@
-package com.lambda.plugin.wizards.hybris;
+package com.lambda.plugin.wizards.ecommerce;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

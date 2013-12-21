@@ -1,4 +1,4 @@
-package com.lambda.plugin.wizards.hybris;
+package com.lambda.plugin.wizards.ecommerce;
 
 import java.io.File;
 import java.io.IOException;

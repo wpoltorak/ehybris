@@ -105,8 +105,8 @@ public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMe
         final Menu menu = new Menu(parent);
 
         /**
-         * Add listener to re-populate the menu each time it is shown because MenuManager.update(boolean, boolean) doesn't dispose pull-down
-         * ActionContribution items for each popup menu.
+         * Add listener to re-populate the menu each time it is shown because MenuManager.update(boolean, boolean)
+         * doesn't dispose pull-down ActionContribution items for each popup menu.
          */
         menu.addMenuListener(new ProjectMenuListener());
 
@@ -124,7 +124,7 @@ public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMe
                     item.dispose();
                 }
 
-                final IMenuManager mgr = new MenuManager("#hybris");
+                final IMenuManager mgr = new MenuManager("#eCommerce");
                 mgr.add(new GroupMarker(AbstractActionMenuCreator.NEW));
                 mgr.insertAfter(AbstractActionMenuCreator.NEW, new GroupMarker(AbstractActionMenuCreator.UPDATE));
                 mgr.insertAfter(AbstractActionMenuCreator.UPDATE, new GroupMarker(AbstractActionMenuCreator.OPEN));
