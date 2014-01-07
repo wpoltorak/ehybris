@@ -1,7 +1,5 @@
 package com.lambda.impex.ast;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 
@@ -35,17 +33,17 @@ public class ImpexCompiler {
         }
 
         context = new ImpexContext();
-        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(source, source.length));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        final ImpexParser parser = new ImpexParser(context, tokens);
-
-        ast = (CommonTree) parser.impex().getTree();
-        visitor.prepare(context);
-        if (parser.getNumberOfSyntaxErrors() <= 0) {
-            final ImpexTreeWalker walker = new ImpexTreeWalker(context, ast);
-            impexASTNode = walker.walk();
-            impexASTNode.accept(visitor);
-        }
+        //        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(source, source.length));
+        //        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        //        final ImpexParser parser = new ImpexParser(context, tokens);
+        //
+        //        ast = (CommonTree) parser.impex().getTree();
+        //        visitor.prepare(context);
+        //        if (parser.getNumberOfSyntaxErrors() <= 0) {
+        //            final ImpexTreeWalker walker = new ImpexTreeWalker(context, ast);
+        //            impexASTNode = walker.walk();
+        //            impexASTNode.accept(visitor);
+        //        }
     }
 
     public ImpexContext getContext() {
