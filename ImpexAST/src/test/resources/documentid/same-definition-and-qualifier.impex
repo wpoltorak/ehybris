@@ -1,0 +1,10 @@
+# it is forbidden to use same qualifiers defined for same document ids
+
+INSERT Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID )
+; andi; addr1 ; addr1
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Wroclaw ; andi ;
+
+INSERT Address; &addrID; Town; owner( Customer.uid )
+; addr1 ; Wronki; andi

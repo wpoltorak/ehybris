@@ -1,0 +1,7 @@
+# It is OK have document id qualifier not defined
+
+INSERT Address; Town; owner( Customer.uid ); &addrID 
+; Wroclaw ; andi ;  
+
+INSERT Customer; uid[unique=true];
+; andi;  

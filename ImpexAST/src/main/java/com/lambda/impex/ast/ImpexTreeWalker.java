@@ -1,4 +1,4 @@
-// $ANTLR 3.4 com/lambda/impex/ast/ImpexTreeWalker.g 2014-01-01 20:17:53
+// $ANTLR 3.4 com/lambda/impex/ast/ImpexTreeWalker.g 2014-01-08 20:07:59
 
 package com.lambda.impex.ast;
 
@@ -30,70 +30,77 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class ImpexTreeWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "Quote", "Semicolon", "RBracket", "LBracket", "LParenthesis", "RParenthesis", "Equals", "Or", "Macrodef", "Separator", "Comment", "Lb", "Ws", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "CacheUnique", "CellDecorator", "CollectionDelimiter", "Dateformat", "Default", "DocumentID", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "Lang", "MODIFIER", "MODIFIERS", "MapDelimiter", "Mode", "NumberFormat", "PathDelimiter", "Pos", "Processor", "QuotedField", "RECORD", "RECORDS", "Remove", "SUBTYPE", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "ValueAssignment", "Virtual"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ATTRIBUTE", "ATTRIBUTES", "ATTRIBUTE_NAME", "Alias", "AllowNull", "BLOCK", "BLOCKS", "BatchMode", "BeanShell", "CacheUnique", "CellDecorator", "Char", "CollectionDelimiter", "Comma", "Comment", "Dateformat", "Default", "DocumentID", "Dot", "DoubleQuote", "Equals", "FIELDS", "Field", "ForceWrite", "HEADER", "IMPEX", "ITEM_EXPRESSION", "Identifier", "IgnoreKeyCase", "IgnoreNull", "Insert", "InsertUpdate", "KeyToValueDelimiter", "LBracket", "LParenthesis", "Lang", "Lb", "MACRO_REF", "MODIFIER", "MODIFIERS", "Macrodef", "MapDelimiter", "Mode", "NumberFormat", "Or", "PathDelimiter", "Pos", "Processor", "Quote", "QuotedField", "RBracket", "RECORD", "RECORDS", "RParenthesis", "Remove", "SUBTYPE", "Semicolon", "Separator", "SpecialAttribute", "TYPE", "Translator", "Unique", "Update", "UserRights", "ValueAssignment", "Virtual", "Ws"
     };
 
     public static final int EOF=-1;
-    public static final int Ws=16;
-    public static final int Comment=14;
-    public static final int Macrodef=12;
-    public static final int RBracket=6;
-    public static final int Quote=4;
-    public static final int LBracket=7;
-    public static final int Or=11;
-    public static final int Semicolon=5;
-    public static final int Equals=10;
-    public static final int LParenthesis=8;
-    public static final int Lb=15;
-    public static final int Separator=13;
-    public static final int RParenthesis=9;
-    public static final int ATTRIBUTE=17;
-    public static final int ATTRIBUTES=18;
-    public static final int ATTRIBUTE_NAME=19;
-    public static final int Alias=20;
-    public static final int AllowNull=21;
-    public static final int BLOCK=22;
-    public static final int BLOCKS=23;
-    public static final int BatchMode=24;
-    public static final int CacheUnique=25;
-    public static final int CellDecorator=26;
-    public static final int CollectionDelimiter=27;
-    public static final int Dateformat=28;
-    public static final int Default=29;
-    public static final int DocumentID=30;
-    public static final int FIELDS=31;
-    public static final int Field=32;
-    public static final int ForceWrite=33;
-    public static final int HEADER=34;
-    public static final int IMPEX=35;
-    public static final int ITEM_EXPRESSION=36;
-    public static final int Identifier=37;
-    public static final int IgnoreKeyCase=38;
-    public static final int IgnoreNull=39;
-    public static final int Insert=40;
-    public static final int InsertUpdate=41;
-    public static final int KeyToValueDelimiter=42;
-    public static final int Lang=43;
-    public static final int MODIFIER=44;
-    public static final int MODIFIERS=45;
-    public static final int MapDelimiter=46;
-    public static final int Mode=47;
-    public static final int NumberFormat=48;
+    public static final int ATTRIBUTE=4;
+    public static final int ATTRIBUTES=5;
+    public static final int ATTRIBUTE_NAME=6;
+    public static final int Alias=7;
+    public static final int AllowNull=8;
+    public static final int BLOCK=9;
+    public static final int BLOCKS=10;
+    public static final int BatchMode=11;
+    public static final int BeanShell=12;
+    public static final int CacheUnique=13;
+    public static final int CellDecorator=14;
+    public static final int Char=15;
+    public static final int CollectionDelimiter=16;
+    public static final int Comma=17;
+    public static final int Comment=18;
+    public static final int Dateformat=19;
+    public static final int Default=20;
+    public static final int DocumentID=21;
+    public static final int Dot=22;
+    public static final int DoubleQuote=23;
+    public static final int Equals=24;
+    public static final int FIELDS=25;
+    public static final int Field=26;
+    public static final int ForceWrite=27;
+    public static final int HEADER=28;
+    public static final int IMPEX=29;
+    public static final int ITEM_EXPRESSION=30;
+    public static final int Identifier=31;
+    public static final int IgnoreKeyCase=32;
+    public static final int IgnoreNull=33;
+    public static final int Insert=34;
+    public static final int InsertUpdate=35;
+    public static final int KeyToValueDelimiter=36;
+    public static final int LBracket=37;
+    public static final int LParenthesis=38;
+    public static final int Lang=39;
+    public static final int Lb=40;
+    public static final int MACRO_REF=41;
+    public static final int MODIFIER=42;
+    public static final int MODIFIERS=43;
+    public static final int Macrodef=44;
+    public static final int MapDelimiter=45;
+    public static final int Mode=46;
+    public static final int NumberFormat=47;
+    public static final int Or=48;
     public static final int PathDelimiter=49;
     public static final int Pos=50;
     public static final int Processor=51;
-    public static final int QuotedField=52;
-    public static final int RECORD=53;
-    public static final int RECORDS=54;
-    public static final int Remove=55;
-    public static final int SUBTYPE=56;
-    public static final int SpecialAttribute=57;
-    public static final int TYPE=58;
-    public static final int Translator=59;
-    public static final int Unique=60;
-    public static final int Update=61;
-    public static final int ValueAssignment=62;
-    public static final int Virtual=63;
+    public static final int Quote=52;
+    public static final int QuotedField=53;
+    public static final int RBracket=54;
+    public static final int RECORD=55;
+    public static final int RECORDS=56;
+    public static final int RParenthesis=57;
+    public static final int Remove=58;
+    public static final int SUBTYPE=59;
+    public static final int Semicolon=60;
+    public static final int Separator=61;
+    public static final int SpecialAttribute=62;
+    public static final int TYPE=63;
+    public static final int Translator=64;
+    public static final int Unique=65;
+    public static final int Update=66;
+    public static final int UserRights=67;
+    public static final int ValueAssignment=68;
+    public static final int Virtual=69;
+    public static final int Ws=70;
 
     // delegates
     public TreeParser[] getDelegates() {
@@ -568,7 +575,7 @@ public class ImpexTreeWalker extends TreeParser {
             {
             v=(CommonTree)input.LT(1);
 
-            if ( (input.LA(1) >= BatchMode && input.LA(1) <= CacheUnique)||input.LA(1)==Processor ) {
+            if ( input.LA(1)==BatchMode||input.LA(1)==CacheUnique||input.LA(1)==Processor ) {
                 input.consume();
                 state.errorRecovery=false;
             }
@@ -1160,7 +1167,7 @@ public class ImpexTreeWalker extends TreeParser {
             {
             v=(CommonTree)input.LT(1);
 
-            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||(input.LA(1) >= CellDecorator && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||(input.LA(1) >= KeyToValueDelimiter && input.LA(1) <= Lang)||(input.LA(1) >= MapDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
+            if ( (input.LA(1) >= Alias && input.LA(1) <= AllowNull)||input.LA(1)==CellDecorator||input.LA(1)==CollectionDelimiter||(input.LA(1) >= Dateformat && input.LA(1) <= Default)||input.LA(1)==ForceWrite||(input.LA(1) >= IgnoreKeyCase && input.LA(1) <= IgnoreNull)||input.LA(1)==KeyToValueDelimiter||input.LA(1)==Lang||(input.LA(1) >= MapDelimiter && input.LA(1) <= NumberFormat)||(input.LA(1) >= PathDelimiter && input.LA(1) <= Pos)||(input.LA(1) >= Translator && input.LA(1) <= Unique)||input.LA(1)==Virtual ) {
                 input.consume();
                 state.errorRecovery=false;
             }
@@ -1373,43 +1380,43 @@ public class ImpexTreeWalker extends TreeParser {
     public static final BitSet FOLLOW_impex_in_walk51 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_IMPEX_in_impex71 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_BLOCKS_in_impex75 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_block_in_impex78 = new BitSet(new long[]{0x0000000000400008L});
+    public static final BitSet FOLLOW_block_in_impex78 = new BitSet(new long[]{0x0000000000000208L});
     public static final BitSet FOLLOW_BLOCK_in_block111 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_header_in_block114 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_header_in_block114 = new BitSet(new long[]{0x0100000000000000L});
     public static final BitSet FOLLOW_RECORDS_in_block121 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_record_in_block124 = new BitSet(new long[]{0x0020000000000008L});
+    public static final BitSet FOLLOW_record_in_block124 = new BitSet(new long[]{0x0080000000000008L});
     public static final BitSet FOLLOW_HEADER_in_header156 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerMode_in_header159 = new BitSet(new long[]{0x0400000000000000L});
+    public static final BitSet FOLLOW_headerMode_in_header159 = new BitSet(new long[]{0x8000000000000000L});
     public static final BitSet FOLLOW_TYPE_in_header166 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_headerTypeName_in_header168 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_MODIFIERS_in_header176 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifierAssignment_in_header179 = new BitSet(new long[]{0x0000100000000008L});
+    public static final BitSet FOLLOW_headerModifierAssignment_in_header179 = new BitSet(new long[]{0x0000040000000008L});
     public static final BitSet FOLLOW_ATTRIBUTES_in_header189 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeValue_in_header192 = new BitSet(new long[]{0x0000000000020008L});
+    public static final BitSet FOLLOW_attributeValue_in_header192 = new BitSet(new long[]{0x0000000000000018L});
     public static final BitSet FOLLOW_MODIFIER_in_headerModifierAssignment216 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment218 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_headerModifier_in_headerModifierAssignment218 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
     public static final BitSet FOLLOW_ValueAssignment_in_headerModifierAssignment220 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_set_in_headerModifier237 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RECORD_in_record278 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_SUBTYPE_in_record286 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_Identifier_in_record289 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_FIELDS_in_record302 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_field_in_record305 = new BitSet(new long[]{0x0010000100000008L});
+    public static final BitSet FOLLOW_field_in_record305 = new BitSet(new long[]{0x0020000004000008L});
     public static final BitSet FOLLOW_set_in_field331 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ATTRIBUTE_NAME_in_attributeName365 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_Macrodef_in_attributeName371 = new BitSet(new long[]{0x0200002000000008L});
-    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName380 = new BitSet(new long[]{0x0000002000000008L});
-    public static final BitSet FOLLOW_Identifier_in_attributeName389 = new BitSet(new long[]{0x0000000000080008L});
+    public static final BitSet FOLLOW_Macrodef_in_attributeName371 = new BitSet(new long[]{0x4000000080000008L});
+    public static final BitSet FOLLOW_SpecialAttribute_in_attributeName380 = new BitSet(new long[]{0x0000000080000008L});
+    public static final BitSet FOLLOW_Identifier_in_attributeName389 = new BitSet(new long[]{0x0000000000000048L});
     public static final BitSet FOLLOW_attributeName_in_attributeName398 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_ATTRIBUTE_in_attributeValue432 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_DocumentID_in_attributeValue435 = new BitSet(new long[]{0x0000000000080008L});
-    public static final BitSet FOLLOW_attributeName_in_attributeValue443 = new BitSet(new long[]{0x0000001000000000L});
+    public static final BitSet FOLLOW_DocumentID_in_attributeValue435 = new BitSet(new long[]{0x0000000000000048L});
+    public static final BitSet FOLLOW_attributeName_in_attributeValue443 = new BitSet(new long[]{0x0000000040000000L});
     public static final BitSet FOLLOW_ITEM_EXPRESSION_in_attributeValue448 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeValue_in_attributeValue455 = new BitSet(new long[]{0x0000000000020008L});
+    public static final BitSet FOLLOW_attributeValue_in_attributeValue455 = new BitSet(new long[]{0x0000000000000018L});
     public static final BitSet FOLLOW_MODIFIERS_in_attributeValue464 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifierAssignment_in_attributeValue467 = new BitSet(new long[]{0x0000100000000008L});
+    public static final BitSet FOLLOW_attributeModifierAssignment_in_attributeValue467 = new BitSet(new long[]{0x0000040000000008L});
     public static final BitSet FOLLOW_MODIFIER_in_attributeModifierAssignment493 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment495 = new BitSet(new long[]{0x4000000000000000L});
+    public static final BitSet FOLLOW_attributeModifier_in_attributeModifierAssignment495 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
     public static final BitSet FOLLOW_ValueAssignment_in_attributeModifierAssignment497 = new BitSet(new long[]{0x0000000000000008L});
     public static final BitSet FOLLOW_set_in_attributeModifier516 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_headerMode606 = new BitSet(new long[]{0x0000000000000002L});

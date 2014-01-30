@@ -1,0 +1,8 @@
+# It is required for document id reference to have its qualifier definition somewhere in document
+# In this case there is no addr2 qualifier defined for &addrID.
+
+INSERT Customer; uid[unique=true];defaultPaymentAddress( &addrID ); 
+; andi; addr2 ; 
+ 
+ INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Wroclaw ; andi ;

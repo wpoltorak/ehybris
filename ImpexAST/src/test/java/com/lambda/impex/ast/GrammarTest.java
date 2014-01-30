@@ -1,19 +1,23 @@
 package com.lambda.impex.ast;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.BitSet;
 import java.util.Iterator;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonToken;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.DOTTreeGenerator;
-import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.DiagnosticErrorListener;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 public class GrammarTest {
@@ -59,89 +63,48 @@ public class GrammarTest {
         checkGrammar(new File(getClass().getResource("/userrights").getFile()));
     }
 
-    // @Test
-    // public void commentNodeContainsNoHashPrefix() throws Exception {
-    // final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
-    // final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
-    // final CommonTokenStream tokens = new CommonTokenStream(lexer);
-    // final ImpexParser parser = new ImpexParser(tokens);
-    // final CommonTree tree = (CommonTree) parser.impex().getTree();
-    // final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
-    // assertEquals(1, comments.getChildCount());
-    // assertFalse(comments.getChild(0).getText().startsWith("#"));
-    // }
-
-    // @Test
-    // public void commentNodeContainsWhitespaceCharacters() throws Exception {
-    // final String impex = IOUtils.toString(getClass().getResourceAsStream("/comment/comment-singleline.impex"));
-    // final ImpexLexer lexer = new ImpexLexer(new ANTLRStringStream(impex));
-    // final CommonTokenStream tokens = new CommonTokenStream(lexer);
-    // final ImpexParser parser = new ImpexParser(tokens);
-    // final CommonTree tree = (CommonTree) parser.impex().getTree();
-    // final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
-    // assertEquals(1, comments.getChildCount());
-    // assertTrue(comments.getChild(0).getText().contains(" "));
-    // assertTrue(comments.getChild(0).getText().contains("\t"));
-    // }
-
-    @Test
-    public void xx() throws Exception {
-        final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexContext context = new ImpexContext();
-        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex, impex.length));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        printTokens(tokens);
-        final CommonTree tree = (CommonTree) new ImpexParser(context, tokens).impex().getTree();
-        final DOTTreeGenerator gen = new DOTTreeGenerator();
-        final StringTemplate st = gen.toDOT(tree);
-        final File graph = new File("graph.dot");
-        graph.createNewFile();
-        FileUtils.write(graph, st.toString());
-
-        //
-        // final Tree comments = tree.getFirstChildWithType(ImpexParser.COMMENTS);
-        // assertEquals(1, comments.getChildCount());
-        // assertTrue(comments.getChild(0).getText().contains(" "));
-        // assertTrue(comments.getChild(0).getText().contains("\t"));
-    }
-
-    @Test
-    public void yy() throws Exception {
-        final String impex = IOUtils.toString(getClass().getResourceAsStream("/user-groups.impex"));
-        final ImpexContext context = new ImpexContext();
-        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        // printTokens(tokens);
-        System.out.println("__________________________");
-        final ImpexParser parser = new ImpexParser(context, tokens);
-        parser.parse().getTree();
-    }
-
     private void checkGrammar(final File directory) {
         String errors = S;
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
             final File file = it.next();
             try {
-                final String impex = FileUtils.readFileToString(file);
-                final ImpexContext context = new ImpexContext();
-                final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(impex)) {
+                final String fileName = FileUtils.readFileToString(file);
+                final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(fileName));
+                final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+                final ImpexParser parser = new ImpexParser(tokenStream);
+                parser.addErrorListener(new DiagnosticErrorListener() {
 
                     @Override
-                    public void reportError(final RecognitionException e) {
-                        super.reportError(e);
-                        throw new IllegalStateException("Error parsing '" + file.getName() + "': " + e);
+                    public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line,
+                            final int charPositionInLine, final String msg, final RecognitionException e) {
+                        super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
+                        throw new IllegalStateException(file.getName() + ": " + msg, e);
                     }
-                };
-                final CommonTokenStream tokens = new CommonTokenStream(lexer);
-                printTokens(tokens);
-                final ImpexParser parser = new ImpexParser(context, tokens) {
+
                     @Override
-                    public void emitErrorMessage(final String msg) {
-                        super.emitErrorMessage(msg);
-                        throw new IllegalStateException("Error parsing '" + file.getName() + "': " + msg);
+                    public void reportContextSensitivity(final Parser recognizer, final DFA dfa, final int startIndex, final int stopIndex,
+                            final int prediction, final ATNConfigSet configs) {
+                        super.reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs);
+                        throw new IllegalStateException(file.getName() + ": Context sensitivity error between " + startIndex + " and "
+                                + stopIndex + ". Prediction " + prediction);
                     }
-                };
-                parser.impex().getTree();
+
+                    @Override
+                    public void reportAttemptingFullContext(final Parser recognizer, final DFA dfa, final int startIndex,
+                            final int stopIndex, final BitSet conflictingAlts, final ATNConfigSet configs) {
+                        super.reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs);
+                        //                        throw new IllegalStateException(file.getName() + ": Attempting full context error between " + startIndex + " and "
+                        //                                + stopIndex);
+
+                    }
+
+                    @Override
+                    public void reportAmbiguity(final Parser recognizer, final DFA dfa, final int startIndex, final int stopIndex,
+                            final boolean exact, final BitSet ambigAlts, final ATNConfigSet configs) {
+                        throw new IllegalStateException(file.getName() + ": Ambiguity error between " + startIndex + " and " + stopIndex);
+                    }
+                });
+                checkSyntaxErrors(parser.impex());
             } catch (final Exception e) {
                 errors += "Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage() + S;
             }
@@ -152,32 +115,13 @@ public class GrammarTest {
             System.err.println(errors);
             fail(errors);
         }
-        // create the parser
-        // final impexParser parser = new impexParser(tokens);
-        // final CommonTree tree = (CommonTree) parser.impex().getTree();
-        // final DOTTreeGenerator gen = new DOTTreeGenerator();
-        // final StringTemplate st = gen.toDOT(tree);
-        // System.out.println(st);
-
-        //
-        // // invoke the entry point of our grammar
-        // final ImpexParser.impex_return data = parser.impex();
-        //
-        // // display the contents of the CSV source
-        // for (int r = 0; r < data.size(); r++) {
-        // final List<String> row = data.get(r);
-        // for (int c = 0; c < row.size(); c++) {
-        // System.out.println("(row=" + (r + 1) + ",col=" + (c + 1) + ") = " + row.get(c));
-        // }
-        // }
     }
 
-    private void printTokens(final CommonTokenStream tokens) {
-        int n = 1;
-        for (final Object o : tokens.getTokens()) {
-            final CommonToken token = (CommonToken) o;
-            System.out.println("token(" + n + ") = " + token.getText().replace("\r", "\\r").replace("\n", "\\n"));
-            n++;
+    private void checkSyntaxErrors(final ParseTree tree) {
+        for (int i = 0; i < tree.getChildCount(); i++) {
+            final ParseTree child = tree.getChild(i);
+            assertFalse(child instanceof ErrorNode);
+            checkSyntaxErrors(child);
         }
     }
 }

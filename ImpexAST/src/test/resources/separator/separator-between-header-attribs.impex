@@ -1,0 +1,14 @@
+INSERT_UPDATE Customer;\
+ uid[unique=true]; Name
+
+INSERT_UPDATE Customer; uid[unique=true] \
+; Name 
+; andi; Andy Warhol 2
+
+INSERT_UPDATE Customer; uid[unique=true] \
+				; Name 
+; andi; Andy Warhol 2
+
+INSERT_UPDATE Customer; uid[unique=true] ;\
+				 Name 
+; andi; Andy Warhol 2

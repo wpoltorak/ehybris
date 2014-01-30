@@ -6,8 +6,9 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
 
-import org.antlr.runtime.tree.CommonTree;
 import org.junit.Test;
+
+import com.lambda.impex.ast.ImpexParser.ImpexContext;
 
 public class MacroModelTest extends ModelTest {
 
@@ -27,7 +28,7 @@ public class MacroModelTest extends ModelTest {
         init("/macro/macro-with-separator.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
-        assertEquals(8, macros.size());
+        assertEquals(11, macros.size());
 
         assertSingleEntry(macros.get("$macro1"), 2, "Macro with separator+more");
         assertSingleEntry(macros.get("$macro2"), 6, "Macro with separator");
@@ -37,6 +38,9 @@ public class MacroModelTest extends ModelTest {
         assertSingleEntry(macros.get("$macro6"), 23, "Macro with separator");
         assertSingleEntry(macros.get("$macro7"), 29, "Macro withseparator");
         assertSingleEntry(macros.get("$macro8"), 31, "Macro with separator");
+        assertSingleEntry(macros.get("$macro9"), 33, "Macro with\t\tseparator");
+        assertSingleEntry(macros.get("$macro10"), 35, "$macro11=");
+        assertSingleEntry(macros.get("$macro12"), 37, "\\");
     }
 
     @Test
@@ -102,37 +106,37 @@ public class MacroModelTest extends ModelTest {
 
     @Test
     public void macroInsideBlock() throws Exception {
-        final CommonTree tree = init("/macro/macro-inside-block.impex");
+        final ImpexContext tree = init("/macro/macro-inside-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(2, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 3, "This is a macro");
         assertEntries(macros.get("$macro_def1"), new int[] { 6, 7 }, new String[] { "This is a macro1", "This is a macro2" });
-        assertEquals(3, records(tree, 0).getChildCount());
+        assertEquals(3, getChildrenWithType(block(tree, 0), ImpexParser.RULE_record).size());
     }
 
     @Test
     public void macroFirstInBlock() throws Exception {
-        final CommonTree tree = init("/macro/macro-first-in-block.impex");
+        final ImpexContext tree = init("/macro/macro-first-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
 
         assertSingleEntry(macros.get("$macro_def"), 2, "This is a macro");
-        assertEquals(1, records(tree, 0).getChildCount());
+        assertEquals(1, getChildrenWithType(block(tree, 0), ImpexParser.RULE_record).size());
     }
 
     @Test
     public void macroLastInBlock() throws Exception {
-        final CommonTree tree = init("/macro/macro-last-in-block.impex");
+        final ImpexContext tree = init("/macro/macro-last-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
         assertEntries(macros.get("$macro_def"), new int[] { 6, 10 }, new String[] { "This is a macro", "This is a $macro_def" });
-        assertEquals(2, blocks(tree).getChildCount());
-        assertEquals(3, records(tree, 0).getChildCount());
-        assertEquals(1, records(tree, 1).getChildCount());
+        assertEquals(2, getChildrenWithType(tree, ImpexParser.RULE_block).size());
+        assertEquals(3, getChildrenWithType(block(tree, 0), ImpexParser.RULE_record).size());
+        assertEquals(1, getChildrenWithType(block(tree, 1), ImpexParser.RULE_record).size());
     }
 
     @Test

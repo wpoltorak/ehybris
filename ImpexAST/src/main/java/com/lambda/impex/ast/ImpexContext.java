@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.Token;
 
 import com.lambda.impex.ast.ImpexProblem.Type;
 
@@ -20,7 +19,7 @@ public class ImpexContext {
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
     private final Map<String, CommonToken> documentIDs = new HashMap<String, CommonToken>();
     private final Set<String> duplicateDocumentIDs = new HashSet<String>();
-    private final Pattern macroPattern = Pattern.compile("$[a-zA-Z_][a-zA-Z_0-9]*");
+    private final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
     private final List<ImpexProblem> problems = new ArrayList<ImpexProblem>();
     private int[] lineEndNumbers;
 
@@ -103,14 +102,13 @@ public class ImpexContext {
         addProblem(problem);
     }
 
-    void registerMacro(final Token def, final String val) {
-        final String macrodef = def.getText();
-        List<SimpleImmutableEntry<Integer, String>> macroval = macros.get(macrodef);
+    void registerMacro(final String def, final String val, final int line) {
+        List<SimpleImmutableEntry<Integer, String>> macroval = macros.get(def);
         if (macroval == null) {
             macroval = new ArrayList<SimpleImmutableEntry<Integer, String>>();
-            macros.put(macrodef, macroval);
+            macros.put(def, macroval);
         }
-        macroval.add(new SimpleImmutableEntry<Integer, String>(def.getLine(), val == null ? "" : val));
+        macroval.add(new SimpleImmutableEntry<Integer, String>(line, val == null ? "" : val));
     }
 
     void registerDocumentID(final CommonToken documentID) {

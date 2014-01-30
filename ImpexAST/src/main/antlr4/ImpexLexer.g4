@@ -1,203 +1,55 @@
-     /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools|Templates
- * and open the template in the editor.
- */
-
 lexer grammar ImpexLexer;
 
-tokens{
-	ATTRIBUTES,
-	ATTRIBUTE,
-	ATTRIBUTE_NAME,
-	HEADER,
-	IMPEX,
-	BLOCK,
-	BLOCKS,
-	MODIFIERS,
-	MODIFIER,
-	RECORD,
-	RECORDS,
-	TYPE,
-	SUBTYPE,
-	FIELDS,
-	MACRO_REF,
-	ITEM_EXPRESSION
+tokens {
+    BooleanAttributeModifier,
+    IntAttributeModifier,
+    DateFormatAttributeModifier,
+    NumberFormatAttributeModifier,
+    ClassAttributeModifier,
+    TextAttributeModifier
 }
 
-
-@lexer::header {
- package com.lambda.impex.ast;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
-}
-
-@parser::header {
- package com.lambda.impex.ast;
-
-
-import java.util.ArrayList;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-//import com.lambda.impex.ast.tree.*;
-}
-
-@parser::members {
-
-private com.lambda.impex.ast.ImpexContext context = new com.lambda.impex.ast.ImpexContext();
-
-public ImpexParser(final com.lambda.impex.ast.ImpexContext context, final TokenStream input) {
-   this(input);
-   this.context = context;
-}
-}
-
-@lexer::members {
-
-private Token lastToken;
-private boolean isHeader = false;
-private com.lambda.impex.ast.ImpexContext context;
-private final Pattern lineSeparatorPattern = Pattern.compile("([ \t]*)\\\\([ \t]*)(\r?\n|\r)([ \t]*)");
-
-
-public ImpexLexer(com.lambda.impex.ast.ImpexContext context, CharStream input) {
-    this(input);
-    this.context = context;
-}
-
- @Override
- public void emit(Token token) {
-    if(token.getChannel() == Token.DEFAULT_CHANNEL) {
-        lastToken = token;
-    }
-    int t = token.getType();
-    if (t == Insert || t == InsertUpdate || t  == Update || t ==Remove){
-     isHeader = true;	
-    }
-         
-     if (t == Lb){
-     isHeader = false;	
-    }
-    super.emit(token);
-}
- 
-private boolean isHeader(){
-    return isHeader;
-}
-
-private boolean isMacroAssignment() {
-    return lastToken != null && lastToken.getType() == Macrodef;
-}
-
-private boolean isModifierAssignment() {
-    if (lastToken == null){
-       return false;
-    }
-    switch (lastToken.getType()) {
-        case Alias:
-        case AllowNull:
-        case CellDecorator:
-        case CollectionDelimiter:
-        case Dateformat:
-        case Default:
-        case ForceWrite:
-        case IgnoreKeyCase:
-        case IgnoreNull:
-        case KeyToValueDelimiter:
-        case Lang:
-        case MapDelimiter:
-        case Mode:
-        case NumberFormat:
-        case PathDelimiter:
-        case Pos:
-        case Translator:
-        case Unique:
-        case Virtual:
-        case BatchMode:
-        case CacheUnique:
-        case Processor:
-            return true;
-    }
-    return false;
-}
-
-private String removeSeparators(final String text) {
-    final Matcher m = lineSeparatorPattern.matcher(text);
-    final StringBuffer sb = new StringBuffer();
-    while (m.find()) {
-        final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(4).isEmpty();
-        m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
-    }
-    m.appendTail(sb);
-    return sb.toString();
-}
-
-}
-
+fragment A :[Aa]Separator*;
+fragment B :[Bb]Separator*;
+fragment C :[Cc]Separator*;
+fragment D :[Dd]Separator*;
+fragment E :[Ee]Separator*;
+fragment F :[Ff]Separator*;
+fragment G :[Gg]Separator*;
+fragment H :[Hh]Separator*;
+fragment I :[Ii]Separator*;
+fragment J :[Jj]Separator*;
+fragment K :[Kk]Separator*;
+fragment L :[Ll]Separator*;
+fragment M :[Mm]Separator*;
+fragment N :[Nn]Separator*;
+fragment O :[Oo]Separator*;
+fragment P :[Pp]Separator*;
+fragment Q :[Qq]Separator*;
+fragment R :[Rr]Separator*;
+fragment S :[Ss]Separator*;
+fragment T :[Tt]Separator*;
+fragment U :[Uu]Separator*;
+fragment V :[Vv]Separator*;
+fragment W :[Ww]Separator*;
+fragment X :[Xx]Separator*;
+fragment Y :[Yy]Separator*;
+fragment Z :[Zz]Separator*;
+fragment DASH : [-]Separator*;
+fragment UNDERSCORE : [_]Separator*;
+fragment TWO : [2]Separator*;
 //Types
-Insert		
-    :[Ii][Nn][Ss][Ee][Rr][Tt];
+Insert
+    : I N S E R [Tt] -> pushMode(header);
 InsertUpdate	
-    :[Ii][Nn][Ss][Ee][Rr][Tt][_][Uu][Pp][Dd][Aa][Tt][Ee];
+    : I N S E R T UNDERSCORE U P D A T [Ee] -> pushMode(header);
 Update		
-    :[Uu][Pp][Dd][Aa][Tt][Ee];
+    : U P D A T [Ee] -> pushMode(header);
 Remove
-    :[Rr][Ee][Mm][Oo][Vv][Ee];
-//Type attributes
-BatchMode
-    :[Bb][Aa][Tt][Cc][Hh][Mm][Oo][Dd][Ee];
-CacheUnique	
-    :[Cc][Aa][Cc][Hh][Ee][Uu][Nn][Ii][Qq][Uu][Ee];
-Processor	
-    :[Pp][Rr][Oo][Cc][Ee][Ss][Ss][Oo][Rr];
-//Argument attributes
-Alias		
-    :[Aa][Ll][Ii][Aa][Ss];
-AllowNull	
-    :[Aa][Ll][Ll][Oo][Ww][Nn][Uu][Ll][Ll];
-CellDecorator	
-    :[Cc][Ee][Ll][Ll][Dd][Ee][Cc][Oo][Rr][Aa][Tt][Oo][Rr];
-CollectionDelimiter 	
-    :[Cc][Oo][Ll][Ll][Ee][Cc][Tt][Ii][Oo][Nn][-][Dd][Ee][Ll][Ii][Mm][Ii][Tt][Ee][Rr];
-Dateformat		
-    :[Dd][Aa][Tt][Ee][Ff][Oo][Rr][Mm][Aa][Tt];
-Default		
-    :[Dd][Ee][Ff][Aa][Uu][Ll][Tt];
-ForceWrite		
-    :[Ff]  [Oo][Rr][Cc][Ee][Ww][Rr][Ii][Tt][Ee];
-IgnoreKeyCase	
-    :[Ii][Gg][Nn][Oo][Rr][Ee][Kk][Ee][Yy][Cc][Aa][Ss][Ee];
-IgnoreNull		
-    :[Ii][Gg][Nn][Oo][Rr][Ee][Nn][Uu][Ll][Ll];
-KeyToValueDelimiter	
-    :[Kk][Ee][Yy][2][Vv][Aa][Ll][Uu][Ee][-][Dd][Ee][Ll][Ii][Mm][Ii][Tt][Ee][Rr];
-Lang		
-    :[Ll][Aa][Nn][Gg];
-MapDelimiter	
-    :[Mm][Aa][Pp][-][Dd][Ee][Ll][Ii][Mm][Ii][Tt][Ee][Rr];
-Mode		
-    :[Mm][Oo][Dd][Ee];
-NumberFormat	
-    :[Nn][Uu][Mm][Bb][Ee][Rr][Ff][Oo][Rr][Mm][Aa][Tt];
-PathDelimiter	
-    :[Pp][Aa][Tt][Hh][-][Dd][Ee][Ll][Ii][Mm][Ii][Tt][Ee][Rr];
-Pos		
-    :[Pp][Oo][Ss];
-Translator
-    :[Tt][Rr][Aa][Nn][Ss][Ll][Aa][Tt][Oo][Rr];
-Unique		
-    :[Uu][Nn][Ii][Qq][Uu][Ee];
-Virtual		
-    :[Vv][Ii][Rr][Tt][Uu][Aa][Ll];
+    : R E M O V [Ee] -> pushMode(header);
 
+Semicolon
+    :';';
 Comma
     :',';
 Dot
@@ -206,8 +58,6 @@ DoubleQuote
     :'"';
 Quote
     :'\'';
-Semicolon
-    :';';
 RBracket
     :']';
 LBracket
@@ -217,59 +67,41 @@ LParenthesis
 RParenthesis
     :')';
 Equals
-    :'=' {isMacroAssignment() == false}?;
+    : '=';
 Or
     :'|';
 
+
 Separator
-    : '\\' Ws* Lb -> /*more,*/ skip;
+    : '\\' Ws* Lb -> skip;
 
-SpecialAttribute
-    : '@' Identifier;
-
-Macrodef
-    : '$' Identifier; 
-
-Macroval
-    : '=' (~[\r\n] | Separator)* {isMacroAssignment()}?
-    {
-     
-      String text = removeSeparators(getText()); //remove possible separators from the middle of text
-      setText(text.substring(1, text.length()).trim()); //remove leading equals character and trim to remove any spaces
-    };
-
-Modifierquotedval
-    : '=' Ws* '"'(~[\r\n"] |'"' '"')* '"' {isModifierAssignment()}? 
-    {
-      String text = getText();  
-      text = text.substring(1, text.length()).trim();  //remove leading equals character and trim to remove any spaces
-      setText(text.substring(1, text.length() - 1)); //remove surrounding doublequotes 
-      setType(Modifierval);
-    };
-
-Modifierval
-    : '=' ~[\r\n\[\],;"]* {isModifierAssignment()}? 
-    {
-      String text = getText();     
-      setText(text.substring(1, text.length()).trim());//remove leading equals character and trim to remove any spaces
-      setType(Modifierval);
-    };
+fragment FieldSeparator : Ws* Separator Ws*;
 
 DocumentID
-    :'&' Identifier;
+    : '&' Separator* Identifier;
+	
+SpecialAttribute
+    : '@' Separator* Identifier;
 
 Identifier
-    :[a-zA-Z_][a-zA-Z0-9_]*;
+    :[a-zA-Z_](Separator* [a-zA-Z0-9_])*;
+
+Macrodef
+    : '$' Separator* Identifier -> pushMode(macro); 
+
            
 Comment
-    : '#' .*? (Lb | EOF) 
+    : '#' .*? (Lb | EOF) -> skip;
+/*      
       { 
        setText(getText().substring(1, getText().length())); 
        skip();
       };
+*/
 
 QuotedField
-    : ';' Ws* '"' (~'"'|'"''"')* '"' {isHeader() == false}?
+    : ';' FieldSeparator* '"' (~'"'|'"''"')* '"' -> pushMode(record), type(Field);
+/*
       {
         String text = getText();
        	text = text.substring(1, text.length()).trim();  //remove leading semicolon and trim to remove any spaces
@@ -277,24 +109,168 @@ QuotedField
 	setText(text);
         setType(Field);
       };
+*/
 
 Field
-    : ';' (~[\r\n";] | Separator)* {isHeader() == false}?
+    : ';' FieldSeparator* (~[\r\n";] Separator*)* -> pushMode(record);
+
+/*      
       {
         String text = removeSeparators(getText());
         setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
-        setType(Field);
-      };
-
-IgnoredLb
-    :('\r'? '\n'|'\r'){isHeader() == false}? -> skip; 
+      }Field+;;
+*/
 
 Lb
-    :('\r'?'\n'|'\r');
+    :('\r'?'\n'|'\r') -> skip;
 
 Ws
     : [ \t] -> skip;
 
+mode record;
+
+RecordSeparator : Separator -> type(Separator), skip;
+
+RecordQuotedField
+    : QuotedField -> type(Field)
+    ;
+
+/*
+      {
+        String text = getText();
+       	text = text.substring(1, text.length()).trim();  //remove leading semicolon and trim to remove any spaces
+	text = text.substring(1, text.length() - 1).trim();      // remove surrounding doublequotes and again trim to remove any spaces
+	setText(text);
+        setType(Field);
+      };
+*/
+
+RecordField
+    : Field -> type(Field)
+    ;
+
+RecordLb
+    :Lb -> type(Lb), popMode
+    ;
+
+RecordWs
+    : Ws -> type(Ws)
+    ;
+
 /*
 /work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast
 */
+
+mode macro;
+
+Macroval
+    : '=' (Separator* ~[\r\n])*
+      -> popMode;
+/*
+    {
+      String text = removeSeparators(getText()); //remove possible separators from the middle of text
+      setText(text.substring(1, text.length()).trim()); //remove leading equals character and trim to remove any spaces
+      popMode();
+    };
+*/
+MacroWs : Ws -> type(Ws), skip;
+
+MacroSeparator : Separator -> type(Separator), skip;
+
+mode header;
+
+//Type attributes
+BatchMode
+    : B A T C H M O D [Ee] -> pushMode(modifier);
+CacheUnique	
+    : C A C H E U N I Q U [Ee] -> pushMode(modifier);
+Processor	
+    : P R O C E S S O [Rr] -> pushMode(modifier);
+//Argument attributes
+Alias		
+    : A L I A [Ss] -> pushMode(modifier), type(TextAttributeModifier);
+AllowNull	
+    : A L L O W N U L [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
+CellDecorator	
+    : C E L L D E C O R A T O [Rr] -> pushMode(modifier), type(TextAttributeModifier);
+CollectionDelimiter 	
+    : C O L L E C T I O N DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
+Dateformat		
+    : D A T E F O R M A [Tt] -> pushMode(modifier), type(DateFormatAttributeModifier);
+Default		
+    : D E F A U L [Tt] -> pushMode(modifier), type(TextAttributeModifier);
+ForceWrite		
+    : F O R C E W R I T [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
+IgnoreKeyCase	
+    : I G N O R E K E Y C A S [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
+IgnoreNull		
+    : I G N O R E N U L [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
+KeyToValueDelimiter	
+    : K E Y TWO V A L U E DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
+Lang		
+    : L A N [Gg] -> pushMode(modifier), type(TextAttributeModifier);
+MapDelimiter	
+    : M A P DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
+Mode		
+    : M O D [Ee] -> pushMode(modifier), type(TextAttributeModifier);
+NumberFormat	
+    : N U M B E R F O R M A [Tt] -> pushMode(modifier), type(NumberFormatAttributeModifier);
+PathDelimiter	
+    : P A T H DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
+Pos		
+    : P O [Ss] -> pushMode(modifier), type(IntAttributeModifier);
+Translator
+    : T R A N S L A T O [Rr] -> pushMode(modifier), type(ClassAttributeModifier);
+Unique		
+    : U N I Q U [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
+Virtual		
+    : V I R T U A [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
+
+HComma : Comma -> type(Comma);
+HSemicolon : Semicolon -> type(Semicolon);
+HDot : Dot -> type(Dot);
+HDoubleQuote : DoubleQuote -> type(DoubleQuote);
+HQuote : Quote -> type(Quote);
+HRBracket : RBracket -> type(RBracket);
+HLBracket : LBracket -> type(LBracket);
+HLParenthesis : LParenthesis -> type(LParenthesis);
+HRParenthesis : RParenthesis -> type(RParenthesis);
+HEquals : Equals -> type(Equals);
+HOr : Or -> type(Or);
+HLb : Lb -> type(Lb), popMode;
+HSeparator : Separator -> type(Separator), skip;
+HIdentifier : Identifier -> type(Identifier);
+HSpecialAttribute : SpecialAttribute -> type(SpecialAttribute);
+HDocumentID : DocumentID -> type(DocumentID);
+HWs : Ws -> type(Ws), skip;
+
+mode modifier;
+Modifierquotedval 
+    : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"')
+      -> type(Modifierval), popMode;
+/*
+    {
+      String text = getText();  
+      text = text.substring(1, text.length()).trim();  //remove leading equals character and trim to remove any spaces
+      setText(text.substring(1, text.length() - 1)); //remove surrounding doublequotes 
+      setType(Modifierval);
+      popMode();
+    };
+*/
+Modifierval 
+    : '=' (Separator* ~[\r\n\[\],;"])* 
+      -> popMode;
+
+ModifierSeparator 
+    : Separator 
+      -> type(Separator), skip;
+/*
+    {
+      String text = getText();     
+      setText(text.substring(1, text.length()).trim());//remove leading equals character and trim to remove any spaces
+      popMode();
+    };
+*/
+ModifierWs 
+    : Ws 
+      -> type(Ws), skip;

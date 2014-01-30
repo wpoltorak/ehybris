@@ -1,0 +1,10 @@
+# It is OK to use many qualifiers for the same document id definition. They have to be unique though.
+
+INSERT Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID )
+; andi; addr1 ; addr1
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Wroclaw ; andi ; 
+
+INSERT Address; &addrID; Town; owner( Customer.uid )
+; addr2 ; Wronki ; andi

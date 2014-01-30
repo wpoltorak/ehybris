@@ -1,0 +1,40 @@
+ $na\
+me=Andy     \ 
+    Warhol 7
+ 
+$na\	
+me=	'Andy     \ 
+    Warhol 8'
+$\ 
+na\
+\
+_me	 =	"	Andy	\	
+	Warhol 	"\
+    9
+    
+$MACRO	\
+=Value
+
+$MACRO2 \
+= Value
+$MACRO_3 =\
+ Value
+ $MACRO_4\
+ \
+ =\
+ \
+ Value
+$\
+\
+\
+\
+\
+\
+mac\
+\
+\
+ro5\
+\
+\
+\
+		= 20

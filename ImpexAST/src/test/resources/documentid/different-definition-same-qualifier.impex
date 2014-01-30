@@ -1,0 +1,11 @@
+# it is OK to use same qualifiers but defined for different document ids
+# in this case qualifier addr1 is defined as &addrID and &addrID2
+
+INSERT Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID2 )
+; andi; addr1 ; addr1
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Wroclaw ; andi ;
+
+INSERT Address; &addrID2; Town; owner( Customer.uid )
+; addr1 ; Wronki; andi

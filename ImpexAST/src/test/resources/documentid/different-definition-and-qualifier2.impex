@@ -1,0 +1,11 @@
+# Document id definition can by anywhere in the file. It does not have to be before its references-  in this case it is before and after reference 
+# It is OK to use multiple qualifiers and document IDs within a document.
+
+INSERT Address; &addrID2; Town; owner( Customer.uid )
+; addr2 ; Wronki; andi
+
+INSERT Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID2 )
+; andi; addr1 ; addr2
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Wroclaw ; andi ;
