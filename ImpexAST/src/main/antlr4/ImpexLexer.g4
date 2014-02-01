@@ -1,6 +1,7 @@
 lexer grammar ImpexLexer;
 
 tokens {
+    //Mode,
     BooleanAttributeModifier,
     IntAttributeModifier,
     DateFormatAttributeModifier,
@@ -38,15 +39,15 @@ fragment Z :[Zz]Separator*;
 fragment DASH : [-]Separator*;
 fragment UNDERSCORE : [_]Separator*;
 fragment TWO : [2]Separator*;
-//Types
+//Modes
 Insert
-    : I N S E R [Tt] -> pushMode(header);
+    : I N S E R T -> pushMode(header);//, type(Mode);
 InsertUpdate	
-    : I N S E R T UNDERSCORE U P D A T [Ee] -> pushMode(header);
+    : I N S E R T UNDERSCORE U P D A T E -> pushMode(header);//, type(Mode);
 Update		
-    : U P D A T [Ee] -> pushMode(header);
+    : U P D A T E -> pushMode(header);//, type(Mode);
 Remove
-    : R E M O V [Ee] -> pushMode(header);
+    : R E M O V E -> pushMode(header);//, type(Mode);
 
 Semicolon
     :';';
@@ -58,10 +59,6 @@ DoubleQuote
     :'"';
 Quote
     :'\'';
-RBracket
-    :']';
-LBracket
-    :'[';
 LParenthesis
     :'(';
 RParenthesis
@@ -179,60 +176,12 @@ MacroSeparator : Separator -> type(Separator), skip;
 
 mode header;
 
-//Type attributes
-BatchMode
-    : B A T C H M O D [Ee] -> pushMode(modifier);
-CacheUnique	
-    : C A C H E U N I Q U [Ee] -> pushMode(modifier);
-Processor	
-    : P R O C E S S O [Rr] -> pushMode(modifier);
-//Argument attributes
-Alias		
-    : A L I A [Ss] -> pushMode(modifier), type(TextAttributeModifier);
-AllowNull	
-    : A L L O W N U L [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
-CellDecorator	
-    : C E L L D E C O R A T O [Rr] -> pushMode(modifier), type(TextAttributeModifier);
-CollectionDelimiter 	
-    : C O L L E C T I O N DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
-Dateformat		
-    : D A T E F O R M A [Tt] -> pushMode(modifier), type(DateFormatAttributeModifier);
-Default		
-    : D E F A U L [Tt] -> pushMode(modifier), type(TextAttributeModifier);
-ForceWrite		
-    : F O R C E W R I T [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
-IgnoreKeyCase	
-    : I G N O R E K E Y C A S [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
-IgnoreNull		
-    : I G N O R E N U L [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
-KeyToValueDelimiter	
-    : K E Y TWO V A L U E DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
-Lang		
-    : L A N [Gg] -> pushMode(modifier), type(TextAttributeModifier);
-MapDelimiter	
-    : M A P DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
-Mode		
-    : M O D [Ee] -> pushMode(modifier), type(TextAttributeModifier);
-NumberFormat	
-    : N U M B E R F O R M A [Tt] -> pushMode(modifier), type(NumberFormatAttributeModifier);
-PathDelimiter	
-    : P A T H DASH D E L I M I T E [Rr] -> pushMode(modifier), type(TextAttributeModifier);
-Pos		
-    : P O [Ss] -> pushMode(modifier), type(IntAttributeModifier);
-Translator
-    : T R A N S L A T O [Rr] -> pushMode(modifier), type(ClassAttributeModifier);
-Unique		
-    : U N I Q U [Ee] -> pushMode(modifier), type(BooleanAttributeModifier);
-Virtual		
-    : V I R T U A [Ll] -> pushMode(modifier), type(BooleanAttributeModifier);
-
 HComma : Comma -> type(Comma);
 HSemicolon : Semicolon -> type(Semicolon);
 HDot : Dot -> type(Dot);
 HDoubleQuote : DoubleQuote -> type(DoubleQuote);
 HQuote : Quote -> type(Quote);
-HRBracket : RBracket -> type(RBracket);
-HLBracket : LBracket -> type(LBracket);
+RBracket : '[' -> pushMode(modifier), skip;
 HLParenthesis : LParenthesis -> type(LParenthesis);
 HRParenthesis : RParenthesis -> type(RParenthesis);
 HEquals : Equals -> type(Equals);
@@ -245,9 +194,37 @@ HDocumentID : DocumentID -> type(DocumentID);
 HWs : Ws -> type(Ws), skip;
 
 mode modifier;
-Modifierquotedval 
-    : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"')
-      -> type(Modifierval), popMode;
+
+LBracket : ']' -> popMode, skip;
+//Type modifiers
+BatchMode           : B A T C H M O D E;
+CacheUnique         : C A C H E U N I Q U E;
+Processor           : P R O C E S S O R;
+//Argument modifiers
+Alias               : A L I A S -> type(TextAttributeModifier);
+AllowNull           : A L L O W N U L L -> type(BooleanAttributeModifier);
+CellDecorator       : C E L L D E C O R A T O R -> type(TextAttributeModifier);
+CollectionDelimiter : C O L L E C T I O N DASH D E L I M I T E R -> type(TextAttributeModifier);
+Dateformat          : D A T E F O R M A T -> type(DateFormatAttributeModifier);
+Default             : D E F A U L T -> type(TextAttributeModifier);
+ForceWrite          : F O R C E W R I T E -> type(BooleanAttributeModifier);
+IgnoreKeyCase       : I G N O R E K E Y C A S E -> type(BooleanAttributeModifier);
+IgnoreNull          : I G N O R E N U L L -> type(BooleanAttributeModifier);
+KeyToValueDelimiter : K E Y TWO V A L U E DASH D E L I M I T E R -> type(TextAttributeModifier);
+Lang                : L A N G -> type(TextAttributeModifier);
+MapDelimiter        : M A P DASH D E L I M I T E R -> type(TextAttributeModifier);
+Mode                : M O D E -> type(TextAttributeModifier);
+NumberFormat        : N U M B E R F O R M A T -> type(NumberFormatAttributeModifier);
+PathDelimiter       : P A T H DASH D E L I M I T E R -> type(TextAttributeModifier);
+Pos                 : P O S -> type(IntAttributeModifier);
+Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
+Unique              : U N I Q U E -> type(BooleanAttributeModifier);
+Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
+
+ModifierSeparator   : Separator -> type(Separator), skip;
+ModifierWs          : Ws -> type(Ws), skip;
+ModifierComma       : Ws* Comma Ws* -> type(Comma), skip;
+Modifierquotedval   : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"') -> type(Modifierval);
 /*
     {
       String text = getText();  
@@ -257,13 +234,7 @@ Modifierquotedval
       popMode();
     };
 */
-Modifierval 
-    : '=' (Separator* ~[\r\n\[\],;"])* 
-      -> popMode;
-
-ModifierSeparator 
-    : Separator 
-      -> type(Separator), skip;
+Modifierval         : '=' (Separator* ~[\r\n\[\],;"])*;
 /*
     {
       String text = getText();     
@@ -271,6 +242,3 @@ ModifierSeparator
       popMode();
     };
 */
-ModifierWs 
-    : Ws 
-      -> type(Ws), skip;

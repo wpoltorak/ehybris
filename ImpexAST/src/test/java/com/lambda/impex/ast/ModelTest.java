@@ -98,27 +98,71 @@ public abstract class ModelTest {
     }
 
     protected ParseTree attribute(final ParseTree tree, final int blockNo, final int attributeNo) {
-        return getNthChildWithType(header(tree, blockNo), attributeNo, ImpexParser.RULE_attribute);
+        final ParseTree attribute = getNthChildWithType(header(tree, blockNo), attributeNo, ImpexParser.RULE_attribute);
+        return getFirstChildWithType(attribute, ImpexParser.RULE_attributeValue);
     }
 
     protected ParseTree type(final ParseTree tree, final int blockNo) {
         return getFirstChildWithType(header(tree, blockNo), ImpexParser.RULE_headerTypeName);
     }
 
-    protected ParseTree modifiers(final ParseTree tree, final int blockNo) {
-        return getFirstChildWithType(header(tree, blockNo), ImpexParser.RULE_attributeModifierAssignment);
+    /**
+     * Return first header modifier
+     * 
+     * @param tree
+     * @param blockNo
+     * @return
+     */
+    protected List<ParseTree> modifiers(final ParseTree tree, final int blockNo) {
+        return getChildrenWithType(header(tree, blockNo), ImpexParser.RULE_headerModifierAssignment);
     }
 
-    protected ParseTree modifiers(final ParseTree tree, final int blockNo, final int attributeNo) {
+    /**
+     * Return first header modifier
+     * 
+     * @param tree
+     * @param blockNo
+     * @return
+     */
+    protected ParseTree modifier(final ParseTree tree, final int blockNo) {
+        return getFirstChildWithType(header(tree, blockNo), ImpexParser.RULE_headerModifierAssignment);
+    }
+
+    /**
+     * Return all attribute modifiers
+     * 
+     * @param tree
+     * @param blockNo
+     * @param attributeNo
+     * @return
+     */
+    protected List<ParseTree> modifiers(final ParseTree tree, final int blockNo, final int attributeNo) {
+        return getChildrenWithType(attribute(tree, blockNo, attributeNo), ImpexParser.RULE_attributeModifierAssignment);
+    }
+
+    /**
+     * Return first attribute modifier
+     * 
+     * @param tree
+     * @param blockNo
+     * @param attributeNo
+     * @return
+     */
+    protected ParseTree modifier(final ParseTree tree, final int blockNo, final int attributeNo) {
         return getFirstChildWithType(attribute(tree, blockNo, attributeNo), ImpexParser.RULE_attributeModifierAssignment);
     }
 
-    protected ParseTree modifier(final ParseTree tree, final int blockNo, final int modifierNo) {
-        return modifiers(tree, blockNo).getChild(modifierNo);
-    }
-
+    /**
+     * Return nth attribute modifier
+     * 
+     * @param tree
+     * @param blockNo
+     * @param attributeNo
+     * @param modifierNo
+     * @return
+     */
     protected ParseTree modifier(final ParseTree tree, final int blockNo, final int attributeNo, final int modifierNo) {
-        return modifiers(tree, blockNo, attributeNo).getChild(modifierNo);
+        return getNthChildWithType(attribute(tree, blockNo, attributeNo), modifierNo, ImpexParser.RULE_attributeModifierAssignment);
     }
 
     protected ParseTree record(final ParseTree tree, final int blockNo, final int recordNo) {

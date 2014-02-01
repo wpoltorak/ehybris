@@ -47,14 +47,6 @@ public class HeaderModelTest extends ModelTest {
     }
 
     @Test
-    public void attributeModifiersIsSingleNode() throws Exception {
-        final ParseTree tree = init("/header/header-attributemodifiers.impex");
-        assertEquals(1, getChildrenWithType(attribute(tree, 1, 1), ImpexParser.RULE_attributeModifierAssignment).size());
-        assertEquals(1, getChildrenWithType(attribute(tree, 2, 1), ImpexParser.RULE_attributeModifierAssignment).size());
-        assertEquals(1, getChildrenWithType(attribute(tree, 3, 0), ImpexParser.RULE_attributeModifierAssignment).size());
-    }
-
-    @Test
     public void attributeModifiers() throws Exception {
         final ParseTree tree = init("/header/header-attributemodifiers.impex");
         assertModifiers(modifiers(tree, 0, 0), a(ImpexParser.BooleanAttributeModifier), a("true"));
@@ -87,7 +79,7 @@ public class HeaderModelTest extends ModelTest {
 
     @Test
     public void typeModifiers() throws Exception {
-        final ParseTree tree = init("/header/header-typemodifiers.impex");
+        final ParseTree tree = init("/header/header-typemodifier.impex");
         assertModifiers(modifiers(tree, 0), a(ImpexParser.CacheUnique), a("true"));
         assertModifiers(modifiers(tree, 1), a(ImpexParser.CacheUnique), a("true"));
         assertModifiers(modifiers(tree, 2), a(ImpexParser.CacheUnique, ImpexParser.BatchMode), a("true", "false"));
@@ -184,17 +176,20 @@ public class HeaderModelTest extends ModelTest {
 
     }
 
-    private void assertModifiers(final ParseTree modifiers, final int[] types, final String[] values) {
-        assertEquals(types.length, modifiers.getChildCount());
+    private void assertModifiers(final List<ParseTree> modifiers, final int[] types, final String[] values) {
+        assertEquals(types.length, modifiers.size());
         for (int i = 0; i < values.length; i++) {
-            assertModifier(modifiers.getChild(i), types[i], values[i]);
+            assertModifier(modifiers.get(i), types[i], values[i]);
         }
     }
 
-    private void assertModifier(final ParseTree modifier, final int type, final String value) {
-        assertEquals(2, modifier.getChildCount());
+    private void assertModifier(final ParseTree tree, final int type, final String value) {
+        assertEquals(2, tree.getChildCount());
+        final ParseTree modifier = tree.getChild(0);
+        assertEquals(1, modifier.getChildCount());
+
         assertTrue(matchesType(modifier.getChild(0), type));
-        assertEquals(value, modifier.getChild(1).getText());
+        assertEquals(value, tree.getChild(1).getText());
     }
 
     private void assertHeaderMode(final ParseTree header, final int mode, final int... invalidModes) {

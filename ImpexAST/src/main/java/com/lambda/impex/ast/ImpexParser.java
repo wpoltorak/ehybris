@@ -15,32 +15,30 @@ public class ImpexParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		Field=28, Insert=7, IntAttributeModifier=2, Ws=30, Update=9, BooleanAttributeModifier=1, 
-		NumberFormatAttributeModifier=4, RBracket=16, Quote=15, Semicolon=11, 
-		Remove=10, LParenthesis=18, CacheUnique=33, Lb=29, Identifier=25, RParenthesis=19, 
-		Separator=22, Processor=34, TextAttributeModifier=6, DocumentID=23, BatchMode=32, 
-		SpecialAttribute=24, Comment=27, ClassAttributeModifier=5, Macrodef=26, 
+		Field=26, Insert=7, IntAttributeModifier=2, Ws=28, Update=9, BooleanAttributeModifier=1, 
+		NumberFormatAttributeModifier=4, RBracket=30, Quote=15, Semicolon=11, 
+		Remove=10, LParenthesis=16, CacheUnique=33, Lb=27, Identifier=23, RParenthesis=17, 
+		Separator=20, Processor=34, TextAttributeModifier=6, DocumentID=21, BatchMode=32, 
+		SpecialAttribute=22, Comment=25, ClassAttributeModifier=5, Macrodef=24, 
 		DoubleQuote=14, Dot=13, Modifierval=35, DateFormatAttributeModifier=3, 
-		InsertUpdate=8, Macroval=31, LBracket=17, Or=21, Comma=12, Equals=20;
+		InsertUpdate=8, Macroval=29, LBracket=31, Or=19, Comma=12, Equals=18;
 	public static final String[] tokenNames = {
 		"<INVALID>", "BooleanAttributeModifier", "IntAttributeModifier", "DateFormatAttributeModifier", 
 		"NumberFormatAttributeModifier", "ClassAttributeModifier", "TextAttributeModifier", 
 		"Insert", "InsertUpdate", "Update", "Remove", "';'", "','", "'.'", "'\"'", 
-		"'''", "']'", "'['", "'('", "')'", "'='", "'|'", "Separator", "DocumentID", 
-		"SpecialAttribute", "Identifier", "Macrodef", "Comment", "Field", "Lb", 
-		"Ws", "Macroval", "BatchMode", "CacheUnique", "Processor", "Modifierval"
+		"'''", "'('", "')'", "'='", "'|'", "Separator", "DocumentID", "SpecialAttribute", 
+		"Identifier", "Macrodef", "Comment", "Field", "Lb", "Ws", "Macroval", 
+		"'['", "']'", "BatchMode", "CacheUnique", "Processor", "Modifierval"
 	};
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
 		RULE_headerModifier = 5, RULE_record = 6, RULE_attribute = 7, RULE_attributeName = 8, 
-		RULE_attributeValue = 9, RULE_attributeModifierAssignments = 10, RULE_attributeModifierAssignment = 11, 
-		RULE_attributeModifier = 12, RULE_headerMode = 13, RULE_headerTypeName = 14, 
-		RULE_macro = 15;
+		RULE_attributeValue = 9, RULE_attributeModifierAssignment = 10, RULE_attributeModifier = 11, 
+		RULE_headerMode = 12, RULE_headerTypeName = 13, RULE_macro = 14;
 	public static final String[] ruleNames = {
 		"impex", "block", "header", "quote", "headerModifierAssignment", "headerModifier", 
-		"record", "attribute", "attributeName", "attributeValue", "attributeModifierAssignments", 
-		"attributeModifierAssignment", "attributeModifier", "headerMode", "headerTypeName", 
-		"macro"
+		"record", "attribute", "attributeName", "attributeValue", "attributeModifierAssignment", 
+		"attributeModifier", "headerMode", "headerTypeName", "macro"
 	};
 
 	@Override
@@ -94,33 +92,33 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(33);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Macrodef) {
 				{
 				{
-				setState(32); macro();
+				setState(30); macro();
 				}
 				}
-				setState(37);
+				setState(35);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(41);
+			setState(39);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Insert) | (1L << InsertUpdate) | (1L << Update) | (1L << Remove))) != 0)) {
 				{
 				{
-				setState(38); block();
+				setState(36); block();
 				}
 				}
-				setState(43);
+				setState(41);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(44); match(EOF);
+			setState(42); match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -171,30 +169,30 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46); header();
-			setState(51);
+			setState(44); header();
+			setState(49);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Identifier) | (1L << Macrodef) | (1L << Field))) != 0)) {
 				{
-				setState(49);
+				setState(47);
 				switch (_input.LA(1)) {
 				case Macrodef:
 					{
-					setState(47); macro();
+					setState(45); macro();
 					}
 					break;
 				case Identifier:
 				case Field:
 					{
-					setState(48); record();
+					setState(46); record();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(53);
+				setState(51);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -216,15 +214,8 @@ public class ImpexParser extends Parser {
 			return getRuleContext(HeaderModeContext.class,0);
 		}
 		public List<TerminalNode> Semicolon() { return getTokens(ImpexParser.Semicolon); }
-		public TerminalNode RBracket(int i) {
-			return getToken(ImpexParser.RBracket, i);
-		}
-		public List<TerminalNode> RBracket() { return getTokens(ImpexParser.RBracket); }
 		public List<HeaderModifierAssignmentContext> headerModifierAssignment() {
 			return getRuleContexts(HeaderModifierAssignmentContext.class);
-		}
-		public TerminalNode LBracket(int i) {
-			return getToken(ImpexParser.LBracket, i);
 		}
 		public List<AttributeContext> attribute() {
 			return getRuleContexts(AttributeContext.class);
@@ -239,14 +230,9 @@ public class ImpexParser extends Parser {
 		public AttributeContext attribute(int i) {
 			return getRuleContext(AttributeContext.class,i);
 		}
-		public List<TerminalNode> LBracket() { return getTokens(ImpexParser.LBracket); }
-		public TerminalNode Comma(int i) {
-			return getToken(ImpexParser.Comma, i);
-		}
 		public TerminalNode Semicolon(int i) {
 			return getToken(ImpexParser.Semicolon, i);
 		}
-		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public HeaderContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -268,56 +254,40 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(54); headerMode();
-			setState(55); headerTypeName();
-			setState(69);
+			setState(52); headerMode();
+			setState(53); headerTypeName();
+			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==LBracket) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BatchMode) | (1L << CacheUnique) | (1L << Processor))) != 0)) {
 				{
 				{
-				setState(56); match(LBracket);
-				setState(57); headerModifierAssignment();
-				setState(62);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				while (_la==Comma) {
-					{
-					{
-					setState(58); match(Comma);
-					setState(59); headerModifierAssignment();
-					}
-					}
-					setState(64);
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				}
-				setState(65); match(RBracket);
+				setState(54); headerModifierAssignment();
 				}
 				}
-				setState(71);
+				setState(59);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(76);
+			setState(64);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Semicolon) {
 				{
 				{
-				setState(72); match(Semicolon);
-				setState(73); attribute();
+				setState(60); match(Semicolon);
+				setState(61); attribute();
 				}
 				}
-				setState(78);
+				setState(66);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(80);
+			setState(68);
 			_la = _input.LA(1);
 			if (_la==Lb) {
 				{
-				setState(79); match(Lb);
+				setState(67); match(Lb);
 				}
 			}
 
@@ -358,7 +328,7 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
+			setState(70);
 			_la = _input.LA(1);
 			if ( !(_la==DoubleQuote || _la==Quote) ) {
 			_errHandler.recoverInline(this);
@@ -402,8 +372,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84); headerModifier();
-			setState(85); match(Modifierval);
+			setState(72); headerModifier();
+			setState(73); match(Modifierval);
 			}
 		}
 		catch (RecognitionException re) {
@@ -442,7 +412,7 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(87);
+			setState(75);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BatchMode) | (1L << CacheUnique) | (1L << Processor))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -490,38 +460,38 @@ public class ImpexParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(90);
+			setState(78);
 			_la = _input.LA(1);
 			if (_la==Identifier) {
 				{
-				setState(89); match(Identifier);
+				setState(77); match(Identifier);
 				}
 			}
 
-			setState(93); 
+			setState(81); 
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			do {
 				switch (_alt) {
 				case 1:
 					{
 					{
-					setState(92); match(Field);
+					setState(80); match(Field);
 					}
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(95); 
+				setState(83); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,9,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 			} while ( _alt!=2 && _alt!=-1 );
-			setState(98);
+			setState(86);
 			_la = _input.LA(1);
 			if (_la==Lb) {
 				{
-				setState(97); match(Lb);
+				setState(85); match(Lb);
 				}
 			}
 
@@ -566,7 +536,7 @@ public class ImpexParser extends Parser {
 		AttributeContext _localctx = new AttributeContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_attribute);
 		try {
-			setState(105);
+			setState(93);
 			switch (_input.LA(1)) {
 			case EOF:
 			case Insert:
@@ -582,16 +552,16 @@ public class ImpexParser extends Parser {
 			case Lb:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(100); attributeValue();
+				setState(88); attributeValue();
 				}
 				break;
 			case DoubleQuote:
 			case Quote:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(101); quote();
-				setState(102); attributeValue();
-				setState(103); quote();
+				setState(89); quote();
+				setState(90); attributeValue();
+				setState(91); quote();
 				}
 				break;
 			default:
@@ -636,31 +606,31 @@ public class ImpexParser extends Parser {
 		enterRule(_localctx, 16, RULE_attributeName);
 		int _la;
 		try {
-			setState(114);
+			setState(102);
 			switch (_input.LA(1)) {
 			case Macrodef:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(107); match(Macrodef);
+				setState(95); match(Macrodef);
 				}
 				break;
 			case SpecialAttribute:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(108); match(SpecialAttribute);
+				setState(96); match(SpecialAttribute);
 				}
 				break;
 			case Identifier:
 				enterOuterAlt(_localctx, 3);
 				{
 				{
-				setState(109); match(Identifier);
-				setState(112);
+				setState(97); match(Identifier);
+				setState(100);
 				_la = _input.LA(1);
 				if (_la==Dot) {
 					{
-					setState(110); match(Dot);
-					setState(111); attributeName();
+					setState(98); match(Dot);
+					setState(99); attributeName();
 					}
 				}
 
@@ -683,9 +653,6 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class AttributeValueContext extends ParserRuleContext {
-		public AttributeModifierAssignmentsContext attributeModifierAssignments(int i) {
-			return getRuleContext(AttributeModifierAssignmentsContext.class,i);
-		}
 		public AttributeValueContext attributeValue(int i) {
 			return getRuleContext(AttributeValueContext.class,i);
 		}
@@ -697,13 +664,16 @@ public class ImpexParser extends Parser {
 			return getRuleContext(AttributeNameContext.class,0);
 		}
 		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
+		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
+			return getRuleContext(AttributeModifierAssignmentContext.class,i);
+		}
+		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
+			return getRuleContexts(AttributeModifierAssignmentContext.class);
+		}
 		public TerminalNode Comma(int i) {
 			return getToken(ImpexParser.Comma, i);
 		}
 		public TerminalNode DocumentID() { return getToken(ImpexParser.DocumentID, 0); }
-		public List<AttributeModifierAssignmentsContext> attributeModifierAssignments() {
-			return getRuleContexts(AttributeModifierAssignmentsContext.class);
-		}
 		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public AttributeValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -724,57 +694,57 @@ public class ImpexParser extends Parser {
 		enterRule(_localctx, 18, RULE_attributeValue);
 		int _la;
 		try {
-			setState(140);
-			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
+			setState(128);
+			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(137);
+				setState(125);
 				switch (_input.LA(1)) {
 				case DocumentID:
 					{
-					setState(116); match(DocumentID);
+					setState(104); match(DocumentID);
 					}
 					break;
 				case SpecialAttribute:
 				case Identifier:
 				case Macrodef:
 					{
-					setState(117); attributeName();
-					setState(129);
+					setState(105); attributeName();
+					setState(117);
 					_la = _input.LA(1);
 					if (_la==LParenthesis) {
 						{
-						setState(118); match(LParenthesis);
-						setState(119); attributeValue();
-						setState(124);
+						setState(106); match(LParenthesis);
+						setState(107); attributeValue();
+						setState(112);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						while (_la==Comma) {
 							{
 							{
-							setState(120); match(Comma);
-							setState(121); attributeValue();
+							setState(108); match(Comma);
+							setState(109); attributeValue();
 							}
 							}
-							setState(126);
+							setState(114);
 							_errHandler.sync(this);
 							_la = _input.LA(1);
 						}
-						setState(127); match(RParenthesis);
+						setState(115); match(RParenthesis);
 						}
 					}
 
-					setState(134);
+					setState(122);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-					while (_la==LBracket) {
+					while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier))) != 0)) {
 						{
 						{
-						setState(131); attributeModifierAssignments();
+						setState(119); attributeModifierAssignment();
 						}
 						}
-						setState(136);
+						setState(124);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
@@ -791,70 +761,6 @@ public class ImpexParser extends Parser {
 				{
 				}
 				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class AttributeModifierAssignmentsContext extends ParserRuleContext {
-		public TerminalNode RBracket() { return getToken(ImpexParser.RBracket, 0); }
-		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
-			return getRuleContext(AttributeModifierAssignmentContext.class,i);
-		}
-		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
-			return getRuleContexts(AttributeModifierAssignmentContext.class);
-		}
-		public TerminalNode LBracket() { return getToken(ImpexParser.LBracket, 0); }
-		public TerminalNode Comma(int i) {
-			return getToken(ImpexParser.Comma, i);
-		}
-		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
-		public AttributeModifierAssignmentsContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_attributeModifierAssignments; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ImpexParserListener ) ((ImpexParserListener)listener).enterAttributeModifierAssignments(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ImpexParserListener ) ((ImpexParserListener)listener).exitAttributeModifierAssignments(this);
-		}
-	}
-
-	public final AttributeModifierAssignmentsContext attributeModifierAssignments() throws RecognitionException {
-		AttributeModifierAssignmentsContext _localctx = new AttributeModifierAssignmentsContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_attributeModifierAssignments);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(142); match(LBracket);
-			setState(143); attributeModifierAssignment();
-			setState(148);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==Comma) {
-				{
-				{
-				setState(144); match(Comma);
-				setState(145); attributeModifierAssignment();
-				}
-				}
-				setState(150);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-			}
-			setState(151); match(RBracket);
 			}
 		}
 		catch (RecognitionException re) {
@@ -889,12 +795,12 @@ public class ImpexParser extends Parser {
 
 	public final AttributeModifierAssignmentContext attributeModifierAssignment() throws RecognitionException {
 		AttributeModifierAssignmentContext _localctx = new AttributeModifierAssignmentContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_attributeModifierAssignment);
+		enterRule(_localctx, 20, RULE_attributeModifierAssignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(153); attributeModifier();
-			setState(154); match(Modifierval);
+			setState(130); attributeModifier();
+			setState(131); match(Modifierval);
 			}
 		}
 		catch (RecognitionException re) {
@@ -931,12 +837,12 @@ public class ImpexParser extends Parser {
 
 	public final AttributeModifierContext attributeModifier() throws RecognitionException {
 		AttributeModifierContext _localctx = new AttributeModifierContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_attributeModifier);
+		enterRule(_localctx, 22, RULE_attributeModifier);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(156);
+			setState(133);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -976,12 +882,12 @@ public class ImpexParser extends Parser {
 
 	public final HeaderModeContext headerMode() throws RecognitionException {
 		HeaderModeContext _localctx = new HeaderModeContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_headerMode);
+		enterRule(_localctx, 24, RULE_headerMode);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(158);
+			setState(135);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Insert) | (1L << InsertUpdate) | (1L << Update) | (1L << Remove))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -1027,9 +933,9 @@ public class ImpexParser extends Parser {
 
 	public final HeaderTypeNameContext headerTypeName() throws RecognitionException {
 		HeaderTypeNameContext _localctx = new HeaderTypeNameContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_headerTypeName);
+		enterRule(_localctx, 26, RULE_headerTypeName);
 		try {
-			setState(164);
+			setState(141);
 			switch (_input.LA(1)) {
 			case Insert:
 			case InsertUpdate:
@@ -1037,7 +943,7 @@ public class ImpexParser extends Parser {
 			case Remove:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(160); headerMode();
+				setState(137); headerMode();
 				}
 				break;
 			case BooleanAttributeModifier:
@@ -1048,7 +954,7 @@ public class ImpexParser extends Parser {
 			case TextAttributeModifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(161); attributeModifier();
+				setState(138); attributeModifier();
 				}
 				break;
 			case BatchMode:
@@ -1056,13 +962,13 @@ public class ImpexParser extends Parser {
 			case Processor:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(162); headerModifier();
+				setState(139); headerModifier();
 				}
 				break;
 			case Identifier:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(163); match(Identifier);
+				setState(140); match(Identifier);
 				}
 				break;
 			default:
@@ -1099,12 +1005,12 @@ public class ImpexParser extends Parser {
 
 	public final MacroContext macro() throws RecognitionException {
 		MacroContext _localctx = new MacroContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_macro);
+		enterRule(_localctx, 28, RULE_macro);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(166); match(Macrodef);
-			setState(167); match(Macroval);
+			setState(143); match(Macrodef);
+			setState(144); match(Macroval);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1119,56 +1025,47 @@ public class ImpexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3%\u00ac\4\2\t\2\4"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3%\u0095\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
-		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\7\2$\n"+
-		"\2\f\2\16\2\'\13\2\3\2\7\2*\n\2\f\2\16\2-\13\2\3\2\3\2\3\3\3\3\3\3\7\3"+
-		"\64\n\3\f\3\16\3\67\13\3\3\4\3\4\3\4\3\4\3\4\3\4\7\4?\n\4\f\4\16\4B\13"+
-		"\4\3\4\3\4\7\4F\n\4\f\4\16\4I\13\4\3\4\3\4\7\4M\n\4\f\4\16\4P\13\4\3\4"+
-		"\5\4S\n\4\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\b\5\b]\n\b\3\b\6\b`\n\b\r\b\16"+
-		"\ba\3\b\5\be\n\b\3\t\3\t\3\t\3\t\3\t\5\tl\n\t\3\n\3\n\3\n\3\n\3\n\5\n"+
-		"s\n\n\5\nu\n\n\3\13\3\13\3\13\3\13\3\13\3\13\7\13}\n\13\f\13\16\13\u0080"+
-		"\13\13\3\13\3\13\5\13\u0084\n\13\3\13\7\13\u0087\n\13\f\13\16\13\u008a"+
-		"\13\13\5\13\u008c\n\13\3\13\5\13\u008f\n\13\3\f\3\f\3\f\3\f\7\f\u0095"+
-		"\n\f\f\f\16\f\u0098\13\f\3\f\3\f\3\r\3\r\3\r\3\16\3\16\3\17\3\17\3\20"+
-		"\3\20\3\20\3\20\5\20\u00a7\n\20\3\21\3\21\3\21\3\21\2\22\2\4\6\b\n\f\16"+
-		"\20\22\24\26\30\32\34\36 \2\6\3\2\20\21\3\2\"$\3\2\3\b\3\2\t\f\u00b3\2"+
-		"%\3\2\2\2\4\60\3\2\2\2\68\3\2\2\2\bT\3\2\2\2\nV\3\2\2\2\fY\3\2\2\2\16"+
-		"\\\3\2\2\2\20k\3\2\2\2\22t\3\2\2\2\24\u008e\3\2\2\2\26\u0090\3\2\2\2\30"+
-		"\u009b\3\2\2\2\32\u009e\3\2\2\2\34\u00a0\3\2\2\2\36\u00a6\3\2\2\2 \u00a8"+
-		"\3\2\2\2\"$\5 \21\2#\"\3\2\2\2$\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&+\3\2\2"+
-		"\2\'%\3\2\2\2(*\5\4\3\2)(\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,.\3\2"+
-		"\2\2-+\3\2\2\2./\7\2\2\3/\3\3\2\2\2\60\65\5\6\4\2\61\64\5 \21\2\62\64"+
-		"\5\16\b\2\63\61\3\2\2\2\63\62\3\2\2\2\64\67\3\2\2\2\65\63\3\2\2\2\65\66"+
-		"\3\2\2\2\66\5\3\2\2\2\67\65\3\2\2\289\5\34\17\29G\5\36\20\2:;\7\23\2\2"+
-		";@\5\n\6\2<=\7\16\2\2=?\5\n\6\2><\3\2\2\2?B\3\2\2\2@>\3\2\2\2@A\3\2\2"+
-		"\2AC\3\2\2\2B@\3\2\2\2CD\7\22\2\2DF\3\2\2\2E:\3\2\2\2FI\3\2\2\2GE\3\2"+
-		"\2\2GH\3\2\2\2HN\3\2\2\2IG\3\2\2\2JK\7\r\2\2KM\5\20\t\2LJ\3\2\2\2MP\3"+
-		"\2\2\2NL\3\2\2\2NO\3\2\2\2OR\3\2\2\2PN\3\2\2\2QS\7\37\2\2RQ\3\2\2\2RS"+
-		"\3\2\2\2S\7\3\2\2\2TU\t\2\2\2U\t\3\2\2\2VW\5\f\7\2WX\7%\2\2X\13\3\2\2"+
-		"\2YZ\t\3\2\2Z\r\3\2\2\2[]\7\33\2\2\\[\3\2\2\2\\]\3\2\2\2]_\3\2\2\2^`\7"+
-		"\36\2\2_^\3\2\2\2`a\3\2\2\2a_\3\2\2\2ab\3\2\2\2bd\3\2\2\2ce\7\37\2\2d"+
-		"c\3\2\2\2de\3\2\2\2e\17\3\2\2\2fl\5\24\13\2gh\5\b\5\2hi\5\24\13\2ij\5"+
-		"\b\5\2jl\3\2\2\2kf\3\2\2\2kg\3\2\2\2l\21\3\2\2\2mu\7\34\2\2nu\7\32\2\2"+
-		"or\7\33\2\2pq\7\17\2\2qs\5\22\n\2rp\3\2\2\2rs\3\2\2\2su\3\2\2\2tm\3\2"+
-		"\2\2tn\3\2\2\2to\3\2\2\2u\23\3\2\2\2v\u008c\7\31\2\2w\u0083\5\22\n\2x"+
-		"y\7\24\2\2y~\5\24\13\2z{\7\16\2\2{}\5\24\13\2|z\3\2\2\2}\u0080\3\2\2\2"+
-		"~|\3\2\2\2~\177\3\2\2\2\177\u0081\3\2\2\2\u0080~\3\2\2\2\u0081\u0082\7"+
-		"\25\2\2\u0082\u0084\3\2\2\2\u0083x\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0088"+
-		"\3\2\2\2\u0085\u0087\5\26\f\2\u0086\u0085\3\2\2\2\u0087\u008a\3\2\2\2"+
-		"\u0088\u0086\3\2\2\2\u0088\u0089\3\2\2\2\u0089\u008c\3\2\2\2\u008a\u0088"+
-		"\3\2\2\2\u008bv\3\2\2\2\u008bw\3\2\2\2\u008c\u008f\3\2\2\2\u008d\u008f"+
-		"\3\2\2\2\u008e\u008b\3\2\2\2\u008e\u008d\3\2\2\2\u008f\25\3\2\2\2\u0090"+
-		"\u0091\7\23\2\2\u0091\u0096\5\30\r\2\u0092\u0093\7\16\2\2\u0093\u0095"+
-		"\5\30\r\2\u0094\u0092\3\2\2\2\u0095\u0098\3\2\2\2\u0096\u0094\3\2\2\2"+
-		"\u0096\u0097\3\2\2\2\u0097\u0099\3\2\2\2\u0098\u0096\3\2\2\2\u0099\u009a"+
-		"\7\22\2\2\u009a\27\3\2\2\2\u009b\u009c\5\32\16\2\u009c\u009d\7%\2\2\u009d"+
-		"\31\3\2\2\2\u009e\u009f\t\4\2\2\u009f\33\3\2\2\2\u00a0\u00a1\t\5\2\2\u00a1"+
-		"\35\3\2\2\2\u00a2\u00a7\5\34\17\2\u00a3\u00a7\5\32\16\2\u00a4\u00a7\5"+
-		"\f\7\2\u00a5\u00a7\7\33\2\2\u00a6\u00a2\3\2\2\2\u00a6\u00a3\3\2\2\2\u00a6"+
-		"\u00a4\3\2\2\2\u00a6\u00a5\3\2\2\2\u00a7\37\3\2\2\2\u00a8\u00a9\7\34\2"+
-		"\2\u00a9\u00aa\7!\2\2\u00aa!\3\2\2\2\27%+\63\65@GNR\\adkrt~\u0083\u0088"+
-		"\u008b\u008e\u0096\u00a6";
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\7\2\"\n\2\f\2\16"+
+		"\2%\13\2\3\2\7\2(\n\2\f\2\16\2+\13\2\3\2\3\2\3\3\3\3\3\3\7\3\62\n\3\f"+
+		"\3\16\3\65\13\3\3\4\3\4\3\4\7\4:\n\4\f\4\16\4=\13\4\3\4\3\4\7\4A\n\4\f"+
+		"\4\16\4D\13\4\3\4\5\4G\n\4\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\b\5\bQ\n\b\3"+
+		"\b\6\bT\n\b\r\b\16\bU\3\b\5\bY\n\b\3\t\3\t\3\t\3\t\3\t\5\t`\n\t\3\n\3"+
+		"\n\3\n\3\n\3\n\5\ng\n\n\5\ni\n\n\3\13\3\13\3\13\3\13\3\13\3\13\7\13q\n"+
+		"\13\f\13\16\13t\13\13\3\13\3\13\5\13x\n\13\3\13\7\13{\n\13\f\13\16\13"+
+		"~\13\13\5\13\u0080\n\13\3\13\5\13\u0083\n\13\3\f\3\f\3\f\3\r\3\r\3\16"+
+		"\3\16\3\17\3\17\3\17\3\17\5\17\u0090\n\17\3\20\3\20\3\20\3\20\2\21\2\4"+
+		"\6\b\n\f\16\20\22\24\26\30\32\34\36\2\6\3\2\20\21\3\2\"$\3\2\3\b\3\2\t"+
+		"\f\u009b\2#\3\2\2\2\4.\3\2\2\2\6\66\3\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fM\3"+
+		"\2\2\2\16P\3\2\2\2\20_\3\2\2\2\22h\3\2\2\2\24\u0082\3\2\2\2\26\u0084\3"+
+		"\2\2\2\30\u0087\3\2\2\2\32\u0089\3\2\2\2\34\u008f\3\2\2\2\36\u0091\3\2"+
+		"\2\2 \"\5\36\20\2! \3\2\2\2\"%\3\2\2\2#!\3\2\2\2#$\3\2\2\2$)\3\2\2\2%"+
+		"#\3\2\2\2&(\5\4\3\2\'&\3\2\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*,\3\2\2"+
+		"\2+)\3\2\2\2,-\7\2\2\3-\3\3\2\2\2.\63\5\6\4\2/\62\5\36\20\2\60\62\5\16"+
+		"\b\2\61/\3\2\2\2\61\60\3\2\2\2\62\65\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2"+
+		"\2\64\5\3\2\2\2\65\63\3\2\2\2\66\67\5\32\16\2\67;\5\34\17\28:\5\n\6\2"+
+		"98\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<B\3\2\2\2=;\3\2\2\2>?\7\r\2\2"+
+		"?A\5\20\t\2@>\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2"+
+		"\2EG\7\35\2\2FE\3\2\2\2FG\3\2\2\2G\7\3\2\2\2HI\t\2\2\2I\t\3\2\2\2JK\5"+
+		"\f\7\2KL\7%\2\2L\13\3\2\2\2MN\t\3\2\2N\r\3\2\2\2OQ\7\31\2\2PO\3\2\2\2"+
+		"PQ\3\2\2\2QS\3\2\2\2RT\7\34\2\2SR\3\2\2\2TU\3\2\2\2US\3\2\2\2UV\3\2\2"+
+		"\2VX\3\2\2\2WY\7\35\2\2XW\3\2\2\2XY\3\2\2\2Y\17\3\2\2\2Z`\5\24\13\2[\\"+
+		"\5\b\5\2\\]\5\24\13\2]^\5\b\5\2^`\3\2\2\2_Z\3\2\2\2_[\3\2\2\2`\21\3\2"+
+		"\2\2ai\7\32\2\2bi\7\30\2\2cf\7\31\2\2de\7\17\2\2eg\5\22\n\2fd\3\2\2\2"+
+		"fg\3\2\2\2gi\3\2\2\2ha\3\2\2\2hb\3\2\2\2hc\3\2\2\2i\23\3\2\2\2j\u0080"+
+		"\7\27\2\2kw\5\22\n\2lm\7\22\2\2mr\5\24\13\2no\7\16\2\2oq\5\24\13\2pn\3"+
+		"\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2\2su\3\2\2\2tr\3\2\2\2uv\7\23\2\2vx"+
+		"\3\2\2\2wl\3\2\2\2wx\3\2\2\2x|\3\2\2\2y{\5\26\f\2zy\3\2\2\2{~\3\2\2\2"+
+		"|z\3\2\2\2|}\3\2\2\2}\u0080\3\2\2\2~|\3\2\2\2\177j\3\2\2\2\177k\3\2\2"+
+		"\2\u0080\u0083\3\2\2\2\u0081\u0083\3\2\2\2\u0082\177\3\2\2\2\u0082\u0081"+
+		"\3\2\2\2\u0083\25\3\2\2\2\u0084\u0085\5\30\r\2\u0085\u0086\7%\2\2\u0086"+
+		"\27\3\2\2\2\u0087\u0088\t\4\2\2\u0088\31\3\2\2\2\u0089\u008a\t\5\2\2\u008a"+
+		"\33\3\2\2\2\u008b\u0090\5\32\16\2\u008c\u0090\5\30\r\2\u008d\u0090\5\f"+
+		"\7\2\u008e\u0090\7\31\2\2\u008f\u008b\3\2\2\2\u008f\u008c\3\2\2\2\u008f"+
+		"\u008d\3\2\2\2\u008f\u008e\3\2\2\2\u0090\35\3\2\2\2\u0091\u0092\7\32\2"+
+		"\2\u0092\u0093\7\37\2\2\u0093\37\3\2\2\2\25#)\61\63;BFPUX_fhrw|\177\u0082"+
+		"\u008f";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {
