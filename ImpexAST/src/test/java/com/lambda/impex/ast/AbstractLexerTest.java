@@ -190,17 +190,13 @@ public abstract class AbstractLexerTest {
 
         protected int assertTokens(final List<Token> tokens, final int index) {
             int pos = index;
-            assertThat(tokens.get(pos).getType(), is(ImpexLexer.LBracket));
             for (int i = 0; i < modifiers.length; i++) {
                 if (i > 0) {
                     pos++;
-                    assertThat(tokens.get(pos).getType(), is(ImpexLexer.Comma));
                 }
-                pos++;
                 pos = modifiers[i].assertTokens(tokens, pos);
+
             }
-            pos++;
-            assertThat(tokens.get(pos).getType(), is(ImpexLexer.RBracket));
             return pos;
         }
 

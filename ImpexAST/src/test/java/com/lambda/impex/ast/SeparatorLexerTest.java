@@ -44,7 +44,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         index = header(ImpexLexer.InsertUpdate, "INseRT_UPD\\\nATE", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.InsertUpdate, "INSERT_UPDA\\\nTE", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.InsertUpdate, "INSERT_UPDAT\\\n\\\nE", "Customer", attribs).assertTokens(tokens, index);
-        index = header(ImpexLexer.InsertUpdate, "insert_update", "Customer", attribs).assertTokens(tokens, index);
+        index = header(ImpexLexer.InsertUpdate, "insert_update\\\n", "Customer", attribs).assertTokens(tokens, index);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         index = header(ImpexLexer.Insert, "INS\\ \nERT", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Insert, "INSE\\ \t\nRT", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Insert, "INSER\\\nT", "Customer", attribs).assertTokens(tokens, index);
-        index = header(ImpexLexer.Insert, "INSERT", "Customer", attribs).assertTokens(tokens, index);
+        index = header(ImpexLexer.Insert, "INSERT\\\n", "Customer", attribs).assertTokens(tokens, index);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         index = header(ImpexLexer.Update, "UPD\\ \nate", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Update, "UPDA\\ \t\nte", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Update, "UPDAT\\\nE", "Customer", attribs).assertTokens(tokens, index);
-        index = header(ImpexLexer.Update, "update", "Customer", attribs).assertTokens(tokens, index);
+        index = header(ImpexLexer.Update, "update\\\n", "Customer", attribs).assertTokens(tokens, index);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         index = header(ImpexLexer.Remove, "REM\\ \nove", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Remove, "REMO\\ \t\nve", "Customer", attribs).assertTokens(tokens, index);
         index = header(ImpexLexer.Remove, "REMOV\\\nE", "Customer", attribs).assertTokens(tokens, index);
-        index = header(ImpexLexer.Remove, "remove", "Customer", attribs).assertTokens(tokens, index);
+        index = header(ImpexLexer.Remove, "remove\\\n", "Customer", attribs).assertTokens(tokens, index);
     }
 
     @Test
@@ -120,7 +120,8 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index = header.assertTokens(tokens, index);
 
-        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))), attribute(expression("Name")) };
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique\\\n\\\n", "=true"))),
+                attribute(expression("Name")) };
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index += 3;
         index = header.assertTokens(tokens, index);

@@ -15,20 +15,21 @@ public class ImpexParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		Field=26, Insert=7, IntAttributeModifier=2, Ws=28, Update=9, BooleanAttributeModifier=1, 
-		NumberFormatAttributeModifier=4, RBracket=30, Quote=15, Semicolon=11, 
-		Remove=10, LParenthesis=16, CacheUnique=33, Lb=27, Identifier=23, RParenthesis=17, 
-		Separator=20, Processor=34, TextAttributeModifier=6, DocumentID=21, BatchMode=32, 
-		SpecialAttribute=22, Comment=25, ClassAttributeModifier=5, Macrodef=24, 
-		DoubleQuote=14, Dot=13, Modifierval=35, DateFormatAttributeModifier=3, 
-		InsertUpdate=8, Macroval=29, LBracket=31, Or=19, Comma=12, Equals=18;
+		Field=27, Insert=7, IntAttributeModifier=2, Ws=29, Update=9, BooleanAttributeModifier=1, 
+		NumberFormatAttributeModifier=4, RBracket=31, Quote=15, Semicolon=11, 
+		Remove=10, LParenthesis=16, CacheUnique=34, Lb=28, Identifier=23, RParenthesis=17, 
+		Separator=20, Processor=35, TextAttributeModifier=6, DocumentID=21, BatchMode=33, 
+		SpecialAttribute=22, Comment=26, ClassAttributeModifier=5, Macrodef=24, 
+		DoubleQuote=14, Dot=13, Modifierval=36, DateFormatAttributeModifier=3, 
+		InsertUpdate=8, Macroval=30, LBracket=32, Or=19, BeanShell=25, Comma=12, 
+		Equals=18;
 	public static final String[] tokenNames = {
 		"<INVALID>", "BooleanAttributeModifier", "IntAttributeModifier", "DateFormatAttributeModifier", 
 		"NumberFormatAttributeModifier", "ClassAttributeModifier", "TextAttributeModifier", 
 		"Insert", "InsertUpdate", "Update", "Remove", "';'", "','", "'.'", "'\"'", 
 		"'''", "'('", "')'", "'='", "'|'", "Separator", "DocumentID", "SpecialAttribute", 
-		"Identifier", "Macrodef", "Comment", "Field", "Lb", "Ws", "Macroval", 
-		"'['", "']'", "BatchMode", "CacheUnique", "Processor", "Modifierval"
+		"Identifier", "Macrodef", "BeanShell", "Comment", "Field", "Lb", "Ws", 
+		"Macroval", "'['", "']'", "BatchMode", "CacheUnique", "Processor", "Modifierval"
 	};
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
@@ -1025,7 +1026,7 @@ public class ImpexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3%\u0095\4\2\t\2\4"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3&\u0095\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\7\2\"\n\2\f\2\16"+
 		"\2%\13\2\3\2\7\2(\n\2\f\2\16\2+\13\2\3\2\3\2\3\3\3\3\3\3\7\3\62\n\3\f"+
@@ -1036,7 +1037,7 @@ public class ImpexParser extends Parser {
 		"\13\f\13\16\13t\13\13\3\13\3\13\5\13x\n\13\3\13\7\13{\n\13\f\13\16\13"+
 		"~\13\13\5\13\u0080\n\13\3\13\5\13\u0083\n\13\3\f\3\f\3\f\3\r\3\r\3\16"+
 		"\3\16\3\17\3\17\3\17\3\17\5\17\u0090\n\17\3\20\3\20\3\20\3\20\2\21\2\4"+
-		"\6\b\n\f\16\20\22\24\26\30\32\34\36\2\6\3\2\20\21\3\2\"$\3\2\3\b\3\2\t"+
+		"\6\b\n\f\16\20\22\24\26\30\32\34\36\2\6\3\2\20\21\3\2#%\3\2\3\b\3\2\t"+
 		"\f\u009b\2#\3\2\2\2\4.\3\2\2\2\6\66\3\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fM\3"+
 		"\2\2\2\16P\3\2\2\2\20_\3\2\2\2\22h\3\2\2\2\24\u0082\3\2\2\2\26\u0084\3"+
 		"\2\2\2\30\u0087\3\2\2\2\32\u0089\3\2\2\2\34\u008f\3\2\2\2\36\u0091\3\2"+
@@ -1047,10 +1048,10 @@ public class ImpexParser extends Parser {
 		"\2\64\5\3\2\2\2\65\63\3\2\2\2\66\67\5\32\16\2\67;\5\34\17\28:\5\n\6\2"+
 		"98\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<B\3\2\2\2=;\3\2\2\2>?\7\r\2\2"+
 		"?A\5\20\t\2@>\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2"+
-		"\2EG\7\35\2\2FE\3\2\2\2FG\3\2\2\2G\7\3\2\2\2HI\t\2\2\2I\t\3\2\2\2JK\5"+
-		"\f\7\2KL\7%\2\2L\13\3\2\2\2MN\t\3\2\2N\r\3\2\2\2OQ\7\31\2\2PO\3\2\2\2"+
-		"PQ\3\2\2\2QS\3\2\2\2RT\7\34\2\2SR\3\2\2\2TU\3\2\2\2US\3\2\2\2UV\3\2\2"+
-		"\2VX\3\2\2\2WY\7\35\2\2XW\3\2\2\2XY\3\2\2\2Y\17\3\2\2\2Z`\5\24\13\2[\\"+
+		"\2EG\7\36\2\2FE\3\2\2\2FG\3\2\2\2G\7\3\2\2\2HI\t\2\2\2I\t\3\2\2\2JK\5"+
+		"\f\7\2KL\7&\2\2L\13\3\2\2\2MN\t\3\2\2N\r\3\2\2\2OQ\7\31\2\2PO\3\2\2\2"+
+		"PQ\3\2\2\2QS\3\2\2\2RT\7\35\2\2SR\3\2\2\2TU\3\2\2\2US\3\2\2\2UV\3\2\2"+
+		"\2VX\3\2\2\2WY\7\36\2\2XW\3\2\2\2XY\3\2\2\2Y\17\3\2\2\2Z`\5\24\13\2[\\"+
 		"\5\b\5\2\\]\5\24\13\2]^\5\b\5\2^`\3\2\2\2_Z\3\2\2\2_[\3\2\2\2`\21\3\2"+
 		"\2\2ai\7\32\2\2bi\7\30\2\2cf\7\31\2\2de\7\17\2\2eg\5\22\n\2fd\3\2\2\2"+
 		"fg\3\2\2\2gi\3\2\2\2ha\3\2\2\2hb\3\2\2\2hc\3\2\2\2i\23\3\2\2\2j\u0080"+
@@ -1059,12 +1060,12 @@ public class ImpexParser extends Parser {
 		"\3\2\2\2wl\3\2\2\2wx\3\2\2\2x|\3\2\2\2y{\5\26\f\2zy\3\2\2\2{~\3\2\2\2"+
 		"|z\3\2\2\2|}\3\2\2\2}\u0080\3\2\2\2~|\3\2\2\2\177j\3\2\2\2\177k\3\2\2"+
 		"\2\u0080\u0083\3\2\2\2\u0081\u0083\3\2\2\2\u0082\177\3\2\2\2\u0082\u0081"+
-		"\3\2\2\2\u0083\25\3\2\2\2\u0084\u0085\5\30\r\2\u0085\u0086\7%\2\2\u0086"+
+		"\3\2\2\2\u0083\25\3\2\2\2\u0084\u0085\5\30\r\2\u0085\u0086\7&\2\2\u0086"+
 		"\27\3\2\2\2\u0087\u0088\t\4\2\2\u0088\31\3\2\2\2\u0089\u008a\t\5\2\2\u008a"+
 		"\33\3\2\2\2\u008b\u0090\5\32\16\2\u008c\u0090\5\30\r\2\u008d\u0090\5\f"+
 		"\7\2\u008e\u0090\7\31\2\2\u008f\u008b\3\2\2\2\u008f\u008c\3\2\2\2\u008f"+
 		"\u008d\3\2\2\2\u008f\u008e\3\2\2\2\u0090\35\3\2\2\2\u0091\u0092\7\32\2"+
-		"\2\u0092\u0093\7\37\2\2\u0093\37\3\2\2\2\25#)\61\63;BFPUX_fhrw|\177\u0082"+
+		"\2\u0092\u0093\7 \2\2\u0093\37\3\2\2\2\25#)\61\63;BFPUX_fhrw|\177\u0082"+
 		"\u008f";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());

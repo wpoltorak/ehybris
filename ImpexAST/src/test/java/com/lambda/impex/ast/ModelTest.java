@@ -97,6 +97,10 @@ public abstract class ModelTest {
         return getFirstChildWithType(block(tree, blockNo), ImpexParser.RULE_header);
     }
 
+    protected ParseTree mode(final ParseTree tree, final int blockNo) {
+        return getFirstChildWithType(header(tree, blockNo), ImpexParser.RULE_headerMode);
+    }
+
     protected ParseTree attribute(final ParseTree tree, final int blockNo, final int attributeNo) {
         final ParseTree attribute = getNthChildWithType(header(tree, blockNo), attributeNo, ImpexParser.RULE_attribute);
         return getFirstChildWithType(attribute, ImpexParser.RULE_attributeValue);
@@ -165,6 +169,10 @@ public abstract class ModelTest {
         return getNthChildWithType(attribute(tree, blockNo, attributeNo), modifierNo, ImpexParser.RULE_attributeModifierAssignment);
     }
 
+    protected List<ParseTree> records(final ParseTree tree, final int blockNo) {
+        return getChildrenWithType(block(tree, blockNo), ImpexParser.RULE_record);
+    }
+
     protected ParseTree record(final ParseTree tree, final int blockNo, final int recordNo) {
         return getNthChildWithType(block(tree, blockNo), recordNo, ImpexParser.RULE_record);
     }
@@ -173,8 +181,11 @@ public abstract class ModelTest {
         return getFirstChildWithType(tree.getChild(recordNo), ImpexParser.Field);
     }
 
-    protected ParseTree fields(final ParseTree tree, final int blockNo, final int recordNo) {
-        return getFirstChildWithType(record(tree, blockNo, recordNo), ImpexParser.Field);
+    protected List<ParseTree> fields(final ParseTree tree, final int blockNo, final int recordNo) {
+        return getChildrenWithType(record(tree, blockNo, recordNo), ImpexParser.Field);
     }
 
+    protected List<ParseTree> fields(final ParseTree record) {
+        return getChildrenWithType(record, ImpexParser.Field);
+    }
 }

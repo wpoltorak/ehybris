@@ -83,12 +83,10 @@ SpecialAttribute
 Identifier
     :[a-zA-Z_](Separator* [a-zA-Z0-9_])*;
 
-Macrodef
-    : '$' Separator* Identifier -> pushMode(macro); 
-
-           
-Comment
-    : '#' .*? (Lb | EOF) -> skip;
+Macrodef        : '$' Separator* Identifier -> pushMode(macro); 
+BeanShell       : ('#%' .*? (Lb | EOF) 
+                | '"#%' (~'"'|'"''"')* '"') Ws* (Lb | EOF) -> skip;
+Comment         : '#' .*? (Lb | EOF) -> skip;
 /*      
       { 
        setText(getText().substring(1, getText().length())); 
@@ -151,7 +149,7 @@ RecordLb
     ;
 
 RecordWs
-    : Ws -> type(Ws)
+    : Ws -> type(Ws), skip
     ;
 
 /*
@@ -203,7 +201,7 @@ Processor           : P R O C E S S O R;
 //Argument modifiers
 Alias               : A L I A S -> type(TextAttributeModifier);
 AllowNull           : A L L O W N U L L -> type(BooleanAttributeModifier);
-CellDecorator       : C E L L D E C O R A T O R -> type(TextAttributeModifier);
+CellDecorator       : C E L L D E C O R A T O R -> type(ClassAttributeModifier);
 CollectionDelimiter : C O L L E C T I O N DASH D E L I M I T E R -> type(TextAttributeModifier);
 Dateformat          : D A T E F O R M A T -> type(DateFormatAttributeModifier);
 Default             : D E F A U L T -> type(TextAttributeModifier);
