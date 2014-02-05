@@ -4,14 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.antlr.runtime.tree.CommonTree;
 import org.junit.Test;
 
 public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testWrongLinesWithChars() throws Exception {
-        final CommonTree tree = init("/errors/parser-lines-with-chars.impex");
+        init("/errors/parser-lines-with-chars.impex");
         final List<ImpexProblem> errors = context.getProblems();
         assertEquals(2, errors.size());
         assertEquals("xxx", errors.get(0).getText());
@@ -24,7 +23,7 @@ public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testInvalidSubtype() throws Exception {
-        final CommonTree tree = init("/errors/parser-invalid-subtype.impex");
+        init("/errors/parser-invalid-subtype.impex");
         final List<ImpexProblem> errors = context.getProblems();
         assertEquals(1, errors.size());
         assertEquals("-1", errors.get(0).getText());

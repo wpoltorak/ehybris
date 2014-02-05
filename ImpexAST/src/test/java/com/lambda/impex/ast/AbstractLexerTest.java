@@ -61,6 +61,14 @@ public abstract class AbstractLexerTest {
         return tokens;
     }
 
+    protected Header header(final int mode, final String modeName, final String type, final Attribute[] attribs, final Modifiers[] modifiers) {
+        return new Header(mode, modeName, type, attribs, modifiers);
+    }
+
+    protected Header header(final int mode, final String type, final Attribute[] attribs, final Modifiers[] modifiers) {
+        return new Header(mode, type, attribs, modifiers);
+    }
+
     protected Header header(final int mode, final String modeName, final String type, final Attribute[] attribs) {
         return new Header(mode, modeName, type, attribs);
     }
@@ -218,6 +226,11 @@ public abstract class AbstractLexerTest {
         protected final Modifiers[] modifiers;
         protected final Expression expression;
 
+        public Attribute(final Expression expression) {
+            this.expression = expression;
+            this.modifiers = new Modifiers[0];
+        }
+
         public Attribute(final Expression expression, final Modifiers[] modifiers) {
             this.expression = expression;
             this.modifiers = modifiers;
@@ -250,12 +263,30 @@ public abstract class AbstractLexerTest {
         protected final String modeName;
         protected final String type;
         protected final Attribute[] attribs;
+        protected final Modifiers[] modifiers;
+
+        public Header(final int mode, final String modeName, final String type, final Attribute[] attribs, final Modifiers[] modifiers) {
+            this.mode = mode;
+            this.modeName = modeName;
+            this.type = type;
+            this.attribs = attribs;
+            this.modifiers = modifiers;
+        }
 
         public Header(final int mode, final String modeName, final String type, final Attribute[] attribs) {
             this.mode = mode;
             this.modeName = modeName;
             this.type = type;
             this.attribs = attribs;
+            this.modifiers = new Modifiers[0];
+        }
+
+        public Header(final int mode, final String type, final Attribute[] attribs, final Modifiers[] modifiers) {
+            this.mode = mode;
+            this.modeName = null;
+            this.type = type;
+            this.attribs = attribs;
+            this.modifiers = modifiers;
         }
 
         public Header(final int mode, final String type, final Attribute[] attribs) {
@@ -263,6 +294,7 @@ public abstract class AbstractLexerTest {
             this.modeName = null;
             this.type = type;
             this.attribs = attribs;
+            this.modifiers = new Modifiers[0];
         }
 
         /**
@@ -280,6 +312,10 @@ public abstract class AbstractLexerTest {
             }
             pos++;
             assertThat(tokens.get(pos).getText(), is(type));
+            for (int i = 0; i < modifiers.length; ++i) {
+                pos++;
+                pos = modifiers[i].assertTokens(tokens, pos);
+            }
             for (final Attribute attrib : attribs) {
                 pos++;
                 assertThat(tokens.get(pos).getType(), is(ImpexLexer.Semicolon));//FIXME hardcoded semicolon  - should be retrieved from ant property

@@ -317,29 +317,28 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testHeaderModifiersWithMacro() throws Exception {
         final List<Token> tokens = init("/header/header-modifiers-with-macro.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("cacheUnique", "=$unique"))),
+        Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=$unique"))),
                 attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "=append"))) };
-        final Header header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
+        Modifiers[] modifiers = new Modifiers[] { modifiers(modifier("cacheUnique", "=$unique")) };
+        Header header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
 
-        int index = 9;
+        int index = 6;
         index = header.assertTokens(tokens, index);
-        //index += 5;
-        //index = header.assertTokens(tokens, index);
+
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+                attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "=append"))) };
+        modifiers = new Modifiers[] { modifiers(modifier("processor", "=$processor")) };
+        header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
+
+        index += 4;
+        index = header.assertTokens(tokens, index);
+
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+                attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "=append"))) };
+        modifiers = new Modifiers[] { modifiers(modifier("processor", "=de.hybris.platform.impex.jalo.imp.$processor")) };
+        header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
+
+        index += 6;
+        index = header.assertTokens(tokens, index);
     }
-
-    //    $unique=true
-    //    $lang=en
-    //    $processor=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor
-    //
-    //    INSERT_UPDATE Usergroup[cacheUnique=$unique];uid[unique=$unique];groups(uid)[mode=append]
-    //    ;$regulargroup;$customerGroup;
-    //
-    //    INSERT_UPDATE Usergroup[ processor=$processor];uid[unique=true];groups(uid)[mode=append]
-    //    ;$regulargroup;$customerGroup;
-    //
-    //    $processor=DefaultImportProcessor
-    //
-    //    INSERT_UPDATE Usergroup[ processor=de.hybris.platform.impex.jalo.imp.$processor];uid[unique=true];groups(uid)[mode=append]
-    //    ;$regulargroup;$customerGroup;
-
 }

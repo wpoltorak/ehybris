@@ -10,83 +10,64 @@ tokens {
     TextAttributeModifier
 }
 
-fragment A :[Aa]Separator*;
-fragment B :[Bb]Separator*;
-fragment C :[Cc]Separator*;
-fragment D :[Dd]Separator*;
-fragment E :[Ee]Separator*;
-fragment F :[Ff]Separator*;
-fragment G :[Gg]Separator*;
-fragment H :[Hh]Separator*;
-fragment I :[Ii]Separator*;
-fragment J :[Jj]Separator*;
-fragment K :[Kk]Separator*;
-fragment L :[Ll]Separator*;
-fragment M :[Mm]Separator*;
-fragment N :[Nn]Separator*;
-fragment O :[Oo]Separator*;
-fragment P :[Pp]Separator*;
-fragment Q :[Qq]Separator*;
-fragment R :[Rr]Separator*;
-fragment S :[Ss]Separator*;
-fragment T :[Tt]Separator*;
-fragment U :[Uu]Separator*;
-fragment V :[Vv]Separator*;
-fragment W :[Ww]Separator*;
-fragment X :[Xx]Separator*;
-fragment Y :[Yy]Separator*;
-fragment Z :[Zz]Separator*;
-fragment DASH : [-]Separator*;
+fragment A          : [Aa]Separator*;
+fragment B          : [Bb]Separator*;
+fragment C          : [Cc]Separator*;
+fragment D          : [Dd]Separator*;
+fragment E          : [Ee]Separator*;
+fragment F          : [Ff]Separator*;
+fragment G          : [Gg]Separator*;
+fragment H          : [Hh]Separator*;
+fragment I          : [Ii]Separator*;
+fragment J          : [Jj]Separator*;
+fragment K          : [Kk]Separator*;
+fragment L          : [Ll]Separator*;
+fragment M          : [Mm]Separator*;
+fragment N          : [Nn]Separator*;
+fragment O          : [Oo]Separator*;
+fragment P          : [Pp]Separator*;
+fragment Q          : [Qq]Separator*;
+fragment R          : [Rr]Separator*;
+fragment S          : [Ss]Separator*;
+fragment T          : [Tt]Separator*;
+fragment U          : [Uu]Separator*;
+fragment V          : [Vv]Separator*;
+fragment W          : [Ww]Separator*;
+fragment X          : [Xx]Separator*;
+fragment Y          : [Yy]Separator*;
+fragment Z          : [Zz]Separator*;
+fragment DASH       : [-]Separator*;
 fragment UNDERSCORE : [_]Separator*;
-fragment TWO : [2]Separator*;
+fragment TWO        : [2]Separator*;
+
 //Modes
-Insert
-    : I N S E R T -> pushMode(header);//, type(Mode);
-InsertUpdate	
-    : I N S E R T UNDERSCORE U P D A T E -> pushMode(header);//, type(Mode);
-Update		
-    : U P D A T E -> pushMode(header);//, type(Mode);
-Remove
-    : R E M O V E -> pushMode(header);//, type(Mode);
+Insert              : I N S E R T -> pushMode(header);//, type(Mode);
+InsertUpdate        : I N S E R T UNDERSCORE U P D A T E -> pushMode(header);//, type(Mode);
+Update              : U P D A T E -> pushMode(header);//, type(Mode);
+Remove              : R E M O V E -> pushMode(header);//, type(Mode);
 
-Semicolon
-    :';';
-Comma
-    :',';
-Dot
-    :'.';
-DoubleQuote
-    :'"';
-Quote
-    :'\'';
-LParenthesis
-    :'(';
-RParenthesis
-    :')';
-Equals
-    : '=';
-Or
-    :'|';
+Comma               : ',';
+Dot                 : '.';
+DoubleQuote         : '"';
+Quote               : '\'';
+LParenthesis        : '(';
+RParenthesis        : ')';
+Equals              : '=';
+Or                  : '|';
+Separator           : '\\' Ws* Lb -> skip;
 
+fragment 
+    FieldSeparator  : Ws* Separator Ws*;
 
-Separator
-    : '\\' Ws* Lb -> skip;
+DocumentID          : '&' Separator* Identifier;
+SpecialAttribute    : '@' Separator* Identifier;
+Identifier          : [a-zA-Z_](Separator* [a-zA-Z0-9_])*;
+Macrodef            : '$' Separator* Identifier -> pushMode(macro); 
+UserRights          :'$START_USERRIGHTS' .*? '$END_USERRIGHTS' (Semicolon | Ws)* -> skip;
 
-fragment FieldSeparator : Ws* Separator Ws*;
-
-DocumentID
-    : '&' Separator* Identifier;
-	
-SpecialAttribute
-    : '@' Separator* Identifier;
-
-Identifier
-    :[a-zA-Z_](Separator* [a-zA-Z0-9_])*;
-
-Macrodef        : '$' Separator* Identifier -> pushMode(macro); 
-BeanShell       : ('#%' .*? (Lb | EOF) 
-                | '"#%' (~'"'|'"''"')* '"') Ws* (Lb | EOF) -> skip;
-Comment         : '#' .*? (Lb | EOF) -> skip;
+BeanShell           : ('#%' .*? (Lb | EOF) 
+                    | '"#%' (~'"'|'"''"')* '"') Ws* (Lb | EOF) -> skip;
+Comment             : '#' .*? (Lb | EOF) -> skip;
 /*      
       { 
        setText(getText().substring(1, getText().length())); 
@@ -94,8 +75,7 @@ Comment         : '#' .*? (Lb | EOF) -> skip;
       };
 */
 
-QuotedField
-    : ';' FieldSeparator* '"' (~'"'|'"''"')* '"' -> pushMode(record), type(Field);
+//QuotedField         : ';' FieldSeparator* '"' (~'"'|'"''"')* '"' -> pushMode(record), type(Field);
 /*
       {
         String text = getText();
@@ -106,8 +86,7 @@ QuotedField
       };
 */
 
-Field
-    : ';' FieldSeparator* (~[\r\n";] Separator*)* -> pushMode(record);
+Field               : ';' FieldSeparator* ('"' (~'"'|'"''"')* '"' | (~[\r\n";] Separator*)* /*| Separator* empty field*/) -> pushMode(record);
 
 /*      
       {
@@ -115,20 +94,14 @@ Field
         setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
       }Field+;;
 */
+Lb                  : ('\r'?'\n'|'\r') -> skip;
+Ws                  : [ \t] -> skip;
 
-Lb
-    :('\r'?'\n'|'\r') -> skip;
-
-Ws
-    : [ \t] -> skip;
 
 mode record;
 
-RecordSeparator : Separator -> type(Separator), skip;
-
-RecordQuotedField
-    : QuotedField -> type(Field)
-    ;
+RecordSeparator     : Separator -> type(Separator), skip;
+//RecordQuotedField   : QuotedField -> type(Field);
 
 /*
       {
@@ -140,27 +113,14 @@ RecordQuotedField
       };
 */
 
-RecordField
-    : Field -> type(Field)
-    ;
+RecordField         : Field -> type(Field);
+RecordLb            : Lb -> type(Lb), popMode;
+RecordWs            : Ws -> type(Ws), skip;
 
-RecordLb
-    :Lb -> type(Lb), popMode
-    ;
-
-RecordWs
-    : Ws -> type(Ws), skip
-    ;
-
-/*
-/work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast
-*/
 
 mode macro;
 
-Macroval
-    : '=' (Separator* ~[\r\n])*
-      -> popMode;
+Macroval            : '=' (Separator* ~[\r\n])* -> popMode;
 /*
     {
       String text = removeSeparators(getText()); //remove possible separators from the middle of text
@@ -168,32 +128,33 @@ Macroval
       popMode();
     };
 */
-MacroWs : Ws -> type(Ws), skip;
+MacroWs             : Ws -> type(Ws), skip;
+MacroSeparator      : Separator -> type(Separator), skip;
 
-MacroSeparator : Separator -> type(Separator), skip;
 
 mode header;
 
-HComma : Comma -> type(Comma);
-HSemicolon : Semicolon -> type(Semicolon);
-HDot : Dot -> type(Dot);
-HDoubleQuote : DoubleQuote -> type(DoubleQuote);
-HQuote : Quote -> type(Quote);
-RBracket : '[' -> pushMode(modifier), skip;
-HLParenthesis : LParenthesis -> type(LParenthesis);
-HRParenthesis : RParenthesis -> type(RParenthesis);
-HEquals : Equals -> type(Equals);
-HOr : Or -> type(Or);
-HLb : Lb -> type(Lb), popMode;
-HSeparator : Separator -> type(Separator), skip;
-HIdentifier : Identifier -> type(Identifier);
-HSpecialAttribute : SpecialAttribute -> type(SpecialAttribute);
-HDocumentID : DocumentID -> type(DocumentID);
-HWs : Ws -> type(Ws), skip;
+HComma              : Comma -> type(Comma);
+Semicolon           : ';';
+HDot                : Dot -> type(Dot);
+HDoubleQuote        : DoubleQuote -> type(DoubleQuote);
+HQuote              : Quote -> type(Quote);
+RBracket            : '[' -> pushMode(modifier), skip;
+HLParenthesis       : LParenthesis -> type(LParenthesis);
+HRParenthesis       : RParenthesis -> type(RParenthesis);
+HEquals             : Equals -> type(Equals);
+HOr                 : Or -> type(Or);
+HLb                 : Lb -> type(Lb), popMode;
+HSeparator          : Separator -> type(Separator), skip;
+HIdentifier         : Identifier -> type(Identifier);
+HSpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
+HDocumentID         : DocumentID -> type(DocumentID);
+HWs                 : Ws -> type(Ws), skip;
+
 
 mode modifier;
 
-LBracket : ']' -> popMode, skip;
+LBracket            : ']' -> popMode, skip;
 //Type modifiers
 BatchMode           : B A T C H M O D E;
 CacheUnique         : C A C H E U N I Q U E;
@@ -239,4 +200,7 @@ Modifierval         : '=' (Separator* ~[\r\n\[\],;"])*;
       setText(text.substring(1, text.length()).trim());//remove leading equals character and trim to remove any spaces
       popMode();
     };
+*/
+/*
+/work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast
 */
