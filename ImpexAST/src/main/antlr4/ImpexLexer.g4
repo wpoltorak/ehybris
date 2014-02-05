@@ -193,7 +193,7 @@ Modifierquotedval   : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"') -> type(Modifierval)
       popMode();
     };
 */
-Modifierval         : '=' (Separator* ~[\r\n\[\],;"])*;
+Modifierval         : '=' (Separator* (~[\r\n\[\],;"]|'"''"'))*;
 /*
     {
       String text = getText();     

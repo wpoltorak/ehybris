@@ -1,0 +1,3 @@
+# ERROR Modifier value inside double quoted attribute cannot be surrounded by double quotes 
+INSERT_UPDATE Customer; uid[unique=true];"Name[default="Mario"]"; 
+; andi; ; 

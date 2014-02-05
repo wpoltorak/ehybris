@@ -1,0 +1,3 @@
+# ERROR attributes cannot be surrounded by single quotes
+INSERT_UPDATE Customer; 'uid[unique=true]';Name; 
+; andi; Andy Warhol ;

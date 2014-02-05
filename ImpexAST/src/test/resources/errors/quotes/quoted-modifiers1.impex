@@ -1,0 +1,3 @@
+# ERROR boolean attribute modifiers cannot be surrounded by double quotes
+INSERT_UPDATE Customer; uid[unique="true"];Name; 
+; andi; Andy Warhol ;

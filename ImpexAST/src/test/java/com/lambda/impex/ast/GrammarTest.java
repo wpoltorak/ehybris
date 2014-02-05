@@ -57,6 +57,11 @@ public class GrammarTest {
     }
 
     @Test
+    public void quotes() throws Exception {
+        checkGrammar(new File(getClass().getResource("/quotes").getFile()));
+    }
+
+    @Test
     public void userRights() throws Exception {
         checkGrammar(new File(getClass().getResource("/userrights").getFile()));
     }

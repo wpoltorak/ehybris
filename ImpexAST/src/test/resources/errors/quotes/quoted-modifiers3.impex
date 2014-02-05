@@ -1,0 +1,3 @@
+# ERROR modifier assignments cannot be surrounded by single quotes. 
+INSERT_UPDATE Customer; uid[unique=true];Name['default=Mario']; 
+; andi; ; 

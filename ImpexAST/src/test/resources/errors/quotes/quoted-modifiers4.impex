@@ -1,0 +1,3 @@
+# ERROR modifier name cannot be surrounded by double quotes. This syntax is valid but resulting name will be n/a 
+INSERT_UPDATE Customer; uid[unique=true];Name["default"=Mario]; 
+; andi; ; 

@@ -1,0 +1,19 @@
+# boolean attribute modifiers can be surrounded by single quotes
+INSERT_UPDATE Customer; uid[unique='true'];Name; 
+; andi; Andy Warhol ; 
+
+# text attribute modifiers can be surrounded by double quotes but quotes are part of value: Resulting name will be " Luigi " 
+INSERT_UPDATE Customer; uid[unique=true];Name[default=" Luigi "]; 
+; andi; ; 
+
+# text attribute modifiers can be surrounded by single quotes
+INSERT_UPDATE Customer; uid[unique=true];Name[default='Mario']; 
+; andi; ; 
+
+# Modifier value inside double quoted attribute can be surrounded by single quotes. Result: Mario 
+INSERT_UPDATE Customer; uid[unique=true];"Name[default='Mario']"; 
+; andi; ; 
+
+# Modifier value inside double quoted attribute can be surrounded by escaped double quotes. Result: "Mario" 
+INSERT_UPDATE Customer; uid[unique=true];"Name[default=""Mario""]"; 
+; andi; ; 

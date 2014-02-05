@@ -1,0 +1,4 @@
+# ERROR It is not possible to break line inside quoted attribute modifiers since quotes are part of value
+INSERT_UPDATE Customer; uid[unique=true];Name[default=" Lui
+gi "]; 
+; andi; ; 
