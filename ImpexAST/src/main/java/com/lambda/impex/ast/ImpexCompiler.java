@@ -1,17 +1,18 @@
 package com.lambda.impex.ast;
 
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.tree.CommonTree;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import com.lambda.impex.ast.ImpexParser.ImpexContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
-import com.lambda.impex.ast.nodes.ImpexASTNode;
 
 public class ImpexCompiler {
 
-    private ImpexContext context;
-    private ImpexVisitor visitor;
-    private CommonTree ast;
-    private ImpexASTNode impexASTNode;
+    private ImpexParseContext context;
+    private ImpexContext impex;
 
     public ImpexCompiler() {
     }
@@ -28,37 +29,26 @@ public class ImpexCompiler {
     }
 
     protected void internalCompile(final char[] source) throws RecognitionException {
-        if (visitor == null) {
-            throw new IllegalStateException("Impex visitor has not been set");
-        }
+        context = new ImpexParseContext();
+        final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
+        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        final ImpexParser parser = new ImpexParser(tokens);
+        final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
+        final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context);
+        parser.addErrorListener(errorListener);
+        impex = parser.impex();
 
-        context = new ImpexContext();
-        //        final ImpexLexer lexer = new ImpexLexer(context, new ANTLRStringStream(source, source.length));
-        //        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        //        final ImpexParser parser = new ImpexParser(context, tokens);
-        //
-        //        ast = (CommonTree) parser.impex().getTree();
-        //        visitor.prepare(context);
-        //        if (parser.getNumberOfSyntaxErrors() <= 0) {
-        //            final ImpexTreeWalker walker = new ImpexTreeWalker(context, ast);
-        //            impexASTNode = walker.walk();
-        //            impexASTNode.accept(visitor);
-        //        }
+        if (!context.isSyntaxInvalid()) {
+            final ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(impexListener, impex);
+        }
     }
 
-    public ImpexContext getContext() {
+    public ImpexParseContext getContext() {
         return context;
     }
 
-    public CommonTree getAST() {
-        return ast;
-    }
-
-    public ImpexASTNode getImpexASTNode() {
-        return impexASTNode;
-    }
-
-    public void setVisitor(final ImpexVisitor visitor) {
-        this.visitor = visitor;
+    public ParseTree getParseTree() {
+        return impex;
     }
 }

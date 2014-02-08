@@ -28,7 +28,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testInsideInsertUpdateMode() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-insert_update-mode.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         int index = 0;
         index = header(ImpexLexer.InsertUpdate, "InSeRt_UpDaTe", "Customer", attribs).assertTokens(tokens, index);
@@ -50,7 +50,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testInsideInsertMode() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-insert-mode.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         int index = 0;
         index = header(ImpexLexer.Insert, "InSeRt", "Customer", attribs).assertTokens(tokens, index);
@@ -65,7 +65,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testInsideUpdateMode() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-update-mode.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         int index = 0;
         index = header(ImpexLexer.Update, "UpDaTe", "Customer", attribs).assertTokens(tokens, index);
@@ -80,7 +80,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testInsideRemoveMode() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-remove-mode.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         int index = 0;
         index = header(ImpexLexer.Remove, "ReMoVe", "Customer", attribs).assertTokens(tokens, index);
@@ -95,7 +95,7 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testBetweenAttributes() throws Exception {
         final List<Token> tokens = init("/separator/separator-between-header-attribs.impex");
-        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        final Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         final Header header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         int index = 0;
@@ -110,29 +110,28 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     @Test
     public void testInsideAttributes() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-attribute.impex");
-        Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))),
+        Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("Name")) };
         Header header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         int index = 0;
         index = header.assertTokens(tokens, index);
-        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true\t\t\\\n "))),
-                attribute(expression("Name")) };
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))), attribute(expression("Name")) };
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index = header.assertTokens(tokens, index);
 
-        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique\\\n\\\n", "=true"))),
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique\\\n\\\n", "true"))),
                 attribute(expression("Name")) };
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index += 3;
         index = header.assertTokens(tokens, index);
 
         attribs = new Attribute[] {
-                attribute(expression("uid"), modifiers(modifier("unique", "=true")), modifiers(modifier("mode", "= append"))),
+                attribute(expression("uid"), modifiers(modifier("unique", "true")), modifiers(modifier("mode", "append"))),
                 attribute(expression("Name")) };
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index = header.assertTokens(tokens, index);
 
-        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"), modifier("mode", "= append"))),
+        attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"), modifier("mode", "append"))),
                 attribute(expression("Name")) };
         header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
         index = header.assertTokens(tokens, index);
@@ -142,21 +141,21 @@ public class SeparatorLexerTest extends AbstractLexerTest {
     public void testInsideMacroAssignments() throws Exception {
         final List<Token> tokens = init("/separator/separator-inside-macroassignment.impex");
         final Stack<String> macroPairs = new Stack<String>();
-        macroPairs.push("= 20");
+        macroPairs.push("20");
         macroPairs.push("$\\\n\\\n\\\n\\\n\\\n\\\nmac\\\n\\\n\\\nro5");
-        macroPairs.push("=\\\n \\\n Value");
+        macroPairs.push("Value");
         macroPairs.push("$MACRO_4");
-        macroPairs.push("=\\\n Value");
+        macroPairs.push("Value");
         macroPairs.push("$MACRO_3");
-        macroPairs.push("= Value");
+        macroPairs.push("Value");
         macroPairs.push("$MACRO2");
-        macroPairs.push("=Value");
+        macroPairs.push("Value");
         macroPairs.push("$MACRO");
-        macroPairs.push("=\t\"\tAndy\t\\\t\n\tWarhol \t\"\\\n    9");
+        macroPairs.push("\"\tAndy\t\\\t\n\tWarhol \t\"\\\n    9");
         macroPairs.push("$\\ \nna\\\n\\\n_me");
-        macroPairs.push("=\t'Andy     \\ \n    Warhol 8'");
+        macroPairs.push("'Andy     \\ \n    Warhol 8'");
         macroPairs.push("$na\\\t\nme");
-        macroPairs.push("=Andy     \\ \n    Warhol 7");
+        macroPairs.push("Andy     \\ \n    Warhol 7");
         macroPairs.push("$na\\\nme");
 
         assertMacros(tokens, macroPairs);

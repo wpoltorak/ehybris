@@ -21,7 +21,7 @@ headerModifierAssignment
         ;
 
 headerModifier
-	: BatchMode | CacheUnique | Processor
+	: BooleanHeaderModifier | ClassHeaderModifier | TextHeaderModifier
         ;
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
@@ -42,7 +42,7 @@ attributeValue
         ;
 
 attributeModifierAssignment
-	: attributeModifier Modifierval
+	: attributeModifier Equals Modifierval?
         ;
 
 attributeModifier
@@ -60,7 +60,7 @@ headerTypeName
         ;
 
 macro
-	: Macrodef Macroval
+	: Macrodef Equals Macroval? 
         ;
 	//(ValueAssignment {context.registerMacro($Macrodef, $ValueAssignment.text);} 
 	//|Equals {context.registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment

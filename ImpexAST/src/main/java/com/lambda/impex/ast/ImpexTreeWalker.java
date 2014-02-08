@@ -121,9 +121,9 @@ public class ImpexTreeWalker extends TreeParser {
     public String getGrammarFileName() { return "com/lambda/impex/ast/ImpexTreeWalker.g"; }
 
 
-    protected ImpexContext context;
+    protected ImpexParseContext context;
 
-    public ImpexTreeWalker(ImpexContext context, CommonTree ast){
+    public ImpexTreeWalker(ImpexParseContext context, CommonTree ast){
     this(new CommonTreeNodeStream(ast));
     this.context = context;
     }

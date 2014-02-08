@@ -11,6 +11,8 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import com.lambda.impex.ast.ImpexProblem.Type;
+
 /**
  * This class provides an empty implementation of {@link ImpexParserListener}, which can be extended to create a listener which only needs
  * to handle a subset of the available methods.
@@ -19,7 +21,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     private final Pattern separatorWithWhitespacePattern = Pattern.compile("([ \t]*)\\\\[ \t]*\r?[\n\r]([ \t]*)");
     private final Pattern separatorPattern = Pattern.compile("\\\\[ \t]*\r?[\n\r]");
-    private ImpexContext context = new ImpexContext();
+    private final ImpexParseContext context;
+
+    public ImpexParserDefaultListener(final ImpexParseContext context) {
+        this.context = context;
+    }
 
     /**
      * {@inheritDoc}
@@ -29,11 +35,17 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterMacro(@NotNull final ImpexParser.MacroContext ctx) {
         final String macrodef = removeSeparators(ctx.Macrodef().getText()); //remove possible separators from the middle of text
-
-        String macroval = ctx.Macroval().getText();
-        macroval = macroval.substring(1, macroval.length()).trim(); //remove leading equals character and trim to remove any surrounding spaces
-        macroval = removeSeparatorsAndWhitespaces(macroval); //remove possible separators from the middle of text
-
+        String macroval;
+        if (ctx.Macroval() == null) {
+            final ImpexProblem problem = new ImpexProblem(Type.BlankMacro);
+            problem.setLineNumber(ctx.Macrodef().getSymbol().getLine());
+            problem.setLength(ctx.Macrodef().getSymbol().getStopIndex() - ctx.Macrodef().getSymbol().getStartIndex());
+            problem.setText(macrodef);
+            context.addProblem(problem);
+            macroval = null;
+        } else {
+            macroval = removeSeparatorsAndWhitespaces(ctx.Macroval().getText()); //remove possible separators from the middle of text
+        }
         context.registerMacro(macrodef, macroval, ctx.Macrodef().getSymbol().getLine());
     }
 
@@ -53,7 +65,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void enterImpex(@NotNull final ImpexParser.ImpexContext ctx) {
-        context = new ImpexContext();
     }
 
     /**
@@ -120,9 +131,5 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
         m.appendTail(sb);
         return sb.toString();
-    }
-
-    public ImpexContext getContext() {
-        return context;
     }
 }

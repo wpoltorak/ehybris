@@ -15,22 +15,22 @@ public class ImpexParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		Field=27, Insert=7, IntAttributeModifier=2, UserRights=24, Ws=29, Update=9, 
-		BooleanAttributeModifier=1, NumberFormatAttributeModifier=4, RBracket=32, 
-		Quote=14, Semicolon=31, Remove=10, LParenthesis=15, CacheUnique=35, Lb=28, 
-		Identifier=22, RParenthesis=16, Separator=19, Processor=36, TextAttributeModifier=6, 
-		DocumentID=20, BatchMode=34, SpecialAttribute=21, Comment=26, ClassAttributeModifier=5, 
-		Macrodef=23, DoubleQuote=13, Dot=12, Modifierval=37, DateFormatAttributeModifier=3, 
-		InsertUpdate=8, Macroval=30, LBracket=33, Or=18, BeanShell=25, Comma=11, 
-		Equals=17;
+		Field=30, Insert=10, IntAttributeModifier=2, UserRights=27, Ws=32, Update=12, 
+		ClassHeaderModifier=8, BooleanAttributeModifier=1, NumberFormatAttributeModifier=4, 
+		RBracket=36, Quote=17, Semicolon=34, Remove=13, LParenthesis=18, Lb=31, 
+		Identifier=25, RParenthesis=19, Separator=22, TextAttributeModifier=6, 
+		DocumentID=23, BooleanHeaderModifier=7, TextHeaderModifier=9, SpecialAttribute=24, 
+		Comment=29, ClassAttributeModifier=5, Macrodef=26, DoubleQuote=16, Dot=15, 
+		Modifierval=37, DateFormatAttributeModifier=3, InsertUpdate=11, Macroval=33, 
+		LBracket=35, Or=21, BeanShell=28, Comma=14, Equals=20;
 	public static final String[] tokenNames = {
 		"<INVALID>", "BooleanAttributeModifier", "IntAttributeModifier", "DateFormatAttributeModifier", 
 		"NumberFormatAttributeModifier", "ClassAttributeModifier", "TextAttributeModifier", 
+		"BooleanHeaderModifier", "ClassHeaderModifier", "TextHeaderModifier", 
 		"Insert", "InsertUpdate", "Update", "Remove", "','", "'.'", "'\"'", "'''", 
 		"'('", "')'", "'='", "'|'", "Separator", "DocumentID", "SpecialAttribute", 
 		"Identifier", "Macrodef", "UserRights", "BeanShell", "Comment", "Field", 
-		"Lb", "Ws", "Macroval", "';'", "'['", "']'", "BatchMode", "CacheUnique", 
-		"Processor", "Modifierval"
+		"Lb", "Ws", "Macroval", "';'", "'['", "RBracket", "Modifierval"
 	};
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
@@ -261,7 +261,7 @@ public class ImpexParser extends Parser {
 			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BatchMode) | (1L << CacheUnique) | (1L << Processor))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanHeaderModifier) | (1L << ClassHeaderModifier) | (1L << TextHeaderModifier))) != 0)) {
 				{
 				{
 				setState(54); headerModifierAssignment();
@@ -390,9 +390,9 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class HeaderModifierContext extends ParserRuleContext {
-		public TerminalNode Processor() { return getToken(ImpexParser.Processor, 0); }
-		public TerminalNode CacheUnique() { return getToken(ImpexParser.CacheUnique, 0); }
-		public TerminalNode BatchMode() { return getToken(ImpexParser.BatchMode, 0); }
+		public TerminalNode BooleanHeaderModifier() { return getToken(ImpexParser.BooleanHeaderModifier, 0); }
+		public TerminalNode ClassHeaderModifier() { return getToken(ImpexParser.ClassHeaderModifier, 0); }
+		public TerminalNode TextHeaderModifier() { return getToken(ImpexParser.TextHeaderModifier, 0); }
 		public HeaderModifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -416,7 +416,7 @@ public class ImpexParser extends Parser {
 			{
 			setState(75);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BatchMode) | (1L << CacheUnique) | (1L << Processor))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanHeaderModifier) | (1L << ClassHeaderModifier) | (1L << TextHeaderModifier))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			consume();
@@ -781,6 +781,7 @@ public class ImpexParser extends Parser {
 			return getRuleContext(AttributeModifierContext.class,0);
 		}
 		public TerminalNode Modifierval() { return getToken(ImpexParser.Modifierval, 0); }
+		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public AttributeModifierAssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -798,11 +799,20 @@ public class ImpexParser extends Parser {
 	public final AttributeModifierAssignmentContext attributeModifierAssignment() throws RecognitionException {
 		AttributeModifierAssignmentContext _localctx = new AttributeModifierAssignmentContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_attributeModifierAssignment);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(130); attributeModifier();
-			setState(131); match(Modifierval);
+			setState(131); match(Equals);
+			setState(133);
+			_la = _input.LA(1);
+			if (_la==Modifierval) {
+				{
+				setState(132); match(Modifierval);
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -844,7 +854,7 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(133);
+			setState(135);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -889,7 +899,7 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(135);
+			setState(137);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Insert) | (1L << InsertUpdate) | (1L << Update) | (1L << Remove))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -937,7 +947,7 @@ public class ImpexParser extends Parser {
 		HeaderTypeNameContext _localctx = new HeaderTypeNameContext(_ctx, getState());
 		enterRule(_localctx, 26, RULE_headerTypeName);
 		try {
-			setState(141);
+			setState(143);
 			switch (_input.LA(1)) {
 			case Insert:
 			case InsertUpdate:
@@ -945,7 +955,7 @@ public class ImpexParser extends Parser {
 			case Remove:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(137); headerMode();
+				setState(139); headerMode();
 				}
 				break;
 			case BooleanAttributeModifier:
@@ -956,21 +966,21 @@ public class ImpexParser extends Parser {
 			case TextAttributeModifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(138); attributeModifier();
+				setState(140); attributeModifier();
 				}
 				break;
-			case BatchMode:
-			case CacheUnique:
-			case Processor:
+			case BooleanHeaderModifier:
+			case ClassHeaderModifier:
+			case TextHeaderModifier:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(139); headerModifier();
+				setState(141); headerModifier();
 				}
 				break;
 			case Identifier:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(140); match(Identifier);
+				setState(142); match(Identifier);
 				}
 				break;
 			default:
@@ -990,6 +1000,7 @@ public class ImpexParser extends Parser {
 
 	public static class MacroContext extends ParserRuleContext {
 		public TerminalNode Macrodef() { return getToken(ImpexParser.Macrodef, 0); }
+		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public TerminalNode Macroval() { return getToken(ImpexParser.Macroval, 0); }
 		public MacroContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1008,11 +1019,20 @@ public class ImpexParser extends Parser {
 	public final MacroContext macro() throws RecognitionException {
 		MacroContext _localctx = new MacroContext(_ctx, getState());
 		enterRule(_localctx, 28, RULE_macro);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(143); match(Macrodef);
-			setState(144); match(Macroval);
+			setState(145); match(Macrodef);
+			setState(146); match(Equals);
+			setState(148);
+			_la = _input.LA(1);
+			if (_la==Macroval) {
+				{
+				setState(147); match(Macroval);
+				}
+			}
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1027,7 +1047,7 @@ public class ImpexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\'\u0095\4\2\t\2\4"+
+		"\3\uacf5\uee8c\u4f5d\u8b0d\u4a45\u78bd\u1b2f\u3378\3\'\u0099\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\7\2\"\n\2\f\2\16"+
 		"\2%\13\2\3\2\7\2(\n\2\f\2\16\2+\13\2\3\2\3\2\3\3\3\3\3\3\7\3\62\n\3\f"+
@@ -1036,38 +1056,40 @@ public class ImpexParser extends Parser {
 		"\b\6\bT\n\b\r\b\16\bU\3\b\5\bY\n\b\3\t\3\t\3\t\3\t\3\t\5\t`\n\t\3\n\3"+
 		"\n\3\n\3\n\3\n\5\ng\n\n\5\ni\n\n\3\13\3\13\3\13\3\13\3\13\3\13\7\13q\n"+
 		"\13\f\13\16\13t\13\13\3\13\3\13\5\13x\n\13\3\13\7\13{\n\13\f\13\16\13"+
-		"~\13\13\5\13\u0080\n\13\3\13\5\13\u0083\n\13\3\f\3\f\3\f\3\r\3\r\3\16"+
-		"\3\16\3\17\3\17\3\17\3\17\5\17\u0090\n\17\3\20\3\20\3\20\3\20\2\21\2\4"+
-		"\6\b\n\f\16\20\22\24\26\30\32\34\36\2\6\3\2\17\20\3\2$&\3\2\3\b\3\2\t"+
-		"\f\u009b\2#\3\2\2\2\4.\3\2\2\2\6\66\3\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fM\3"+
-		"\2\2\2\16P\3\2\2\2\20_\3\2\2\2\22h\3\2\2\2\24\u0082\3\2\2\2\26\u0084\3"+
-		"\2\2\2\30\u0087\3\2\2\2\32\u0089\3\2\2\2\34\u008f\3\2\2\2\36\u0091\3\2"+
-		"\2\2 \"\5\36\20\2! \3\2\2\2\"%\3\2\2\2#!\3\2\2\2#$\3\2\2\2$)\3\2\2\2%"+
-		"#\3\2\2\2&(\5\4\3\2\'&\3\2\2\2(+\3\2\2\2)\'\3\2\2\2)*\3\2\2\2*,\3\2\2"+
-		"\2+)\3\2\2\2,-\7\2\2\3-\3\3\2\2\2.\63\5\6\4\2/\62\5\36\20\2\60\62\5\16"+
-		"\b\2\61/\3\2\2\2\61\60\3\2\2\2\62\65\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2"+
-		"\2\64\5\3\2\2\2\65\63\3\2\2\2\66\67\5\32\16\2\67;\5\34\17\28:\5\n\6\2"+
-		"98\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<B\3\2\2\2=;\3\2\2\2>?\7!\2\2"+
-		"?A\5\20\t\2@>\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2"+
-		"\2EG\7\36\2\2FE\3\2\2\2FG\3\2\2\2G\7\3\2\2\2HI\t\2\2\2I\t\3\2\2\2JK\5"+
-		"\f\7\2KL\7\'\2\2L\13\3\2\2\2MN\t\3\2\2N\r\3\2\2\2OQ\7\30\2\2PO\3\2\2\2"+
-		"PQ\3\2\2\2QS\3\2\2\2RT\7\35\2\2SR\3\2\2\2TU\3\2\2\2US\3\2\2\2UV\3\2\2"+
-		"\2VX\3\2\2\2WY\7\36\2\2XW\3\2\2\2XY\3\2\2\2Y\17\3\2\2\2Z`\5\24\13\2[\\"+
-		"\5\b\5\2\\]\5\24\13\2]^\5\b\5\2^`\3\2\2\2_Z\3\2\2\2_[\3\2\2\2`\21\3\2"+
-		"\2\2ai\7\31\2\2bi\7\27\2\2cf\7\30\2\2de\7\16\2\2eg\5\22\n\2fd\3\2\2\2"+
-		"fg\3\2\2\2gi\3\2\2\2ha\3\2\2\2hb\3\2\2\2hc\3\2\2\2i\23\3\2\2\2j\u0080"+
-		"\7\26\2\2kw\5\22\n\2lm\7\21\2\2mr\5\24\13\2no\7\r\2\2oq\5\24\13\2pn\3"+
-		"\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2\2su\3\2\2\2tr\3\2\2\2uv\7\22\2\2vx"+
-		"\3\2\2\2wl\3\2\2\2wx\3\2\2\2x|\3\2\2\2y{\5\26\f\2zy\3\2\2\2{~\3\2\2\2"+
-		"|z\3\2\2\2|}\3\2\2\2}\u0080\3\2\2\2~|\3\2\2\2\177j\3\2\2\2\177k\3\2\2"+
-		"\2\u0080\u0083\3\2\2\2\u0081\u0083\3\2\2\2\u0082\177\3\2\2\2\u0082\u0081"+
-		"\3\2\2\2\u0083\25\3\2\2\2\u0084\u0085\5\30\r\2\u0085\u0086\7\'\2\2\u0086"+
-		"\27\3\2\2\2\u0087\u0088\t\4\2\2\u0088\31\3\2\2\2\u0089\u008a\t\5\2\2\u008a"+
-		"\33\3\2\2\2\u008b\u0090\5\32\16\2\u008c\u0090\5\30\r\2\u008d\u0090\5\f"+
-		"\7\2\u008e\u0090\7\30\2\2\u008f\u008b\3\2\2\2\u008f\u008c\3\2\2\2\u008f"+
-		"\u008d\3\2\2\2\u008f\u008e\3\2\2\2\u0090\35\3\2\2\2\u0091\u0092\7\31\2"+
-		"\2\u0092\u0093\7 \2\2\u0093\37\3\2\2\2\25#)\61\63;BFPUX_fhrw|\177\u0082"+
-		"\u008f";
+		"~\13\13\5\13\u0080\n\13\3\13\5\13\u0083\n\13\3\f\3\f\3\f\5\f\u0088\n\f"+
+		"\3\r\3\r\3\16\3\16\3\17\3\17\3\17\3\17\5\17\u0092\n\17\3\20\3\20\3\20"+
+		"\5\20\u0097\n\20\3\20\2\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\6"+
+		"\3\2\22\23\3\2\t\13\3\2\3\b\3\2\f\17\u00a1\2#\3\2\2\2\4.\3\2\2\2\6\66"+
+		"\3\2\2\2\bH\3\2\2\2\nJ\3\2\2\2\fM\3\2\2\2\16P\3\2\2\2\20_\3\2\2\2\22h"+
+		"\3\2\2\2\24\u0082\3\2\2\2\26\u0084\3\2\2\2\30\u0089\3\2\2\2\32\u008b\3"+
+		"\2\2\2\34\u0091\3\2\2\2\36\u0093\3\2\2\2 \"\5\36\20\2! \3\2\2\2\"%\3\2"+
+		"\2\2#!\3\2\2\2#$\3\2\2\2$)\3\2\2\2%#\3\2\2\2&(\5\4\3\2\'&\3\2\2\2(+\3"+
+		"\2\2\2)\'\3\2\2\2)*\3\2\2\2*,\3\2\2\2+)\3\2\2\2,-\7\2\2\3-\3\3\2\2\2."+
+		"\63\5\6\4\2/\62\5\36\20\2\60\62\5\16\b\2\61/\3\2\2\2\61\60\3\2\2\2\62"+
+		"\65\3\2\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64\5\3\2\2\2\65\63\3\2\2\2\66"+
+		"\67\5\32\16\2\67;\5\34\17\28:\5\n\6\298\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<"+
+		"\3\2\2\2<B\3\2\2\2=;\3\2\2\2>?\7$\2\2?A\5\20\t\2@>\3\2\2\2AD\3\2\2\2B"+
+		"@\3\2\2\2BC\3\2\2\2CF\3\2\2\2DB\3\2\2\2EG\7!\2\2FE\3\2\2\2FG\3\2\2\2G"+
+		"\7\3\2\2\2HI\t\2\2\2I\t\3\2\2\2JK\5\f\7\2KL\7\'\2\2L\13\3\2\2\2MN\t\3"+
+		"\2\2N\r\3\2\2\2OQ\7\33\2\2PO\3\2\2\2PQ\3\2\2\2QS\3\2\2\2RT\7 \2\2SR\3"+
+		"\2\2\2TU\3\2\2\2US\3\2\2\2UV\3\2\2\2VX\3\2\2\2WY\7!\2\2XW\3\2\2\2XY\3"+
+		"\2\2\2Y\17\3\2\2\2Z`\5\24\13\2[\\\5\b\5\2\\]\5\24\13\2]^\5\b\5\2^`\3\2"+
+		"\2\2_Z\3\2\2\2_[\3\2\2\2`\21\3\2\2\2ai\7\34\2\2bi\7\32\2\2cf\7\33\2\2"+
+		"de\7\21\2\2eg\5\22\n\2fd\3\2\2\2fg\3\2\2\2gi\3\2\2\2ha\3\2\2\2hb\3\2\2"+
+		"\2hc\3\2\2\2i\23\3\2\2\2j\u0080\7\31\2\2kw\5\22\n\2lm\7\24\2\2mr\5\24"+
+		"\13\2no\7\20\2\2oq\5\24\13\2pn\3\2\2\2qt\3\2\2\2rp\3\2\2\2rs\3\2\2\2s"+
+		"u\3\2\2\2tr\3\2\2\2uv\7\25\2\2vx\3\2\2\2wl\3\2\2\2wx\3\2\2\2x|\3\2\2\2"+
+		"y{\5\26\f\2zy\3\2\2\2{~\3\2\2\2|z\3\2\2\2|}\3\2\2\2}\u0080\3\2\2\2~|\3"+
+		"\2\2\2\177j\3\2\2\2\177k\3\2\2\2\u0080\u0083\3\2\2\2\u0081\u0083\3\2\2"+
+		"\2\u0082\177\3\2\2\2\u0082\u0081\3\2\2\2\u0083\25\3\2\2\2\u0084\u0085"+
+		"\5\30\r\2\u0085\u0087\7\26\2\2\u0086\u0088\7\'\2\2\u0087\u0086\3\2\2\2"+
+		"\u0087\u0088\3\2\2\2\u0088\27\3\2\2\2\u0089\u008a\t\4\2\2\u008a\31\3\2"+
+		"\2\2\u008b\u008c\t\5\2\2\u008c\33\3\2\2\2\u008d\u0092\5\32\16\2\u008e"+
+		"\u0092\5\30\r\2\u008f\u0092\5\f\7\2\u0090\u0092\7\33\2\2\u0091\u008d\3"+
+		"\2\2\2\u0091\u008e\3\2\2\2\u0091\u008f\3\2\2\2\u0091\u0090\3\2\2\2\u0092"+
+		"\35\3\2\2\2\u0093\u0094\7\34\2\2\u0094\u0096\7\26\2\2\u0095\u0097\7#\2"+
+		"\2\u0096\u0095\3\2\2\2\u0096\u0097\3\2\2\2\u0097\37\3\2\2\2\27#)\61\63"+
+		";BFPUX_fhrw|\177\u0082\u0087\u0091\u0096";
 	public static final ATN _ATN =
 		ATNSimulator.deserialize(_serializedATN.toCharArray());
 	static {

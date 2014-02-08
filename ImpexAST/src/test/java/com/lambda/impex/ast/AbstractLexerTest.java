@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.BitSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -97,18 +96,25 @@ public abstract class AbstractLexerTest {
         return new Expression(subtype, name, expression);
     }
 
+    protected static void assertMacro(final List<Token> tokens, final int index, final String macrodef) {
+        assertMacro(tokens, index, macrodef, null);
+    }
+
     protected static void assertMacro(final List<Token> tokens, final int index, final String macrodef, final String macroval) {
         assertThat(tokens.get(index).getText(), is(macrodef));
-        assertThat("Invalid value for " + macrodef, tokens.get(index + 1).getText(), is(macroval));
+        assertThat(tokens.get(index + 1).getType(), is(ImpexLexer.Equals));
+        if (macroval != null) {
+            assertThat("Invalid value for " + macrodef, tokens.get(index + 2).getText(), is(macroval));
+        }
     }
 
     protected static void assertMacros(final List<Token> tokens, final Stack<String> macroPairs) {
-        for (final Iterator<Token> iterator = tokens.iterator(); iterator.hasNext();) {
-            final Token token = iterator.next();
+        for (int i = 0; i < tokens.size(); i++) {
+            final Token token = tokens.get(i);
             if (token.getType() == ImpexLexer.Macrodef) {
                 final String macrodef = macroPairs.pop();
-                assertThat(token.getText(), is(macrodef));
-                assertThat("Invalid value for " + macrodef, iterator.next().getText(), is(macroPairs.pop()));
+                final String macroval = macroPairs.pop();
+                assertMacro(tokens, i, macrodef, macroval);
             }
         }
     }
@@ -179,7 +185,11 @@ public abstract class AbstractLexerTest {
             int pos = index;
             assertThat(tokens.get(pos).getText(), is(name));
             pos++;
-            assertThat(tokens.get(pos).getText(), is(value));
+            assertThat(tokens.get(pos).getType(), is(ImpexLexer.Equals));
+            if (value != null) {
+                pos++;
+                assertThat(tokens.get(pos).getText(), is(value));
+            }
             return pos;
         }
 

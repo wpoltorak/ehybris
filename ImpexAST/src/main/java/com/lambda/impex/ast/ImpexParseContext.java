@@ -10,20 +10,21 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.antlr.runtime.CommonToken;
-import org.antlr.runtime.RecognitionException;
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.RecognitionException;
 
 import com.lambda.impex.ast.ImpexProblem.Type;
 
-public class ImpexContext {
+public class ImpexParseContext {
     private final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = new HashMap<String, List<SimpleImmutableEntry<Integer, String>>>();
     private final Map<String, CommonToken> documentIDs = new HashMap<String, CommonToken>();
     private final Set<String> duplicateDocumentIDs = new HashSet<String>();
     private final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
     private final List<ImpexProblem> problems = new ArrayList<ImpexProblem>();
     private int[] lineEndNumbers;
+    private boolean syntaxInvalid;
 
-    public ImpexContext() {
+    public ImpexParseContext() {
     }
 
     public boolean hasProblems() {
@@ -76,19 +77,20 @@ public class ImpexContext {
         return macroDef;
     }
 
-    void registerProblem(final RecognitionException e) {
-        final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.LexerSyntaxError);
-        problem.setLineNumber(e.line);
-        problem.setPositionInRow(e.charPositionInLine);
-        problem.setLength(1);
-        problem.setStartIndex(e.index);
-        problem.setStopIndex(e.index + 1);
-
+    void syntaxProblem(final Object offendingSymbol, final int line, final int charPositionInLine, final String msg,
+            final RecognitionException e) {
+        final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.SyntaxError);
+        problem.setLineNumber(line);
+        problem.setPositionInRow(charPositionInLine);
+        problem.setText(msg);
+        if (offendingSymbol instanceof CommonToken) {
+            final CommonToken token = (CommonToken) offendingSymbol;
+            //problem.setLength(token.getSgetgetStartIndex());
+            problem.setStartIndex(token.getStartIndex());
+            problem.setStopIndex(token.getStopIndex());
+        }
+        syntaxInvalid = true;
         addProblem(problem);
-    }
-
-    void registerProblem(final CommonToken token) {
-        registerProblem(token, ImpexProblem.Type.ParserSyntaxError);
     }
 
     void registerProblem(final CommonToken token, final ImpexProblem.Type type) {
@@ -124,5 +126,9 @@ public class ImpexContext {
             return;
         }
         documentIDs.put(text, documentID);
+    }
+
+    public boolean isSyntaxInvalid() {
+        return syntaxInvalid;
     }
 }

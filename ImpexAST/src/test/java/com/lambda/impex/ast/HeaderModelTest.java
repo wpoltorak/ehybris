@@ -49,48 +49,51 @@ public class HeaderModelTest extends ModelTest {
     @Test
     public void attributeModifiers() throws Exception {
         final ParseTree tree = init("/header/header-attributemodifiers.impex");
-        assertModifiers(modifiers(tree, 0, 0), a(ImpexParser.BooleanAttributeModifier), a("=true"));
-        assertModifiers(modifiers(tree, 0, 1), a(ImpexParser.TextAttributeModifier), a("=append"));
+        assertModifiers(modifiers(tree, 0, 0), a(ImpexParser.BooleanAttributeModifier), a("true"));
+        assertModifiers(modifiers(tree, 0, 1), a(ImpexParser.TextAttributeModifier), a("append"));
 
-        assertModifiers(modifiers(tree, 1, 0), a(ImpexParser.BooleanAttributeModifier), a("= true  \t"));
+        assertModifiers(modifiers(tree, 1, 0), a(ImpexParser.BooleanAttributeModifier), a("true"));
         assertModifiers(modifiers(tree, 1, 1), a(ImpexParser.TextAttributeModifier, ImpexParser.TextAttributeModifier),
-                a("=\tappend", "= \",\""));
+                a("append", "\",\""));
 
-        assertModifiers(modifiers(tree, 2, 0), a(ImpexParser.BooleanAttributeModifier), a("=true"));
+        assertModifiers(modifiers(tree, 2, 0), a(ImpexParser.BooleanAttributeModifier), a("true"));
         assertModifiers(modifiers(tree, 2, 1),
                 a(ImpexParser.TextAttributeModifier, ImpexParser.TextAttributeModifier, ImpexParser.TextAttributeModifier),
-                a("= \",\"", "=append", "=customerGroup"));
+                a("\",\"", "append", "customerGroup"));
 
         assertModifiers(modifiers(tree, 3, 0), a(ImpexParser.BooleanAttributeModifier, ImpexParser.ClassAttributeModifier),
-                a("=true", "=de.hybris.platform.catalog.jalo.classification.eclass.EClassSuperCategoryDecorator"));
-        assertModifiers(modifiers(tree, 3, 1), a(ImpexParser.TextAttributeModifier), a("=append"));
+                a("true", "de.hybris.platform.catalog.jalo.classification.eclass.EClassSuperCategoryDecorator"));
+        assertModifiers(modifiers(tree, 3, 1), a(ImpexParser.TextAttributeModifier), a("append"));
 
         assertModifiers(modifiers(tree, 4, 0), a(ImpexParser.BooleanAttributeModifier, ImpexParser.BooleanAttributeModifier),
-                a("=true", "=\ttrue"));
+                a("true", "true"));
         assertModifiers(modifiers(tree, 4, 1), a(ImpexParser.BooleanAttributeModifier, ImpexParser.TextAttributeModifier),
-                a("=true", "=append"));
+                a("true", "append"));
 
         assertModifiers(
                 modifiers(tree, 5, 0),
                 a(ImpexParser.BooleanAttributeModifier, ImpexParser.BooleanAttributeModifier, ImpexParser.TextAttributeModifier,
                         ImpexParser.BooleanAttributeModifier, ImpexParser.BooleanAttributeModifier),
-                a("=true", "=true", "=en", "=false", "=true"));
-        assertModifiers(modifiers(tree, 5, 1), a(ImpexParser.TextAttributeModifier), a("=append"));
+                a("true", "true", "en", "false", "true"));
+        assertModifiers(modifiers(tree, 5, 1), a(ImpexParser.TextAttributeModifier), a("append"));
     }
 
     @Test
     public void typeModifiers() throws Exception {
         final ParseTree tree = init("/header/header-typemodifiers.impex");
-        assertModifiers(modifiers(tree, 0), a(ImpexParser.CacheUnique), a("=true"));
-        assertModifiers(modifiers(tree, 1), a(ImpexParser.CacheUnique), a("=true    "));
-        assertModifiers(modifiers(tree, 2), a(ImpexParser.CacheUnique, ImpexParser.BatchMode), a("=true   ", "=false "));
-        assertModifiers(modifiers(tree, 3), a(ImpexParser.Processor, ImpexParser.CacheUnique, ImpexParser.BatchMode),
-                a("=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor ", "=true  \t ", "=false"));
-        assertModifiers(modifiers(tree, 4), a(ImpexParser.CacheUnique, ImpexParser.BatchMode, ImpexParser.Processor),
-                a("=true \t  ", "=false", "=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor "));
-        assertModifiers(modifiers(tree, 5), a(ImpexParser.BatchMode, ImpexParser.CacheUnique, ImpexParser.Processor),
-                a("= false", "=true  ", "=de.hybris.platform.impex.jalo.imp.DefaultImportProcessor "));
-        assertModifiers(modifiers(tree, 6), a(ImpexParser.BatchMode, ImpexParser.BatchMode), a("=false", "=true"));
+        assertModifiers(modifiers(tree, 0), a(ImpexParser.BooleanHeaderModifier), a("true"));
+        assertModifiers(modifiers(tree, 1), a(ImpexParser.BooleanHeaderModifier), a("true"));
+        assertModifiers(modifiers(tree, 2), a(ImpexParser.BooleanHeaderModifier, ImpexParser.BooleanHeaderModifier), a("true", "false"));
+        assertModifiers(modifiers(tree, 3),
+                a(ImpexParser.ClassHeaderModifier, ImpexParser.BooleanHeaderModifier, ImpexParser.BooleanHeaderModifier),
+                a("de.hybris.platform.impex.jalo.imp.DefaultImportProcessor", "true", "false"));
+        assertModifiers(modifiers(tree, 4),
+                a(ImpexParser.BooleanHeaderModifier, ImpexParser.BooleanHeaderModifier, ImpexParser.ClassHeaderModifier),
+                a("true", "false", "de.hybris.platform.impex.jalo.imp.DefaultImportProcessor"));
+        assertModifiers(modifiers(tree, 5),
+                a(ImpexParser.BooleanHeaderModifier, ImpexParser.BooleanHeaderModifier, ImpexParser.ClassHeaderModifier),
+                a("false", "true", "de.hybris.platform.impex.jalo.imp.DefaultImportProcessor"));
+        assertModifiers(modifiers(tree, 6), a(ImpexParser.BooleanHeaderModifier, ImpexParser.BooleanHeaderModifier), a("false", "true"));
     }
 
     @Test
@@ -99,7 +102,7 @@ public class HeaderModelTest extends ModelTest {
         final ParseTree attribute = attribute(tree, 0, 1);
 
         assertEquals("@media", attribute.getChild(0).getChild(0).getText());
-        assertModifiers(modifiers(tree, 0, 1), a(ImpexParser.TextAttributeModifier), a("=append"));
+        assertModifiers(modifiers(tree, 0, 1), a(ImpexParser.TextAttributeModifier), a("append"));
     }
 
     @Test
@@ -108,13 +111,13 @@ public class HeaderModelTest extends ModelTest {
         final ParseTree attribute = attribute(tree, 0, 0);
 
         assertEquals("uid", attribute.getChild(0).getChild(0).getText());
-        assertModifiers(modifiers(tree, 0, 0), a(ImpexParser.BooleanAttributeModifier), a("=true"));
+        assertModifiers(modifiers(tree, 0, 0), a(ImpexParser.BooleanAttributeModifier), a("true"));
     }
 
     @Test
     public void emptyAttributeModifier() throws Exception {
         final ParseTree tree = init("/header/header-emptymodifier.impex");
-        assertModifier(modifier(tree, 0, 1, 1), ImpexParser.TextAttributeModifier, "= ");
+        assertModifier(modifier(tree, 0, 1, 1), ImpexParser.TextAttributeModifier);
     }
 
     /**
@@ -160,13 +163,21 @@ public class HeaderModelTest extends ModelTest {
         }
     }
 
-    private void assertModifier(final ParseTree tree, final int type, final String value) {
+    private void assertModifier(final ParseTree tree, final int type) {
         assertEquals(2, tree.getChildCount());
         final ParseTree modifier = tree.getChild(0);
         assertEquals(1, modifier.getChildCount());
 
         assertTrue(matchesType(modifier.getChild(0), type));
-        assertEquals(value, tree.getChild(1).getText());
+    }
+
+    private void assertModifier(final ParseTree tree, final int type, final String value) {
+        assertEquals(3, tree.getChildCount());
+        final ParseTree modifier = tree.getChild(0);
+        assertEquals(1, modifier.getChildCount());
+
+        assertTrue(matchesType(modifier.getChild(0), type));
+        assertEquals(value, tree.getChild(2).getText());
     }
 
     private void assertHeaderMode(final ParseTree tree, final int mode, final int... invalidModes) {

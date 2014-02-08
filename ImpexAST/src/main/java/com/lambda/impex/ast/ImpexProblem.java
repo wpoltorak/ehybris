@@ -3,7 +3,7 @@ package com.lambda.impex.ast;
 public class ImpexProblem {
     public enum Type {
         InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode, InvalidLang, InvalidNumberFormat, InvalidDateFormat,
-        General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, DuplicateDocumentID, ParserSyntaxError, LexerSyntaxError;
+        General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, BlankMacro, DuplicateDocumentID, SyntaxError;
     }
 
     private int lineNumber;

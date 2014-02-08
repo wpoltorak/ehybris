@@ -12,9 +12,9 @@ import com.lambda.impex.ast.nodes.RefNode;
 
 public abstract class ImpexVisitor {
 
-    protected ImpexContext context;
+    protected ImpexParseContext context;
 
-    public void prepare(final ImpexContext context) {
+    public void prepare(final ImpexParseContext context) {
         this.context = context;
     }
 

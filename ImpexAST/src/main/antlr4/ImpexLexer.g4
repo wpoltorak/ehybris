@@ -7,7 +7,10 @@ tokens {
     DateFormatAttributeModifier,
     NumberFormatAttributeModifier,
     ClassAttributeModifier,
-    TextAttributeModifier
+    TextAttributeModifier,
+    BooleanHeaderModifier,
+    ClassHeaderModifier,
+    TextHeaderModifier
 }
 
 fragment A          : [Aa]Separator*;
@@ -119,27 +122,25 @@ RecordWs            : Ws -> type(Ws), skip;
 
 
 mode macro;
+MacroEquals             : '=' Ws* MacroSeparator* -> pushMode(macroval)/*, skip;*/, type(Equals);
+MacroWs                 : Ws -> type(Ws), skip;
+MacroSeparator          : Separator Ws* -> type(Separator), skip;
+MacroLb                 : Lb -> type(Lb), popMode, skip;
+ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
 
-Macroval            : '=' (Separator* ~[\r\n])* -> popMode;
-/*
-    {
-      String text = removeSeparators(getText()); //remove possible separators from the middle of text
-      setText(text.substring(1, text.length()).trim()); //remove leading equals character and trim to remove any spaces
-      popMode();
-    };
-*/
-MacroWs             : Ws -> type(Ws), skip;
-MacroSeparator      : Separator -> type(Separator), skip;
-
+mode macroval;
+MacrovalWs                 : Ws -> type(Ws), skip;
+MacrovalSeparator          : Separator -> type(Separator), skip;
+Macroval                   : (~[\r\n] Separator*)* ~[ \t\r\n];
+MacrovalLb                 : Lb -> type(Lb), popMode, popMode, skip;
 
 mode header;
-
 HComma              : Comma -> type(Comma);
 Semicolon           : ';';
 HDot                : Dot -> type(Dot);
 HDoubleQuote        : DoubleQuote -> type(DoubleQuote);
 HQuote              : Quote -> type(Quote);
-RBracket            : '[' -> pushMode(modifier), skip;
+LBracket            : '[' -> pushMode(modifier), skip;
 HLParenthesis       : LParenthesis -> type(LParenthesis);
 HRParenthesis       : RParenthesis -> type(RParenthesis);
 HEquals             : Equals -> type(Equals);
@@ -153,12 +154,10 @@ HWs                 : Ws -> type(Ws), skip;
 
 
 mode modifier;
-
-LBracket            : ']' -> popMode, skip;
 //Type modifiers
-BatchMode           : B A T C H M O D E;
-CacheUnique         : C A C H E U N I Q U E;
-Processor           : P R O C E S S O R;
+BatchMode           : B A T C H M O D E -> type(BooleanHeaderModifier);
+CacheUnique         : C A C H E U N I Q U E -> type(BooleanHeaderModifier);
+Processor           : P R O C E S S O R -> type(ClassHeaderModifier);
 //Argument modifiers
 Alias               : A L I A S -> type(TextAttributeModifier);
 AllowNull           : A L L O W N U L L -> type(BooleanAttributeModifier);
@@ -180,10 +179,18 @@ Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
 Unique              : U N I Q U E -> type(BooleanAttributeModifier);
 Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
 
-ModifierSeparator   : Separator -> type(Separator), skip;
+//ModifierRBracket    : ']' -> popMode, skip;
+ModifierEquals      : '=' Ws* ModifierSeparator* -> pushMode(modifierval)/*, skip;*/, type(Equals);
+ModifierSeparator   : Separator Ws* -> type(Separator), skip;
 ModifierWs          : Ws -> type(Ws), skip;
-ModifierComma       : Ws* Comma Ws* -> type(Comma), skip;
-Modifierquotedval   : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"') -> type(Modifierval);
+ErrorModifierval    : ~[= \t]~[,\r\n\]] -> type(Modifierval);
+//ModifierComma       : Ws* Comma Ws* (Separator Ws*)* -> type(Comma), skip;
+
+mode modifierval;
+RBracket : Ws* ModifiervalSeparator* ']' Ws* ModifiervalSeparator*-> popMode, popMode, skip;
+ModifiervalComma    : Ws* ModifiervalSeparator* Comma Ws* ModifiervalSeparator* -> popMode, type(Comma), skip;
+ModifiervalSeparator: Separator Ws* -> type(Separator), skip;
+ModifiervalQuoted   : '"'(~[\r\n"] |'"' '"')* '"' -> type(Modifierval);
 /*
     {
       String text = getText();  
@@ -193,7 +200,8 @@ Modifierquotedval   : '=' Ws* ('"'(~[\r\n"] |'"' '"')* '"') -> type(Modifierval)
       popMode();
     };
 */
-Modifierval         : '=' (Separator* (~[\r\n\[\],;"]|'"''"'))*;
+Modifierval         : (~[\r\n\[\],;"] Separator*)* ~[ \t\r\n\[\],;"];
+
 /*
     {
       String text = getText();     

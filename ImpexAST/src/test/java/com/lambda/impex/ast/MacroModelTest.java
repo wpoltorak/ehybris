@@ -6,9 +6,8 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
-
-import com.lambda.impex.ast.ImpexParser.ImpexContext;
 
 public class MacroModelTest extends ModelTest {
 
@@ -41,6 +40,42 @@ public class MacroModelTest extends ModelTest {
         assertSingleEntry(macros.get("$macro9"), 33, "Macro with\t\tseparator");
         assertSingleEntry(macros.get("$macro10"), 35, "$macro11=");
         assertSingleEntry(macros.get("$macro12"), 37, "\\");
+    }
+
+    @Test
+    public void macroSingleCharacter() throws Exception {
+        init("/macro/macro-single-character.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
+        assertEquals(1, macros.size());
+        assertSingleEntry(macros.get("$macro_def"), 1, "4");
+    }
+
+    @Test
+    public void macroSingleEmpty() throws Exception {
+        init("/macro/macro-single-empty.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
+        assertEquals(1, macros.size());
+        assertSingleEntry(macros.get("$macro_def"), 1, "");
+    }
+
+    @Test
+    public void macroSingleNospaces() throws Exception {
+        init("/macro/macro-single-nospaces.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
+        assertEquals(1, macros.size());
+        assertSingleEntry(macros.get("$macro_def"), 1, "Thisisamacro");
+    }
+
+    @Test
+    public void macroSingle() throws Exception {
+        init("/macro/macro-single.impex");
+
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
+        assertEquals(1, macros.size());
+        assertSingleEntry(macros.get("$macro_def"), 1, "This is a macro");
     }
 
     @Test
@@ -106,7 +141,7 @@ public class MacroModelTest extends ModelTest {
 
     @Test
     public void macroInsideBlock() throws Exception {
-        final ImpexContext tree = init("/macro/macro-inside-block.impex");
+        final ParseTree tree = init("/macro/macro-inside-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(2, macros.size());
@@ -118,7 +153,7 @@ public class MacroModelTest extends ModelTest {
 
     @Test
     public void macroFirstInBlock() throws Exception {
-        final ImpexContext tree = init("/macro/macro-first-in-block.impex");
+        final ParseTree tree = init("/macro/macro-first-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
@@ -129,7 +164,7 @@ public class MacroModelTest extends ModelTest {
 
     @Test
     public void macroLastInBlock() throws Exception {
-        final ImpexContext tree = init("/macro/macro-last-in-block.impex");
+        final ParseTree tree = init("/macro/macro-last-in-block.impex");
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());

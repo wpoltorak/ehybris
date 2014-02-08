@@ -1,36 +1,23 @@
 package com.lambda.impex.ast;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.io.FileUtils;
-
-import com.lambda.impex.ast.ImpexParser.ImpexContext;
+import org.apache.commons.io.IOUtils;
 
 public abstract class ModelTest {
 
-    protected ImpexParser parser;
-    protected com.lambda.impex.ast.ImpexContext context;
+    protected com.lambda.impex.ast.ImpexParseContext context;
 
-    protected ImpexContext init(final String name) throws Exception {
-        final File file = new File(getClass().getResource(name).getFile());
-        final String impex = FileUtils.readFileToString(file);
-        final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(impex));
-        final CommonTokenStream tokens = new CommonTokenStream(lexer);
-        parser = new ImpexParser(tokens);
-        final ParseTreeWalker walker = new ParseTreeWalker();
-        final ImpexParserDefaultListener listener = new ImpexParserDefaultListener();
-        final ImpexContext parseTree = parser.impex();
-        walker.walk(listener, parseTree);
-        context = listener.getContext();
-        return parseTree;
+    protected ParseTree init(final String name) throws Exception {
+        final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream(name));
+        final ImpexCompiler compiler = new ImpexCompiler();
+        compiler.compile(impex);
+        context = compiler.getContext();
+        return compiler.getParseTree();
     }
 
     protected ParseTree getNthChildWithType(final ParseTree tree, final int n, final int type) {
