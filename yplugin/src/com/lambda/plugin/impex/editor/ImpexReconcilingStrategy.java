@@ -3,9 +3,7 @@ package com.lambda.plugin.impex.editor;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.runtime.CommonToken;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.Tree;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
@@ -15,11 +13,9 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 import org.eclipse.swt.widgets.Display;
 
-import com.lambda.impex.ast.ImpexCompiler;
-import com.lambda.impex.ast.ImpexContext;
-import com.lambda.impex.ast.ImpexParser;
+import com.lambda.impex.ast.ImpexParseContext;
+import com.lambda.impex.ast.ImpexValidator;
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.impex.model.DefaultImpexVisitor;
 import com.lambda.plugin.impex.model.IImpexModel;
 
 public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
@@ -49,21 +45,20 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
             IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
             final char[] source = document.get().toCharArray();
 
-            final ImpexCompiler compiler = new ImpexCompiler();
-            DefaultImpexVisitor visitor = new DefaultImpexVisitor();
-            compiler.setVisitor(visitor);
-            compiler.compile(source);
+            final ImpexValidator validator = new ImpexValidator();
+            validator.compile(source);
 
-            ImpexContext context = compiler.getContext();
-            CommonTree ast = compiler.getAST();
+            ImpexParseContext context = validator.getContext();
+            ParseTree tree = validator.getParseTree();
 
-            Tree blocks = ast.getFirstChildWithType(ImpexParser.BLOCKS);
+            List<ParseTree> blocks = validator.blocks();
             final List<Position> positions = new ArrayList<Position>();
-            for (int i = 0; i < blocks.getChildCount(); i++) {
-                CommonTree child = (CommonTree) blocks.getChild(i);
-                CommonToken token = (CommonToken) child.getToken();
-                Position position = new Position(token.getStartIndex(), token.getStopIndex() - token.getStartIndex());
-                positions.add(position);
+
+            for (ParseTree block : blocks) {
+                // TODO reconcilng strategy
+                // Position position = new Position(block.getStartIndex(), block.getStopIndex() -
+                // token.getStartIndex());
+                // positions.add(position);
             }
 
             // createProblemAnnotations(context.getProblems());

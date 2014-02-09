@@ -1,27 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
-	
 	<groupId>com.lambda</groupId>
 	<artifactId>yeclipse</artifactId>
 	<version>0.0.1</version>
 	<name>yeclipse</name>
 	<description>Parent project for Lambda plugin set</description>
 	<packaging>pom</packaging>
-
-	
 	<properties>
-		<tycho-version>0.18.0</tycho-version>
-		<tycho-extras.version>0.18.0</tycho-extras.version>
+		<tycho-version>0.19.0</tycho-version>
+		<tycho-extras.version>0.19.0</tycho-extras.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<juno-repo.url>http://download.eclipse.org/releases/juno</juno-repo.url>
 		<tycho-repo.url>https://oss.sonatype.org/content/groups/public/</tycho-repo.url>
 	</properties>
-
 	<repositories>
 		<repository>
 			<id>juno</id>
@@ -82,20 +77,10 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
-					<!-- <target> <artifact> <groupId>com.lambda</groupId> <artifactId>com.lambda.ytarget</artifactId> <version>0.0.1</version> 
-						</artifact> </target> -->
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.eclipse.tycho</groupId> <artifactId>tycho-source-plugin</artifactId> <version>${tycho-version}</version> 
-				<executions> <execution> <id>plugin-source</id> <goals> <goal>plugin-source</goal> </goals> </execution> </executions> </plugin> 
-				<plugin> <groupId>org.eclipse.tycho</groupId> <artifactId>tycho-p2-director-plugin</artifactId> <version>${tycho-version}</version> 
-				</plugin> -->				<!-- <executions> <execution> <id>materialize-products</id> <goals> <goal>materialize-products</goal> </goals> </execution> 
-				<execution> <id>archive-products</id> <goals> <goal>archive-products</goal> </goals> </execution> </executions> -->
 		</plugins>
-		<!-- <pluginManagement> <plugins> </plugins> </pluginManagement> -->
 	</build>
-
-
 	<modules>
 		<module>../yfeature</module>
 		<module>../yplugin</module>

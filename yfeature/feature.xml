@@ -37,7 +37,6 @@
       <import plugin="org.junit4" version="4.3.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.debug.ui" version="3.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.editors" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.search"/>
    </requires>
 
    <plugin
@@ -46,5 +45,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="com.lambda.ylinks"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>

@@ -3,8 +3,9 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/ylinks/commons-io-2.2.jar" sourcepath="/home/wojtuch/.m2/repository/commons-io/commons-io/2.2/commons-io-2.2-sources.jar"/>
+	<classpathentry kind="lib" path="/ylinks/impex.jar" sourcepath="/impexast"/>
+	<classpathentry kind="lib" path="lib/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

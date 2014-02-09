@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.lambda.yfeature_0.0.1.jar" id="com.lambda.yfeature" version="0.0.1">
+      <category name="com.lambda.yplugin"/>
+   </feature>
+   <category-def name="com.lambda.yplugin" label="eCommerce"/>
+</site>
