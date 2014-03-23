@@ -11,13 +11,14 @@ import org.apache.commons.io.IOUtils;
 public abstract class ModelTest {
 
     protected com.lambda.impex.ast.ImpexParseContext context;
+    private ImpexValidator validator;
 
     protected ParseTree init(final String name) throws Exception {
         final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream(name));
-        final ImpexCompiler compiler = new ImpexCompiler();
-        compiler.compile(impex);
-        context = compiler.getContext();
-        return compiler.getParseTree();
+        validator = new ImpexValidator();
+        validator.compile(impex);
+        context = validator.getContext();
+        return validator.getParseTree();
     }
 
     protected ParseTree getNthChildWithType(final ParseTree tree, final int n, final int type) {
@@ -45,6 +46,16 @@ public abstract class ModelTest {
         return list;
     }
 
+    protected ParseTree getFirstChildWithType(final ParseTree tree, final int type) {
+        for (int i = 0; i < tree.getChildCount(); i++) {
+            final ParseTree child = tree.getChild(i);
+            if (matchesType(child, type)) {
+                return child;
+            }
+        }
+        return null;
+    }
+
     protected boolean matchesType(final ParseTree child, final int type) {
         if (child instanceof RuleNode) {
             final RuleNode rule = (RuleNode) child;
@@ -54,26 +65,6 @@ public abstract class ModelTest {
             return terminal.getSymbol().getType() == type;
         }
         return false;
-    }
-
-    protected ParseTree getChildWithType(final ParseTree tree, final int type) {
-        for (int i = 0; i < tree.getChildCount(); i++) {
-            final ParseTree child = tree.getChild(i);
-            if (matchesType(child, type)) {
-                return child;
-            }
-        }
-        return null;
-    }
-
-    protected ParseTree getFirstChildWithType(final ParseTree tree, final int type) {
-        for (int i = 0; i < tree.getChildCount(); i++) {
-            final ParseTree child = tree.getChild(i);
-            if (matchesType(child, type)) {
-                return child;
-            }
-        }
-        return null;
     }
 
     protected ParseTree block(final ParseTree tree, final int blockNo) {

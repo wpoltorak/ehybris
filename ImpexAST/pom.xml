@@ -32,7 +32,7 @@
 					</execution>
 				</executions>
 			</plugin>
-
+<!-- 
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr3-maven-plugin</artifactId>
@@ -48,6 +48,7 @@
 					</execution>
 				</executions>
 			</plugin>
+ -->			
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
@@ -86,6 +87,7 @@
 		<pluginManagement>
 			<plugins>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+<!-- 
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -112,6 +114,7 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+ -->				
 			</plugins>
 		</pluginManagement>
 
@@ -144,7 +147,7 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<antlr3.version>3.4</antlr3.version>
-		<antlr4.version>4.1</antlr4.version>
+		<!-- <antlr3.version>3.4</antlr3.version>  -->
+		<antlr4.version>4.2</antlr4.version>
 	</properties>
 </project>

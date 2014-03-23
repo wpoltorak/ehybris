@@ -17,7 +17,7 @@ quote	: DoubleQuote | Quote
         ;
 
 headerModifierAssignment
-        : headerModifier Modifierval
+        : headerModifier Equals Modifierval?
         ;
 
 headerModifier

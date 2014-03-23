@@ -1,0 +1,61 @@
+# Multi-line separator symbol by default is '\'. 
+# All whitespace characters before \ or after \ and new line character will be replaced by single space character
+# In macro assignment single or double quotes are considered as part of macro value so line separator is also evaluated.
+# Line separator is not evaluated from within quoted fields 
+
+INSERT_UPDATE Customer;\
+ uid[unique=true]; Name 
+; andi; Andy Warhol 1
+
+INSERT_UPDATE Customer; uid[unique=true] \
+; Name 
+; andi; Andy Warhol 2
+
+INSERT_UPDATE Customer; uid[unique\
+=true] ; Name 
+; andi; Andy Warhol 3
+
+INSERT_UPDATE Cust\
+omer; uid[unique=true] ; Name 
+; andi; Andy Warhol 4
+
+#
+INSERT_UPDATE Cust \
+	omer; uid[unique=true] ; Name 
+; andi; Andy Warhol 5
+
+INSERT_UPDATE Cust\   
+omer; uid[unique=true] ; Name 
+; andi; Andy Warhol\
+ 6
+ 
+ $na\
+me=Andy     \ 
+    Warhol 7
+INSERT_UPDATE Cust\   
+omer; uid[unique=true] ; Name 
+; andi; $\
+name
+ 
+$na\
+me="Andy     \ 
+    Warhol 8"
+INSERT_UPDATE Cust\   
+omer; uid[unique=true] ; Name 
+; andi; $\
+name
+
+#In this case both separator and macro reference are not evaluated 
+$na\
+me="Andy     \ 
+    Warhol 9"
+INSERT_UPDATE Cust\   
+omer; uid[unique=true] ; Name 
+; andi; "$\
+name"
+
+#In this case separator is not evaluated
+INSERT_UPDATE Cust\   
+omer; uid[unique=true] ; Name 
+; andi; "Andy     \ 
+    Warhol 10"

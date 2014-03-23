@@ -2,8 +2,9 @@ package com.lambda.impex.ast;
 
 public class ImpexProblem {
     public enum Type {
-        InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode, InvalidLang, InvalidNumberFormat, InvalidDateFormat,
-        General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, BlankMacro, DuplicateDocumentID, SyntaxError;
+        InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
+        InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro,
+        InvalidMacroValue, DuplicateDocumentID, SyntaxError, InvalidSubtype;
     }
 
     private int lineNumber;

@@ -1,0 +1,39 @@
+# Modifier values can be inside single quotes.
+# Double quotes are treated as normal characters - that is most likely because attributes can be surrounded by double quotes
+
+# In this case Andy Warhole 12 will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; Name [default='Andy Warhole 12']
+; andi; 
+
+# In this case Andy Warhole 12 will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; "Name [default='Andy Warhole 12']"
+; andi;
+
+# In this case "Andy Warhole 12" will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; Name [default="Andy Warhole 12"]
+; andi;  
+
+# In this case Andy Warhole 12" will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; Name [default=Andy Warhole 12"]
+; andi; 
+
+# Illegal
+INSERT_UPDATE Customer; uid[unique=true] ; 'Name [default='Andy Warhole 12']'
+; andi; 
+
+# Illegal
+INSERT_UPDATE Customer; uid[unique=true] ; 'Name [default=Andy Warhole 12]'
+; andi; 
+
+# Illegal
+INSERT_UPDATE Customer; uid[unique=true] ; "Name [default="Andy Warhole 12"]"
+; andi; 
+
+# In this case "Andy Warhole 12" will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; "Name [default=""Andy Warhole 12""]"
+; andi; 
+
+# In this case Andy\ Warhole 11 will be set for andi user
+INSERT_UPDATE Customer; uid[unique=true] ; "Name [default=Andy\
+ Warhole 11]"
+; andi;

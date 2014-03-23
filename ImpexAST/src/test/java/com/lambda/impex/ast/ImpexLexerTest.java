@@ -340,4 +340,6 @@ public class ImpexLexerTest extends AbstractLexerTest {
         index += 7;
         index = header.assertTokens(tokens, index);
     }
+
+    //TODO test macroref as an attribute
 }

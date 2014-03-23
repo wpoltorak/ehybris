@@ -2,15 +2,24 @@
 
 package com.lambda.impex.ast;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 //import com.lambda.impex.ast.tree.*;
 import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
+import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
 /**
@@ -19,8 +28,14 @@ import com.lambda.impex.ast.ImpexProblem.Type;
  */
 public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
-    private final Pattern separatorWithWhitespacePattern = Pattern.compile("([ \t]*)\\\\[ \t]*\r?[\n\r]([ \t]*)");
-    private final Pattern separatorPattern = Pattern.compile("\\\\[ \t]*\r?[\n\r]");
+    private static final Pattern separatorWithWhitespacePattern = Pattern.compile("([ \t]*)\\\\[ \t]*\r?[\n\r]([ \t]*)");
+    private static final Pattern separatorPattern = Pattern.compile("\\\\[ \t]*\r?[\n\r]");
+    private static final Pattern javaClassNamePattern = Pattern.compile("[A-Za-z_]+[a-zA-Z0-9_]*");
+    private static final Set<String> javaKeywords = new HashSet<String>(Arrays.asList("abstract", "assert", "boolean", "break", "byte",
+            "case", "catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends", "false", "final",
+            "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new",
+            "null", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
+            "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
     private final ImpexParseContext context;
 
     public ImpexParserDefaultListener(final ImpexParseContext context) {
@@ -37,7 +52,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final String macrodef = removeSeparators(ctx.Macrodef().getText()); //remove possible separators from the middle of text
         String macroval;
         if (ctx.Macroval() == null) {
-            final ImpexProblem problem = new ImpexProblem(Type.BlankMacro);
+            final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
             problem.setLineNumber(ctx.Macrodef().getSymbol().getLine());
             problem.setLength(ctx.Macrodef().getSymbol().getStopIndex() - ctx.Macrodef().getSymbol().getStartIndex());
             problem.setText(macrodef);
@@ -49,13 +64,118 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         context.registerMacro(macrodef, macroval, ctx.Macrodef().getSymbol().getLine());
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * The default implementation does nothing.
-     */
     @Override
-    public void exitMacro(@NotNull final ImpexParser.MacroContext ctx) {
+    public void enterAttributeModifierAssignment(final AttributeModifierAssignmentContext ctx) {
+        if (ctx.Modifierval() == null) {
+            final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
+            final Token token = ctx.attributeModifier().getStop();
+            problem.setLineNumber(token.getLine());
+            problem.setLength(token.getStopIndex() - token.getStartIndex());
+            problem.setText(token.getText());
+            context.addProblem(problem);
+            return;
+        }
+        final TerminalNode modifierval = ctx.Modifierval();
+        switch (ctx.attributeModifier().getStart().getType()) {
+            case ImpexLexer.BooleanHeaderModifier:
+                //TODO resolve macros
+                if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
+                        && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
+                    final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
+                    problem.setLineNumber(modifierval.getSymbol().getLine());
+                    problem.setLength(modifierval.getSymbol().getStopIndex() - modifierval.getSymbol().getStartIndex());
+                    problem.setText(modifierval.getSymbol().getText());
+                    context.addProblem(problem);
+                }
+                break;
+            case ImpexLexer.TextAttributeModifier:
+                if ("mode".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                    if (!"append".equalsIgnoreCase(modifierval.getText()) && !"remove".equalsIgnoreCase(modifierval.getText())) {
+                        context.addProblem(new ImpexProblem(Type.InvalidMode));
+                    }
+                } else if ("lang".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                    try {
+                        Long.parseLong(modifierval.getText());
+                    } catch (final NumberFormatException e) {
+                        // is not a PK number so verify locale name
+                        try {
+                            toLocale(modifierval.getText());
+                        } catch (final IllegalArgumentException ex) {
+                            context.addProblem(new ImpexProblem(Type.InvalidLang));
+                        }
+                    }
+                }
+                break;
+            case ImpexLexer.ClassAttributeModifier:
+                if (!isJavaClassName(modifierval.getText())) {
+                    context.addProblem(new ImpexProblem(Type.InvalidClassname));
+                }
+                break;
+            case ImpexLexer.IntAttributeModifier:
+                if ("pos".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                    try {
+                        final Integer pos = Integer.valueOf(modifierval.getText());
+                        if (pos.intValue() < 0) {
+                            context.addProblem(new ImpexProblem(Type.InvalidPosition));
+                        }
+                    } catch (final NumberFormatException e) {
+                        context.addProblem(new ImpexProblem(Type.InvalidPosition));
+                    }
+                }
+                break;
+            case ImpexLexer.DateFormatAttributeModifier:
+                try {
+                    new SimpleDateFormat(modifierval.getText());
+                } catch (final NullPointerException e) {
+                    context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
+                } catch (final IllegalArgumentException e) {
+                    context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
+                }
+                break;
+            case ImpexLexer.NumberFormatAttributeModifier:
+                try {
+                    new DecimalFormat(modifierval.getText());
+                } catch (final NullPointerException e) {
+                    context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
+                } catch (final IllegalArgumentException e) {
+                    context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void enterHeaderModifierAssignment(final HeaderModifierAssignmentContext ctx) {
+        if (ctx.Modifierval() == null) {
+            final ImpexProblem problem = new ImpexProblem(Type.InvalidHeaderModifier);
+            final Token token = ctx.headerModifier().getStop();
+            problem.setLineNumber(token.getLine());
+            problem.setLength(token.getStopIndex() - token.getStartIndex());
+            problem.setText(token.getText());
+            context.addProblem(problem);
+            return;
+        }
+        final TerminalNode modifierval = ctx.Modifierval();
+        switch (ctx.headerModifier().getStart().getType()) {
+            case ImpexLexer.BooleanHeaderModifier:
+                //TODO resolve macros
+                if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
+                        && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
+                    final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
+                    problem.setLineNumber(modifierval.getSymbol().getLine());
+                    problem.setLength(modifierval.getSymbol().getStopIndex() - modifierval.getSymbol().getStartIndex());
+                    problem.setText(modifierval.getSymbol().getText());
+                    context.addProblem(problem);
+                }
+                break;
+            case ImpexLexer.TextHeaderModifier:
+                break;
+            case ImpexLexer.ClassHeaderModifier:
+                if (!isJavaClassName(modifierval.getText())) {
+                    context.addProblem(new ImpexProblem(Type.InvalidClassname));
+                }
+                break;
+        }
     }
 
     /**
@@ -112,7 +232,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void visitErrorNode(@NotNull final ErrorNode node) {
     }
 
-    private String removeSeparators(final String text) {
+    private static String removeSeparators(final String text) {
         final Matcher m = separatorPattern.matcher(text);
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {
@@ -122,7 +242,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         return sb.toString();
     }
 
-    private String removeSeparatorsAndWhitespaces(final String text) {
+    private static String removeSeparatorsAndWhitespaces(final String text) {
         final Matcher m = separatorWithWhitespacePattern.matcher(text);
         final StringBuffer sb = new StringBuffer();
         while (m.find()) {
@@ -132,4 +252,52 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         m.appendTail(sb);
         return sb.toString();
     }
+
+    private static boolean isJavaClassName(final String text) {
+        for (final String part : text.split("\\.")) {
+            if (javaKeywords.contains(part) || !javaClassNamePattern.matcher(part).matches()) {
+                return false;
+            }
+        }
+        return text.length() > 0;
+    }
+
+    private Locale toLocale(final String str) {
+        if (str == null) {
+            throw new IllegalArgumentException("Invalid locale format: " + String.valueOf(str));
+        }
+        final int len = str.length();
+        if (len != 2 && len != 5 && len < 7) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        final char ch0 = str.charAt(0);
+        final char ch1 = str.charAt(1);
+        if (!Character.isLetter(ch0) || !Character.isLetter(ch1)) {
+            throw new IllegalArgumentException("Invalid locale format: " + str);
+        }
+        if (len == 2) {
+            return new Locale(str, "");
+        } else {
+            if (str.charAt(2) != '_') {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            final char ch3 = str.charAt(3);
+            if (ch3 == '_') {
+                return new Locale(str.substring(0, 2), "", str.substring(4));
+            }
+            final char ch4 = str.charAt(4);
+            if (!Character.isLetter(ch3) || !Character.isLetter(ch4)) {
+                throw new IllegalArgumentException("Invalid locale format: " + str);
+            }
+            if (len == 5) {
+                return new Locale(str.substring(0, 2), str.substring(3, 5));
+            } else {
+                if (str.charAt(5) != '_') {
+                    throw new IllegalArgumentException("Invalid locale format: " + str);
+                }
+                return new Locale(str.substring(0, 2), str.substring(3, 5), str.substring(6));
+            }
+        }
+    }
+
 }

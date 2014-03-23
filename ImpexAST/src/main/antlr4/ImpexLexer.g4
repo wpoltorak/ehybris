@@ -99,7 +99,7 @@ Field               : ';' FieldSeparator* ('"' (~'"'|'"''"')* '"' | (~[\r\n";] S
 */
 Lb                  : ('\r'?'\n'|'\r') -> skip;
 Ws                  : [ \t] -> skip;
-
+Error               : .;
 
 mode record;
 
@@ -150,6 +150,7 @@ HSeparator          : Separator -> type(Separator), skip;
 HIdentifier         : Identifier -> type(Identifier);
 HSpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
 HDocumentID         : DocumentID -> type(DocumentID);
+HMacrodef           : Macrodef -> type(Macrodef);
 HWs                 : Ws -> type(Ws), skip;
 
 
