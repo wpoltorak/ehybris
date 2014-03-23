@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.MarkerUtilities;
 
@@ -20,11 +19,9 @@ import com.lambda.plugin.impex.editor.ImpexProblemAnnotation;
 
 public class ImpexModel implements IImpexModel {
 
-    private final IDocument document;
     private final IFileEditorInput editorInput;
 
-    public ImpexModel(final IDocument document, final IFileEditorInput editorInput) {
-        this.document = document;
+    public ImpexModel(final IFileEditorInput editorInput) {
         this.editorInput = editorInput;
     }
 
@@ -36,6 +33,7 @@ public class ImpexModel implements IImpexModel {
         }
     }
 
+    @Override
     public void updateMarkers(List<ImpexProblem> problems) {
         removeMarkers();
         createMarkers(problems);
@@ -51,11 +49,12 @@ public class ImpexModel implements IImpexModel {
 
     private void createMarkers(final List<ImpexProblem> problems) {
         final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+            @Override
             public void run(final IProgressMonitor monitor) throws CoreException {
                 for (final ImpexProblem problem : problems) {
                     Map<String, Object> map = new HashMap<String, Object>();
                     MarkerUtilities.setLineNumber(map, problem.getLineNumber());
-                    MarkerUtilities.setMessage(map, problem.getType().toString());
+                    MarkerUtilities.setMessage(map, problem.getText());
                     MarkerUtilities.setCharStart(map, problem.getStartIndex());
                     MarkerUtilities.setCharEnd(map, problem.getStartIndex() + problem.getLength());
                     map.put(IMarker.SEVERITY, new Integer(IMarker.SEVERITY_ERROR));

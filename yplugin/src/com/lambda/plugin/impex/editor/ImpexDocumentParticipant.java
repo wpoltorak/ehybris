@@ -11,10 +11,20 @@ import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
+import com.lambda.plugin.YPlugin;
+
 public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
+    private final AntlrTokenToTokenMapper tokenMapper;
+
+    public ImpexDocumentParticipant(AntlrTokenToTokenMapper tokenMapper) {
+        this.tokenMapper = tokenMapper;
+    }
+
+    @Override
     public void setup(IDocument document) {
-        final IDocumentPartitioner partitioner = new ImpexPartitioner(new ImpexPartitionScanner(),
+        YPlugin.logInfo("ImpexDocumentParticipant setup called", null);
+        final IDocumentPartitioner partitioner = new ImpexPartitioner(new ImpexPartitionScanner(tokenMapper),
                 ImpexPartitionScanner.CONTENT_TYPES);
         if (document instanceof IDocumentExtension3) {
             ((IDocumentExtension3) document).setDocumentPartitioner(ImpexPartitioner.IMPEX_PARTITIONING, partitioner);
@@ -30,11 +40,13 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
         public ImpexPartitioner(final IPartitionTokenScanner scanner, final String[] legalContentTypes) {
             super(scanner, legalContentTypes);
+            YPlugin.logInfo("ImpexPartitioner created", null);
         }
 
         @Override
         public void connect(final IDocument document, final boolean delayInitialization) {
             super.connect(document, delayInitialization);
+            YPlugin.logInfo("ImpexPartitionar connecting document", null);
             printPartitions(document);
         }
 

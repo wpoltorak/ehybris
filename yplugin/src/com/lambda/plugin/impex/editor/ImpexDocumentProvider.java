@@ -1,25 +1,28 @@
 package com.lambda.plugin.impex.editor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.antlr.v4.runtime.Lexer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
-import org.eclipse.ui.texteditor.IDocumentProvider;
 
-import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
+import com.lambda.impex.ast.ImpexLexer;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
 
 public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
+    private final Map<Object, ImpexDocument> impexDocumentMap = new HashMap<Object, ImpexDocument>();
+    private final Lexer tokenSource = new ImpexLexer(null);
+
     public ImpexDocumentProvider() {
-        IDocumentProvider provider = new TextFileDocumentProvider();
-        provider = new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING, new ImpexDocumentParticipant(),
-                provider);
-        setParentDocumentProvider(provider);
+        YPlugin.logInfo("ImpexDocumentProvider contructor called", null);
     }
 
     @Override
@@ -28,12 +31,21 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
         if (!(fileInfo instanceof ImpexFileInfo)) {
             return null;
         }
-
         final ImpexFileInfo impexFileInfo = (ImpexFileInfo) fileInfo;
-        final IDocument document = fileInfo.fTextFileBuffer.getDocument();
-        impexFileInfo.model = new ImpexModel(document, element instanceof IFileEditorInput ? (IFileEditorInput) element
-                : null);
+        impexFileInfo.model = new ImpexModel(element instanceof IFileEditorInput ? (IFileEditorInput) element : null);
         return fileInfo;
+    }
+
+    @Override
+    public IDocument getDocument(Object element) {
+        ImpexDocument impexDocument = impexDocumentMap.get(element);
+        if (impexDocument == null) {
+            IDocument document = super.getDocument(element);
+            impexDocument = new ImpexDocument(document, tokenSource);
+            YPlugin.logInfo("ImpexDocument created", null);
+            impexDocumentMap.put(element, impexDocument);
+        }
+        return impexDocument;
     }
 
     @Override
@@ -57,5 +69,6 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
     public class ImpexFileInfo extends FileInfo {
         public IImpexModel model;
+
     }
 }

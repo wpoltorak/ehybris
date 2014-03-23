@@ -5,7 +5,6 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
-import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -14,24 +13,17 @@ import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
-import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Shell;
-
-import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 
 public class ImpexEditorConfiguration extends SourceViewerConfiguration {
 
     private static final String[] CONTENT_TYPES = contentTypes();
     private ImpexDoubleClickStrategy doubleClickStrategy;
-    private ImpexHeaderScanner headerScanner;
-    private ImpexMacroScanner macroAssignementScanner;
-    private ImpexScanner scanner;
+    private ImpexPartitionScanner scanner;
     private final ColorManager colorManager;
     private final ImpexEditor editor;
-    private BeanshellScanner beanshellScanner;
-    private CommentScanner commentScanner;
 
     public ImpexEditorConfiguration(final ImpexEditor editor, final ColorManager colorManager) {
         this.editor = editor;
@@ -59,6 +51,7 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
     public IInformationControlCreator getInformationControlCreator(final ISourceViewer sourceViewer) {
 
         return new IInformationControlCreator() {
+            @Override
             public IInformationControl createInformationControl(final Shell parent) {
                 return new DefaultInformationControl(parent);
                 // return new DefaultInformationControl(parent, presenter);
@@ -84,72 +77,23 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
         return doubleClickStrategy;
     }
 
-    protected ImpexScanner getImpexScanner() {
+    protected ImpexPartitionScanner getImpexScanner() {
         if (scanner == null) {
-            scanner = new ImpexScanner(colorManager);
+            scanner = new ImpexPartitionScanner(editor.getTokenMapper());
         }
         return scanner;
-    }
-
-    protected ImpexHeaderScanner getHeaderScanner() {
-        if (headerScanner == null) {
-            headerScanner = new ImpexHeaderScanner(colorManager);
-            headerScanner.setDefaultReturnToken(new Token(new TextAttribute(colorManager
-                    .getColor(ImpexColorConstants.IMPEX_HEADER_DEFAULT))));
-        }
-        return headerScanner;
-    }
-
-    protected BeanshellScanner getBeanshellScanner() {
-        if (beanshellScanner == null) {
-            beanshellScanner = new BeanshellScanner(colorManager);
-        }
-        return beanshellScanner;
-    }
-
-    protected CommentScanner getCommentScanner() {
-        if (commentScanner == null) {
-            commentScanner = new CommentScanner(colorManager);
-        }
-        return commentScanner;
-    }
-
-    protected ImpexMacroScanner getMacroAssignementScanner() {
-        if (macroAssignementScanner == null) {
-            macroAssignementScanner = new ImpexMacroScanner(colorManager);
-        }
-        return macroAssignementScanner;
     }
 
     @Override
     public IPresentationReconciler getPresentationReconciler(final ISourceViewer sourceViewer) {
         final PresentationReconciler reconciler = new PresentationReconciler();
-        reconciler.setDocumentPartitioning(ImpexPartitioner.IMPEX_PARTITIONING);
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getBeanshellScanner());
-        reconciler.setDamager(dr, ImpexPartitionScanner.BEANSHELL);
-        reconciler.setRepairer(dr, ImpexPartitionScanner.BEANSHELL);
-
-        // dr = new DefaultDamagerRepairer(getImpexScanner());
-        // reconciler.setDamager(dr, ImpexPartitionScanner.COMMENT);
-        // reconciler.setRepairer(dr, ImpexPartitionScanner.COMMENT);
-
-        // dr = new DefaultDamagerRepairer(getImpexScanner());
-        // reconciler.setDamager(dr, ImpexPartitionScanner.STRING);
-        // reconciler.setRepairer(dr, ImpexPartitionScanner.STRING);
-
-        // dr = new NonRuleBasedDamagerRepairer(new
-        // TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_COMMENT)));
-        // dr = new DefaultDamagerRepairer(getImpexScanner());
-        // reconciler.setDamager(dr, ImpexScanner.IMPEX_COMMENT);
-        // reconciler.setRepairer(dr, ImpexScanner.IMPEX_COMMENT);
-        dr = new DefaultDamagerRepairer(getCommentScanner());
-        reconciler.setDamager(dr, ImpexPartitionScanner.COMMENT);
-        reconciler.setRepairer(dr, ImpexPartitionScanner.COMMENT);
-
-        dr = new DefaultDamagerRepairer(getImpexScanner());
-        reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
-        reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
-
+        reconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
+        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getImpexScanner());
+        String[] configuredContentTypes = getConfiguredContentTypes(sourceViewer);
+        for (String contentType : configuredContentTypes) {
+            reconciler.setDamager(dr, contentType);
+            reconciler.setRepairer(dr, contentType);
+        }
         return reconciler;
     }
 

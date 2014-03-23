@@ -3,6 +3,7 @@ package com.lambda.plugin.impex.editor;
 import java.util.HashMap;
 import java.util.List;
 
+import org.antlr.v4.runtime.Lexer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -17,11 +18,16 @@ import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
+import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 import com.lambda.plugin.impex.model.IImpexModel;
+import com.lambda.plugin.impex.model.ImpexModel;
 import com.lambda.plugin.preferences.PreferenceConstants;
 
 public class ImpexEditor extends TextEditor {
@@ -32,11 +38,17 @@ public class ImpexEditor extends TextEditor {
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
     private IImpexModel impexModel;
+    private final Lexer impexLexer;
+    private final AntlrTokenToTokenMapper tokenMapper;
 
     public ImpexEditor() {
+        super();
+        tokenMapper = new AntlrTokenToTokenMapper();
+        impexLexer = new ImpexLexer(null);
         colorManager = new ColorManager();
+        setDocumentProvider(new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING,
+                new ImpexDocumentParticipant(tokenMapper), new ImpexDocumentProvider()));
         setSourceViewerConfiguration(new ImpexEditorConfiguration(this, colorManager));
-        // setDocumentProvider(new ImpexDocumentProvider());
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
         // getVerticalRuler().getModel().addAnnotation(annotation, position);
@@ -61,6 +73,12 @@ public class ImpexEditor extends TextEditor {
         annotationModel = viewer.getProjectionAnnotationModel();
     }
 
+    @Override
+    public IDocumentProvider getDocumentProvider() {
+        // TODO Auto-generated method stub
+        return super.getDocumentProvider();
+    }
+
     /**
      * Returns the Impex model for the current editor input of this editor.
      * 
@@ -68,10 +86,8 @@ public class ImpexEditor extends TextEditor {
      */
     public IImpexModel getImpexModel() {
         if (impexModel == null) {
-            final IDocumentProvider provider = getDocumentProvider();
-            if (provider instanceof ImpexDocumentProvider) {
-                final ImpexDocumentProvider documentProvider = (ImpexDocumentProvider) provider;
-                impexModel = documentProvider.getImpexModel(getEditorInput());
+            if (getEditorInput() instanceof IFileEditorInput) {
+                impexModel = new ImpexModel((IFileEditorInput) getEditorInput());
             }
         }
         return impexModel;
@@ -83,7 +99,6 @@ public class ImpexEditor extends TextEditor {
                 styles);
         // ensure decoration support has been created and configured.
         getSourceViewerDecorationSupport(viewer);
-
         return viewer;
     }
 
@@ -104,21 +119,14 @@ public class ImpexEditor extends TextEditor {
 
     public void updateFoldingStructure(final List<Position> positions) {
         final Annotation[] annotations = new Annotation[positions.size()];
-
-        // this will hold the new annotations along
-        // with their corresponding positions
+        // this will hold the new annotations along with their corresponding positions
         final HashMap<Annotation, Position> newAnnotations = new HashMap<Annotation, Position>();
-
         for (int i = 0; i < positions.size(); i++) {
             final ProjectionAnnotation annotation = new ProjectionAnnotation();
-
             newAnnotations.put(annotation, positions.get(i));
-
             annotations[i] = annotation;
         }
-
         annotationModel.modifyAnnotations(oldAnnotations, newAnnotations, null);
-
         oldAnnotations = annotations;
     }
 
@@ -147,5 +155,9 @@ public class ImpexEditor extends TextEditor {
 
     public boolean isMarkingOccurrences() {
         return markingOccurrences;
+    }
+
+    public AntlrTokenToTokenMapper getTokenMapper() {
+        return tokenMapper;
     }
 }

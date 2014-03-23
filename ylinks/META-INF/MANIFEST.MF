@@ -2,9 +2,31 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: YLinks
 Bundle-SymbolicName: com.lambda.ylinks
-Bundle-Version: 1.0.0
-Bundle-ClassPath: commons-io-2.2.jar
-Export-Package: org.apache.commons.io,
+Bundle-Version: 0.0.1
+Bundle-ClassPath: commons-io-2.2.jar,
+ impexast-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+Export-Package: com.lambda.impex.ast,
+ com.lambda.impex.ast.nodes,
+ com.lambda.impex.ast.tree,
+ org.antlr.v4,
+ org.antlr.v4.analysis,
+ org.antlr.v4.automata,
+ org.antlr.v4.codegen,
+ org.antlr.v4.codegen.model,
+ org.antlr.v4.codegen.model.chunk,
+ org.antlr.v4.codegen.model.decl,
+ org.antlr.v4.misc,
+ org.antlr.v4.parse,
+ org.antlr.v4.runtime,
+ org.antlr.v4.runtime.atn,
+ org.antlr.v4.runtime.dfa,
+ org.antlr.v4.runtime.misc,
+ org.antlr.v4.runtime.tree,
+ org.antlr.v4.runtime.tree.gui,
+ org.antlr.v4.semantics,
+ org.antlr.v4.tool,
+ org.antlr.v4.tool.ast,
+ org.apache.commons.io,
  org.apache.commons.io.comparator,
  org.apache.commons.io.filefilter,
  org.apache.commons.io.input,

@@ -585,23 +585,6 @@
          </editor>
       </extension>
       <extension
-            point="org.eclipse.ui.editors.documentProviders">
-         <provider
-               class="com.lambda.plugin.impex.editor.ImpexDocumentProvider"
-               extensions="impex"
-               id="com.lambda.plugin.impex.editor.ImpexDocumentProvider">
-         </provider>
-      </extension>
-	 <extension
- 		id="com.lambda.plugin.impex.editor.ImpexDocumentSetupParticipant"
-       point="org.eclipse.core.filebuffers.documentSetup">
-    <participant
-    		extensions="impex"
-    		contentTypeId="com.lambda.plugin.impexFile"
-          class="com.lambda.plugin.impex.editor.ImpexDocumentParticipant">
-    </participant>
-       </extension>
-      <extension
             id="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
             name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
             point="org.eclipse.core.filebuffers.annotationModelCreation">
