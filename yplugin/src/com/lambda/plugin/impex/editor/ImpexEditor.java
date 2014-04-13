@@ -3,7 +3,6 @@ package com.lambda.plugin.impex.editor;
 import java.util.HashMap;
 import java.util.List;
 
-import org.antlr.v4.runtime.Lexer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
@@ -21,10 +20,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.texteditor.IDocumentProvider;
 
-import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
+import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
@@ -38,16 +37,16 @@ public class ImpexEditor extends TextEditor {
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
     private IImpexModel impexModel;
-    private final Lexer impexLexer;
-    private final AntlrTokenToTokenMapper tokenMapper;
+    private final TypeToPartitionTokenMapper partitionTokenMapper;
+    private final TypeToStyleTokenMapper styleTokenMapper;
 
     public ImpexEditor() {
         super();
-        tokenMapper = new AntlrTokenToTokenMapper();
-        impexLexer = new ImpexLexer(null);
         colorManager = new ColorManager();
+        partitionTokenMapper = new TypeToPartitionTokenMapper();
+        styleTokenMapper = new TypeToStyleTokenMapper(colorManager);
         setDocumentProvider(new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING,
-                new ImpexDocumentParticipant(tokenMapper), new ImpexDocumentProvider()));
+                new ImpexDocumentParticipant(partitionTokenMapper), new ImpexDocumentProvider()));
         setSourceViewerConfiguration(new ImpexEditorConfiguration(this, colorManager));
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
@@ -71,12 +70,6 @@ public class ImpexEditor extends TextEditor {
         viewer.doOperation(ProjectionViewer.TOGGLE);
 
         annotationModel = viewer.getProjectionAnnotationModel();
-    }
-
-    @Override
-    public IDocumentProvider getDocumentProvider() {
-        // TODO Auto-generated method stub
-        return super.getDocumentProvider();
     }
 
     /**
@@ -157,7 +150,11 @@ public class ImpexEditor extends TextEditor {
         return markingOccurrences;
     }
 
-    public AntlrTokenToTokenMapper getTokenMapper() {
-        return tokenMapper;
+    public TypeToPartitionTokenMapper getPartitionTokenMapper() {
+        return partitionTokenMapper;
+    }
+
+    public TypeToStyleTokenMapper getStyleTokenMapper() {
+        return styleTokenMapper;
     }
 }

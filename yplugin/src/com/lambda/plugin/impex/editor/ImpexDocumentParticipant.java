@@ -12,12 +12,15 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
 
 public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
-    private final AntlrTokenToTokenMapper tokenMapper;
+    private final TypeToPartitionTokenMapper tokenMapper;
+    private DocumentEvent previousEvent;
+    private IRegion previousRegion;
 
-    public ImpexDocumentParticipant(AntlrTokenToTokenMapper tokenMapper) {
+    public ImpexDocumentParticipant(TypeToPartitionTokenMapper tokenMapper) {
         this.tokenMapper = tokenMapper;
     }
 
@@ -50,11 +53,43 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
             printPartitions(document);
         }
 
+        /**
+         * There is no way to create event with proper {@link ImpexDocument} that is why it is being modified here.
+         */
+        @Override
+        public void documentAboutToBeChanged(DocumentEvent e) {
+            ensureCorrectDocument(e);
+            super.documentAboutToBeChanged(e);
+        }
+
+        /**
+         * There is no way to create event with proper {@link ImpexDocument} that is why it is being modified here.
+         */
         @Override
         public IRegion documentChanged2(DocumentEvent e) {
+            ensureCorrectDocument(e);
+            IRegion updateStructure = updateStructure(e);
             IRegion region = super.documentChanged2(e);
             printPartitions(fDocument);
             return region;
+        }
+
+        public IRegion updateStructure(final DocumentEvent e) {
+            try {
+                if (previousEvent == e && previousRegion != null) {
+                    return previousRegion;
+                }
+                previousRegion = ((ImpexDocument) fDocument).computeDamageRegion(e);
+                return previousRegion;
+            } finally {
+                previousEvent = e;
+            }
+        }
+
+        private void ensureCorrectDocument(DocumentEvent e) {
+            if (e.getDocument() == ((ImpexDocument) fDocument).getDelegate()) {
+                e.fDocument = fDocument;
+            }
         }
 
         public void printPartitions(final IDocument document) {
@@ -63,12 +98,11 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
             final ITypedRegion[] partitions = computePartitioning(0, document.getLength());
             for (int i = 0; i < partitions.length; i++) {
                 try {
-                    buffer.append("Partition type: " + partitions[i].getType() + ", offset: "
+                    buffer.append("Partition " + i + " type: " + partitions[i].getType() + ", offset: "
                             + partitions[i].getOffset() + ", length: " + partitions[i].getLength());
-                    buffer.append("\n");
-                    buffer.append("Text:\n");
+                    buffer.append("\nText: ");
                     buffer.append(document.get(partitions[i].getOffset(), partitions[i].getLength()));
-                    buffer.append("\n---------------------------\n\n\n");
+                    buffer.append("\n---------------------------\n");
                 } catch (final BadLocationException e) {
                     e.printStackTrace();
                 }

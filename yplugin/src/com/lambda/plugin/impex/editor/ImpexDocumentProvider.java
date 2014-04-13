@@ -3,7 +3,6 @@ package com.lambda.plugin.impex.editor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.antlr.v4.runtime.Lexer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.IDocument;
@@ -11,15 +10,15 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
-import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
 
 public class ImpexDocumentProvider extends TextFileDocumentProvider {
 
     private final Map<Object, ImpexDocument> impexDocumentMap = new HashMap<Object, ImpexDocument>();
-    private final Lexer tokenSource = new ImpexLexer(null);
+    private final TokenSourceProvider tokenSource = new TokenSourceProvider();
 
     public ImpexDocumentProvider() {
         YPlugin.logInfo("ImpexDocumentProvider contructor called", null);
@@ -67,8 +66,12 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
         return null;
     }
 
-    public class ImpexFileInfo extends FileInfo {
-        public IImpexModel model;
+    @Override
+    public void aboutToChange(Object element) {
+        super.aboutToChange(element);
+    }
 
+    class ImpexFileInfo extends FileInfo {
+        public IImpexModel model;
     }
 }

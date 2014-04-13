@@ -24,6 +24,8 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
 
     private final ImpexEditor editor;
 
+    private IDocument document;
+
     public ImpexReconcilingStrategy(final ImpexEditor editor) {
         this.editor = editor;
     }
@@ -38,11 +40,9 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
     }
 
     private void reconcile() {
-        final long start = System.currentTimeMillis();
+        final long start = System.nanoTime();
         try {
-            System.out.println("===> RECONCILE " + editor.getEditorInput().getName()
-                    + "##################################");
-            IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
+            System.out.println("===> RECONCILE " + editor.getEditorInput().getName() + "##################");
             final char[] source = document.get().toCharArray();
 
             final ImpexValidator validator = new ImpexValidator();
@@ -65,13 +65,14 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
             final IImpexModel model = editor.getImpexModel();
             model.updateMarkers(context.getProblems());
             Display.getDefault().asyncExec(new Runnable() {
+                @Override
                 public void run() {
                     editor.updateFoldingStructure(positions);
                 }
             });
 
         } finally {
-            System.out.println("===> TOOK " + (System.currentTimeMillis() - start) / 1000);
+            System.out.println("===> TOOK " + (System.nanoTime() - start) / 1000);
 
         }
 
@@ -82,6 +83,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      * 
      * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.IRegion)
      */
+    @Override
     public void reconcile(final IRegion partition) {
         internalReconcile();
     }
@@ -93,6 +95,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      * org.eclipse.jface.text.reconciler.IReconcilingStrategy#reconcile(org.eclipse.jface.text.reconciler.DirtyRegion,
      * org.eclipse.jface.text.IRegion)
      */
+    @Override
     public void reconcile(final DirtyRegion dirtyRegion, final IRegion subRegion) {
         internalReconcile();
     }
@@ -102,6 +105,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      * 
      * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#initialReconcile()
      */
+    @Override
     public void initialReconcile() {
         internalReconcile();
     }
@@ -111,7 +115,9 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      * 
      * @see org.eclipse.jface.text.reconciler.IReconcilingStrategy#setDocument(org.eclipse.jface.text.IDocument)
      */
+    @Override
     public void setDocument(final IDocument document) {
+        this.document = document;
     }
 
     /*
@@ -120,6 +126,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      * @see org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension#setProgressMonitor(org.eclipse.core.runtime.
      * IProgressMonitor)
      */
+    @Override
     public void setProgressMonitor(final IProgressMonitor monitor) {
     }
 }

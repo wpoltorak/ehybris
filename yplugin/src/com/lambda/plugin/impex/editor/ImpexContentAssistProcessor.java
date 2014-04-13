@@ -15,9 +15,10 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
-    private final static String[] PROPOSALS = new String[] { ImpexHeaderRule.INSERT, ImpexHeaderRule.INSERT_UPDATE, ImpexHeaderRule.UPDATE,
-            ImpexHeaderRule.REMOVE };
+    // TODO translations
+    private final static String[] PROPOSALS = new String[] { "INSERT", "INSERT_UPDATE", "UPDATE", "REMOVE" };
 
+    @Override
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
         final IDocument doc = viewer.getDocument();
         final String qualifier = getQualifier(doc, offset);
@@ -49,25 +50,30 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         }
     }
 
+    @Override
     public IContextInformation[] computeContextInformation(final ITextViewer viewer, final int offset) {
         return null;
     }
 
+    @Override
     public char[] getCompletionProposalAutoActivationCharacters() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public char[] getContextInformationAutoActivationCharacters() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public String getErrorMessage() {
         // TODO Auto-generated method stub
         return null;
     }
 
+    @Override
     public IContextInformationValidator getContextInformationValidator() {
         return new ContextInformationValidator(this);
     }

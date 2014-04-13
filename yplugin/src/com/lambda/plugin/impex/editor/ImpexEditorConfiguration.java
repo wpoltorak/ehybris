@@ -21,7 +21,7 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
 
     private static final String[] CONTENT_TYPES = contentTypes();
     private ImpexDoubleClickStrategy doubleClickStrategy;
-    private ImpexPartitionScanner scanner;
+    private ImpexTokenScanner scanner;
     private final ColorManager colorManager;
     private final ImpexEditor editor;
 
@@ -77,9 +77,9 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
         return doubleClickStrategy;
     }
 
-    protected ImpexPartitionScanner getImpexScanner() {
+    protected ImpexTokenScanner getImpexScanner() {
         if (scanner == null) {
-            scanner = new ImpexPartitionScanner(editor.getTokenMapper());
+            scanner = new ImpexTokenScanner(editor.getStyleTokenMapper());
         }
         return scanner;
     }

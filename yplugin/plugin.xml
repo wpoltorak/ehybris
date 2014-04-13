@@ -505,6 +505,7 @@
                   </or>
                </with></activeWhen>
          </handler>
+         
          <handler
                class="com.lambda.plugin.yunit.actions.RunFunctestsAction"
                commandId="com.lambda.plugin.yunit.RunFunctestStaging">
@@ -549,7 +550,7 @@
          </handler>
          
       </extension>
-      <extension
+ <!--     <extension
             point="org.eclipse.ui.propertyPages">
          <page
                class="com.lambda.plugin.yunit.properties.YUnitPropertyPage"
@@ -570,6 +571,7 @@
             </enabledWhen>
          </page>
       </extension>
+-->      
       <extension
             point="org.eclipse.ui.editors">
          <editor
