@@ -4,10 +4,10 @@ options {
     tokenVocab=ImpexLexer;
 }
 
-impex	: macro* block* EOF
+impex	: (UserRights | BeanShell | Comment | macro)* (block | UserRights)* EOF
         ;
 
-block	:  header (macro | record)*
+block	:  header (BeanShell | Comment | macro | record)*
         ;
 header
 	: headerMode headerTypeName headerModifierAssignment*  (Semicolon attribute)* Lb?

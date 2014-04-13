@@ -1,9 +1,11 @@
 package com.lambda.impex.ast;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Stack;
@@ -56,8 +58,20 @@ public abstract class AbstractLexerTest {
             }
         });
         final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        final List<Token> tokens = tokenStream.get(0, tokenStream.getNumberOfOnChannelTokens());
+        tokenStream.fill();
+        //        final List<Token> tokens = tokenStream.get(0, tokenStream.getNumberOfOnChannelTokens());
+        final List<Token> tokens = filterDefultChannelTokens(tokenStream.getTokens());
         return tokens;
+    }
+
+    private List<Token> filterDefultChannelTokens(final List<Token> tokens) {
+        final List<Token> defaultTokens = new ArrayList<Token>();
+        for (final Token token : tokens) {
+            if (token.getChannel() == Token.DEFAULT_CHANNEL) {
+                defaultTokens.add(token);
+            }
+        }
+        return defaultTokens;
     }
 
     protected Header header(final int mode, final String modeName, final String type, final Attribute[] attribs, final Modifiers[] modifiers) {
@@ -106,6 +120,16 @@ public abstract class AbstractLexerTest {
         if (macroval != null) {
             assertThat("Invalid value for " + macrodef, tokens.get(index + 2).getText(), is(macroval));
         }
+    }
+
+    protected int nextHeaderIndex(final List<Token> tokens, final int start) {
+        for (int i = start; i < tokens.size(); i++) {
+            if (tokens.get(i).getType() == ImpexLexer.Insert || tokens.get(i).getType() == ImpexLexer.InsertUpdate
+                    || tokens.get(i).getType() == ImpexLexer.Update || tokens.get(i).getType() == ImpexLexer.Remove) {
+                return i;
+            }
+        }
+        throw new IllegalStateException();
     }
 
     protected static void assertMacros(final List<Token> tokens, final Stack<String> macroPairs) {
@@ -314,6 +338,7 @@ public abstract class AbstractLexerTest {
          * @param index
          * @return
          */
+        @SuppressWarnings("unchecked")
         protected int assertTokens(final List<Token> tokens, final int index) {
             int pos = index;
             assertThat(tokens.get(pos).getType(), is(mode));
@@ -337,7 +362,7 @@ public abstract class AbstractLexerTest {
             pos++;
             //if new line exists
             if (tokens.size() > pos) {
-                assertThat(tokens.get(pos).getType(), is(ImpexLexer.Lb));
+                assertThat(tokens.get(pos).getType(), anyOf(is(ImpexLexer.Lb), is(Token.EOF)));
                 pos++;
             }
             return pos;

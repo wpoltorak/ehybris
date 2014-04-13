@@ -57,7 +57,7 @@ LParenthesis        : '(';
 RParenthesis        : ')';
 Equals              : '=';
 Or                  : '|';
-Separator           : '\\' Ws* Lb -> skip;
+Separator           : '\\' Ws* Lb -> channel(HIDDEN);
 
 fragment 
     FieldSeparator  : Ws* Separator Ws*;
@@ -66,11 +66,11 @@ DocumentID          : '&' Separator* Identifier;
 SpecialAttribute    : '@' Separator* Identifier;
 Identifier          : [a-zA-Z_](Separator* [a-zA-Z0-9_])*;
 Macrodef            : '$' Separator* Identifier -> pushMode(macro); 
-UserRights          :'$START_USERRIGHTS' .*? '$END_USERRIGHTS' (Semicolon | Ws)* -> skip;
+UserRights          :'$START_USERRIGHTS' .*? '$END_USERRIGHTS' (Semicolon | Ws)*;
 
-BeanShell           : ('#%' .*? (Lb | EOF) 
-                    | '"#%' (~'"'|'"''"')* '"') Ws* (Lb | EOF) -> skip;
-Comment             : '#' .*? (Lb | EOF) -> skip;
+BeanShell           : '#%' ~[\r\n]* 
+                    | '"#%' (~'"'|'"''"')* '"';
+Comment             : '#' ~[\r\n]*;
 /*      
       { 
        setText(getText().substring(1, getText().length())); 
@@ -97,13 +97,12 @@ Field               : ';' FieldSeparator* ('"' (~'"'|'"''"')* '"' | (~[\r\n";] S
         setText(text.substring(1, text.length()).trim()); //remove leading semicolon and trim to remove any spaces
       }Field+;;
 */
-Lb                  : ('\r'?'\n'|'\r') -> skip;
-Ws                  : [ \t] -> skip;
+Lb                  : ('\r'?'\n'|'\r') -> channel(HIDDEN);
+Ws                  : [ \t] -> channel(HIDDEN);
 Error               : .;
 
 mode record;
-
-RecordSeparator     : Separator -> type(Separator), skip;
+RecordSeparator     : Separator -> type(Separator), channel(HIDDEN);
 //RecordQuotedField   : QuotedField -> type(Field);
 
 /*
@@ -118,21 +117,21 @@ RecordSeparator     : Separator -> type(Separator), skip;
 
 RecordField         : Field -> type(Field);
 RecordLb            : Lb -> type(Lb), popMode;
-RecordWs            : Ws -> type(Ws), skip;
+RecordWs            : Ws -> type(Ws), channel(HIDDEN);
 
 
 mode macro;
-MacroEquals             : '=' Ws* MacroSeparator* -> pushMode(macroval)/*, skip;*/, type(Equals);
-MacroWs                 : Ws -> type(Ws), skip;
-MacroSeparator          : Separator Ws* -> type(Separator), skip;
-MacroLb                 : Lb -> type(Lb), popMode, skip;
+MacroEquals             : '=' Ws* MacroSeparator* -> pushMode(macroval), type(Equals);
+MacroWs                 : Ws -> type(Ws), channel(HIDDEN);
+MacroSeparator          : Separator Ws* -> type(Separator), channel(HIDDEN);
+MacroLb                 : Lb -> type(Lb), popMode, channel(HIDDEN);
 ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
 
 mode macroval;
-MacrovalWs                 : Ws -> type(Ws), skip;
-MacrovalSeparator          : Separator -> type(Separator), skip;
+MacrovalWs                 : Ws -> type(Ws), channel(HIDDEN);
+MacrovalSeparator          : Separator -> type(Separator), channel(HIDDEN);
 Macroval                   : (~[\r\n] Separator*)* ~[ \t\r\n];
-MacrovalLb                 : Lb -> type(Lb), popMode, popMode, skip;
+MacrovalLb                 : Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
 
 mode header;
 HComma              : Comma -> type(Comma);
@@ -140,18 +139,18 @@ Semicolon           : ';';
 HDot                : Dot -> type(Dot);
 HDoubleQuote        : DoubleQuote -> type(DoubleQuote);
 HQuote              : Quote -> type(Quote);
-LBracket            : '[' -> pushMode(modifier), skip;
+LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
 HLParenthesis       : LParenthesis -> type(LParenthesis);
 HRParenthesis       : RParenthesis -> type(RParenthesis);
 HEquals             : Equals -> type(Equals);
 HOr                 : Or -> type(Or);
 HLb                 : Lb -> type(Lb), popMode;
-HSeparator          : Separator -> type(Separator), skip;
+HSeparator          : Separator -> type(Separator), channel(HIDDEN);
 HIdentifier         : Identifier -> type(Identifier);
 HSpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
 HDocumentID         : DocumentID -> type(DocumentID);
 HMacrodef           : Macrodef -> type(Macrodef);
-HWs                 : Ws -> type(Ws), skip;
+HWs                 : Ws -> type(Ws), channel(HIDDEN);
 
 
 mode modifier;
@@ -180,17 +179,17 @@ Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
 Unique              : U N I Q U E -> type(BooleanAttributeModifier);
 Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
 
-//ModifierRBracket    : ']' -> popMode, skip;
-ModifierEquals      : '=' Ws* ModifierSeparator* -> pushMode(modifierval)/*, skip;*/, type(Equals);
-ModifierSeparator   : Separator Ws* -> type(Separator), skip;
-ModifierWs          : Ws -> type(Ws), skip;
+//ModifierRBracket    : ']' -> popMode, channel(HIDDEN);
+ModifierEquals      : '=' Ws* ModifierSeparator* -> pushMode(modifierval), type(Equals);
+ModifierSeparator   : Separator Ws* -> type(Separator), channel(HIDDEN);
+ModifierWs          : Ws -> type(Ws), channel(HIDDEN);
 ErrorModifierval    : ~[= \t]~[,\r\n\]] -> type(Modifierval);
-//ModifierComma       : Ws* Comma Ws* (Separator Ws*)* -> type(Comma), skip;
+//ModifierComma       : Ws* Comma Ws* (Separator Ws*)* -> type(Comma), channel(HIDDEN);
 
 mode modifierval;
-RBracket : Ws* ModifiervalSeparator* ']' Ws* ModifiervalSeparator*-> popMode, popMode, skip;
-ModifiervalComma    : Ws* ModifiervalSeparator* Comma Ws* ModifiervalSeparator* -> popMode, type(Comma), skip;
-ModifiervalSeparator: Separator Ws* -> type(Separator), skip;
+RBracket : Ws* ModifiervalSeparator* ']' Ws* ModifiervalSeparator*-> popMode, popMode, channel(HIDDEN);
+ModifiervalComma    : Ws* ModifiervalSeparator* Comma Ws* ModifiervalSeparator* -> popMode, type(Comma), channel(HIDDEN);
+ModifiervalSeparator: Separator Ws* -> type(Separator), channel(HIDDEN);
 ModifiervalQuoted   : '"'(~[\r\n"] |'"' '"')* '"' -> type(Modifierval);
 /*
     {

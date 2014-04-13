@@ -21,23 +21,23 @@ public class ImpexLexerTest extends AbstractLexerTest {
         List<Token> tokens = null;
 
         tokens = init("/comment/comment-LF-CR.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(6));
 
         tokens = init("/comment/comment-multiline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(5));
 
         tokens = init("/comment/comment-multilinewithblanks.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(11));
 
         tokens = init("/comment/comment-singleline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(2));
 
         tokens = init("/comment/comment-with-macro.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(6));
     }
 
     /**
-     * New lines and spaces are skipped so in all cases there should be no tokens passed from lexer.
+     * New lines and spaces are skipped so in all cases there should be only one token passed from lexer - EOF.
      * 
      * @throws Exception
      */
@@ -46,16 +46,16 @@ public class ImpexLexerTest extends AbstractLexerTest {
         List<Token> tokens = null;
 
         tokens = init("/common/blank-multiline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(1));
 
         tokens = init("/common/blank-singleline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(1));
 
         tokens = init("/common/empty-multiline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(1));
 
         tokens = init("/common/empty-singleline.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(1));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroDuplicate() throws Exception {
         final List<Token> tokens = init("/macro/macro-duplicate.impex");
-        assertThat(tokens.size(), is(12));
+        assertThat(tokens.size(), is(13));
         assertMacro(tokens, 0, "$macro_def", "This is a macro $macro_def=$macro_def");
         assertMacro(tokens, 3, "$another", "true $and_one_more=xxx");
         assertMacro(tokens, 6, "$macro_def", "sss");
@@ -111,13 +111,13 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroInsideComment() throws Exception {
         final List<Token> tokens = init("/macro/macro-inside-comment.impex");
-        assertThat(tokens.size(), is(0));
+        assertThat(tokens.size(), is(2));
     }
 
     @Test
     public void testMacroMultiple() throws Exception {
         final List<Token> tokens = init("/macro/macro-multiple.impex");
-        assertThat(tokens.size(), is(12));
+        assertThat(tokens.size(), is(13));
         assertMacro(tokens, 0, "$macro_def", "This is a macro");
         assertMacro(tokens, 3, "$another", "true $and_one_more=xxx");
         assertMacro(tokens, 6, "$onemore_12", "sss");
@@ -127,39 +127,39 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroSingleLineEmpty() throws Exception {
         final List<Token> tokens = init("/macro/macro-single-empty.impex");
-        assertThat(tokens.size(), is(2));
+        assertThat(tokens.size(), is(3));
         assertMacro(tokens, 0, "$macro_def");
     }
 
     @Test
     public void testMacroSingleLineNospace() throws Exception {
         final List<Token> tokens = init("/macro/macro-single-nospaces.impex");
-        assertThat(tokens.size(), is(3));
+        assertThat(tokens.size(), is(4));
         assertMacro(tokens, 0, "$macro_def", "Thisisamacro");
     }
 
     @Test
     public void testMacroSingleLine() throws Exception {
         final List<Token> tokens = init("/macro/macro-single.impex");
-        assertThat(tokens.size(), is(3));
+        assertThat(tokens.size(), is(4));
         assertMacro(tokens, 0, "$macro_def", "This is a macro");
     }
 
     @Test
     public void testMacroWithComment() throws Exception {
         final List<Token> tokens = init("/macro/macro-with-comment.impex");
-        assertThat(tokens.size(), is(15));
+        assertThat(tokens.size(), is(17));
         assertMacro(tokens, 0, "$macro_def", "This is a macro");
         assertMacro(tokens, 3, "$another", "true $and_one_more=#xxx");
         assertMacro(tokens, 6, "$onemore_12", "sss");
         assertMacro(tokens, 9, "$_onemore_10", "sss!@#$%^&*()");
-        assertMacro(tokens, 12, "$last", "#comment");
+        assertMacro(tokens, 13, "$last", "#comment");
     }
 
     @Test
     public void testMacroWithKeyword() throws Exception {
         final List<Token> tokens = init("/macro/macro-with-keyword.impex");
-        assertThat(tokens.size(), is(9));
+        assertThat(tokens.size(), is(10));
         assertMacro(tokens, 0, "$macro_def", "This is a macro with default alias");
         assertMacro(tokens, 3, "$another", "true $and_one_more=xxx unique another");
         assertMacro(tokens, 6, "$onemore", "This macro is with false \\ separator");
@@ -168,7 +168,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroWithQuotedValue() throws Exception {
         final List<Token> tokens = init("/macro/macro-with-quoted-value.impex");
-        assertThat(tokens.size(), is(3));
+        assertThat(tokens.size(), is(4));
         //TODO verify double quotes in macro assignment and also \
         assertMacro(tokens, 0, "$macro", "\"  This is a macro\\    \n    and much more  \"");
     }
@@ -176,7 +176,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroWithSeparator() throws Exception {
         final List<Token> tokens = init("/macro/macro-with-separator.impex");
-        assertThat(tokens.size(), is(33));
+        assertThat(tokens.size(), is(34));
         assertMacro(tokens, 0, "$macro1", "Macro with \\ \n\tseparator\\\n+more");
         assertMacro(tokens, 3, "$macro2", "Macro with\t\\\nseparator");
         assertMacro(tokens, 6, "$macro3", "Macro with\\\nseparator");
@@ -193,7 +193,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroWithWhitespace() throws Exception {
         final List<Token> tokens = init("/macro/macro-with-whitespace.impex");
-        assertThat(tokens.size(), is(10));
+        assertThat(tokens.size(), is(11));
         assertMacro(tokens, 0, "$macro");
         assertMacro(tokens, 2, "$macro1", "This is a \tmacro");
         assertMacro(tokens, 5, "$macro2", "\\t \\r\\n \\\\ntest \\r\\t");
@@ -207,11 +207,11 @@ public class ImpexLexerTest extends AbstractLexerTest {
                 attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "append"))) };
 
         Header header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
-        int index = 6;
+        int index = nextHeaderIndex(tokens, 0);
         index = header.assertTokens(tokens, index);
 
         // skip row: index is on first field. Skip next from row: field field linebreak to next token
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         attribs = new Attribute[] {
                 attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("groups", expression("uid")),
@@ -219,7 +219,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         attribs = new Attribute[] {
                 attribute(expression("uid"), modifiers(modifier("unique", "true"))),
                 attribute(expression("groups", expression("uid")), modifiers(modifier("collection-delimiter", "\",\"")),
@@ -227,7 +227,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         attribs = new Attribute[] {
                 attribute(
                         expression("uid"),
@@ -238,14 +238,14 @@ public class ImpexLexerTest extends AbstractLexerTest {
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         attribs = new Attribute[] {
                 attribute(expression("uid"), modifiers(modifier("unique", "true"), modifier("forceWrite", "true"))),
                 attribute(expression("groups", expression("uid")), modifiers(modifier("ignoreKeyCase", "true"), modifier("mode", "append"))) };
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         attribs = new Attribute[] {
                 attribute(expression("uid"), modifiers(modifier("unique", "true")),
                         modifiers(modifier("ignorenull", "true"), modifier("lang", "en")), modifiers(modifier("virtual", "false")),
@@ -262,9 +262,9 @@ public class ImpexLexerTest extends AbstractLexerTest {
                 attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "append"))) };
 
         final Header header = header(ImpexLexer.Insert, "Usergroup", attribs);
-        int index = 0;
+        int index = nextHeaderIndex(tokens, 0);
         index = header.assertTokens(tokens, index);
-        index += 5; // row
+        index = nextHeaderIndex(tokens, index);
         header.assertTokens(tokens, index);
     }
 
@@ -275,7 +275,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
                 attribute(expression("groups"), modifiers(modifier("ignorenull", "false"), modifier("default", null))) };
 
         final Header header = header(ImpexLexer.InsertUpdate, "Customer", attribs);
-        int index = 0;
+        int index = nextHeaderIndex(tokens, 0);
         index = header.assertTokens(tokens, index);
     }
 
@@ -286,30 +286,30 @@ public class ImpexLexerTest extends AbstractLexerTest {
                 attribute(expression("groups", expression("uid")), modifiers(modifier("mode", "append"))) };
         Header header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs);
 
-        int index = 0;
+        int index = nextHeaderIndex(tokens, 0);
         index = header.assertTokens(tokens, index);
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         header = header(ImpexLexer.Update, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         header = header(ImpexLexer.Insert, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 3;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
 
-        index += 3;
+        index = nextHeaderIndex(tokens, index);
         header = header(ImpexLexer.Remove, "Usergroup", attribs);
         index = header.assertTokens(tokens, index);
 
-        index += 3;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
     }
 
@@ -321,7 +321,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
         Modifiers[] modifiers = new Modifiers[] { modifiers(modifier("cacheUnique", "$unique")) };
         Header header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
 
-        int index = 9;
+        int index = nextHeaderIndex(tokens, 0);
         index = header.assertTokens(tokens, index);
 
         attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
@@ -329,7 +329,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
         modifiers = new Modifiers[] { modifiers(modifier("processor", "$processor")) };
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
 
-        index += 4;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
 
         attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "true"))),
@@ -337,7 +337,7 @@ public class ImpexLexerTest extends AbstractLexerTest {
         modifiers = new Modifiers[] { modifiers(modifier("processor", "de.hybris.platform.impex.jalo.imp.$processor")) };
         header = header(ImpexLexer.InsertUpdate, "Usergroup", attribs, modifiers);
 
-        index += 7;
+        index = nextHeaderIndex(tokens, index);
         index = header.assertTokens(tokens, index);
     }
 
