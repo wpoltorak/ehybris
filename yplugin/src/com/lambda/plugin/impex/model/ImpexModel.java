@@ -29,7 +29,6 @@ public class ImpexModel implements IImpexModel {
         for (ImpexProblem problem : problems) {
             ImpexProblemAnnotation impexProblemAnnotation = new ImpexProblemAnnotation(new ImpexModelProblem(problem,
                     IMarker.SEVERITY_ERROR));
-
         }
     }
 
@@ -52,6 +51,9 @@ public class ImpexModel implements IImpexModel {
             @Override
             public void run(final IProgressMonitor monitor) throws CoreException {
                 for (final ImpexProblem problem : problems) {
+                    if (monitor.isCanceled()) {
+                        return;
+                    }
                     Map<String, Object> map = new HashMap<String, Object>();
                     MarkerUtilities.setLineNumber(map, problem.getLineNumber());
                     MarkerUtilities.setMessage(map, problem.getText());

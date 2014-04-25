@@ -16,49 +16,6 @@ public class PreferenceConstants {
     public static final String PLATFORMS_PREFERENCE_PAGE = PREFIX + "platforms_preference_page_context"; //$NON-NLS-1$
     public static final String PLATFORMS_XML = PREFIX + "platforms_xml";
 
-    // Impex Editor Preferences
-    /**
-     * Preference key suffix for bold text style preference keys.
-     * 
-     */
-    public static final String IMPEX_EDITOR_BOLD_SUFFIX = "_bold"; //$NON-NLS-1$
-
-    /**
-     * Preference key suffix for italic text style preference keys.
-     */
-    public static final String IMPEX_EDITOR_ITALIC_SUFFIX = "_italic"; //$NON-NLS-1$
-
-    /**
-     * Mark occurrences in Impex Editor
-     */
-    public static final String IMPEX_EDITOR_MARK_OCCURRENCES = PREFIX + "impex_mark_occurrences";
-
-    /**
-     * Mark macro occurrences in Impex Editor
-     */
-    public static final String IMPEX_EDITOR_MARK_MACRO_OCCURRENCES = YPlugin.PLUGIN_ID
-            + ".impex_mark_macro_occurrences";
-
-    /**
-     * Mark table name occurrences in Impex Editor
-     */
-    public static final String IMPEX_EDITOR_MARK_TABLE_OCCURRENCES = YPlugin.PLUGIN_ID
-            + ".impex_mark_table_occurrences";
-
-    /**
-     * Mark column name occurrences in Impex Editor
-     */
-    public static final String IMPEX_EDITOR_MARK_COLUMN_OCCURRENCES = YPlugin.PLUGIN_ID
-            + ".impex_mark_column_occurrences";
-
-    /**
-     * Mark column name occurrences in Impex Editor
-     */
-    public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = YPlugin.PLUGIN_ID
-            + ".impex_mark_value_occurrences";
-
-    //
-
     public static final String YUNIT_PERSIST_FUNCTEST_RESULTS = "persistFunctestResults";
 
     public static final String YUNIT_DEFAULT_JUNIT_VERSION = PREFIX + "default_junit_version"; //$NON-NLS-1$ 

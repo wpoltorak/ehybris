@@ -183,7 +183,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
         colorComposite.setLayout(new GridLayout());
 
         Label label = new Label(colorComposite, SWT.LEFT);
-        label.setText(YMessages.ImpexEditorPreferencePage_5);
+        label.setText(YMessages.ImpexEditorPreferencePage_foreground);
         label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         final Composite editorComposite = new Composite(colorComposite, SWT.NONE);
@@ -212,7 +212,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
         stylesComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         label = new Label(stylesComposite, SWT.LEFT);
-        label.setText(YMessages.ImpexEditorPreferencePage_6);
+        label.setText(YMessages.ImpexEditorPreferencePage_color);
         gd = new GridData();
         gd.horizontalAlignment = GridData.BEGINNING;
         label.setLayoutData(gd);
@@ -224,7 +224,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
         // foregroundColorButton.setLayoutData(gd);
 
         fBoldCheck = new Button(stylesComposite, SWT.CHECK);
-        fBoldCheck.setText(YMessages.ImpexEditorPreferencePage_7);
+        fBoldCheck.setText(YMessages.ImpexEditorPreferencePage_bold);
         fBoldCheck.setEnabled(false);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalAlignment = GridData.BEGINNING;
@@ -232,7 +232,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
         fBoldCheck.setLayoutData(gd);
 
         fItalicCheck = new Button(stylesComposite, SWT.CHECK);
-        fItalicCheck.setText(YMessages.ImpexEditorPreferencePage_8);
+        fItalicCheck.setText(YMessages.ImpexEditorPreferencePage_italic);
         fItalicCheck.setEnabled(false);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.horizontalAlignment = GridData.BEGINNING;
@@ -240,7 +240,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
         fItalicCheck.setLayoutData(gd);
 
         label = new Label(colorComposite, SWT.LEFT);
-        label.setText(YMessages.ImpexEditorPreferencePage_9);
+        label.setText(YMessages.ImpexEditorPreferencePage_preview);
         label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         // final Control previewer = createPreviewer(colorComposite);

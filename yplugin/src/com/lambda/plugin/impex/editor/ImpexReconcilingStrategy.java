@@ -22,9 +22,12 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
 
     public static final int DELAY = 500;
 
-    private final ImpexEditor editor;
+    private ImpexEditor editor;
 
     private IDocument document;
+
+    public ImpexReconcilingStrategy() {
+    }
 
     public ImpexReconcilingStrategy(final ImpexEditor editor) {
         this.editor = editor;
@@ -42,7 +45,8 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
     private void reconcile() {
         final long start = System.nanoTime();
         try {
-            System.out.println("===> RECONCILE " + editor.getEditorInput().getName() + "##################");
+            System.out.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
+                    + "##################");
             final char[] source = document.get().toCharArray();
 
             final ImpexValidator validator = new ImpexValidator();
@@ -61,6 +65,9 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
                 // positions.add(position);
             }
 
+            if (editor == null) {
+                return;
+            }
             // createProblemAnnotations(context.getProblems());
             final IImpexModel model = editor.getImpexModel();
             model.updateMarkers(context.getProblems());

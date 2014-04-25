@@ -36,6 +36,7 @@ public class ImpexTokenScanner implements ITokenScanner {
             return Token.EOF;
         }
         nextToken = tokenIterator.next();
+
         return tokenMapper.getToken(nextToken.getTokenType());
     }
 

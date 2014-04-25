@@ -19,7 +19,7 @@ import com.lambda.plugin.impex.model.ILexerTokenRegion;
 /**
  * PartitionScanner allows documents to be partitioned into separate content types. These partitions allow the editor to
  * behave differently, depending on the various content types. For example, code completion, keyword highlighting and
- * formatting can behave differently for each partition type.
+ * formatting can behave differently for each partition type. Inspired by XText project.
  * 
  * @author Wojciech Poltorak
  * 
@@ -30,6 +30,7 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
     private static final String MACRO = "__macro_partition_content_type";
     // private static final String FIELD = "__field_partition_content_type";
     private static final String COMMENT = "__comment_partition_content_type";
+    private static final String BEANSHELL = "__beanshell_partition_content_type";
 
     private int currentPartitionOffset;
     private int currentPartitionLength;
@@ -45,6 +46,7 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
         map.put(ImpexLexer.Macrodef, MACRO);
         // map.put(ImpexLexer.Field, FIELD);
         map.put(ImpexLexer.Comment, COMMENT);
+        map.put(ImpexLexer.BeanShell, BEANSHELL);
         map.put(null, IDocument.DEFAULT_CONTENT_TYPE);
     }
 

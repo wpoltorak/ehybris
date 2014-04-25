@@ -1,5 +1,6 @@
 package com.lambda.plugin.impex.editor;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
@@ -14,20 +15,27 @@ import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
 import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
-import org.eclipse.jface.text.source.SourceViewerConfiguration;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
-public class ImpexEditorConfiguration extends SourceViewerConfiguration {
+import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
+
+public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
     private static final String[] CONTENT_TYPES = contentTypes();
     private ImpexDoubleClickStrategy doubleClickStrategy;
     private ImpexTokenScanner scanner;
-    private final ColorManager colorManager;
     private final ImpexEditor editor;
+    private final TypeToStyleTokenMapper styleTokenMapper;
 
-    public ImpexEditorConfiguration(final ImpexEditor editor, final ColorManager colorManager) {
+    public ImpexEditorConfiguration(IPreferenceStore preferenceStore) {
+        this(preferenceStore, null);
+    }
+
+    public ImpexEditorConfiguration(IPreferenceStore preferenceStore, final ImpexEditor editor) {
+        super(preferenceStore);
         this.editor = editor;
-        this.colorManager = colorManager;
+        this.styleTokenMapper = new TypeToStyleTokenMapper(preferenceStore);
     }
 
     @Override
@@ -79,7 +87,7 @@ public class ImpexEditorConfiguration extends SourceViewerConfiguration {
 
     protected ImpexTokenScanner getImpexScanner() {
         if (scanner == null) {
-            scanner = new ImpexTokenScanner(editor.getStyleTokenMapper());
+            scanner = new ImpexTokenScanner(styleTokenMapper);
         }
         return scanner;
     }

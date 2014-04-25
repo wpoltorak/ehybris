@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
@@ -33,16 +35,29 @@ public class ImpexAnnotationModel extends ResourceMarkerAnnotationModel {
         super.addAnnotation(annotation, position, fireModelChanged);
     }
 
+    @Override
+    public void connect(IDocument document) {
+        super.connect(((ImpexDocument) document).getDelegate());
+    }
+
+    @Override
+    public void disconnect(IDocument document) {
+        super.connect(((ImpexDocument) document).getDelegate());
+    }
+
+    @Override
+    public void updateMarkers(IDocument document) throws CoreException {
+        super.updateMarkers(document);
+    }
+
     public void start() {
         collectedProblems.clear();
         generatedAnnotations.clear();
     }
 
     public void stop() {
-
     }
 
     public void report() {
-
     }
 }

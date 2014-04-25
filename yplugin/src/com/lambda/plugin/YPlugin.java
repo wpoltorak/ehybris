@@ -33,6 +33,7 @@ import org.osgi.service.packageadmin.PackageAdmin;
 
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.PlatformContainer;
+import com.lambda.plugin.impex.editor.ColorManager;
 import com.lambda.plugin.nature.IYNatureManager;
 import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.template.ITemplateManager;
@@ -101,6 +102,7 @@ public class YPlugin extends AbstractUIPlugin {
             functestModel.stop();
             ((YUnitManager) getFunctestManager()).dispose();
             getPlatformContainer().dispose();
+            ColorManager.getDefault().dispose();
             plugin = null;
         } finally {
             super.stop(context);

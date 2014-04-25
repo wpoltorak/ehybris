@@ -10,7 +10,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
 
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.editor.ImpexEditor;
-import com.lambda.plugin.preferences.PreferenceConstants;
+import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
 public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPropertyChangeListener {
 
@@ -19,7 +19,8 @@ public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPr
     /**
      * Constructs and updates the action.
      */
-    public ToggleMarkOccurrencesAction(final ResourceBundle bundle, final String prefix, final ITextEditor editor, final int style) {
+    public ToggleMarkOccurrencesAction(final ResourceBundle bundle, final String prefix, final ITextEditor editor,
+            final int style) {
         super(bundle, prefix, editor, style);
     }
 
@@ -75,6 +76,7 @@ public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPr
     /*
      * @see IPropertyChangeListener#propertyChange(PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(final PropertyChangeEvent event) {
         if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES)) {
             setChecked(Boolean.valueOf(event.getNewValue().toString()).booleanValue());

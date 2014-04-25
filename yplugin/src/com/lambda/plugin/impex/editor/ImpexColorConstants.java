@@ -1,15 +1,18 @@
 package com.lambda.plugin.impex.editor;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.RGB;
 
 public interface ImpexColorConstants {
-    RGB COMMENT = new RGB(249, 192, 255);
     RGB BEANSHELL = new RGB(153, 153, 153);
     RGB STRING = new RGB(0, 128, 0);
     RGB DEFAULT = new RGB(0, 0, 0);
-    RGB TAG = new RGB(0, 0, 128);
-    RGB IMPEX_MACRO = new RGB(255, 0, 0);
-    RGB IMPEX_MACRO_ASS = new RGB(125, 0, 0);
-    RGB IMPEX_HEADER_DEFAULT = new RGB(0, 0, 255);
-    RGB IMPEX_HEADER_ARG = new RGB(0, 255, 0);
+
+    String DEFAULT_COLOR = IPreferenceStore.STRING_DEFAULT_DEFAULT;
+    String KEYWORD_COLOR = "impex_keyword";
+    String BRACKETS_COLOR = "impex_brackets";
+    String COMMENT_COLOR = "impex_comment";// ImpexLexer.tokenNames[ImpexLexer.Comment];
+    String STRING_COLOR = "impex_string";
+    String MACRO_COLOR = "impex_macro_def";
+    String OTHERS_COLOR = "impex_others";
 }

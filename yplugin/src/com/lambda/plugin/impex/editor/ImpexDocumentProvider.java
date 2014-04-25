@@ -67,6 +67,12 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
     }
 
     @Override
+    protected DocumentProviderOperation createSaveOperation(Object element, IDocument document, boolean overwrite)
+            throws CoreException {
+        return super.createSaveOperation(element, ((ImpexDocument) document).getDelegate(), overwrite);
+    }
+
+    @Override
     public void aboutToChange(Object element) {
         super.aboutToChange(element);
     }

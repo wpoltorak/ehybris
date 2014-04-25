@@ -1,51 +1,103 @@
 package com.lambda.plugin.impex.antlr;
 
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_BEANSHELL;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_COMMENT;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_MACRO;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_TYPE;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_BOLD_SUFFIX;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_ITALIC_SUFFIX;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_STRIKETHROUGH_SUFFIX;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_UNDERLINE_SUFFIX;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.RGB;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.impex.editor.ColorManager;
-import com.lambda.plugin.impex.editor.ImpexColorConstants;
 
 public class TypeToStyleTokenMapper {
 
-    private final Map<Integer, IToken> tokenMap = new HashMap<Integer, IToken>();
-    private final ColorManager colorManager;
+    private static final Map<Integer, String> tokenTypeToColorPreferenceKeyMap = inittokenTypeToColorPreferenceKeyMap();
+    private static final Map<Integer, IToken> tokenTypeToTokenMap = initTokenTypeToTokenMap();
 
-    private void initializeMap(ColorManager colorManager) {
-        tokenMap.put(ImpexLexer.Insert,
-                new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_HEADER_ARG))));
-        tokenMap.put(ImpexLexer.InsertUpdate,
-                new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_HEADER_ARG))));
-        tokenMap.put(ImpexLexer.Update,
-                new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_HEADER_ARG))));
-        tokenMap.put(ImpexLexer.Remove,
-                new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_MACRO))));
-        tokenMap.put(ImpexLexer.Macrodef,
-                new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.IMPEX_MACRO))));
-        tokenMap.put(ImpexLexer.Field, new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.DEFAULT))));
-        tokenMap.put(ImpexLexer.Comment, new Token(
-                new TextAttribute(colorManager.getColor(ImpexColorConstants.COMMENT))));
-        tokenMap.put(ImpexLexer.EOF, Token.EOF);
-        tokenMap.put(ImpexLexer.Ws, Token.WHITESPACE);
-        tokenMap.put(ImpexLexer.Lb, Token.WHITESPACE);
+    private final IPreferenceStore preferenceStore;
+
+    public TypeToStyleTokenMapper(IPreferenceStore preferenceStore) {
+        this.preferenceStore = preferenceStore;
     }
 
-    public TypeToStyleTokenMapper(ColorManager colorManager) {
-        this.colorManager = colorManager;
-        initializeMap(colorManager);
+    private static String getColorKey(int antlrTokenType) {
+        String color = tokenTypeToColorPreferenceKeyMap.get(antlrTokenType);
+        if (color == null) {
+            color = IPreferenceStore.STRING_DEFAULT_DEFAULT;
+        }
+        return color;
     }
 
     public IToken getToken(int antlrTokenType) {
-        IToken token = tokenMap.get(antlrTokenType);
-        if (token == null) {
-            token = new Token(new TextAttribute(colorManager.getColor(ImpexColorConstants.DEFAULT)));
-            tokenMap.put(antlrTokenType, token);
+        if (tokenTypeToTokenMap.containsKey(antlrTokenType)) {
+            return tokenTypeToTokenMap.get(antlrTokenType);
         }
-        return token;
+
+        TextAttribute attribute = getTokenAttribute(antlrTokenType);
+        return new Token(attribute);
     }
+
+    private TextAttribute getTokenAttribute(int antlrTokenType) {
+        String colorKey = getColorKey(antlrTokenType);
+        RGB color = PreferenceConverter.getColor(preferenceStore, colorKey);
+        // TODO add caching of text attributes??
+        return new TextAttribute(ColorManager.getDefault().getColor(color), null, getStyle(colorKey));
+    }
+
+    private int getStyle(String colorKey) {
+        return bold(colorKey) | italic(colorKey) | underline(colorKey) | strikethrough(colorKey);
+    }
+
+    private int italic(String colorKey) {
+        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_ITALIC_SUFFIX) ? SWT.ITALIC : SWT.NONE;
+    }
+
+    private int bold(String colorKey) {
+        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_BOLD_SUFFIX) ? SWT.BOLD : SWT.NONE;
+    }
+
+    private int underline(String colorKey) {
+        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_UNDERLINE_SUFFIX) ? TextAttribute.UNDERLINE
+                : SWT.NONE;
+    }
+
+    private int strikethrough(String colorKey) {
+        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_STRIKETHROUGH_SUFFIX) ? TextAttribute.STRIKETHROUGH
+                : SWT.NONE;
+    }
+
+    private static Map<Integer, String> inittokenTypeToColorPreferenceKeyMap() {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        map.put(ImpexLexer.Insert, COLOR_TYPE);
+        map.put(ImpexLexer.InsertUpdate, COLOR_TYPE);
+        map.put(ImpexLexer.Update, COLOR_TYPE);
+        map.put(ImpexLexer.Remove, COLOR_TYPE);
+        map.put(ImpexLexer.Macrodef, COLOR_MACRO);
+        map.put(ImpexLexer.Comment, COLOR_COMMENT);
+        map.put(ImpexLexer.BeanShell, COLOR_BEANSHELL);
+        return map;
+    }
+
+    private static Map<Integer, IToken> initTokenTypeToTokenMap() {
+        Map<Integer, IToken> map = new HashMap<Integer, IToken>();
+        map.put(ImpexLexer.EOF, Token.EOF);
+        map.put(ImpexLexer.Ws, Token.WHITESPACE);
+        map.put(ImpexLexer.Lb, Token.WHITESPACE);
+        return map;
+    }
+
 }

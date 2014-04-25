@@ -7,6 +7,10 @@ import com.lambda.impex.ast.ImpexLexer;
 public class TokenSourceProvider {
 
     public Lexer get() {
-        return new ImpexLexer(null);
+        ImpexLexer lexer = new ImpexLexer(null);
+        // lexer.removeErrorListeners();
+        // lexer.addErrorListener(new ImpexParserDefaultErrorListener(context));
+        return lexer;
+
     }
 }

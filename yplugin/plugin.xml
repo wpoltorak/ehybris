@@ -204,6 +204,9 @@
       <initializer
             class="com.lambda.plugin.preferences.PreferenceInitializer">
       </initializer>
+      <initializer
+            class="com.lambda.plugin.impex.preferences.PreferenceInitializer">
+      </initializer>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
@@ -586,6 +589,7 @@
             </contentTypeBinding>
          </editor>
       </extension>
+<!--
       <extension
             id="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
             name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
@@ -595,6 +599,7 @@
                extensions="impex">
          </factory>
       </extension>
+-->
       <extension
             point="org.eclipse.core.expressions.definitions">
          <definition

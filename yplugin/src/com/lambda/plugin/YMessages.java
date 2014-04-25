@@ -206,11 +206,13 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_0;
     public static String ImpexEditorPreferencePage_1;
     public static String ImpexEditorPreferencePage_3;
-    public static String ImpexEditorPreferencePage_5;
-    public static String ImpexEditorPreferencePage_6;
-    public static String ImpexEditorPreferencePage_7;
-    public static String ImpexEditorPreferencePage_8;
-    public static String ImpexEditorPreferencePage_9;
+    public static String ImpexEditorPreferencePage_foreground;
+    public static String ImpexEditorPreferencePage_color;
+    public static String ImpexEditorPreferencePage_preview;
+    public static String ImpexEditorPreferencePage_bold;
+    public static String ImpexEditorPreferencePage_italic;
+    public static String ImpexEditorPreferencePage_underline;
+    public static String ImpexEditorPreferencePage_strikethrough;
     public static String ImpexEditorPreferencePage_Impex_editor_text_1;
     public static String ImpexEditorPreferencePage_Impex_editor_processing_instuctions_2;
     public static String ImpexEditorPreferencePage_Impex_editor_constant_strings_3;
@@ -321,6 +323,20 @@ public final class YMessages extends NLS {
     public static String PlatformPreferencePage_Button_Add;
     public static String PlatformPreferencePage_Button_Edit;
     public static String PlatformPreferencePage_Button_Remove;
+
+    // eCommerce Impex Editor preference page
+    public static String ImpexEditorPreferencePage_singleLineComment;
+    public static String ImpexEditorPreferencePage_macros;
+    public static String ImpexEditorPreferencePage_keywords;
+    public static String ImpexEditorPreferencePage_brackets;
+    public static String ImpexEditorPreferencePage_strings;
+    public static String ImpexEditorPreferencePage_others;
+    public static String ImpexEditorPreferencePage_modes;
+    public static String ImpexEditorPreferencePage_types;
+    public static String ImpexEditorPreferencePage_typeModifiers;
+    public static String ImpexEditorPreferencePage_attributes;
+    public static String ImpexEditorPreferencePage_attributeModifiers;
+    public static String ImpexEditorPreferencePage_documentIDs;
 
     // Platform definitions
     public static String PlatformDefinitions_invalid_nameAndPath;

@@ -22,32 +22,24 @@ import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.TextEditor;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
-import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
-import com.lambda.plugin.preferences.PreferenceConstants;
+import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
 public class ImpexEditor extends TextEditor {
 
-    private final ColorManager colorManager;
     private boolean markingOccurrences;
     private ProjectionSupport projectionSupport;
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
     private IImpexModel impexModel;
-    private final TypeToPartitionTokenMapper partitionTokenMapper;
-    private final TypeToStyleTokenMapper styleTokenMapper;
 
     public ImpexEditor() {
         super();
-        colorManager = new ColorManager();
-        partitionTokenMapper = new TypeToPartitionTokenMapper();
-        styleTokenMapper = new TypeToStyleTokenMapper(colorManager);
         setDocumentProvider(new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING,
-                new ImpexDocumentParticipant(partitionTokenMapper), new ImpexDocumentProvider()));
-        setSourceViewerConfiguration(new ImpexEditorConfiguration(this, colorManager));
+                new ImpexDocumentParticipant(), new ImpexDocumentProvider()));
+        setSourceViewerConfiguration(new ImpexEditorConfiguration(YPlugin.getDefault().getPreferenceStore(), this));
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
         // getVerticalRuler().getModel().addAnnotation(annotation, position);
@@ -142,19 +134,10 @@ public class ImpexEditor extends TextEditor {
 
     @Override
     public void dispose() {
-        colorManager.dispose();
         super.dispose();
     }
 
     public boolean isMarkingOccurrences() {
         return markingOccurrences;
-    }
-
-    public TypeToPartitionTokenMapper getPartitionTokenMapper() {
-        return partitionTokenMapper;
-    }
-
-    public TypeToStyleTokenMapper getStyleTokenMapper() {
-        return styleTokenMapper;
     }
 }

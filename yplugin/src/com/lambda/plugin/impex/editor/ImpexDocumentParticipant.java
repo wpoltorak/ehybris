@@ -20,8 +20,8 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
     private DocumentEvent previousEvent;
     private IRegion previousRegion;
 
-    public ImpexDocumentParticipant(TypeToPartitionTokenMapper tokenMapper) {
-        this.tokenMapper = tokenMapper;
+    public ImpexDocumentParticipant() {
+        this.tokenMapper = new TypeToPartitionTokenMapper();
     }
 
     @Override
