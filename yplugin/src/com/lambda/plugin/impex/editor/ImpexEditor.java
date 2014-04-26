@@ -29,6 +29,8 @@ import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
 public class ImpexEditor extends TextEditor {
 
+    public static final String ID = "com.lambda.plugin.impex.editor.ImpexEditor";
+
     private boolean markingOccurrences;
     private ProjectionSupport projectionSupport;
     private ProjectionAnnotationModel annotationModel;

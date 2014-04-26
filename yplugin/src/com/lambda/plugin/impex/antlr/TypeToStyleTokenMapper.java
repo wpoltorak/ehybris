@@ -4,10 +4,7 @@ import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_BEAN
 import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_COMMENT;
 import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_MACRO;
 import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_TYPE;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_BOLD_SUFFIX;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_ITALIC_SUFFIX;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_STRIKETHROUGH_SUFFIX;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_UNDERLINE_SUFFIX;
+import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +14,6 @@ import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 
 import com.lambda.impex.ast.ImpexLexer;
@@ -59,25 +55,7 @@ public class TypeToStyleTokenMapper {
     }
 
     private int getStyle(String colorKey) {
-        return bold(colorKey) | italic(colorKey) | underline(colorKey) | strikethrough(colorKey);
-    }
-
-    private int italic(String colorKey) {
-        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_ITALIC_SUFFIX) ? SWT.ITALIC : SWT.NONE;
-    }
-
-    private int bold(String colorKey) {
-        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_BOLD_SUFFIX) ? SWT.BOLD : SWT.NONE;
-    }
-
-    private int underline(String colorKey) {
-        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_UNDERLINE_SUFFIX) ? TextAttribute.UNDERLINE
-                : SWT.NONE;
-    }
-
-    private int strikethrough(String colorKey) {
-        return preferenceStore.getBoolean(colorKey + IMPEX_EDITOR_STRIKETHROUGH_SUFFIX) ? TextAttribute.STRIKETHROUGH
-                : SWT.NONE;
+        return preferenceStore.getInt(colorKey + IMPEX_EDITOR_STYLE_SUFFIX);
     }
 
     private static Map<Integer, String> inittokenTypeToColorPreferenceKeyMap() {

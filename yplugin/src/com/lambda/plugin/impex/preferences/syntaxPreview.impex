@@ -1,0 +1,16 @@
+#
+# Import Sample Customers
+# 
+$regulargroup=regulargroup
+$customergroup=customergroup
+
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;customergroup
+
+UPDATE Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID )
+; customer; addr1 ; addr2
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Singapore ; customer ;
+; addr2 ; "New York"; customer ;

@@ -14,9 +14,29 @@ public class PreferenceConstants {
     public static final String COLOR_KEYWORD = "impex_keyword";
 
     /**
+     * Preference key for color of mode in impex editor
+     */
+    public static final String COLOR_MODE = "impex_mode";
+
+    /**
      * Preference key for color of type in impex editor
      */
     public static final String COLOR_TYPE = "impex_type";
+
+    /**
+     * Preference key for color of type modifier in impex editor
+     */
+    public static final String COLOR_TYPE_MODIFIER = "impex_type_modifier";
+
+    /**
+     * Preference key for color of attribute in impex editor
+     */
+    public static final String COLOR_ATTRIBUTE = "impex_attribute";
+
+    /**
+     * Preference key for color of attribute modifier in impex editor
+     */
+    public static final String COLOR_ATTRIBUTE_MODIFIER = "impex_attribute_modifier";
 
     /**
      * Preference key for color of brackets in impex editor
@@ -49,24 +69,9 @@ public class PreferenceConstants {
     public static final String COLOR_OTHERS = "impex_others";
 
     /**
-     * Preference key suffix for bold text style preference keys.
+     * Preference key suffix for text style preference keys.
      */
-    public static final String IMPEX_EDITOR_BOLD_SUFFIX = "_bold"; //$NON-NLS-1$
-
-    /**
-     * Preference key suffix for italic text style preference keys.
-     */
-    public static final String IMPEX_EDITOR_ITALIC_SUFFIX = "_italic"; //$NON-NLS-1$
-
-    /**
-     * Preference key suffix for underline text style preference keys.
-     */
-    public static final String IMPEX_EDITOR_UNDERLINE_SUFFIX = "_underline"; //$NON-NLS-1$
-
-    /**
-     * Preference key suffix for strike through text style preference keys.
-     */
-    public static final String IMPEX_EDITOR_STRIKETHROUGH_SUFFIX = "_strikethrough"; //$NON-NLS-1$
+    public static final String IMPEX_EDITOR_STYLE_SUFFIX = "_style"; //$NON-NLS-1$
 
     /**
      * Mark occurrences in Impex Editor

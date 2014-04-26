@@ -1,20 +1,19 @@
 package com.lambda.plugin.impex.preferences;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -43,8 +42,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.model.WorkbenchViewerComparator;
@@ -53,9 +54,9 @@ import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
-import com.lambda.plugin.impex.editor.ImpexColorConstants;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant;
+import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.editor.ImpexEditorConfiguration;
 
 public class SyntaxColoringPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -63,22 +64,25 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
     private final String[][] syntaxColorListModel = new String[][] {
             { YMessages.ImpexEditorPreferencePage_singleLineComment, PreferenceConstants.COLOR_COMMENT },
             { YMessages.ImpexEditorPreferencePage_macros, PreferenceConstants.COLOR_MACRO },
+            { YMessages.ImpexEditorPreferencePage_modes, PreferenceConstants.COLOR_MODE },
             { YMessages.ImpexEditorPreferencePage_types, PreferenceConstants.COLOR_TYPE },
-            { YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_TYPE },
-            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_KEYWORD },
-            { YMessages.ImpexEditorPreferencePage_attributeModifiers, PreferenceConstants.COLOR_KEYWORD },
+            { YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_ATTRIBUTE },
+            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_TYPE_MODIFIER },
+            { YMessages.ImpexEditorPreferencePage_attributeModifiers, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_strings, PreferenceConstants.COLOR_STRING },
-            { YMessages.ImpexEditorPreferencePage_brackets, ImpexColorConstants.BRACKETS_COLOR },
-            { YMessages.ImpexEditorPreferencePage_others, ImpexColorConstants.OTHERS_COLOR }, };
+            { YMessages.ImpexEditorPreferencePage_brackets, PreferenceConstants.COLOR_BRACKETS },
+            { YMessages.ImpexEditorPreferencePage_others, PreferenceConstants.COLOR_OTHERS }, };
 
     private ColorFieldEditor syntaxForegroundColorEditor;
     private TableViewer colorListViewer;
     private final List<ColorListItem> highlightingColorList = new ArrayList<ColorListItem>(5);
 
     private SourceViewer previewViewer;
+    final IPreferenceStore store;
 
     public SyntaxColoringPreferencePage() {
-        setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
+        super();
+        store = initPreferenceStore();
     }
 
     @Override
@@ -145,7 +149,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             @Override
             public void selectionChanged(final SelectionChangedEvent event) {
                 ColorListItem item = getSelectedColorListItem(colorListViewer);
-                RGB rgb = PreferenceConverter.getColor(getPreferenceStore(), item.colorKey);
+                RGB rgb = PreferenceConverter.getColor(store, item.colorKey);
                 syntaxForegroundColorEditor.getColorSelector().setColorValue(rgb);
             }
         });
@@ -157,28 +161,43 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 
         stylesComposite.setLayout(layout);
         stylesComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-        syntaxForegroundColorEditor = new ColorFieldEditor("Color", YMessages.ImpexEditorPreferencePage_color,
-                stylesComposite);
-
-        createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_bold,
-                PreferenceConstants.IMPEX_EDITOR_BOLD_SUFFIX);
-        createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_italic,
-                PreferenceConstants.IMPEX_EDITOR_ITALIC_SUFFIX);
+        createForegroundColorEditor(stylesComposite);
+        createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_bold, SWT.BOLD);
+        createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_italic, SWT.ITALIC);
         createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_underline,
-                PreferenceConstants.IMPEX_EDITOR_UNDERLINE_SUFFIX);
+                TextAttribute.UNDERLINE);
         createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_strikethrough,
-                PreferenceConstants.IMPEX_EDITOR_STRIKETHROUGH_SUFFIX);
-
-        label = new Label(colorComposite, SWT.LEFT);
-        label.setText(YMessages.ImpexEditorPreferencePage_preview);
-        label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+                TextAttribute.STRIKETHROUGH);
 
         createPreview(colorComposite);
     }
 
+    private void createForegroundColorEditor(final Composite stylesComposite) {
+        syntaxForegroundColorEditor = new ColorFieldEditor("Color", YMessages.ImpexEditorPreferencePage_color,
+                stylesComposite);
+        syntaxForegroundColorEditor.getColorSelector().addListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                final ColorListItem item = getSelectedColorListItem(colorListViewer);
+                String propertyName = item.colorKey;
+                PreferenceConverter.setValue(store, propertyName, (RGB) event.getNewValue());
+            }
+        });
+        store.addPropertyChangeListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                final ColorListItem item = getSelectedColorListItem(colorListViewer);
+                String propertyName = item.colorKey;
+                if (propertyName.equals(event.getProperty())) {
+                    RGB color = PreferenceConverter.getColor(store, item.colorKey);
+                    syntaxForegroundColorEditor.getColorSelector().setColorValue(color);
+                }
+            }
+        });
+    }
+
     private Button createCheck(final Composite parent, final ISelectionProvider selectable, final String displayName,
-            final String propertySuffix) {
+            final int style) {
         final Button check = new Button(parent, SWT.CHECK);
         check.setText(displayName);
         check.setEnabled(false);
@@ -192,7 +211,8 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             @Override
             public void selectionChanged(final SelectionChangedEvent event) {
                 ColorListItem item = getSelectedColorListItem(selectable);
-                check.setSelection(getPreferenceStore().getBoolean(item.colorKey + propertySuffix));
+                String propertyName = item.colorKey + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
+                check.setSelection((store.getInt(propertyName) & style) == style);
                 check.setEnabled(true);
             }
         });
@@ -201,15 +221,34 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             @Override
             public void widgetSelected(final SelectionEvent e) {
                 final ColorListItem item = getSelectedColorListItem(selectable);
-                getPreferenceStore().setValue(item.colorKey + propertySuffix, check.getSelection());
+                String propertyName = item.colorKey + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
+                int currentStyles = store.getInt(propertyName);
+                store.setValue(propertyName, check.getSelection() ? currentStyles | style : currentStyles & ~style);
+
+            }
+        });
+
+        store.addPropertyChangeListener(new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                final ColorListItem item = getSelectedColorListItem(selectable);
+                String propertyName = item.colorKey + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
+                if (propertyName.equals(event.getProperty())) {
+                    check.setSelection((Integer.valueOf(event.getNewValue().toString()) & style) == style);
+                }
             }
         });
         return check;
     }
 
     private Control createPreview(Composite parent) {
-        final IPreferenceStore store = new ChainedPreferenceStore(new IPreferenceStore[] { getPreferenceStore(),
+        final IPreferenceStore store = new ChainedPreferenceStore(new IPreferenceStore[] { this.store,
                 EditorsUI.getPreferenceStore() });
+
+        Label label = new Label(parent, SWT.LEFT);
+        label.setText(YMessages.ImpexEditorPreferencePage_preview);
+        label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
         previewViewer = new SourceViewer(parent, null, null, false, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
         final ImpexEditorConfiguration configuration = new ImpexEditorConfiguration(store);
         previewViewer.configure(configuration);
@@ -243,8 +282,6 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         });
         JFaceResources.getFontRegistry().addListener(fontChangeListener);
         store.addPropertyChangeListener(propertyChangeListener);
-        // fPreviewerUpdater = new AntPreviewerUpdater(fPreviewViewer, configuration, store);
-
         String content = readExampleFile();
 
         IDocument document = new ImpexDocument(new Document(content), new TokenSourceProvider());
@@ -259,23 +296,19 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
     }
 
     private String readExampleFile() {
-        String content = "";
         try {
-            // FIXME change to real file from bundle
-            content = FileUtils.readFileToString(new File(
-                    "/work/projects/yeclipse/ImpexAST/src/test/resources/btg.impex"));//$NON-NLS-1$
+            return IOUtils.toString(getClass().getResourceAsStream("syntaxPreview.impex"));//$NON-NLS-1$
         } catch (IOException e) {
             YPlugin.logError(e);
         }
-        return content;
+        return "";
     }
 
     private void initialize() {
         for (int i = 0, n = syntaxColorListModel.length; i < n; i++) {
             String displayName = syntaxColorListModel[i][0];
             String colorKey = syntaxColorListModel[i][1];
-            Color itemColor = null;// IPreferenceStore.STRING_DEFAULT_DEFAULT;
-            highlightingColorList.add(new ColorListItem(displayName, colorKey, itemColor));
+            highlightingColorList.add(new ColorListItem(displayName, colorKey, null));
         }
         colorListViewer.setInput(highlightingColorList);
         colorListViewer.setSelection(new StructuredSelection(colorListViewer.getElementAt(0)));
@@ -285,28 +318,50 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
     public void init(final IWorkbench workbench) {
     }
 
-    protected String loadPreviewContentFromFile(String filename) {
-        String line;
-        String separator = System.getProperty("line.separator"); //$NON-NLS-1$
-        StringBuffer buffer = new StringBuffer(512);
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(filename)));
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-                buffer.append(separator);
-            }
-        } catch (IOException io) {
-            YPlugin.logError(io);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                }
+    private IPreferenceStore initPreferenceStore() {
+        IPreferenceStore store = new PreferenceStore();
+        IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
+        PreferenceInitializer preferenceInitializer = new PreferenceInitializer();
+        preferenceInitializer.initializeDefaultPreferences(store);
+        for (String[] color : syntaxColorListModel) {
+            store.setValue(color[1], target.getString(color[1]));
+            String styles = color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
+            store.setValue(styles, target.getInt(styles));
+        }
+        setPreferenceStore(target);
+        return store;
+    }
+
+    @Override
+    public boolean performOk() {
+        IPreferenceStore target = getPreferenceStore();
+        for (String[] color : syntaxColorListModel) {
+            target.setValue(color[1], store.getString(color[1]));
+            String styles = color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
+            target.setValue(styles, store.getInt(styles));
+        }
+        // TODO sytntax coloring prefs: need to udpate all open editors. How to do it??
+        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .getEditorReferences();
+        for (IEditorReference reference : editorReferences) {
+            if (ImpexEditor.ID.equals(reference.getId())) {
             }
         }
-        return buffer.toString();
+        return super.performOk();
+    }
+
+    @Override
+    public boolean performCancel() {
+        return super.performCancel();
+    }
+
+    @Override
+    protected void performDefaults() {
+        for (String[] color : syntaxColorListModel) {
+            store.setToDefault(color[1]);
+            store.setToDefault(color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX);
+        }
+        super.performDefaults();
     }
 
     /**

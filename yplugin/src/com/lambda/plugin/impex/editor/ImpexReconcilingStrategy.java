@@ -44,6 +44,11 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
 
     private void reconcile() {
         final long start = System.nanoTime();
+
+        if (editor == null) {
+            return;
+        }
+
         try {
             System.out.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
                     + "##################");
@@ -65,9 +70,6 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
                 // positions.add(position);
             }
 
-            if (editor == null) {
-                return;
-            }
             // createProblemAnnotations(context.getProblems());
             final IImpexModel model = editor.getImpexModel();
             model.updateMarkers(context.getProblems());
