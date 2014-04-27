@@ -218,6 +218,12 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_Impex_editor_constant_strings_3;
     public static String ImpexEditorPreferencePage_Impex_editor_tags_4;
     public static String ImpexEditorPreferencePage_Impex_editor_comments_5;
+    public static String ImpexEditorPreferencePage_problems;
+    public static String ImpexEditorPreferencePage_selectLevel;
+    public static String ImpexEditorPreferencePage_error;
+    public static String ImpexEditorPreferencePage_warning;
+    public static String ImpexEditorPreferencePage_ignore;
+    public static String ImpexEditorPreferencePage_problem_emptyMacro;
 
     public static String JUnitPropertyPage_description;
     public static String JUnitPropertyPage_filter_label;
@@ -328,6 +334,8 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_singleLineComment;
     public static String ImpexEditorPreferencePage_macros;
     public static String ImpexEditorPreferencePage_keywords;
+    public static String ImpexEditorPreferencePage_beanshell;
+    public static String ImpexEditorPreferencePage_userrights;
     public static String ImpexEditorPreferencePage_brackets;
     public static String ImpexEditorPreferencePage_strings;
     public static String ImpexEditorPreferencePage_others;

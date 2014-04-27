@@ -1,11 +1,5 @@
 package com.lambda.plugin.impex.antlr;
 
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_BEANSHELL;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_COMMENT;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_MACRO;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.COLOR_TYPE;
-import static com.lambda.plugin.impex.preferences.PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +12,11 @@ import org.eclipse.swt.graphics.RGB;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.impex.editor.ColorManager;
+import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
 public class TypeToStyleTokenMapper {
 
-    private static final Map<Integer, String> tokenTypeToColorPreferenceKeyMap = inittokenTypeToColorPreferenceKeyMap();
+    private static final Map<Integer, String> tokenTypeToColorPreferenceKeyMap = initTokenTypeToColorPreferenceKeyMap();
     private static final Map<Integer, IToken> tokenTypeToTokenMap = initTokenTypeToTokenMap();
 
     private final IPreferenceStore preferenceStore;
@@ -55,18 +50,29 @@ public class TypeToStyleTokenMapper {
     }
 
     private int getStyle(String colorKey) {
-        return preferenceStore.getInt(colorKey + IMPEX_EDITOR_STYLE_SUFFIX);
+        return preferenceStore.getInt(colorKey + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX);
     }
 
-    private static Map<Integer, String> inittokenTypeToColorPreferenceKeyMap() {
+    private static Map<Integer, String> initTokenTypeToColorPreferenceKeyMap() {
         Map<Integer, String> map = new HashMap<Integer, String>();
-        map.put(ImpexLexer.Insert, COLOR_TYPE);
-        map.put(ImpexLexer.InsertUpdate, COLOR_TYPE);
-        map.put(ImpexLexer.Update, COLOR_TYPE);
-        map.put(ImpexLexer.Remove, COLOR_TYPE);
-        map.put(ImpexLexer.Macrodef, COLOR_MACRO);
-        map.put(ImpexLexer.Comment, COLOR_COMMENT);
-        map.put(ImpexLexer.BeanShell, COLOR_BEANSHELL);
+        map.put(ImpexLexer.Insert, PreferenceConstants.COLOR_MODE);
+        map.put(ImpexLexer.InsertUpdate, PreferenceConstants.COLOR_MODE);
+        map.put(ImpexLexer.Update, PreferenceConstants.COLOR_MODE);
+        map.put(ImpexLexer.Remove, PreferenceConstants.COLOR_MODE);
+        map.put(ImpexLexer.Macrodef, PreferenceConstants.COLOR_MACRO);
+        map.put(ImpexLexer.Comment, PreferenceConstants.COLOR_COMMENT);
+        map.put(ImpexLexer.DocumentID, PreferenceConstants.COLOR_DOCUMENTID);
+        map.put(ImpexLexer.BooleanAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.ClassAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.DateFormatAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.IntAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.NumberFormatAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.TextAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
+        map.put(ImpexLexer.TextHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
+        map.put(ImpexLexer.BooleanHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
+        map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
+        map.put(ImpexLexer.BeanShell, PreferenceConstants.COLOR_BEANSHELL);
+        map.put(ImpexLexer.UserRights, PreferenceConstants.COLOR_USERRIGHTS);
         return map;
     }
 
@@ -77,5 +83,4 @@ public class TypeToStyleTokenMapper {
         map.put(ImpexLexer.Lb, Token.WHITESPACE);
         return map;
     }
-
 }

@@ -67,10 +67,13 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             { YMessages.ImpexEditorPreferencePage_modes, PreferenceConstants.COLOR_MODE },
             { YMessages.ImpexEditorPreferencePage_types, PreferenceConstants.COLOR_TYPE },
             { YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_ATTRIBUTE },
-            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_TYPE_MODIFIER },
+            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_HEADER_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_attributeModifiers, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_strings, PreferenceConstants.COLOR_STRING },
             { YMessages.ImpexEditorPreferencePage_brackets, PreferenceConstants.COLOR_BRACKETS },
+            { YMessages.ImpexEditorPreferencePage_beanshell, PreferenceConstants.COLOR_BEANSHELL },
+            { YMessages.ImpexEditorPreferencePage_userrights, PreferenceConstants.COLOR_USERRIGHTS },
+            { YMessages.ImpexEditorPreferencePage_documentIDs, PreferenceConstants.COLOR_DOCUMENTID },
             { YMessages.ImpexEditorPreferencePage_others, PreferenceConstants.COLOR_OTHERS }, };
 
     private ColorFieldEditor syntaxForegroundColorEditor;
@@ -158,9 +161,9 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         layout = new GridLayout(2, false);
         layout.marginHeight = 0;
         layout.marginWidth = 0;
-
         stylesComposite.setLayout(layout);
         stylesComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+
         createForegroundColorEditor(stylesComposite);
         createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_bold, SWT.BOLD);
         createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_italic, SWT.ITALIC);
@@ -168,7 +171,6 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
                 TextAttribute.UNDERLINE);
         createCheck(stylesComposite, colorListViewer, YMessages.ImpexEditorPreferencePage_strikethrough,
                 TextAttribute.STRIKETHROUGH);
-
         createPreview(colorComposite);
     }
 
@@ -322,7 +324,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         IPreferenceStore store = new PreferenceStore();
         IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
         PreferenceInitializer preferenceInitializer = new PreferenceInitializer();
-        preferenceInitializer.initializeDefaultPreferences(store);
+        preferenceInitializer.initializeDefaultSyntaxColoringPreferences(store);
         for (String[] color : syntaxColorListModel) {
             store.setValue(color[1], target.getString(color[1]));
             String styles = color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;

@@ -26,7 +26,7 @@ public class PreferenceConstants {
     /**
      * Preference key for color of type modifier in impex editor
      */
-    public static final String COLOR_TYPE_MODIFIER = "impex_type_modifier";
+    public static final String COLOR_HEADER_MODIFIER = "impex_type_modifier";
 
     /**
      * Preference key for color of attribute in impex editor
@@ -54,14 +54,24 @@ public class PreferenceConstants {
     public static final String COLOR_BEANSHELL = "impex_beanshell";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
 
     /**
+     * Preference key for color of userrights section in impex editor
+     */
+    public static final String COLOR_USERRIGHTS = "impex_userrights";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
+
+    /**
      * Preference key for color of quoted string in impex editor
      */
     public static final String COLOR_STRING = "impex_string";
 
     /**
-     * Preference key for color of macro definition color in impex editor
+     * Preference key for color of macro definition in impex editor
      */
     public static final String COLOR_MACRO = "impex_macro_def";
+
+    /**
+     * Preference key for color of documentID definition in impex editor
+     */
+    public static final String COLOR_DOCUMENTID = "impex_documentid";
 
     /**
      * Preference key for generic color to use in impex editor
@@ -98,6 +108,17 @@ public class PreferenceConstants {
      */
     public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = PREFIX + ".impex_mark_value_occurrences";
 
-    //
+    /**
+     * Severity levels for Impex Editor problems
+     */
+    public static final String IMPEX_ERROR = "error"; //$NON-NLS-1$
+    public static final String IMPEX_WARNING = "warning"; //$NON-NLS-1$
+    public static final String IMPEX_IGNORE = "ignore"; //$NON-NLS-1$
+
+    /**
+     * Empty macro assignment problem.<br/>
+     * Example: $macro =
+     */
+    public static final String PROBLEM_MACRO_EMPTY = "problem_empty_macro";
 
 }

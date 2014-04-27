@@ -55,6 +55,18 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         return tokens;
     }
 
+    public ILexerTokenRegion getToken(int offset) throws BadLocationException {
+        if ((0 > offset) || (offset > getLength())) {
+            throw new BadLocationException();
+        }
+        for (ILexerTokenRegion region : tokens) {
+            if (region.getOffset() <= offset && region.getOffset() + region.getLength() >= offset) {
+                return region;
+            }
+        }
+        return null;
+    }
+
     protected IRegion computeDamageRegion(final DocumentEvent e) {
         // empty document -> no dirty region
         if (e.getDocument().getLength() == 0) {

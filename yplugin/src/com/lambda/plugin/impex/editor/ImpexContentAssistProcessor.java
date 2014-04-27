@@ -1,8 +1,11 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -13,16 +16,52 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
+import com.lambda.impex.ast.ImpexLexer;
+import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.model.ILexerTokenRegion;
+
 public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
     // TODO translations
-    private final static String[] PROPOSALS = new String[] { "INSERT", "INSERT_UPDATE", "UPDATE", "REMOVE" };
+    private final static String[] MODE_PROPOSALS = new String[] { "INSERT", "INSERT_UPDATE", "UPDATE", "REMOVE" };
 
     @Override
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
-        final IDocument doc = viewer.getDocument();
-        final String qualifier = getQualifier(doc, offset);
-        return computeStructureProposals(qualifier, offset);
+        final ImpexDocument doc = (ImpexDocument) viewer.getDocument();
+        List<Integer> restrictedTypes = Arrays.asList(ImpexLexer.Lb, ImpexLexer.Separator, ImpexLexer.Ws,
+                ImpexLexer.Comma, ImpexLexer.Dot, ImpexLexer.DoubleQuote);
+        SingleLineMeaningfulTokenInspector inspector = new SingleLineMeaningfulTokenInspector(doc.getTokens(), offset,
+                restrictedTypes);
+        if (inspector.getLastToken() != null) {
+            switch (inspector.getLastToken().getTokenType()) {
+            case ImpexLexer.Insert:
+            case ImpexLexer.InsertUpdate:
+            case ImpexLexer.Update:
+            case ImpexLexer.Remove:
+                SearchEngine engine = new SearchEngine();
+                // de.hybris.platform.jalo.GenericItem;
+
+                // SearchEngine.createHierarchyScope(new SourceType)
+                // engine.search(pattern, participants, scope, requestor, monitor);
+                // System.out.println();
+                break;
+            }
+            return new ICompletionProposal[0];
+            // new line - suggest mode
+        } else {
+            final String qualifier = getQualifier(doc, offset);
+            return computeModeProposals(qualifier, offset);
+        }
+        // token.
+    }
+
+    private ILexerTokenRegion getToken(final int offset, final ImpexDocument doc) {
+        try {
+            return doc.getToken(offset);
+        } catch (BadLocationException e) {
+            YPlugin.logError(e);
+        }
+        return null;
     }
 
     private String getQualifier(final IDocument doc, int documentOffset) {
@@ -78,11 +117,11 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         return new ContextInformationValidator(this);
     }
 
-    private ICompletionProposal[] computeStructureProposals(final String qualifier, final int documentOffset) {
+    private ICompletionProposal[] computeModeProposals(final String qualifier, final int documentOffset) {
         final List<ICompletionProposal> propList = new ArrayList<ICompletionProposal>();
         final int qlen = qualifier.length();
-        for (int i = 0; i < PROPOSALS.length; i++) {
-            final String proposal = PROPOSALS[i];
+        for (int i = 0; i < MODE_PROPOSALS.length; i++) {
+            final String proposal = MODE_PROPOSALS[i];
 
             if (proposal.startsWith(qualifier.toUpperCase())) {
                 final int cursor = proposal.length();
@@ -92,5 +131,71 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         final ICompletionProposal[] proposals = new ICompletionProposal[propList.size()];
         propList.toArray(proposals);
         return proposals;
+    }
+
+    /**
+     * Iterates to end of line in which token that contains <code>offset</code> is placed. Gathers information about
+     * previous and next non-restricted tokens.
+     * 
+     * 
+     */
+    private class SingleLineMeaningfulTokenInspector {
+        private final Iterator<ILexerTokenRegion> delegate;
+        private final int offset;
+        private ILexerTokenRegion lastToken;
+        private ILexerTokenRegion token;
+        private ILexerTokenRegion nextToken;
+        private final List<Integer> restrictedTypes;
+
+        public SingleLineMeaningfulTokenInspector(Iterable<ILexerTokenRegion> iterable, int offset,
+                List<Integer> restrictedTypes) {
+            this.offset = offset;
+            this.restrictedTypes = restrictedTypes;
+            this.delegate = iterable.iterator();
+            checkTokens();
+        }
+
+        public ILexerTokenRegion getLastToken() {
+            return lastToken;
+        }
+
+        public ILexerTokenRegion getNextToken() {
+            return nextToken;
+        }
+
+        public ILexerTokenRegion getToken() {
+            return nextToken;
+        }
+
+        private void checkTokens() {
+            boolean seekNext = false;
+            while (delegate.hasNext()) {
+                ILexerTokenRegion candidate = delegate.next();
+                if (isMeaningful(candidate)) {
+                    if (seekNext) {
+                        nextToken = candidate;
+                    } else {
+                        lastToken = candidate;
+                    }
+                }
+                // reset when new line char
+                if (candidate.getTokenType() == ImpexLexer.Lb) {
+                    if (seekNext) {
+                        break;
+                    } else {
+                        lastToken = null;
+                    }
+                }
+
+                if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
+                    token = candidate;
+                    seekNext = true;
+                }
+            }
+        }
+
+        private boolean isMeaningful(ILexerTokenRegion candidate) {
+            return !restrictedTypes.contains(candidate.getTokenType());
+        }
     }
 }

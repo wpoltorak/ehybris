@@ -196,6 +196,12 @@
             id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
             name="Mark occurrences">
       </page>
+      <page
+            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
+            id="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
+            name="Problems">
+      </page>
    </extension>
    <extension
          id="com.lambda.plugin.preferences"
