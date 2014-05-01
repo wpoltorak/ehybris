@@ -1,11 +1,18 @@
 package com.lambda.plugin.impex.preferences;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -20,11 +27,15 @@ import com.lambda.plugin.YPlugin;
 
 public class ProblemsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-    private final String[] problems = new String[] { PreferenceConstants.PROBLEM_MACRO_EMPTY };
+    private final String[][] problems = new String[][] { { YMessages.ImpexEditorPreferencePage_problem_emptyMacro,
+            PreferenceConstants.PROBLEM_MACRO_EMPTY }, };
 
     private final String[] errorWarningIgnoreLabels = new String[] { YMessages.ImpexEditorPreferencePage_error,
             YMessages.ImpexEditorPreferencePage_warning, YMessages.ImpexEditorPreferencePage_ignore };
-    private final List<String> errorWarningIgnore = new ArrayList<String>();
+    private final List<Integer> errorWarningIgnore = new ArrayList<Integer>();
+
+    private PreferenceStore store;
+
     {
         errorWarningIgnore.add(PreferenceConstants.IMPEX_ERROR);
         errorWarningIgnore.add(PreferenceConstants.IMPEX_WARNING);
@@ -37,14 +48,14 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
     }
 
     private void initPreferenceStore() {
-        // PreferenceStore store = new PreferenceStore();
-        // IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
-        // new PreferenceInitializer().initializeDefaultProblemsPreferences(store);
-        // for (String key : problems) {
-        // store.setValue(key, target.getString(key));
-        // }
-        //
-        setPreferenceStore(YPlugin.getDefault().getPreferenceStore());
+        store = new PreferenceStore();
+        IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
+        new PreferenceInitializer().initializeDefaultProblemsPreferences(store);
+        for (String[] problem : problems) {
+            store.setValue(problem[1], target.getInt(problem[1]));
+        }
+
+        setPreferenceStore(target);
     }
 
     @Override
@@ -73,8 +84,9 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         gd.horizontalSpan = 2;
         label.setLayoutData(gd);
 
-        addComboBox(baseComposite, YMessages.ImpexEditorPreferencePage_problem_emptyMacro,
-                PreferenceConstants.PROBLEM_MACRO_EMPTY);
+        for (int i = 0; i < problems.length; i++) {
+            addComboBox(baseComposite, problems[i][0], problems[i][1]);
+        }
     }
 
     private void initialize() {
@@ -84,25 +96,7 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
     public void init(final IWorkbench workbench) {
     }
 
-    // private void initializeWorkingValues() {
-    // fWorkingValues = new HashMap(fProblemPreferenceKeys.length);
-    // for (int i = 0; i < fProblemPreferenceKeys.length; i++) {
-    // String key = fProblemPreferenceKeys[i];
-    // fWorkingValues.put(key, getPreferenceStore().getString(key));
-    // }
-    // }
-    //
-    // private void restoreWorkingValuesToDefaults() {
-    // fWorkingValues = new HashMap(fProblemPreferenceKeys.length);
-    // for (int i = 0; i < fProblemPreferenceKeys.length; i++) {
-    // String key = fProblemPreferenceKeys[i];
-    // fWorkingValues.put(key, getPreferenceStore().getDefaultString(key));
-    // }
-    // updateControls();
-    // }
-
-    protected Combo addComboBox(Composite parent, String label, String key) {
-        SimpleEntry<String, List<String>> data = new SimpleEntry<String, List<String>>(key, errorWarningIgnore);
+    protected Combo addComboBox(final Composite parent, final String label, final String key) {
         Label labelControl = new Label(parent, SWT.LEFT);
         labelControl.setText(label);
         labelControl.setLayoutData(new GridData());
@@ -111,18 +105,52 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         comboBox.setItems(errorWarningIgnoreLabels);
         comboBox.setData(errorWarningIgnore);
         comboBox.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1, 1));
+        comboBox.select(errorWarningIgnore.indexOf(store.getInt(key)));
 
         Label placeHolder = new Label(parent, SWT.NONE);
         placeHolder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-        getPreferenceStore().getString(key);
-        comboBox.select(errorWarningIgnore.indexOf(getPreferenceStore().getString(key)));
-
+        comboBox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int value = ((List<Integer>) comboBox.getData()).get(comboBox.getSelectionIndex());
+                store.setValue(key, value);
+            }
+        });
+        final IPropertyChangeListener listener = new IPropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent event) {
+                if (key.equals(event.getProperty())) {
+                    int index = errorWarningIgnore.indexOf(Integer.valueOf(event.getNewValue().toString()));
+                    comboBox.select(index);
+                }
+            }
+        };
+        store.addPropertyChangeListener(listener);
+        comboBox.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                store.removePropertyChangeListener(listener);
+            }
+        });
         return comboBox;
     }
 
     @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
-        super.dispose();
+    public boolean performOk() {
+        IPreferenceStore target = getPreferenceStore();
+        for (String[] problem : problems) {
+            target.setValue(problem[1], store.getInt(problem[1]));
+        }
+        // TODO need to udpate errors / warnings in all editors. How to do it??
+        return super.performOk();
     }
+
+    @Override
+    protected void performDefaults() {
+        for (String[] problem : problems) {
+            store.setToDefault(problem[1]);
+        }
+        super.performDefaults();
+    }
+
 }

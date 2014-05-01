@@ -42,10 +42,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.model.WorkbenchViewerComparator;
@@ -56,7 +54,6 @@ import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant;
-import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.editor.ImpexEditorConfiguration;
 
 public class SyntaxColoringPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
@@ -185,7 +182,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
                 PreferenceConverter.setValue(store, propertyName, (RGB) event.getNewValue());
             }
         });
-        store.addPropertyChangeListener(new IPropertyChangeListener() {
+        final IPropertyChangeListener listener = new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 final ColorListItem item = getSelectedColorListItem(colorListViewer);
@@ -194,6 +191,13 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
                     RGB color = PreferenceConverter.getColor(store, item.colorKey);
                     syntaxForegroundColorEditor.getColorSelector().setColorValue(color);
                 }
+            }
+        };
+        store.addPropertyChangeListener(listener);
+        syntaxForegroundColorEditor.getColorSelector().getButton().addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                store.removePropertyChangeListener(listener);
             }
         });
     }
@@ -230,7 +234,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             }
         });
 
-        store.addPropertyChangeListener(new IPropertyChangeListener() {
+        final IPropertyChangeListener listener = new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
                 final ColorListItem item = getSelectedColorListItem(selectable);
@@ -238,6 +242,13 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
                 if (propertyName.equals(event.getProperty())) {
                     check.setSelection((Integer.valueOf(event.getNewValue().toString()) & style) == style);
                 }
+            }
+        };
+        store.addPropertyChangeListener(listener);
+        check.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                store.removePropertyChangeListener(listener);
             }
         });
         return check;
@@ -256,6 +267,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         previewViewer.configure(configuration);
         previewViewer.setEditable(false);
         previewViewer.getTextWidget().setFont(JFaceResources.getFont(JFaceResources.TEXT_FONT));
+
         final IPropertyChangeListener fontChangeListener = new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
@@ -268,8 +280,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
-                if (event.getProperty().startsWith("impex_")) {
-                    // configuration.handlePropertyChangeEvent(event);
+                if (event.getProperty().startsWith(PreferenceConstants.IMPEX_SYNTAX_COLORING_PREFIX)) {
                     previewViewer.invalidateTextPresentation();
                 }
             }
@@ -342,19 +353,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             String styles = color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
             target.setValue(styles, store.getInt(styles));
         }
-        // TODO sytntax coloring prefs: need to udpate all open editors. How to do it??
-        IEditorReference[] editorReferences = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                .getEditorReferences();
-        for (IEditorReference reference : editorReferences) {
-            if (ImpexEditor.ID.equals(reference.getId())) {
-            }
-        }
         return super.performOk();
-    }
-
-    @Override
-    public boolean performCancel() {
-        return super.performCancel();
     }
 
     @Override

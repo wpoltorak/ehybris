@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.CompositeRuler;
@@ -19,10 +20,12 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
+import org.eclipse.ui.editors.text.ITextEditorHelpContextIds;
 import org.eclipse.ui.editors.text.TextEditor;
 
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
+import com.lambda.plugin.impex.editor.syntaxcoloring.SyntaxColoringPropertyChangeListener;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
 import com.lambda.plugin.impex.preferences.PreferenceConstants;
@@ -36,20 +39,41 @@ public class ImpexEditor extends TextEditor {
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
     private IImpexModel impexModel;
+    private SyntaxColoringPropertyChangeListener syntaxColoringPropertyChangeListener;
 
     public ImpexEditor() {
-        super();
+    }
+
+    @Override
+    protected void initializeEditor() {
+        syntaxColoringPropertyChangeListener = new SyntaxColoringPropertyChangeListener();
+        setEditorContextMenuId("#TextEditorContext"); //$NON-NLS-1$
+        setRulerContextMenuId("#TextRulerContext"); //$NON-NLS-1$
+        setHelpContextId(ITextEditorHelpContextIds.TEXT_EDITOR);
+        configureInsertMode(SMART_INSERT, false);
+        setInsertMode(INSERT);
         setDocumentProvider(new ForwardingDocumentProvider(ImpexPartitioner.IMPEX_PARTITIONING,
                 new ImpexDocumentParticipant(), new ImpexDocumentProvider()));
-        setSourceViewerConfiguration(new ImpexEditorConfiguration(YPlugin.getDefault().getPreferenceStore(), this));
+        // getVerticalRuler().getModel().addAnnotation(annotation, position);
+
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
-        // getVerticalRuler().getModel().addAnnotation(annotation, position);
+        setSourceViewerConfiguration(new ImpexEditorConfiguration(getPreferenceStore(), this));
+    }
+
+    @Override
+    protected void setPreferenceStore(IPreferenceStore store) {
+        if (getPreferenceStore() != null) {
+            getPreferenceStore().removePropertyChangeListener(syntaxColoringPropertyChangeListener);
+        }
+        super.setPreferenceStore(store);
+        getPreferenceStore().addPropertyChangeListener(syntaxColoringPropertyChangeListener);
     }
 
     @Override
     public void createPartControl(final Composite parent) {
         super.createPartControl(parent);
+        syntaxColoringPropertyChangeListener.setSourceViewer(getSourceViewer());
 
         final ProjectionViewer viewer = (ProjectionViewer) getSourceViewer();
         projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
@@ -64,6 +88,7 @@ public class ImpexEditor extends TextEditor {
         viewer.doOperation(ProjectionViewer.TOGGLE);
 
         annotationModel = viewer.getProjectionAnnotationModel();
+
     }
 
     /**
@@ -127,16 +152,17 @@ public class ImpexEditor extends TextEditor {
     }
 
     @Override
+    public void dispose() {
+        getPreferenceStore().removePropertyChangeListener(syntaxColoringPropertyChangeListener);
+        super.dispose();
+    }
+
+    @Override
     protected void handlePreferenceStoreChanged(final PropertyChangeEvent event) {
         if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES)) {
             markingOccurrences = Boolean.TRUE.equals(event.getNewValue());
         }
         super.handlePreferenceStoreChanged(event);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     public boolean isMarkingOccurrences() {

@@ -50,6 +50,22 @@ public class ImpexTokenScanner implements ITokenScanner {
         return nextToken.getLength();
     }
 
+    // public void adaptToPreferenceChange(PropertyChangeEvent event) {
+    // String property= event.getProperty();
+    // if (property.startsWith(IAntEditorColorConstants.TAG_COLOR) ||
+    // property.startsWith(IAntEditorColorConstants.STRING_COLOR)) {
+    // if (property.endsWith(AntEditorPreferenceConstants.EDITOR_BOLD_SUFFIX)) {
+    // adaptToStyleChange(event, getTokenAffected(event), SWT.BOLD);
+    // } else if (property.endsWith(AntEditorPreferenceConstants.EDITOR_ITALIC_SUFFIX)) {
+    // adaptToStyleChange(event, getTokenAffected(event), SWT.ITALIC);
+    // } else {
+    // adaptToColorChange(event, getTokenAffected(event));
+    // }
+    // }
+    // }
+    //
+    // }
+
     private class RangedIterator implements Iterator<ILexerTokenRegion> {
 
         private static final int INIT = 0;
