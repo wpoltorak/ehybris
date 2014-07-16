@@ -55,10 +55,10 @@ fragment UNDERSCORE : [_]LineSeparator*;
 fragment TWO        : [2]LineSeparator*;
 
 //Modes
-Insert              : I N S E R T -> pushMode(header), type(Mode);
-InsertUpdate        : I N S E R T UNDERSCORE U P D A T E -> pushMode(header), type(Mode);
-Update              : U P D A T E -> pushMode(header), type(Mode);
-Remove              : R E M O V E -> pushMode(header), type(Mode);
+Insert              : I N S E R T -> pushMode(type), type(Mode);
+InsertUpdate        : I N S E R T UNDERSCORE U P D A T E -> pushMode(type), type(Mode);
+Update              : U P D A T E -> pushMode(type), type(Mode);
+Remove              : R E M O V E -> pushMode(type), type(Mode);
 
 Comma               : ',';
 Dot                 : '.';
@@ -94,10 +94,10 @@ Error               : .;
 
 mode record;
 RecordComment             : Comment -> type(Comment);
-RecordInsert              : Insert -> popMode, pushMode(header), type(Mode);
-RecordInsertUpdate        : InsertUpdate -> popMode, pushMode(header), type(Mode);
-RecordUpdate              : Update -> popMode, pushMode(header), type(Mode);
-RecordRemove              : Remove -> popMode, pushMode(header), type(Mode);
+RecordInsert              : Insert -> popMode, pushMode(type), type(Mode);
+RecordInsertUpdate        : InsertUpdate -> popMode, pushMode(type), type(Mode);
+RecordUpdate              : Update -> popMode, pushMode(type), type(Mode);
+RecordRemove              : Remove -> popMode, pushMode(type), type(Mode);
 RecordIdentifier          : Identifier -> type(Identifier);
 RecordBeanShell           : BeanShell -> type(BeanShell);
 RecordUserRights          : UserRights -> type(UserRights);
@@ -134,24 +134,35 @@ MacrovalEOF                : Ws* EOF -> type(EOF), popMode, popMode;
 Macroval                   : ~[\r\n];
 
 
-mode header;
-HComma              : Comma -> type(Comma);
-HSeparator          : Separator -> type(Separator);
-HDot                : Dot -> type(Dot);
-HDoubleQuote        : DoubleQuote -> type(DoubleQuote);
-HQuote              : Quote -> type(Quote);
+mode type;
+TSeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
+TDoubleQuote        : DoubleQuote -> type(DoubleQuote);
+TQuote              : Quote -> type(Quote);
 LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
-HLParenthesis       : LParenthesis -> type(LParenthesis);
-HRParenthesis       : RParenthesis -> type(RParenthesis);
-HEquals             : Equals -> type(Equals);
-HOr                 : Or -> type(Or);
-HLb                 : Lb -> type(Lb), popMode, pushMode(record);
-HLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-HIdentifier         : Identifier -> type(Identifier);
-HSpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
-HDocumentID         : DocumentID -> type(DocumentID);
-HMacroref           : Macrodef -> type(Macroref);
-HWs                 : Ws -> type(Ws), channel(HIDDEN);
+TLb                 : Lb -> type(Lb), popMode, pushMode(record);
+TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
+TIdentifier         : Identifier -> type(Identifier);
+TMacroref           : Macrodef -> type(Macroref);
+TWs                 : Ws -> type(Ws), channel(HIDDEN);
+
+mode attribute;
+AComma              : Comma -> type(Comma);
+ASeparator          : Separator -> type(Separator);
+ADot                : Dot -> type(Dot);
+ADoubleQuote        : DoubleQuote -> type(DoubleQuote);
+AQuote              : Quote -> type(Quote);
+ABracket            : '[' -> pushMode(modifier), channel(HIDDEN);
+ALParenthesis       : LParenthesis -> type(LParenthesis);
+ARParenthesis       : RParenthesis -> type(RParenthesis);
+AEquals             : Equals -> type(Equals);
+AOr                 : Or -> type(Or);
+ALb                 : Lb -> type(Lb), popMode, pushMode(record);
+ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
+AIdentifier         : Identifier -> type(Identifier);
+ASpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
+ADocumentID         : DocumentID -> type(DocumentID);
+AMacroref           : Macrodef -> type(Macroref);
+AWs                 : Ws -> type(Ws), channel(HIDDEN);
 
 
 mode modifier;
@@ -189,10 +200,10 @@ ModifierWs              : Ws -> type(Ws), channel(HIDDEN);
 //ModifierComma       : Ws* Comma Ws* (LineSeparator Ws*)* -> type(Comma), channel(HIDDEN);
 
 mode modifierval;
-ModifiervalWs           : Ws+ {lastTokenType == Equals}? -> type(Ws), channel(HIDDEN);
-ModifiervalBracket      : Ws* ']' Ws* -> popMode, popMode, channel(HIDDEN);
-ModifiervalSingleComma  : Ws* Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
-ModifiervalComma        : Ws* Comma -> type(Comma), popMode, channel(HIDDEN);
+ModifiervalWs           : Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
+ModifiervalBracket      : ']' Ws* -> popMode, popMode, channel(HIDDEN);
+ModifiervalSingleComma  : Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
+ModifiervalComma        : Comma -> type(Comma), popMode, channel(HIDDEN);
 ModifiervalMacroref     : Macrodef -> type(Macroref);
 ModifiervalSeparator    : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifiervalQuoted       : '"'(~[\r\n"] |'"' '"')* '"' -> type(Modifierval);
