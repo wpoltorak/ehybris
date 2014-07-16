@@ -16,19 +16,19 @@ public class DocumentIDLexerTest extends AbstractLexerTest {
         Attribute[] attribs = new Attribute[] { attribute(expression("uid"), modifiers(modifier("unique", "=true"))), null,
                 attribute(expression("defaultPaymentAddress", expression("&addrID"))) };
 
-        Header header = header(ImpexLexer.Insert, "Customer", attribs);
+        Header header = header(ImpexLexer.Mode/* Insert */, "Customer", attribs);
         int index = 0;
         index = header.assertTokens(tokens, index);
         index += 5; // data row
 
         attribs = new Attribute[] { attribute(expression("&addrID")), attribute(expression("owner", expression("Customer", "uid"))), null };
 
-        header = header(ImpexLexer.Insert, "Address", attribs);
+        header = header(ImpexLexer.Mode/* Insert */, "Address", attribs);
         index = header.assertTokens(tokens, index);
         index += 3; // data row
 
         attribs = new Attribute[] { attribute(expression("owner", expression("Customer", "uid"))), attribute(expression("&addrID2")) };
-        header = header(ImpexLexer.Insert, "Address", attribs);
+        header = header(ImpexLexer.Mode/* Insert */, "Address", attribs);
         header.assertTokens(tokens, index);
     }
 

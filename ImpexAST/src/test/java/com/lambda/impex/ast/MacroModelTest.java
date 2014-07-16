@@ -29,14 +29,14 @@ public class MacroModelTest extends ModelTest {
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(11, macros.size());
 
-        assertSingleEntry(macros.get("$macro1"), 2, "Macro with separator+more");
-        assertSingleEntry(macros.get("$macro2"), 6, "Macro with separator");
+        assertSingleEntry(macros.get("$macro1"), 2, "Macro with \tseparator+more");
+        assertSingleEntry(macros.get("$macro2"), 6, "Macro with\tseparator");
         assertSingleEntry(macros.get("$macro3"), 8, "Macro withseparator");
         assertSingleEntry(macros.get("$macro4"), 10, "Macro withseparator");
         assertSingleEntry(macros.get("$macro5"), 17, "Macro withseparator");
-        assertSingleEntry(macros.get("$macro6"), 23, "Macro with separator");
+        assertSingleEntry(macros.get("$macro6"), 23, "Macro with\tseparator");
         assertSingleEntry(macros.get("$macro7"), 29, "Macro withseparator");
-        assertSingleEntry(macros.get("$macro8"), 31, "Macro with separator");
+        assertSingleEntry(macros.get("$macro8"), 31, "Macro with\t\tseparator");
         assertSingleEntry(macros.get("$macro9"), 33, "Macro with\t\tseparator");
         assertSingleEntry(macros.get("$macro10"), 35, "$macro11=");
         assertSingleEntry(macros.get("$macro12"), 37, "\\");
@@ -84,7 +84,7 @@ public class MacroModelTest extends ModelTest {
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(1, macros.size());
-        assertSingleEntry(macros.get("$macro"), 1, "\"  This is a macro and much more  \"");
+        assertSingleEntry(macros.get("$macro"), 1, "\"  This is a macro    and much more  \"");
     }
 
     @Test

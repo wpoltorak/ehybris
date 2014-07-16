@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.Stack;
 
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -118,29 +117,40 @@ public abstract class AbstractLexerTest {
         assertThat(tokens.get(index).getText(), is(macrodef));
         assertThat(tokens.get(index + 1).getType(), is(ImpexLexer.Equals));
         if (macroval != null) {
-            assertThat("Invalid value for " + macrodef, tokens.get(index + 2).getText(), is(macroval));
+            String text = "";
+            Token token = null;
+            for (int i = index + 2; i < tokens.size(); i++) {
+                token = tokens.get(i);
+                if (token.getType() != ImpexLexer.Macroval && token.getType() != ImpexLexer.Macroref) {
+                    break;
+                }
+                text += token.getText();
+
+            }
+            assertThat("Invalid value for '" + text + "'", text, is(macroval));
         }
     }
 
     protected int nextHeaderIndex(final List<Token> tokens, final int start) {
         for (int i = start; i < tokens.size(); i++) {
-            if (tokens.get(i).getType() == ImpexLexer.Insert || tokens.get(i).getType() == ImpexLexer.InsertUpdate
-                    || tokens.get(i).getType() == ImpexLexer.Update || tokens.get(i).getType() == ImpexLexer.Remove) {
+            //            if (tokens.get(i).getType() == ImpexLexer.Insert || tokens.get(i).getType() == ImpexLexer.InsertUpdate
+            //                    || tokens.get(i).getType() == ImpexLexer.Update || tokens.get(i).getType() == ImpexLexer.Remove) {
+            //                return i;
+            //            }
+            if (tokens.get(i).getType() == ImpexLexer.Mode) {
                 return i;
             }
         }
         throw new IllegalStateException();
     }
 
-    protected static void assertMacros(final List<Token> tokens, final Stack<String> macroPairs) {
-        for (int i = 0; i < tokens.size(); i++) {
-            final Token token = tokens.get(i);
-            if (token.getType() == ImpexLexer.Macrodef) {
-                final String macrodef = macroPairs.pop();
-                final String macroval = macroPairs.pop();
-                assertMacro(tokens, i, macrodef, macroval);
+    protected int nextMacroIndex(final List<Token> tokens, final int start) {
+        for (int i = start + 1; i < tokens.size(); i++) {
+            if (tokens.get(i).getType() == ImpexLexer.Macrodef) {
+                return i;
             }
         }
+        throw new IllegalStateException();
     }
 
     protected class Expression {
@@ -211,8 +221,17 @@ public abstract class AbstractLexerTest {
             pos++;
             assertThat(tokens.get(pos).getType(), is(ImpexLexer.Equals));
             if (value != null) {
-                pos++;
-                assertThat(tokens.get(pos).getText(), is(value));
+                Token token = null;
+                String text = "";
+                for (int i = pos + 1; i < tokens.size(); i++) {
+                    token = tokens.get(i);
+                    if (token.getType() != ImpexLexer.Modifierval && token.getType() != ImpexLexer.Macroref) {
+                        break;
+                    }
+                    text += token.getText();
+                    pos = i;
+                }
+                assertThat("Invalid value for '" + text + "'", text, is(value));
             }
             return pos;
         }
@@ -353,7 +372,7 @@ public abstract class AbstractLexerTest {
             }
             for (final Attribute attrib : attribs) {
                 pos++;
-                assertThat(tokens.get(pos).getType(), is(ImpexLexer.Semicolon));//FIXME hardcoded semicolon  - should be retrieved from ant property
+                assertThat(tokens.get(pos).getType(), is(ImpexLexer.Separator));//FIXME hardcoded semicolon  - should be retrieved from ant property
                 if (attrib != null) {
                     pos++;
                     pos = attrib.assertTokens(tokens, pos);
@@ -380,17 +399,18 @@ public abstract class AbstractLexerTest {
         }
 
         protected String mode() {
-            switch (mode) {
-                case ImpexLexer.InsertUpdate:
-                    return "InsertUpdate";
-                case ImpexLexer.Insert:
-                    return "Insert";
-                case ImpexLexer.Update:
-                    return "Update";
-                case ImpexLexer.Remove:
-                    return "Remove";
-            }
-            throw new IllegalStateException("Unknown mode");
+            //            switch (mode) {
+            //                case ImpexLexer.InsertUpdate:
+            //                    return "InsertUpdate";
+            //                case ImpexLexer.Insert:
+            //                    return "Insert";
+            //                case ImpexLexer.Update:
+            //                    return "Update";
+            //                case ImpexLexer.Remove:
+            //                    return "Remove";
+            //            }
+            //            throw new IllegalStateException("Unknown mode");
+            return String.valueOf(mode);
         }
     }
 }

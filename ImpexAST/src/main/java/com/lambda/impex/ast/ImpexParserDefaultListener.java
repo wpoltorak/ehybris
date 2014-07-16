@@ -20,6 +20,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
+import com.lambda.impex.ast.ImpexParser.MacroValueContext;
+import com.lambda.impex.ast.ImpexParser.ModifierValueContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
 /**
@@ -50,23 +52,21 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterMacro(@NotNull final ImpexParser.MacroContext ctx) {
         final String macrodef = removeSeparators(ctx.Macrodef().getText()); //remove possible separators from the middle of text
-        String macroval;
-        if (ctx.Macroval() == null) {
+        final MacroValueContext macroValue = ctx.macroValue();
+        if (macroValue.getText().isEmpty()) {
             final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
-            problem.setLineNumber(ctx.Macrodef().getSymbol().getLine());
-            problem.setLength(ctx.Macrodef().getSymbol().getStopIndex() - ctx.Macrodef().getSymbol().getStartIndex());
+            problem.setLineNumber(ctx.getStart().getLine());
+            problem.setLength(ctx.Macrodef().getSymbol().getStopIndex() - ctx.Macrodef().getSymbol().getStartIndex() + 1);
             problem.setText(macrodef);
             context.addProblem(problem);
-            macroval = null;
-        } else {
-            macroval = removeSeparatorsAndWhitespaces(ctx.Macroval().getText()); //remove possible separators from the middle of text
         }
-        context.registerMacro(macrodef, macroval, ctx.Macrodef().getSymbol().getLine());
+
+        context.registerMacro(macrodef, macroValue.getText(), ctx.Macrodef().getSymbol().getLine());
     }
 
     @Override
     public void enterAttributeModifierAssignment(final AttributeModifierAssignmentContext ctx) {
-        if (ctx.Modifierval() == null) {
+        if (ctx.modifierValue() == null) {
             final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
             final Token token = ctx.attributeModifier().getStop();
             problem.setLineNumber(token.getLine());
@@ -75,16 +75,16 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem);
             return;
         }
-        final TerminalNode modifierval = ctx.Modifierval();
+        final ModifierValueContext modifierval = ctx.modifierValue();
         switch (ctx.attributeModifier().getStart().getType()) {
             case ImpexLexer.BooleanHeaderModifier:
                 //TODO resolve macros
                 if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
                         && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
                     final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
-                    problem.setLineNumber(modifierval.getSymbol().getLine());
-                    problem.setLength(modifierval.getSymbol().getStopIndex() - modifierval.getSymbol().getStartIndex());
-                    problem.setText(modifierval.getSymbol().getText());
+                    problem.setLineNumber(modifierval.getStart().getLine());
+                    problem.setLength(modifierval.getStop().getStopIndex() - modifierval.getStart().getStartIndex());
+                    problem.setText(modifierval.getText());
                     context.addProblem(problem);
                 }
                 break;
@@ -146,7 +146,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     @Override
     public void enterHeaderModifierAssignment(final HeaderModifierAssignmentContext ctx) {
-        if (ctx.Modifierval() == null) {
+        if (ctx.modifierValue().getText().isEmpty()) {
             final ImpexProblem problem = new ImpexProblem(Type.InvalidHeaderModifier);
             final Token token = ctx.headerModifier().getStop();
             problem.setLineNumber(token.getLine());
@@ -155,16 +155,16 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem);
             return;
         }
-        final TerminalNode modifierval = ctx.Modifierval();
+        final ModifierValueContext modifierval = ctx.modifierValue();
         switch (ctx.headerModifier().getStart().getType()) {
             case ImpexLexer.BooleanHeaderModifier:
                 //TODO resolve macros
                 if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
                         && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
                     final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
-                    problem.setLineNumber(modifierval.getSymbol().getLine());
-                    problem.setLength(modifierval.getSymbol().getStopIndex() - modifierval.getSymbol().getStartIndex());
-                    problem.setText(modifierval.getSymbol().getText());
+                    problem.setLineNumber(modifierval.getStart().getLine());
+                    problem.setLength(modifierval.getStop().getStopIndex() - modifierval.getStart().getStartIndex() + 1);
+                    problem.setText(modifierval.getText());
                     context.addProblem(problem);
                 }
                 break;

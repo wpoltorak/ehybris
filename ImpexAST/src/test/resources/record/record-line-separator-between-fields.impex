@@ -3,3 +3,18 @@ UPDATE User;uid[unique=true];name;customerID;
 Anja Hertz\	
 ;	 \  
 K2006-C0005;
+
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz\;\ Anja Hertz;\;
+
+UPDATE User;uid[unique=true];name;customerID;
+;ahertz\
+\;\ \
+ \
+ Anja Hertz;\;
+ 
+UPDATE User;uid[unique=true];name;customerID;
+;\\; \ \ ;\
+\\
+;
+ 

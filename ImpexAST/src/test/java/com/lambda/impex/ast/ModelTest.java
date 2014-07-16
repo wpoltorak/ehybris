@@ -3,7 +3,10 @@ package com.lambda.impex.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.io.IOUtils;
@@ -11,14 +14,32 @@ import org.apache.commons.io.IOUtils;
 public abstract class ModelTest {
 
     protected com.lambda.impex.ast.ImpexParseContext context;
-    private ImpexValidator validator;
+
+    //    private ImpexValidator validator;
 
     protected ParseTree init(final String name) throws Exception {
-        final char[] impex = IOUtils.toCharArray(getClass().getResourceAsStream(name));
-        validator = new ImpexValidator();
-        validator.compile(impex);
-        context = validator.getContext();
-        return validator.getParseTree();
+        final char[] source = IOUtils.toCharArray(getClass().getResourceAsStream(name));
+        context = new ImpexParseContext();
+        final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
+        final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context, true);
+
+        final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(errorListener);
+        final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        final ImpexParser parser = new ImpexParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
+        final ParseTree impex = parser.impex();
+
+        if (!context.isSyntaxInvalid()) {
+            final ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(impexListener, impex);
+        }
+
+        //        validator.compile(impex);
+        //        context = validator.getContext();
+        return impex;
     }
 
     protected ParseTree getNthChildWithType(final ParseTree tree, final int n, final int type) {
@@ -76,7 +97,7 @@ public abstract class ModelTest {
     }
 
     protected ParseTree mode(final ParseTree tree, final int blockNo) {
-        return getFirstChildWithType(header(tree, blockNo), ImpexParser.RULE_headerMode);
+        return getFirstChildWithType(header(tree, blockNo), ImpexParser.Mode);
     }
 
     protected ParseTree attribute(final ParseTree tree, final int blockNo, final int attributeNo) {
@@ -156,14 +177,27 @@ public abstract class ModelTest {
     }
 
     protected ParseTree fields(final ParseTree tree, final int recordNo) {
-        return getFirstChildWithType(tree.getChild(recordNo), ImpexParser.Field);
+        return getFirstChildWithType(tree.getChild(recordNo), ImpexParser.RULE_field);
     }
 
     protected List<ParseTree> fields(final ParseTree tree, final int blockNo, final int recordNo) {
-        return getChildrenWithType(record(tree, blockNo, recordNo), ImpexParser.Field);
+        return getChildrenWithType(record(tree, blockNo, recordNo), ImpexParser.RULE_field);
     }
 
     protected List<ParseTree> fields(final ParseTree record) {
-        return getChildrenWithType(record, ImpexParser.Field);
+        return getChildrenWithType(record, ImpexParser.RULE_field);
     }
+
+    protected ParseTree quotedFields(final ParseTree tree, final int recordNo) {
+        return getFirstChildWithType(tree.getChild(recordNo), ImpexParser.FieldQuoted);
+    }
+
+    protected List<ParseTree> quotedFields(final ParseTree tree, final int blockNo, final int recordNo) {
+        return getChildrenWithType(record(tree, blockNo, recordNo), ImpexParser.FieldQuoted);
+    }
+
+    protected List<ParseTree> quotedFields(final ParseTree record) {
+        return getChildrenWithType(record, ImpexParser.FieldQuoted);
+    }
+
 }

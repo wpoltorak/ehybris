@@ -67,17 +67,19 @@ public class GrammarTest {
     }
 
     private void checkGrammar(final File directory) {
+        System.out.println("Entering " + directory.getName());
         String errors = S;
         for (final Iterator<File> it = FileUtils.iterateFiles(directory, new String[] { "impex" }, true); it.hasNext();) {
             final File file = it.next();
             try {
-                final String filename = FileUtils.readFileToString(file);
-                final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(filename));
+                System.out.println("Checking " + file.getName());
+                final String text = FileUtils.readFileToString(file);
+                final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
                 final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
                 final ImpexParser parser = new ImpexParser(tokenStream);
                 parser.removeErrorListeners(); // remove ConsoleErrorListener
                 parser.addErrorListener(new QuietDiagnosticErrorListener());
-                checkSyntaxErrors(parser.impex(), filename);
+                checkSyntaxErrors(parser.impex(), file.getName());
             } catch (final Exception e) {
                 errors += "Error parsing '" + file.getName() + "': " + e.getMessage() == null ? e.toString() : e.getMessage() + S;
             }

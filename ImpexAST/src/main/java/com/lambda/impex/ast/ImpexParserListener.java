@@ -1,4 +1,4 @@
-// Generated from /work/projects/yeclipse/ImpexAST/src/main/antlr4/ImpexParser.g4 by ANTLR 4.1
+// Generated from com/lambda/impex/ast/ImpexParser.g4 by ANTLR 4.3
 package com.lambda.impex.ast;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -86,15 +86,15 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitHeader(@NotNull ImpexParser.HeaderContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link ImpexParser#headerMode}.
+	 * Enter a parse tree produced by {@link ImpexParser#modifierValue}.
 	 * @param ctx the parse tree
 	 */
-	void enterHeaderMode(@NotNull ImpexParser.HeaderModeContext ctx);
+	void enterModifierValue(@NotNull ImpexParser.ModifierValueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ImpexParser#headerMode}.
+	 * Exit a parse tree produced by {@link ImpexParser#modifierValue}.
 	 * @param ctx the parse tree
 	 */
-	void exitHeaderMode(@NotNull ImpexParser.HeaderModeContext ctx);
+	void exitModifierValue(@NotNull ImpexParser.ModifierValueContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#headerModifierAssignment}.
@@ -106,6 +106,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitHeaderModifierAssignment(@NotNull ImpexParser.HeaderModifierAssignmentContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#field}.
+	 * @param ctx the parse tree
+	 */
+	void enterField(@NotNull ImpexParser.FieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#field}.
+	 * @param ctx the parse tree
+	 */
+	void exitField(@NotNull ImpexParser.FieldContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#attributeName}.
@@ -161,6 +172,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitQuote(@NotNull ImpexParser.QuoteContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#macroValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterMacroValue(@NotNull ImpexParser.MacroValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#macroValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitMacroValue(@NotNull ImpexParser.MacroValueContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#impex}.

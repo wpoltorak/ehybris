@@ -12,9 +12,15 @@ import org.antlr.v4.runtime.dfa.DFA;
 public class ImpexParserDefaultErrorListener extends BaseErrorListener {
 
     private final ImpexParseContext context;
+    private final boolean throwExceptions;
 
     public ImpexParserDefaultErrorListener(final ImpexParseContext context) {
+        this(context, false);
+    }
+
+    public ImpexParserDefaultErrorListener(final ImpexParseContext context, final boolean throwExceptions) {
         this.context = context;
+        this.throwExceptions = throwExceptions;
     }
 
     @Override
@@ -39,6 +45,11 @@ public class ImpexParserDefaultErrorListener extends BaseErrorListener {
     public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line, final int charPositionInLine,
             final String msg, final RecognitionException e) {
         context.syntaxProblem(offendingSymbol, line, charPositionInLine, msg, e);
+        if (throwExceptions) {
+            if (e == null) {
+                throw new IllegalStateException("Syntax error. " + msg);
+            }
+            throw new IllegalStateException("Syntax error: " + msg, e);
+        }
     }
-
 }

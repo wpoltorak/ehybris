@@ -10,7 +10,11 @@ public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testMacroAssWithoutEquals() throws Exception {
-        init("/errors/macro/macro-no-equals.impex");
+        try {
+            init("/errors/macro/macro-no-equals.impex");
+        } catch (final IllegalStateException e) {
+            //expected
+        }
         final List<ImpexProblem> problems = context.getProblems();
         assertEquals(1, problems.size());
         assertEquals(ImpexProblem.Type.SyntaxError, problems.get(0).getType());
@@ -26,7 +30,11 @@ public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testMacroAssWithoutEqualsAndValue() throws Exception {
-        init("/errors/macro/macro-blank-no-equals.impex");
+        try {
+            init("/errors/macro/macro-blank-no-equals.impex");
+        } catch (final IllegalStateException e) {
+            //expected
+        }
         final List<ImpexProblem> problems = context.getProblems();
         assertEquals(1, problems.size());
         assertEquals(ImpexProblem.Type.SyntaxError, problems.get(0).getType());
@@ -34,7 +42,11 @@ public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testWrongLinesWithChars() throws Exception {
-        init("/errors/parser-lines-with-chars.impex");
+        try {
+            init("/errors/parser-lines-with-chars.impex");
+        } catch (final IllegalStateException e) {
+            // expected
+        }
         final List<ImpexProblem> errors = context.getProblems();
         assertEquals(1, errors.size());
         assertEquals(ImpexProblem.Type.SyntaxError, errors.get(0).getType());
@@ -42,7 +54,11 @@ public class ParserErrorsTest extends ModelTest {
 
     @Test
     public void testInvalidSubtype() throws Exception {
-        init("/errors/parser-invalid-subtype.impex");
+        try {
+            init("/errors/parser-invalid-subtype.impex");
+        } catch (final IllegalStateException e) {
+            // expected
+        }
         final List<ImpexProblem> errors = context.getProblems();
         assertEquals(1, errors.size());
         assertEquals(ImpexProblem.Type.SyntaxError, errors.get(0).getType());

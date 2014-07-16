@@ -1,5 +1,5 @@
-INSERT_UPDATE Usergroup[cacheUnique=true, pathDelimiter=,];uid[unique=true];groups(uid)[mode=append,collectionDelimiter=","]
+INSERT_UPDATE Usergroup[cacheUnique=true];uid[unique=true];groups(uid)[path-Delimiter=,, mode=append,collection-Delimiter=","]
 ;$regulargroup;$customerGroup;
 
-INSERT_UPDATE Usergroup[pathDelimiter=,, cacheUnique=true];uid[unique=true];groups(uid)[collectionDelimiter=,]
+INSERT_UPDATE Usergroup[cacheUnique=true];uid[unique=true];groups(uid)[collection-Delimiter=,]
 ;$regulargroup;$customerGroup;
