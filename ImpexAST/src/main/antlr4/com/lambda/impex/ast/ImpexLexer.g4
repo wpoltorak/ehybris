@@ -12,16 +12,137 @@ tokens {
     TextAttributeModifier,
     BooleanHeaderModifier,
     ClassHeaderModifier,
-    TextHeaderModifier
+    TextHeaderModifier,
+    UnknownModifier
 }
 
 @members{
-    int lastTokenType = 0;
-         
+	/* last type from non Token.HIDDEN_CHANNEL token */
+    private int lastTokenType = 0;
+    private boolean insideQuotedAttribute = false;
+    
     public void emit(Token token) {
-        super.emit(token);
-        lastTokenType = token.getType();
+    super.emit(token);
+    
+    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token)
+            + " '" + token.getText() + "'");
+    
+    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
+        return;
     }
+    
+    lastTokenType = token.getType();
+    
+    if (_mode == attribute && lastTokenType == DoubleQuote) {
+        insideQuotedAttribute = !insideQuotedAttribute;
+        System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+    }
+    }
+  
+      @Override
+    public void mode(final int m) {
+        super.mode(m);
+        System.out.println("Enter mode: " + getModeNames()[m]);
+    }
+    
+    private static String readType(final Token token) {
+        switch (token.getType()) {
+            case ImpexLexer.Mode:
+                return "Mode                         ";
+            case ImpexLexer.Separator:
+                return "Separator                    ";
+            case ImpexLexer.Macroref:
+                return "Macroref                     ";
+            case ImpexLexer.BooleanAttributeModifier:
+                return "BooleanAttributeModifier     ";
+            case ImpexLexer.IntAttributeModifier:
+                return "IntAttributeModifier         ";
+            case ImpexLexer.DateFormatAttributeModifier:
+                return "DateFormatAttributeModifier  ";
+            case ImpexLexer.NumberFormatAttributeModifier:
+                return "NumberFormatAttributeModifier";
+            case ImpexLexer.ClassAttributeModifier:
+                return "ClassAttributeModifier       ";
+            case ImpexLexer.TextAttributeModifier:
+                return "TextAttributeModifier        ";
+            case ImpexLexer.BooleanHeaderModifier:
+                return "BooleanHeaderModifier        ";
+            case ImpexLexer.ClassHeaderModifier:
+                return "ClassHeaderModifier          ";
+            case ImpexLexer.TextHeaderModifier:
+                return "TextHeaderModifier           ";
+            case ImpexLexer.Comma:
+                return "Comma                        ";
+            case ImpexLexer.Dot:
+                return "Dot                          ";
+            case ImpexLexer.DoubleQuote:
+                return "DoubleQuote                  ";
+            case ImpexLexer.Quote:
+                return "Quote                        ";
+            case ImpexLexer.LParenthesis:
+                return "LParenthesis                 ";
+            case ImpexLexer.RParenthesis:
+                return "RParenthesis                 ";
+            case ImpexLexer.Equals:
+                return "Equals                       ";
+            case ImpexLexer.Or:
+                return "Or                           ";
+            case ImpexLexer.LineSeparator:
+                return "LineSeparator                ";
+            case ImpexLexer.DocumentID:
+                return "DocumentID                   ";
+            case ImpexLexer.SpecialAttribute:
+                return "SpecialAttribute             ";
+            case ImpexLexer.Identifier:
+                return "Identifier                   ";
+            case ImpexLexer.Macrodef:
+                return "Macrodef                     ";
+            case ImpexLexer.UserRights:
+                return "UserRights                   ";
+            case ImpexLexer.BeanShell:
+                return "BeanShell                    ";
+            case ImpexLexer.Comment:
+                return "Comment                      ";
+            case ImpexLexer.Lb:
+                return "Lb                           ";
+            case ImpexLexer.Ws:
+                return "Ws                           ";
+            case ImpexLexer.Error:
+                return "Error                        ";
+            case ImpexLexer.FieldQuoted:
+                return "FieldQuoted                  ";
+            case ImpexLexer.Field:
+                return "Field                        ";
+            case ImpexLexer.Macroval:
+                return "Macroval                     ";
+            case ImpexLexer.LBracket:
+                return "LBracket                     ";
+            case ImpexLexer.ABracket:
+                return "ABracket                     ";
+            case ImpexLexer.ModifierBracket:
+                return "ModifierBracket              ";
+            case ImpexLexer.UnknownModifier:
+                return "UnknownModifier              ";
+            case ImpexLexer.ModifiervalBracket:
+                return "ModifiervalBracket           ";
+            case ImpexLexer.Modifierval:
+                return "Modifierval                  ";
+
+        }
+        return "?                            ";
+    }
+    
+    private static String readChannel(final Token token) {
+        switch (token.getChannel()) {
+            case ImpexLexer.HIDDEN:
+                return "HIDDEN ";
+            case ImpexLexer.DEFAULT_TOKEN_CHANNEL:
+                return "DEFAULT";
+            default:
+                return "???????";
+        }
+    }
+    
 }
 
 fragment A          : [Aa]LineSeparator*;
@@ -156,6 +277,7 @@ ALParenthesis       : LParenthesis -> type(LParenthesis);
 ARParenthesis       : RParenthesis -> type(RParenthesis);
 AEquals             : Equals -> type(Equals);
 AOr                 : Or -> type(Or);
+AHiddenLb           : Lb {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
 ALb                 : Lb -> type(Lb), popMode, pushMode(record);
 ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 AIdentifier         : Identifier -> type(Identifier);
@@ -191,23 +313,31 @@ Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
 Unique              : U N I Q U E -> type(BooleanAttributeModifier);
 Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
 
-//ModifierRBracket    : ']' -> popMode, channel(HIDDEN);
+ModifierBracket    : ']' -> popMode, channel(HIDDEN);
+ModifierLb				: Lb+ {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
 ModifierEquals          : '=' -> pushMode(modifierval), type(Equals);
+ModifierComma			: Comma -> type(Comma), channel(HIDDEN);
 ModifierLineSeparator   : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifierWs              : Ws -> type(Ws), channel(HIDDEN);
+ModifierUnknown			: ~[\r\n\[\],;=] -> type(UnknownModifier);
 
 //ErrorModifierval    : ~[= \t]~[,\r\n\]] -> type(Modifierval);
 //ModifierComma       : Ws* Comma Ws* (LineSeparator Ws*)* -> type(Comma), channel(HIDDEN);
 
 mode modifierval;
-ModifiervalWs           : Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
-ModifiervalBracket      : ']' Ws* -> popMode, popMode, channel(HIDDEN);
-ModifiervalSingleComma  : Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
+ModifiervalLb			: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
+ModifiervalWs			: Ws+ {lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')}? -> type(Ws), channel(HIDDEN);
+//ModifiervalWs           : Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
+ModifiervalBracket      : ']' -> popMode, popMode, channel(HIDDEN);
+ModifiervalSingleComma	: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
+//ModifiervalSingleComma  : Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
 ModifiervalComma        : Comma -> type(Comma), popMode, channel(HIDDEN);
 ModifiervalMacroref     : Macrodef -> type(Macroref);
 ModifiervalSeparator    : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-ModifiervalQuoted       : '"'(~[\r\n"] |'"' '"')* '"' -> type(Modifierval);
-Modifierval             : ~[\r\n\[\],;"];
+ModifiervalDQuotes		: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
+ModifiervalDQuote		: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
+ModifiervalQuoted       : '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
+Modifierval             : ~[\r\n\[\],;\'];
 
 /*
 /work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast

@@ -163,6 +163,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitAttributeValue(@NotNull ImpexParser.AttributeValueContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ImpexParser#unknownModifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnknownModifier(@NotNull ImpexParser.UnknownModifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#unknownModifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnknownModifier(@NotNull ImpexParser.UnknownModifierContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ImpexParser#quote}.
 	 * @param ctx the parse tree
 	 */

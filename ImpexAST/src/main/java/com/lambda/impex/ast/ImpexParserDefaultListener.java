@@ -19,9 +19,11 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
+import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.MacroValueContext;
 import com.lambda.impex.ast.ImpexParser.ModifierValueContext;
+import com.lambda.impex.ast.ImpexParser.UnknownModifierContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
 /**
@@ -66,17 +68,29 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     @Override
     public void enterAttributeModifierAssignment(final AttributeModifierAssignmentContext ctx) {
-        if (ctx.modifierValue() == null) {
+        final UnknownModifierContext unknownModifier = ctx.unknownModifier();
+        if (unknownModifier != null) {
             final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
-            final Token token = ctx.attributeModifier().getStop();
-            problem.setLineNumber(token.getLine());
-            problem.setLength(token.getStopIndex() - token.getStartIndex());
-            problem.setText(token.getText());
+            problem.setLineNumber(unknownModifier.getStart().getLine());
+            problem.setLength(unknownModifier.getStop().getStopIndex() - unknownModifier.getStart().getStartIndex() - 1);
+            problem.setText(unknownModifier.getText());
             context.addProblem(problem);
             return;
         }
+
+        if (ctx.modifierValue() == null) {
+            final AttributeModifierContext attributeModifier = ctx.attributeModifier();
+            final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
+            problem.setLineNumber(attributeModifier.getStart().getLine());
+            problem.setLength(attributeModifier.getStop().getStopIndex() - attributeModifier.getStart().getStartIndex());
+            problem.setText(attributeModifier.getText());
+            context.addProblem(problem);
+            return;
+        }
+
+        final AttributeModifierContext attributeModifier = ctx.attributeModifier();
         final ModifierValueContext modifierval = ctx.modifierValue();
-        switch (ctx.attributeModifier().getStart().getType()) {
+        switch (attributeModifier.getStart().getType()) {
             case ImpexLexer.BooleanHeaderModifier:
                 //TODO resolve macros
                 if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
@@ -89,11 +103,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 }
                 break;
             case ImpexLexer.TextAttributeModifier:
-                if ("mode".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                if ("mode".equalsIgnoreCase(attributeModifier.getText())) {
                     if (!"append".equalsIgnoreCase(modifierval.getText()) && !"remove".equalsIgnoreCase(modifierval.getText())) {
                         context.addProblem(new ImpexProblem(Type.InvalidMode));
                     }
-                } else if ("lang".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                } else if ("lang".equalsIgnoreCase(attributeModifier.getText())) {
                     try {
                         Long.parseLong(modifierval.getText());
                     } catch (final NumberFormatException e) {
@@ -112,7 +126,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 }
                 break;
             case ImpexLexer.IntAttributeModifier:
-                if ("pos".equalsIgnoreCase(ctx.attributeModifier().getText())) {
+                if ("pos".equalsIgnoreCase(attributeModifier.getText())) {
                     try {
                         final Integer pos = Integer.valueOf(modifierval.getText());
                         if (pos.intValue() < 0) {

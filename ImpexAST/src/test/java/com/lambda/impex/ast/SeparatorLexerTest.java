@@ -145,8 +145,8 @@ public class SeparatorLexerTest extends AbstractLexerTest {
         assertMacro(tokens, index = nextMacroIndex(tokens, index), "$\\ \nna\\\n\\\n_me", "\"\tAndy\t\tWarhol \t\"    9");
         assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO", "Value");
         assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO2", "Value");
-        assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO_3", " Value");
-        assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO_4", "  Value");
+        assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO_3", "Value");
+        assertMacro(tokens, index = nextMacroIndex(tokens, index), "$MACRO_4", "Value");
         assertMacro(tokens, index = nextMacroIndex(tokens, index), "$\\\n\\\n\\\n\\\n\\\n\\\nmac\\\n\\\n\\\nro5", "20");
     }
 }

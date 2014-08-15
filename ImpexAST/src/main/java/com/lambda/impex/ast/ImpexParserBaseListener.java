@@ -199,6 +199,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterUnknownModifier(@NotNull ImpexParser.UnknownModifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnknownModifier(@NotNull ImpexParser.UnknownModifierContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterQuote(@NotNull ImpexParser.QuoteContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -44,7 +44,7 @@ attributeValue
         ;
 
 attributeModifierAssignment
-	: attributeModifier Equals modifierValue?
+	: (attributeModifier Equals modifierValue?) | (unknownModifier Equals? modifierValue?)
         ;
 
 attributeModifier
@@ -53,6 +53,9 @@ attributeModifier
 //        : Alias |AllowNull | CellDecorator | CollectionDelimiter | Dateformat | Default | ForceWrite | IgnoreKeyCase | IgnoreNull
 //	| KeyToValueDelimiter | Lang | MapDelimiter | Mode | NumberFormat | PathDelimiter | Pos | Translator | Unique | Virtual;
 
+unknownModifier
+	: (UnknownModifier | Macroref)+
+	;
 //headerMode
 //        : Insert | InsertUpdate | Update | Remove
 //        ;

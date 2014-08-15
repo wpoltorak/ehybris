@@ -3,7 +3,12 @@ INSERT_UPDATE Customer; "uid[unique=true]";Name;
 ; andi; Andy Warhol ; 
 
 # attributes surrounded by double quotes can be split into many lines 
-INSERT_UPDATE Customer; "uid
-[unique=
-true]";Name; 
+INSERT_UPDATE Customer; "
+uid
+[
+unique
+=
+true
+]
+";Name; 
 ; andi; Andy Warhol ; 

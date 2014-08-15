@@ -14,6 +14,14 @@ INSERT_UPDATE Customer; uid[unique=true];Name[default='Mario'];
 INSERT_UPDATE Customer; uid[unique=true];"Name[default='Mario']"; 
 ; andi; ; 
 
+# Modifier value inside quoted attribute and surrounded by single quotes can contain commas. Result: Mar,io 
+INSERT_UPDATE Customer; uid[unique=true];"Name[default='Mar,io']"; 
+; andi; ; 
+
+# Modifier value inside unquoted attribute and surrounded by single quotes can contain commas. Result: Mar,io 
+INSERT_UPDATE Customer; uid[unique=true];Name[default='Mar,io']; 
+; andi; ; 
+
 # Modifier value inside double quoted attribute can be surrounded by escaped double quotes. Result: "Mario" 
 INSERT_UPDATE Customer; uid[unique=true];"Name[default=""Mario""]"; 
 ; andi; ; 

@@ -1,0 +1,4 @@
+# single quoted text attribute modifier values cannot be split into many lines
+INSERT_UPDATE Customer; uid[unique=true];Name[default='Mar
+io']; 
+; andi; ; 
