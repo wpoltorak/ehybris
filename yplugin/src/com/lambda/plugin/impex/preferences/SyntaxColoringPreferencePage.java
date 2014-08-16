@@ -280,7 +280,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent event) {
-                if (event.getProperty().startsWith(PreferenceConstants.IMPEX_SYNTAX_COLORING_PREFIX)) {
+                if (event.getProperty().startsWith(PreferenceConstants.IMPEX_SYNTAX_COLORING)) {
                     previewViewer.invalidateTextPresentation();
                 }
             }
@@ -353,6 +353,11 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             String styles = color[1] + PreferenceConstants.IMPEX_EDITOR_STYLE_SUFFIX;
             target.setValue(styles, store.getInt(styles));
         }
+        if (target.needsSaving()) {
+            target.putValue(PreferenceConstants.IMPEX_SYNTAX_COLORING, "changed"); //$NON-NLS-1$
+            target.setToDefault(PreferenceConstants.IMPEX_SYNTAX_COLORING);
+        }
+
         return super.performOk();
     }
 

@@ -15,8 +15,7 @@ public class SyntaxColoringPropertyChangeListener implements IPropertyChangeList
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        // TODO introduce lock mechanism to prevent from multiple property notifications
-        if (event.getProperty().startsWith(PreferenceConstants.IMPEX_SYNTAX_COLORING_PREFIX) && sourceViewer != null) {
+        if (event.getProperty().equals(PreferenceConstants.IMPEX_SYNTAX_COLORING) && sourceViewer != null) {
             sourceViewer.invalidateTextPresentation();
         }
     }

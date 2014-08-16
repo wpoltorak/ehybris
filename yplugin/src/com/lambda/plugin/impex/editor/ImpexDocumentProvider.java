@@ -57,6 +57,7 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
         return new ImpexAnnotationModel(file);
     }
 
+    // TODO check if needed
     public IImpexModel getImpexModel(final Object element) {
         final FileInfo info = getFileInfo(element);
         if (info instanceof ImpexFileInfo) {

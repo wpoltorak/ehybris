@@ -25,6 +25,7 @@ import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.core.IPlatformInstallation;
 
+@Deprecated
 public class PlatformPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     public static final String ID = "com.lambda.plugin.preferences.PlatformPreferencePage"; //$NON-NLS-1$
@@ -43,6 +44,7 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
      * 
      * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
      */
+    @Override
     public void init(IWorkbench workbench) {
     }
 
@@ -86,6 +88,7 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
         PlatformUI.getWorkbench().getHelpSystem().setHelp(ancestor, PreferenceConstants.PLATFORMS_PREFERENCE_PAGE);
         initDefaultPlatform();
         platformBlock.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IPlatformInstallation install = getCurrentDefaultPlatform();
                 if (install == null) {
@@ -113,6 +116,7 @@ public class PlatformPreferencePage extends PreferencePage implements IWorkbench
     public boolean performOk() {
         final boolean[] canceled = new boolean[] { false };
         BusyIndicator.showWhile(null, new Runnable() {
+            @Override
             public void run() {
                 IPlatformInstallation defaultPlatform = getCurrentDefaultPlatform();
                 IPlatformInstallation[] platforms = platformBlock.getPlatforms();

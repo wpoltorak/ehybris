@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.core.JavaModelManager;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -34,6 +34,7 @@ import org.osgi.service.packageadmin.PackageAdmin;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.PlatformContainer;
 import com.lambda.plugin.impex.editor.ColorManager;
+import com.lambda.plugin.impex.editor.problems.ProblemsPropertyChangeListener;
 import com.lambda.plugin.nature.IYNatureManager;
 import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.template.ITemplateManager;
@@ -71,6 +72,7 @@ public class YPlugin extends AbstractUIPlugin {
 
     private IYNatureManager natureManager;
     private PlatformContainer platformContainer;
+    private ProblemsPropertyChangeListener problemsPropertyChangeListener;
 
     /**
      * The constructor
@@ -89,6 +91,9 @@ public class YPlugin extends AbstractUIPlugin {
         plugin = this;
         ((YUnitManager) getFunctestManager()).initialize();
         functestModel.start();
+        problemsPropertyChangeListener = new ProblemsPropertyChangeListener(getPreferenceStore());
+        getPreferenceStore().addPropertyChangeListener(problemsPropertyChangeListener);
+
     }
 
     /*
@@ -103,6 +108,7 @@ public class YPlugin extends AbstractUIPlugin {
             ((YUnitManager) getFunctestManager()).dispose();
             getPlatformContainer().dispose();
             ColorManager.getDefault().dispose();
+            getPreferenceStore().removePropertyChangeListener(problemsPropertyChangeListener);
             plugin = null;
         } finally {
             super.stop(context);
@@ -180,7 +186,7 @@ public class YPlugin extends AbstractUIPlugin {
      */
     public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException,
             InterruptedException {
-        final IJavaModel javaModel = JavaModelManager.getJavaModelManager().getJavaModel();
+        final IJavaModel javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
         final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
         for (final IJavaProject project : javaModel.getJavaProjects()) {
             if (project.getProject().isOpen() && project.getProject().hasNature(YNature.NATURE_ID)) {
@@ -282,6 +288,11 @@ public class YPlugin extends AbstractUIPlugin {
         return fCombinedPreferenceStore;
     }
 
+    @Override
+    public IPreferenceStore getPreferenceStore() {
+        return super.getPreferenceStore();
+    }
+
     public Bundle getBundle(final String bundleName) {
         final Bundle[] bundles = getBundles(bundleName, null);
         if (bundles != null && bundles.length > 0) {
@@ -318,11 +329,6 @@ public class YPlugin extends AbstractUIPlugin {
         synchronized (fPlatformTypeLock) {
             getPlatformContainer().initializePlatform();
         }
-    }
-
-    @Override
-    public IPreferenceStore getPreferenceStore() {
-        return super.getPreferenceStore();
     }
 
     public IPlatformInstallation getDefaultPlatform() {

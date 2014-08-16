@@ -11,79 +11,80 @@ public class PreferenceConstants {
 
     // public static final String DEFAULT_COLOR = IPreferenceStore.STRING_DEFAULT_DEFAULT;
     /**
-     * Common prefix for syntax coloring related preferences
+     * Common prefix for syntax coloring related preferences. This value is also used as single notification for editors
+     * to invalidate text presentation after changes to syntax coloring related preferences were applied.
      */
-    public static final String IMPEX_SYNTAX_COLORING_PREFIX = "impex_";
+    public static final String IMPEX_SYNTAX_COLORING = "impex_syntaxcoloring";
 
     /**
      * Preference key for color of keyword in impex editor
      */
-    public static final String COLOR_KEYWORD = IMPEX_SYNTAX_COLORING_PREFIX + "keyword";
+    public static final String COLOR_KEYWORD = IMPEX_SYNTAX_COLORING + "_keyword";
 
     /**
      * Preference key for color of mode in impex editor
      */
-    public static final String COLOR_MODE = IMPEX_SYNTAX_COLORING_PREFIX + "mode";
+    public static final String COLOR_MODE = IMPEX_SYNTAX_COLORING + "_mode";
 
     /**
      * Preference key for color of type in impex editor
      */
-    public static final String COLOR_TYPE = IMPEX_SYNTAX_COLORING_PREFIX + "type";
+    public static final String COLOR_TYPE = IMPEX_SYNTAX_COLORING + "_type";
 
     /**
      * Preference key for color of type modifier in impex editor
      */
-    public static final String COLOR_HEADER_MODIFIER = IMPEX_SYNTAX_COLORING_PREFIX + "type_modifier";
+    public static final String COLOR_HEADER_MODIFIER = IMPEX_SYNTAX_COLORING + "_type_modifier";
 
     /**
      * Preference key for color of attribute in impex editor
      */
-    public static final String COLOR_ATTRIBUTE = IMPEX_SYNTAX_COLORING_PREFIX + "attribute";
+    public static final String COLOR_ATTRIBUTE = IMPEX_SYNTAX_COLORING + "_attribute";
 
     /**
      * Preference key for color of attribute modifier in impex editor
      */
-    public static final String COLOR_ATTRIBUTE_MODIFIER = IMPEX_SYNTAX_COLORING_PREFIX + "attribute_modifier";
+    public static final String COLOR_ATTRIBUTE_MODIFIER = IMPEX_SYNTAX_COLORING + "_attribute_modifier";
 
     /**
      * Preference key for color of brackets in impex editor
      */
-    public static final String COLOR_BRACKETS = IMPEX_SYNTAX_COLORING_PREFIX + "brackets";
+    public static final String COLOR_BRACKETS = IMPEX_SYNTAX_COLORING + "_brackets";
 
     /**
      * Preference key for color of comment in impex editor
      */
-    public static final String COLOR_COMMENT = IMPEX_SYNTAX_COLORING_PREFIX + "comment";// ImpexLexer.tokenNames[ImpexLexer.Comment];
+    public static final String COLOR_COMMENT = IMPEX_SYNTAX_COLORING + "_comment";// ImpexLexer.tokenNames[ImpexLexer.Comment];
 
     /**
      * Preference key for color of beanshell in impex editor
      */
-    public static final String COLOR_BEANSHELL = IMPEX_SYNTAX_COLORING_PREFIX + "beanshell";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
+    public static final String COLOR_BEANSHELL = IMPEX_SYNTAX_COLORING + "_beanshell";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
 
     /**
      * Preference key for color of userrights section in impex editor
      */
-    public static final String COLOR_USERRIGHTS = IMPEX_SYNTAX_COLORING_PREFIX + "userrights";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
+    public static final String COLOR_USERRIGHTS = IMPEX_SYNTAX_COLORING + "_userrights";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
 
     /**
      * Preference key for color of quoted string in impex editor
      */
-    public static final String COLOR_STRING = IMPEX_SYNTAX_COLORING_PREFIX + "string";
+    public static final String COLOR_STRING = IMPEX_SYNTAX_COLORING + "_string";
 
     /**
      * Preference key for color of macro definition in impex editor
      */
-    public static final String COLOR_MACRO = IMPEX_SYNTAX_COLORING_PREFIX + "macro_def";
+    public static final String COLOR_MACRO = IMPEX_SYNTAX_COLORING + "_macro_def";
 
     /**
      * Preference key for color of documentID definition in impex editor
      */
-    public static final String COLOR_DOCUMENTID = IMPEX_SYNTAX_COLORING_PREFIX + "documentid";
+    public static final String COLOR_DOCUMENTID = IMPEX_SYNTAX_COLORING + "_documentid";
 
     /**
      * Preference key for generic color to use in impex editor
      */
-    public static final String COLOR_OTHERS = IMPEX_SYNTAX_COLORING_PREFIX + "others";
+    public static final String COLOR_OTHERS = IMPEX_SYNTAX_COLORING + "_others";
 
     /**
      * Preference key suffix for text style preference keys.
@@ -122,10 +123,11 @@ public class PreferenceConstants {
     public static final int IMPEX_WARNING = IMarker.SEVERITY_WARNING; //$NON-NLS-1$
     public static final int IMPEX_IGNORE = -1; //$NON-NLS-1$
 
+    public static final String IMPEX_PROBLEM = "impex_problem";
+
     /**
      * Empty macro assignment problem.<br/>
      * Example: $macro =
      */
-    public static final String PROBLEM_MACRO_EMPTY = "problem_empty_macro";
-
+    public static final String PROBLEM_MACRO_EMPTY = IMPEX_PROBLEM + "_empty_macro";
 }

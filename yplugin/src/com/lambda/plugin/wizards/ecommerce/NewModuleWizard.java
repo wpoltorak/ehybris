@@ -43,7 +43,6 @@ import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
 public class NewModuleWizard extends Wizard implements IExecutableExtension, INewWizard {
 
-    private static final String FUNCTEST_TEMPLATE_NAME = "functest";
     private NewJavaProjectWizardPageOne fFirstPage;
     private NewJavaProjectWizardPageTwo fSecondPage;
 
@@ -71,6 +70,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
             final Display display = getShell().getDisplay();
             if (display != null) {
                 display.asyncExec(new Runnable() {
+                    @Override
                     public void run() {
                         try {
                             IDE.openEditor(activePage, resource, true);
@@ -126,9 +126,6 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
             final IJavaProject javaProject = getCreatedElement();
             if (javaProject != null) {
                 final IProject project = javaProject.getProject();
-                YPlugin.getDefault()
-                        .getTemplateManager()
-                        .createTemplateFiles(YPlugin.getDefault().getBundle(), FUNCTEST_TEMPLATE_NAME, project, monitor);
                 YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
             }
         } catch (final CoreException e) {
@@ -157,6 +154,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
             selectAndReveal(fSecondPage.getJavaProject().getProject());
 
             Display.getDefault().asyncExec(new Runnable() {
+                @Override
                 public void run() {
                     final IWorkbenchPart activePart = YPlugin.getActivePart();
                     if (activePart instanceof IPackagesViewPart) {
@@ -170,6 +168,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
 
     public boolean doPerformFinish() {
         final IWorkspaceRunnable op = new IWorkspaceRunnable() {
+            @Override
             public void run(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
                 try {
                     finishPage(monitor);
@@ -217,6 +216,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
      * Stores the configuration element for the wizard. The config element will be used in <code>performFinish</code> to
      * set the result perspective.
      */
+    @Override
     public void setInitializationData(final IConfigurationElement cfig, final String propertyName, final Object data) {
         fConfigElement = cfig;
     }
@@ -241,6 +241,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
         return fSecondPage.getJavaProject();
     }
 
+    @Override
     public void init(final IWorkbench workbench, final IStructuredSelection currentSelection) {
         fWorkbench = workbench;
         fSelection = currentSelection;

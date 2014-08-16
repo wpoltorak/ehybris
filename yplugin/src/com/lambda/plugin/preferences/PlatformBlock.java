@@ -58,6 +58,7 @@ import com.lambda.plugin.core.IPlatformInstallation;
  * changes, or when the "use default" button check state changes.
  * </p>
  */
+@Deprecated
 class PlatformBlock implements ISelectionProvider {
 
     /**
@@ -99,13 +100,16 @@ class PlatformBlock implements ISelectionProvider {
      * Content provider to show a list of JREs
      */
     class PlatformContentProvider implements IStructuredContentProvider {
+        @Override
         public Object[] getElements(Object input) {
             return platforms.toArray();
         }
 
+        @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         }
 
+        @Override
         public void dispose() {
         }
     }
@@ -118,6 +122,7 @@ class PlatformBlock implements ISelectionProvider {
         /**
          * @see ITableLabelProvider#getColumnText(Object, int)
          */
+        @Override
         public String getColumnText(Object element, int columnIndex) {
             if (element instanceof IPlatformInstallation) {
                 IPlatformInstallation vm = (IPlatformInstallation) element;
@@ -139,6 +144,7 @@ class PlatformBlock implements ISelectionProvider {
         /**
          * @see ITableLabelProvider#getColumnImage(Object, int)
          */
+        @Override
         public Image getColumnImage(Object element, int columnIndex) {
             if (columnIndex == 0) {
                 return JavaUI.getSharedImages().getImage(ISharedImages.IMG_OBJS_LIBRARY);
@@ -154,6 +160,7 @@ class PlatformBlock implements ISelectionProvider {
      * @see org.eclipse.jface.viewers.ISelectionProvider#addSelectionChangedListener(org.eclipse.jface.viewers.
      * ISelectionChangedListener)
      */
+    @Override
     public void addSelectionChangedListener(ISelectionChangedListener listener) {
         selectionListeners.add(listener);
     }
@@ -163,6 +170,7 @@ class PlatformBlock implements ISelectionProvider {
      * 
      * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
      */
+    @Override
     public ISelection getSelection() {
         return new StructuredSelection(platformList.getCheckedElements());
     }
@@ -173,6 +181,7 @@ class PlatformBlock implements ISelectionProvider {
      * @see org.eclipse.jface.viewers.ISelectionProvider#removeSelectionChangedListener(org.eclipse.jface.viewers.
      * ISelectionChangedListener)
      */
+    @Override
     public void removeSelectionChangedListener(ISelectionChangedListener listener) {
         selectionListeners.remove(listener);
     }
@@ -182,6 +191,7 @@ class PlatformBlock implements ISelectionProvider {
      * 
      * @see org.eclipse.jface.viewers.ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
      */
+    @Override
     public void setSelection(ISelection selection) {
         if (selection instanceof IStructuredSelection) {
             if (!selection.equals(previousSelection)) {
@@ -269,12 +279,14 @@ class PlatformBlock implements ISelectionProvider {
         sortByName();
 
         platformList.addSelectionChangedListener(new ISelectionChangedListener() {
+            @Override
             public void selectionChanged(SelectionChangedEvent evt) {
                 enableButtons();
             }
         });
 
         platformList.addCheckStateListener(new ICheckStateListener() {
+            @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
                 if (event.getChecked()) {
                     setCheckedPlatform((IPlatformInstallation) event.getElement());
@@ -285,6 +297,7 @@ class PlatformBlock implements ISelectionProvider {
         });
 
         platformList.addDoubleClickListener(new IDoubleClickListener() {
+            @Override
             public void doubleClick(DoubleClickEvent e) {
                 if (!platformList.getSelection().isEmpty()) {
                     editPlatform();
@@ -306,6 +319,7 @@ class PlatformBlock implements ISelectionProvider {
 
         addButton = SWTFactory.createPushButton(buttons, YMessages.PlatformPreferencePage_Button_Add, null);
         addButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 addPlatform();
             }
@@ -313,6 +327,7 @@ class PlatformBlock implements ISelectionProvider {
 
         editButton = SWTFactory.createPushButton(buttons, YMessages.PlatformPreferencePage_Button_Edit, null);
         editButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 editPlatform();
             }
@@ -320,6 +335,7 @@ class PlatformBlock implements ISelectionProvider {
 
         removeButton = SWTFactory.createPushButton(buttons, YMessages.PlatformPreferencePage_Button_Remove, null);
         removeButton.addListener(SWT.Selection, new Listener() {
+            @Override
             public void handleEvent(Event evt) {
                 removePlatforms();
             }

@@ -5,7 +5,17 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.core.search.TypeNameMatch;
+import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -33,24 +43,44 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         SingleLineMeaningfulTokenInspector inspector = new SingleLineMeaningfulTokenInspector(doc.getTokens(), offset,
                 restrictedTypes);
         if (inspector.getLastToken() != null) {
+            final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
             switch (inspector.getLastToken().getTokenType()) {
-            case ImpexLexer.Insert:
-            case ImpexLexer.InsertUpdate:
-            case ImpexLexer.Update:
-            case ImpexLexer.Remove:
+            // case ImpexLexer.Insert:
+            // case ImpexLexer.InsertUpdate:
+            // case ImpexLexer.Update:
+            // case ImpexLexer.Remove:
+            case ImpexLexer.Mode:
+                final String qualifier = getQualifier(doc, offset);
+                final int qlen = qualifier.length();
+                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        String name = match.getType().getElementName();
+                        result.add(new CompletionProposal(name, offset - qlen, qlen, name.length()));
+                    }
+                };
                 SearchEngine engine = new SearchEngine();
-                // de.hybris.platform.jalo.GenericItem;
-
-                // SearchEngine.createHierarchyScope(new SourceType)
-                // engine.search(pattern, participants, scope, requestor, monitor);
-                // System.out.println();
-                break;
+                String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
+                IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+                try {
+                    IType type = project.findType("de.hybris.platform.jalo.GenericItem");
+                    if (type != null) {
+                        engine.searchAllTypeNames(null, SearchPattern.R_EXACT_MATCH, qualifier.toCharArray(),
+                                SearchPattern.R_PREFIX_MATCH, IJavaSearchConstants.CLASS,
+                                SearchEngine.createHierarchyScope(type), nameMatchRequestor,
+                                IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
+                    }
+                } catch (JavaModelException e) {
+                    YPlugin.logError(e);
+                }
+                final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
+                return cproposals;
             }
             return new ICompletionProposal[0];
             // new line - suggest mode
         } else {
             final String qualifier = getQualifier(doc, offset);
-            return computeModeProposals(qualifier, offset);
+            return computeModeProposals(qualifier, MODE_PROPOSALS, offset);
         }
         // token.
     }
@@ -117,20 +147,20 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         return new ContextInformationValidator(this);
     }
 
-    private ICompletionProposal[] computeModeProposals(final String qualifier, final int documentOffset) {
+    private ICompletionProposal[] computeModeProposals(final String qualifier, String[] proposals,
+            final int documentOffset) {
         final List<ICompletionProposal> propList = new ArrayList<ICompletionProposal>();
         final int qlen = qualifier.length();
-        for (int i = 0; i < MODE_PROPOSALS.length; i++) {
-            final String proposal = MODE_PROPOSALS[i];
+        for (int i = 0; i < proposals.length; i++) {
+            final String proposal = proposals[i];
 
             if (proposal.startsWith(qualifier.toUpperCase())) {
                 final int cursor = proposal.length();
                 propList.add(new CompletionProposal(proposal, documentOffset - qlen, qlen, cursor));
             }
         }
-        final ICompletionProposal[] proposals = new ICompletionProposal[propList.size()];
-        propList.toArray(proposals);
-        return proposals;
+        final ICompletionProposal[] cproposals = propList.toArray(new ICompletionProposal[propList.size()]);
+        return cproposals;
     }
 
     /**
@@ -164,18 +194,24 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         }
 
         public ILexerTokenRegion getToken() {
-            return nextToken;
+            return token;
         }
 
         private void checkTokens() {
             boolean seekNext = false;
             while (delegate.hasNext()) {
                 ILexerTokenRegion candidate = delegate.next();
-                if (isMeaningful(candidate)) {
-                    if (seekNext) {
-                        nextToken = candidate;
-                    } else {
-                        lastToken = candidate;
+                if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
+                    token = candidate;
+                    seekNext = true;
+                } else {
+                    if (isMeaningful(candidate)) {
+                        if (seekNext) {
+                            nextToken = candidate;
+                            break;
+                        } else {
+                            lastToken = candidate;
+                        }
                     }
                 }
                 // reset when new line char
@@ -185,11 +221,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                     } else {
                         lastToken = null;
                     }
-                }
-
-                if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
-                    token = candidate;
-                    seekNext = true;
                 }
             }
         }

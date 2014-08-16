@@ -110,6 +110,7 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         Label placeHolder = new Label(parent, SWT.NONE);
         placeHolder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
         comboBox.addSelectionListener(new SelectionAdapter() {
+            @SuppressWarnings("unchecked")
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int value = ((List<Integer>) comboBox.getData()).get(comboBox.getSelectionIndex());
@@ -141,7 +142,10 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         for (String[] problem : problems) {
             target.setValue(problem[1], store.getInt(problem[1]));
         }
-        // TODO need to udpate errors / warnings in all editors. How to do it??
+        if (target.needsSaving()) {
+            target.putValue(PreferenceConstants.IMPEX_PROBLEM, "changed"); //$NON-NLS-1$
+            target.setToDefault(PreferenceConstants.IMPEX_PROBLEM);
+        }
         return super.performOk();
     }
 

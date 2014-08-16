@@ -53,7 +53,6 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
             System.out.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
                     + "##################");
             final char[] source = document.get().toCharArray();
-
             final ImpexValidator validator = new ImpexValidator();
             validator.compile(source);
 

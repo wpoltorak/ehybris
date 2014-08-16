@@ -1,8 +1,6 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.eclipse.jface.text.IDocument;
@@ -12,7 +10,6 @@ import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
-import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
@@ -26,31 +23,13 @@ import com.lambda.plugin.impex.model.ILexerTokenRegion;
  */
 public class ImpexPartitionScanner implements IPartitionTokenScanner {
 
-    private static final String MODE = "__block_partition_content_type";
-    private static final String MACRO = "__macro_partition_content_type";
-    // private static final String FIELD = "__field_partition_content_type";
-    private static final String COMMENT = "__comment_partition_content_type";
-    private static final String BEANSHELL = "__beanshell_partition_content_type";
-
     private int currentPartitionOffset;
     private int currentPartitionLength;
     private ILexerTokenRegion nextToken;
     private final TypeToPartitionTokenMapper tokenMapper;
     private Iterator<ILexerTokenRegion> tokenIterator;
-    private static final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
-    static {
-        map.put(ImpexLexer.Insert, MODE);
-        map.put(ImpexLexer.InsertUpdate, MODE);
-        map.put(ImpexLexer.Update, MODE);
-        map.put(ImpexLexer.Remove, MODE);
-        map.put(ImpexLexer.Macrodef, MACRO);
-        // map.put(ImpexLexer.Field, FIELD);
-        map.put(ImpexLexer.Comment, COMMENT);
-        map.put(ImpexLexer.BeanShell, BEANSHELL);
-        map.put(null, IDocument.DEFAULT_CONTENT_TYPE);
-    }
 
-    static final String[] CONTENT_TYPES = map.values().toArray(new String[map.size()]);
+    static final String[] CONTENT_TYPES = TypeToPartitionTokenMapper.getContentTypes();
 
     public ImpexPartitionScanner(TypeToPartitionTokenMapper tokenMapper) {
         this.tokenMapper = tokenMapper;
@@ -80,11 +59,11 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
 
         this.currentPartitionOffset = nextToken.getOffset();
         this.currentPartitionLength = nextToken.getLength();
-        String partitionType = partitionType(nextToken.getTokenType());
+        String partitionType = TypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
 
         while (tokenIterator.hasNext()) {
             nextToken = tokenIterator.next();
-            String nextPartitionType = partitionType(nextToken.getTokenType());
+            String nextPartitionType = TypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
             currentPartitionLength = nextToken.getOffset() - currentPartitionOffset;
             if (!partitionType.equals(nextPartitionType) || !IDocument.DEFAULT_CONTENT_TYPE.equals(partitionType)) {
                 return new Token(partitionType);
@@ -96,11 +75,6 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
         }
         nextToken = null;
         return new Token(partitionType);
-    }
-
-    private String partitionType(int tokenType) {
-        String partitionType = map.containsKey(tokenType) ? map.get(tokenType) : IDocument.DEFAULT_CONTENT_TYPE;
-        return partitionType;
     }
 
     @Override
