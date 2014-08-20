@@ -1,0 +1,4 @@
+#macros are not evaluated in other marco declarations
+#Result: 2 macros - $macro_def and $macro$macro_def
+$macro_def=sss
+$macro$macro_def=xxx
