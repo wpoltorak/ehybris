@@ -1,0 +1,12 @@
+# Same document id definition can by used for different table types - in this case addrID is used in case of Address and UserGroup types
+# It is OK to use same document IDs for different types.
+
+INSERT Customer; uid; name; defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID ); groups(&addrID)[mode=append]
+; andi; Andi; addr1 ; addr2 ; addr3
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid )
+; addr1 ; Wroclaw ; andi ;
+; addr2 ; Wronki; andi ;
+
+INSERT UserGroup;uid[unique=true]; &addrID; locname 
+; abba; addr3; grupa abba
