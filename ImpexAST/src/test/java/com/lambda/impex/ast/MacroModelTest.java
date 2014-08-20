@@ -1,6 +1,7 @@
 package com.lambda.impex.ast;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
@@ -180,6 +181,14 @@ public class MacroModelTest extends ModelTest {
 
         final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
         assertEquals(0, macros.size());
+    }
+
+    @Test
+    public void macroWithMacroInDefinition() throws Exception {
+        init("/macro/macro-with-macro-in-definition.impex");
+        final Map<String, List<SimpleImmutableEntry<Integer, String>>> macros = context.getMacros();
+        assertTrue(macros.containsKey("$macro_def"));
+        assertTrue(macros.containsKey("$macro$macro_def"));
     }
 
     /**

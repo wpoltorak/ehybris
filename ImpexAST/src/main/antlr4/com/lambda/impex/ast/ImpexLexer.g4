@@ -24,8 +24,7 @@ tokens {
     public void emit(Token token) {
     super.emit(token);
     
-    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token)
-            + " '" + token.getText() + "'");
+    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
     
     if (token.getChannel() == Token.HIDDEN_CHANNEL) {
         return;
@@ -191,24 +190,16 @@ Equals              : '=';
 Or                  : '|';
 LineSeparator       : '\\' Ws* Lb -> channel(HIDDEN);
 
-fragment 
-    NonLineSeparator: ('\\' Ws* LineSeparator*) Ws* ~[\r\n];
-
 Separator           : ';';
 
 DocumentID          : '&' LineSeparator* Identifier;
 SpecialAttribute    : '@' LineSeparator* Identifier;
 Identifier          : [a-zA-Z_](LineSeparator* [a-zA-Z0-9_])*;
 Macrodef            : '$' LineSeparator* Identifier -> pushMode(macro); 
-fragment
-    NonMacrodef     : '$' LineSeparator* ~[a-zA-Z_];
-
 UserRights          :'$START_USERRIGHTS' .*? '$END_USERRIGHTS' (Separator | Ws)*;
-
 BeanShell           : '#%' ~[\r\n]* 
                     | '"#%' (~'"'|'"''"')* '"';
 Comment             : '#' ~[\r\n]*;
-
 Lb                  : ('\r'?'\n'|'\r') -> channel(HIDDEN);
 Ws                  : [ \t] -> channel(HIDDEN);
 Error               : .;
@@ -240,19 +231,20 @@ FieldLb                 : Lb -> type(Lb), popMode;
 
 mode macro;
 MacroEquals             : '=' -> pushMode(macroval), type(Equals);
-MacroWs                 : Ws -> type(Ws), channel(HIDDEN);
+MacroWs                 : Ws+ -> type(Ws), channel(HIDDEN);
 MacroSeparator          : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-//MacroLb                 : Ws* Lb -> type(Lb), popMode, channel(HIDDEN);
-ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
+//ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
 
 
 mode macroval;
-MacrovalWs                 : Ws+ {lastTokenType == Equals}? -> type(Ws), channel(HIDDEN);
-MacrovalSeparator          : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-MacrovalMacroref           : Macrodef -> type(Macroref);
-MacrovalLb                 : Ws* Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
-MacrovalEOF                : Ws* EOF -> type(EOF), popMode, popMode;
-Macroval                   : ~[\r\n];
+MacrovalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n'}? -> type(Ws), channel(HIDDEN);
+MacrovalSeparator		: LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
+MacrovalMacroref		: Macrodef -> type(Macroref);
+MacrovalLb				: Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
+MacrovalEOF				: Ws* EOF -> type(EOF), popMode, popMode;
+MacrovalMulti			: ~[\r\n\t\\ ] ~[\r\n]* ~[\r\n\t\\ ] -> type(Macroval);
+Macroval				: ~[\r\n];
+
 
 
 mode type;
@@ -325,19 +317,20 @@ ModifierUnknown			: ~[\r\n\[\],;=] -> type(UnknownModifier);
 //ModifierComma       : Ws* Comma Ws* (LineSeparator Ws*)* -> type(Comma), channel(HIDDEN);
 
 mode modifierval;
-ModifiervalLb			: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
-ModifiervalWs			: Ws+ {lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')}? -> type(Ws), channel(HIDDEN);
-//ModifiervalWs           : Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
-ModifiervalBracket      : ']' -> popMode, popMode, channel(HIDDEN);
-ModifiervalSingleComma	: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
-//ModifiervalSingleComma  : Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
-ModifiervalComma        : Comma -> type(Comma), popMode, channel(HIDDEN);
-ModifiervalMacroref     : Macrodef -> type(Macroref);
-ModifiervalSeparator    : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-ModifiervalDQuotes		: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
-ModifiervalDQuote		: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
-ModifiervalQuoted       : '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
-Modifierval             : ~[\r\n\[\],;\'];
+ModifiervalLb				: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
+ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')}? -> type(Ws), channel(HIDDEN);
+//ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
+ModifiervalBracket			: ']' -> popMode, popMode, channel(HIDDEN);
+ModifiervalSingleComma		: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
+//ModifiervalSingleComma	: Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
+ModifiervalComma			: Comma -> type(Comma), popMode, channel(HIDDEN);
+ModifiervalMacroref			: Macrodef -> type(Macroref);
+ModifiervalSeparator		: LineSeparator -> type(LineSeparator), channel(HIDDEN);
+ModifiervalDQuotes			: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
+ModifiervalDQuote			: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
+ModifiervalQuoted			: '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
+ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ ] ~[\r\n\[\],;\']* ~[\r\n\[\],;\'\t\\ ] -> type(Modifierval);
+Modifierval					: ~[\r\n\[\],;\'];
 
 /*
 /work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast
