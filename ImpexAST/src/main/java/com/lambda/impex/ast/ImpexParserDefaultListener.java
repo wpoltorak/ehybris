@@ -4,8 +4,11 @@ package com.lambda.impex.ast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -42,6 +45,9 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
     private final ImpexParseContext context;
 
+    private final HashMap<String, Token> currentMacros = new HashMap<>();
+    private final HashMap<Token, List<Token>> macroReferences = new HashMap<>();
+
     public ImpexParserDefaultListener(final ImpexParseContext context) {
         this.context = context;
     }
@@ -55,15 +61,46 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void enterMacro(@NotNull final ImpexParser.MacroContext ctx) {
         final String macrodef = removeSeparators(ctx.Macrodef().getText()); //remove possible separators from the middle of text
         final MacroValueContext macroValue = ctx.macroValue();
+        final Token macrodefToken = ctx.Macrodef().getSymbol();
         if (macroValue.getText().isEmpty()) {
             final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
-            problem.setLineNumber(ctx.getStart().getLine());
-            problem.setLength(ctx.Macrodef().getSymbol().getStopIndex() - ctx.Macrodef().getSymbol().getStartIndex() + 1);
+            problem.setLineNumber(macrodefToken.getLine());
+            problem.setLength(ctx.getStop().getStopIndex() - ctx.getStart().getStartIndex() + 1);
             problem.setText(macrodef);
+            problem.setStartIndex(ctx.getStart().getStartIndex());
+            problem.setStopIndex(ctx.getStop().getStopIndex());
             context.addProblem(problem);
         }
 
-        context.registerMacro(macrodef, macroValue.getText(), ctx.Macrodef().getSymbol().getLine());
+        context.registerMacro(macrodef, macroValue.getText(), macrodefToken.getLine());
+        currentMacros.put(macrodef, macrodefToken);
+    }
+
+    @Override
+    public void enterMacroValue(final MacroValueContext ctx) {
+        checkMacroReferences(ctx.Macroref());
+    }
+
+    private void checkMacroReferences(final List<TerminalNode> macroReferences) {
+        for (final TerminalNode macroReference : macroReferences) {
+            final Token macroReferenceToken = macroReference.getSymbol();
+            final String macroreftext = removeSeparators(macroReferenceToken.getText());
+            final Token macroDefinitonToken = currentMacros.get(macroreftext);
+            if (macroDefinitonToken == null) {
+                context.registerProblem(macroReferenceToken, Type.UnknownMacro);
+                continue;
+            }
+            storeMacroReference(macroDefinitonToken, macroReferenceToken);
+        }
+    }
+
+    private void storeMacroReference(final Token macroDefinitonToken, final Token macroReferenceToken) {
+        List<Token> list = macroReferences.get(macroDefinitonToken);
+        if (list == null) {
+            list = new ArrayList<>();
+            macroReferences.put(macroDefinitonToken, list);
+        }
+        list.add(macroReferenceToken);
     }
 
     @Override
@@ -199,6 +236,8 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void enterImpex(@NotNull final ImpexParser.ImpexContext ctx) {
+        currentMacros.clear();
+        macroReferences.clear();
     }
 
     /**
