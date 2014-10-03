@@ -42,9 +42,25 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
     public IContentAssistant getContentAssistant(final ISourceViewer sourceViewer) {
         // Create content assistant
         final ContentAssistant assistant = new ContentAssistant();
-
+        // assistant.addCompletionListener(new ICompletionListener() {
+        // @Override
+        // public void selectionChanged(ICompletionProposal proposal, boolean smartToggle) {
+        // System.out.println();
+        // }
+        //
+        // @Override
+        // public void assistSessionStarted(ContentAssistEvent event) {
+        // System.out.println();
+        // }
+        //
+        // @Override
+        // public void assistSessionEnded(ContentAssistEvent event) {
+        // System.out.println();
+        //
+        // }
+        // });
         // Create content assistant processor
-        final IContentAssistProcessor processor = new ImpexContentAssistProcessor();
+        final IContentAssistProcessor processor = new ImpexContentAssistProcessor(editor);
 
         // Set this processor for each supported content type
         // assistant.setContentAssistProcessor(processor, ImpexPartitionScanner.IMPEX_HEADER);

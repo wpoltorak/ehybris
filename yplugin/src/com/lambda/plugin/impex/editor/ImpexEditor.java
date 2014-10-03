@@ -1,11 +1,13 @@
 package com.lambda.plugin.impex.editor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.v4.runtime.Token;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,8 +35,10 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IFileEditorInput;
@@ -69,6 +73,8 @@ public class ImpexEditor extends TextEditor {
     private IImpexModel impexModel;
     private SyntaxColoringPropertyChangeListener syntaxColoringPropertyChangeListener;
 
+    private OccurenceFinderSelectionChangeListener occurrenceFinderSelectionChangeListener;
+
     public ImpexEditor() {
     }
 
@@ -87,92 +93,6 @@ public class ImpexEditor extends TextEditor {
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
         setSourceViewerConfiguration(new ImpexEditorConfiguration(getPreferenceStore(), this));
-        getSelectionProvider().addSelectionChangedListener(new ISelectionChangedListener() {
-
-            private OccurrencesFinderJob fOccurrencesFinderJob;
-
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                ISelection selection = event.getSelection();
-                if (selection instanceof ITextSelection) {
-                    ITextSelection textSelection = (ITextSelection) selection;
-                    updateOccurrenceAnnotations(textSelection, impexModel);
-                }
-            }
-
-            /**
-             * Updates the occurrences annotations based on the current selection.
-             * 
-             * @param selection the text selection
-             * @param antModel the model for the buildfile
-             * @since 3.1
-             */
-            protected void updateOccurrenceAnnotations(ITextSelection selection, IImpexModel model) {
-
-                if (fOccurrencesFinderJob != null)
-                    fOccurrencesFinderJob.cancel();
-
-                if (markingOccurrences) {
-                    return;
-                }
-
-                if (selection == null || model == null) {
-                    return;
-                }
-
-                IDocument document = getSourceViewer().getDocument();
-                if (!(document instanceof ImpexDocument)) {
-                    return;
-                }
-
-                List<Position> positions = null;
-
-                OccurrencesFinder finder = new OccurrencesFinder(this, model, (ImpexDocument) document, selection
-                        .getOffset());
-                positions = finder.perform();
-
-                if (positions.isEmpty()) {
-                    removeOccurrenceAnnotations();
-                    return;
-                }
-
-                fOccurrencesFinderJob = new OccurrencesFinderJob(document, positions, selection);
-                fOccurrencesFinderJob.run(new NullProgressMonitor());
-            }
-
-            private void removeOccurrenceAnnotations() {
-                IDocumentProvider documentProvider = getDocumentProvider();
-                if (documentProvider == null) {
-                    return;
-                }
-
-                IAnnotationModel annotationModel = documentProvider.getAnnotationModel(getEditorInput());
-                if (annotationModel == null || fOccurrenceAnnotations == null) {
-                    return;
-                }
-
-                IDocument document = documentProvider.getDocument(getEditorInput());
-                Object lock = getLockObject((ImpexDocument) document);
-                if (lock == null) {
-                    updateAnnotationModelForRemoves(annotationModel);
-                } else {
-                    synchronized (lock) {
-                        updateAnnotationModelForRemoves(annotationModel);
-                    }
-                }
-            }
-
-            private void updateAnnotationModelForRemoves(IAnnotationModel annotationModel) {
-                if (annotationModel instanceof IAnnotationModelExtension) {
-                    ((IAnnotationModelExtension) annotationModel).replaceAnnotations(fOccurrenceAnnotations, null);
-                } else {
-                    for (int i = 0, length = fOccurrenceAnnotations.length; i < length; i++) {
-                        annotationModel.removeAnnotation(fOccurrenceAnnotations[i]);
-                    }
-                }
-                fOccurrenceAnnotations = null;
-            }
-        });
     }
 
     @Override
@@ -202,6 +122,9 @@ public class ImpexEditor extends TextEditor {
         viewer.doOperation(ProjectionViewer.TOGGLE);
 
         annotationModel = viewer.getProjectionAnnotationModel();
+
+        occurrenceFinderSelectionChangeListener = new OccurenceFinderSelectionChangeListener();
+        occurrenceFinderSelectionChangeListener.install(getSelectionProvider());
 
     }
 
@@ -274,6 +197,10 @@ public class ImpexEditor extends TextEditor {
 
     @Override
     public void dispose() {
+        if (occurrenceFinderSelectionChangeListener != null) {
+            occurrenceFinderSelectionChangeListener.uninstall(getSelectionProvider());
+            occurrenceFinderSelectionChangeListener = null;
+        }
         getPreferenceStore().removePropertyChangeListener(syntaxColoringPropertyChangeListener);
         super.dispose();
     }
@@ -282,8 +209,14 @@ public class ImpexEditor extends TextEditor {
     protected void handlePreferenceStoreChanged(final PropertyChangeEvent event) {
         if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES)) {
             markingOccurrences = Boolean.TRUE.equals(event.getNewValue());
+            updateOccurenceAnnotations(markingOccurrences);
         }
         super.handlePreferenceStoreChanged(event);
+    }
+
+    private void updateOccurenceAnnotations(boolean markingOccurrences) {
+        occurrenceFinderSelectionChangeListener.updateOccurrenceAnnotations((ITextSelection) getSelectionProvider()
+                .getSelection(), getImpexModel(), true);
     }
 
     public boolean isMarkingOccurrences() {
@@ -311,15 +244,150 @@ public class ImpexEditor extends TextEditor {
         public List<Position> perform() {
             try {
                 ILexerTokenRegion token = document.getToken(offset);
-                Iterable<ILexerTokenRegion> tokens = document.getTokens();
-
-                // TODO iterate over tokens to find token refs
-
+                List<Token> tokens = document.getModel().getMacroreferences(token.getTokenType(), token.getOffset());
+                List<Position> positions = new ArrayList<>(tokens.size());
+                for (Token occurrence : tokens) {
+                    positions.add(new Position(occurrence.getStartIndex(), occurrence.getStopIndex()
+                            - occurrence.getStartIndex() + 1));
+                }
+                return positions;
             } catch (BadLocationException e) {
                 YPlugin.logError(e);
+                return Collections.emptyList();
             }
-            return Collections.emptyList();
         }
+    }
+
+    class OccurenceFinderSelectionChangeListener implements ISelectionChangedListener {
+
+        private OccurrencesFinderJob fOccurrencesFinderJob;
+
+        /**
+         * Installs this selection changed listener with the given selection provider. If the selection provider is a
+         * post selection provider, post selection changed events are the preferred choice, otherwise normal selection
+         * changed events are requested.
+         * 
+         * @param selectionProvider
+         */
+        public void install(ISelectionProvider selectionProvider) {
+            if (selectionProvider == null || getImpexModel() == null) {
+                return;
+            }
+            if (selectionProvider instanceof IPostSelectionProvider) {
+                IPostSelectionProvider provider = (IPostSelectionProvider) selectionProvider;
+                provider.addPostSelectionChangedListener(this);
+            } else {
+                selectionProvider.addSelectionChangedListener(this);
+            }
+        }
+
+        /**
+         * Removes this selection changed listener from the given selection provider.
+         * 
+         * @param selectionProvider
+         */
+        public void uninstall(ISelectionProvider selectionProvider) {
+            if (selectionProvider == null || getImpexModel() == null) {
+                return;
+            }
+
+            if (selectionProvider instanceof IPostSelectionProvider) {
+                IPostSelectionProvider provider = (IPostSelectionProvider) selectionProvider;
+                provider.removePostSelectionChangedListener(this);
+            } else {
+                selectionProvider.removeSelectionChangedListener(this);
+            }
+        }
+
+        @Override
+        public void selectionChanged(SelectionChangedEvent event) {
+            ISelection selection = event.getSelection();
+            if (selection instanceof ITextSelection) {
+                ITextSelection textSelection = (ITextSelection) selection;
+                updateOccurrenceAnnotations(textSelection, impexModel);
+            }
+        }
+
+        protected void updateOccurrenceAnnotations(ITextSelection selection, IImpexModel model) {
+            updateOccurrenceAnnotations(selection, model, false);
+        }
+
+        /**
+         * Updates the occurrences annotations based on the current selection.
+         * 
+         * @param selection the text selection
+         * @param model the model for the impex file
+         * @param force flag to indicate force mode, e.g. when turning on <i>Mark Occurrences</i> button
+         * @since 3.1
+         */
+        protected void updateOccurrenceAnnotations(ITextSelection selection, IImpexModel model, boolean force) {
+
+            if (fOccurrencesFinderJob != null) {
+                fOccurrencesFinderJob.cancel();
+            }
+
+            if (!markingOccurrences) {
+                removeOccurrenceAnnotations();
+                return;
+            }
+
+            if (selection == null || model == null) {
+                return;
+            }
+
+            IDocument document = getSourceViewer().getDocument();
+            if (!(document instanceof ImpexDocument)) {
+                return;
+            }
+
+            List<Position> positions = null;
+
+            OccurrencesFinder finder = new OccurrencesFinder(this, model, (ImpexDocument) document,
+                    selection.getOffset());
+            positions = finder.perform();
+
+            if (positions.isEmpty()) {
+                removeOccurrenceAnnotations();
+                return;
+            }
+
+            fOccurrencesFinderJob = new OccurrencesFinderJob(document, positions, selection, force);
+            fOccurrencesFinderJob.run(new NullProgressMonitor());
+        }
+
+        private void removeOccurrenceAnnotations() {
+            IDocumentProvider documentProvider = getDocumentProvider();
+            if (documentProvider == null) {
+                return;
+            }
+
+            IAnnotationModel annotationModel = documentProvider.getAnnotationModel(getEditorInput());
+            if (annotationModel == null || fOccurrenceAnnotations == null) {
+                return;
+            }
+
+            IDocument document = documentProvider.getDocument(getEditorInput());
+            Object lock = getLockObject((ImpexDocument) document);
+            if (lock == null) {
+                updateAnnotationModelForRemoves(annotationModel);
+            } else {
+                synchronized (lock) {
+                    updateAnnotationModelForRemoves(annotationModel);
+                }
+            }
+        }
+
+        private void updateAnnotationModelForRemoves(IAnnotationModel annotationModel) {
+            if (annotationModel instanceof IAnnotationModelExtension) {
+                ((IAnnotationModelExtension) annotationModel).replaceAnnotations(fOccurrenceAnnotations, null);
+            } else {
+                for (int i = 0, length = fOccurrenceAnnotations.length; i < length; i++) {
+                    annotationModel.removeAnnotation(fOccurrenceAnnotations[i]);
+                }
+            }
+            fOccurrenceAnnotations = null;
+        }
+
     }
 
     /**
@@ -327,7 +395,7 @@ public class ImpexEditor extends TextEditor {
      */
     class OccurrencesFinderJob extends Job {
 
-        private final ISelection fForcedMarkOccurrencesSelection = null;
+        private ISelection fForcedMarkOccurrencesSelection = null;
         private final IDocument fDocument;
         private final ISelection fSelection;
         private ISelectionValidator fPostSelectionValidator;
@@ -335,14 +403,19 @@ public class ImpexEditor extends TextEditor {
         private IProgressMonitor fProgressMonitor;
         private final List<Position> fPositions;
 
-        public OccurrencesFinderJob(IDocument document, List<Position> positions, ISelection selection) {
+        public OccurrencesFinderJob(IDocument document, List<Position> positions, ISelection selection, boolean forced) {
             super("Occurrences Marker"); //$NON-NLS-1$
             fDocument = document;
             fSelection = selection;
             fPositions = positions;
 
-            if (getSelectionProvider() instanceof ISelectionValidator)
+            if (getSelectionProvider() instanceof ISelectionValidator) {
                 fPostSelectionValidator = (ISelectionValidator) getSelectionProvider();
+            }
+
+            if (forced) {
+                fForcedMarkOccurrencesSelection = selection;
+            }
         }
 
         // cannot use cancel() because it is declared final
@@ -408,7 +481,9 @@ public class ImpexEditor extends TextEditor {
                     // Skip this match
                     continue;
                 }
-                annotationMap.put(new Annotation("org.eclipse.jdt.ui.occurrences", false, message), //$NON-NLS-1$
+                String annotationType = i == 0 ? "org.eclipse.jdt.ui.occurrences.write"
+                        : "org.eclipse.jdt.ui.occurrences";
+                annotationMap.put(new Annotation(annotationType, false, message), //$NON-NLS-1$
                         position);
             }
 

@@ -130,4 +130,11 @@ public class PreferenceConstants {
      * Example: $macro =
      */
     public static final String PROBLEM_MACRO_EMPTY = IMPEX_PROBLEM + "_empty_macro";
+
+    /**
+     * Empty macro assignment problem.<br/>
+     * Example: $macro =
+     */
+    public static final String PROBLEM_MACRO_UNDEFINED = IMPEX_PROBLEM + "_undefined_macro";
+
 }

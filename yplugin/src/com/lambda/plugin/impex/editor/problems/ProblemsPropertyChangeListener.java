@@ -11,7 +11,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import com.lambda.impex.ast.ImpexProblem.Type;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.antlr.AntlrProblemTypeToSeverityMapper;
-import com.lambda.plugin.impex.model.IImpexModel;
+import com.lambda.plugin.impex.model.ImpexModel;
 import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
 public class ProblemsPropertyChangeListener implements IPropertyChangeListener {
@@ -28,7 +28,7 @@ public class ProblemsPropertyChangeListener implements IPropertyChangeListener {
             try {
                 // TODO provide sufficient update in case of ignore <-> error/warning
                 IMarker[] markers = ResourcesPlugin.getWorkspace().getRoot()
-                        .findMarkers(IImpexModel.IMPEXFILE_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE);
+                        .findMarkers(ImpexModel.IMPEXFILE_PROBLEM_MARKER, false, IResource.DEPTH_INFINITE);
                 for (IMarker marker : markers) {
                     int curSeverity = ((Integer) marker.getAttribute(IMarker.SEVERITY)).intValue();
                     Type type = Type.valueOf((String) marker.getAttribute(IMarker.SOURCE_ID));

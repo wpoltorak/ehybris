@@ -224,6 +224,7 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_warning;
     public static String ImpexEditorPreferencePage_ignore;
     public static String ImpexEditorPreferencePage_problem_emptyMacro;
+    public static String ImpexEditorPreferencePage_problem_undefinedMacro;
 
     public static String JUnitPropertyPage_description;
     public static String JUnitPropertyPage_filter_label;
@@ -352,4 +353,8 @@ public final class YMessages extends NLS {
     public static String PlatformDefinitions_invalid_path;
     public static String PlatformDefinitions_invalid_id;
     public static String PlatformDefinitions_invalid_idNameAndPath;
+
+    // Impex problems
+    public static String Impex_problem_unknownMacro;
+    public static String Impex_problem_blankMacro;
 }

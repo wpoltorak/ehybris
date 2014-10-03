@@ -27,8 +27,9 @@ import com.lambda.plugin.YPlugin;
 
 public class ProblemsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-    private final String[][] problems = new String[][] { { YMessages.ImpexEditorPreferencePage_problem_emptyMacro,
-            PreferenceConstants.PROBLEM_MACRO_EMPTY }, };
+    private final String[][] problems = new String[][] {
+            { YMessages.ImpexEditorPreferencePage_problem_emptyMacro, PreferenceConstants.PROBLEM_MACRO_EMPTY },
+            { YMessages.ImpexEditorPreferencePage_problem_undefinedMacro, PreferenceConstants.PROBLEM_MACRO_UNDEFINED }, };
 
     private final String[] errorWarningIgnoreLabels = new String[] { YMessages.ImpexEditorPreferencePage_error,
             YMessages.ImpexEditorPreferencePage_warning, YMessages.ImpexEditorPreferencePage_ignore };

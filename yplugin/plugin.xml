@@ -3,7 +3,7 @@
 <plugin>
    <extension
          id="com.lambda.ynature"
-         name="eCommerce Nature"
+         name="%extension.name"
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
@@ -15,14 +15,14 @@
          point="org.eclipse.ui.importWizards">
       <category
             id="com.lambda.plugin.importWizard"
-            name="eCommerce">
+            name="%category.name">
       </category>
       <wizard
             category="com.lambda.plugin.importWizard"
             class="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             icon="icons/sample.gif"
             id="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
-            name="eCommerce Platform">
+            name="%wizard.name">
       </wizard>
    </extension>
    <extension
@@ -30,7 +30,7 @@
          point="org.eclipse.ui.views">
       <category
             id="com.lambda.plugin"
-            name="eCommerce">
+            name="%category.name.0">
       </category>
       <view
             allowMultiple="false"
@@ -38,7 +38,7 @@
             class="com.lambda.plugin.yunit.view.YUnitView"
             icon="icons/full/etool16/functest.png"
             id="com.lambda.plugin.yunit.view"
-            name="YUnit"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -52,7 +52,7 @@
                class="com.lambda.plugin.actions.YActionsMenu"
                icon="icons/full/kizoom.png"
                id="com.lambda.plugin.project.menu"
-               label="e&amp;Commerce"
+               label="%action.label"
                menubarPath="additions"
                style="pulldown">
          </action>
@@ -73,7 +73,7 @@
          point="org.eclipse.ui.newWizards">
       <category
             id="com.lambda.plugin.wizard"
-            name="eCommerce">
+            name="%category.name.1">
       </category>
       <wizard
             category="com.lambda.plugin.wizard"
@@ -81,10 +81,10 @@
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.yunit.wizard.NewFunctestProjectWizard"
-            name="Kizoom Functest Project"
+            name="%wizard.name.0"
             project="true">
          <description>
-            Create Kizoom Functest project
+            %wizard.description
          </description>
       </wizard>
       <wizard
@@ -93,10 +93,10 @@
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
-            name="eCommerce Extension"
+            name="%wizard.name.1"
             project="true">
          <description>
-            Create eCommerce module
+            %wizard.description.0
          </description>
       </wizard>
       <wizard
@@ -105,10 +105,10 @@
             hasPages="true"
             icon="icons/full/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
-            name="eCommerce Module"
+            name="%wizard.name.2"
             project="true">
          <description>
-            Create eCommerce module
+            %wizard.description.1
          </description>
       </wizard>
       <wizard
@@ -116,9 +116,9 @@
             class="com.lambda.plugin.wizards.impex.ImpexNewWizard"
             icon="icons/sample.gif"
             id="com.lambda.plugin.wizards.impex.ImpexNewWizard"
-            name="Impex file">
+            name="%wizard.name.3">
          <description>
-            Create new impex file
+            %wizard.description.2
          </description>
       </wizard>
    </extension>
@@ -140,7 +140,7 @@
             adaptable="true"
             icon="icons/full/dec8/functestprj_dec.png"
             id="com.lambda.plugin.yunit.decorator"
-            label="Functest Decorator"
+            label="%decorator.label"
             lightweight="true"
             location="TOP_LEFT"
             state="true">
@@ -162,7 +162,7 @@
       <page
             class="com.lambda.plugin.preferences.YPreferencePage"
             id="com.lambda.plugin.preferences.YPreferencePage"
-            name="eCommerce">
+            name="%page.name">
       </page>
       <!--
       <page
@@ -176,36 +176,36 @@
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
             id="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            name="ImpEx">
+            name="%page.name.0">
       </page>
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
             id="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
-            name="YUnit Tests">
+            name="%page.name.1">
       </page>
       <page
             category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
             class="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
             id="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
-            name="Syntax coloring">
+            name="%page.name.2">
       </page>
       <page
             category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
             class="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
             id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
-            name="Mark occurrences">
+            name="%page.name.3">
       </page>
       <page
             category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
             class="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
             id="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
-            name="Problems">
+            name="%page.name.4">
       </page>
    </extension>
    <extension
          id="com.lambda.plugin.preferences"
-         name="eCommerce Preferences"
+         name="%extension.name.0"
          point="org.eclipse.core.runtime.preferences">
       <initializer
             class="com.lambda.plugin.preferences.PreferenceInitializer">
@@ -220,7 +220,7 @@
             class="com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut"
             icon="icons/full/etool16/run_functest.png"
             id="com.lambda.plugin.yunit.launch.shortcut"
-            label="Functional Test"
+            label="%shortcut.label"
             modes="run,debug">
          <contextualLaunch>
             <enablement>
@@ -252,11 +252,11 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationDelegate"
-            delegateDescription="Run functional tests "
-            delegateName="Functest Launcher"
+            delegateDescription="%launchConfigurationType.delegateDescription"
+            delegateName="%launchConfigurationType.delegateName"
             id="com.lambda.plugin.yunit.launchconfig"
             modes="run, debug"
-            name="Functional Test"
+            name="%launchConfigurationType.name"
             public="true"
             sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
       </launchConfigurationType>
@@ -268,11 +268,11 @@
                id="com.lambda.plugin.yunit.launchgroup"
                type="com.lambda.plugin.yunit.launchconfig">
             <launchMode
-                  description="Create a configuration that will launch a Functional Test."
+                  description="%launchMode.description"
                   mode="run">
             </launchMode>
             <launchMode
-                  description="Create a configuration that will launch a Functional Test."
+                  description="%launchMode.description.0"
                   mode="debug"
                   perspective="org.eclipse.debug.ui.DebugPerspective">
             </launchMode>
@@ -339,55 +339,55 @@
             point="org.eclipse.ui.commands">
          <command
                categoryId="org.eclipse.debug.ui.category.run"
-               description="Run Functional Test"
+               description="%command.description"
                id="com.lambda.plugin.yunit.launch.shortcut.run"
-               name="Run Functional Test">
+               name="%command.name">
          </command>
          <command
                categoryId="org.eclipse.debug.ui.category.run"
-               description="Debug Functional Test"
+               description="%command.description.0"
                id="com.lambda.plugin.yunit.launch.shortcut.debug"
-               name="Debug Functional Test">
+               name="%command.name.0">
          </command>
          <command
-            name="Rerun Functional Tests"
-            description="Rerun Functional Tests"
+            name="%command.name.1"
+            description="%command.description.1"
             categoryId="org.eclipse.debug.ui.category.run"
             id="com.lambda.plugin.yunit.launch.shortcut.rerunLast">
          </command>
          <command
-            name="Rerun Functional Tests - Failures Only"
-            description="Rerun Functional Tests - Failures Only"
+            name="%command.name.2"
+            description="%command.description.2"
             categoryId="org.eclipse.debug.ui.category.run"
             id="com.lambda.plugin.yunit.launch.shortcut.rerunFailed">
          </command>
          <command
                categoryId="com.lambda.plugin"
                defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="Run Staging"
+               description="%command.description.3"
                id="com.lambda.plugin.yunit.RunFunctestStaging"
-               name="Run Staging">
+               name="%command.name.3">
          </command>    
          <command
                categoryId="com.lambda.plugin"
                defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="Run Production"
+               description="%command.description.4"
                id="com.lambda.plugin.yunit.RunFunctestProduction"
-               name="Run Production">
+               name="%command.name.4">
          </command>
          <command
                categoryId="com.lambda.plugin"
                defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="Run Local"
+               description="%command.description.5"
                id="com.lambda.plugin.yunit.RunFunctestLocal"
-               name="Run Local">
+               name="%command.name.5">
          </command>
          <command
                categoryId="org.eclipse.ui.category.textEditor"
                defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
-               description="Toggle Mark Occurrences"
+               description="%command.description.6"
                id="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
-               name="Toggle Mark Occurrences">
+               name="%command.name.6">
             <state
                   class="org.eclipse.ui.handlers.RegistryToggleState"
                   id="org.eclipse.ui.commands.toggleState">
@@ -395,9 +395,9 @@
          </command>
                   <command
                categoryId="org.eclipse.ui.category.textEditor"
-               description="Toggle Line Comment"
+               description="%command.description.7"
                id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
-               name="Toggle Line Comment">
+               name="%command.name.7">
          </command>  
        </extension>
       <extension
@@ -434,25 +434,25 @@
                      commandId="com.lambda.plugin.yunit.RunFunctestLocal"
                      disabledIcon="icons/full/dlcl16/run_dev.png"
                      icon="icons/full/elcl16/run_dev.png"
-                     label="Run Local"
+                     label="%command.label"
                      style="push"
-                     tooltip="Run workspace functional tests against local server">
+                     tooltip="%command.tooltip">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestStaging"
                      disabledIcon="icons/full/dlcl16/run_tst.png"
                      icon="icons/full/elcl16/run_tst.png"
-                     label="Run Staging"
+                     label="%command.label.0"
                      style="push"
-                     tooltip="Run workspace functional tests against staging server">
+                     tooltip="%command.tooltip.0">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestProduction"
                      disabledIcon="icons/full/dlcl16/run_prod.png"
                      icon="icons/full/elcl16/run_prod.png"
-                     label="Run Production"
+                     label="%command.label.1"
                      style="push"
-                     tooltip="Run workspace functional tests against production server">
+                     tooltip="%command.tooltip.1">
                </command>
             </toolbar>
          </menuContribution>
@@ -460,8 +460,8 @@
             locationURI="menu:org.eclipse.ui.main.menu">
         	<menu
                id="com.lambda.plugin.menu"
-               label="eCommerce"
-               tooltip="eCommerce">
+               label="%menu.label"
+               tooltip="%menu.tooltip">
          	</menu>
       	 </menuContribution>
          <menuContribution
@@ -474,25 +474,25 @@
                   commandId="com.lambda.plugin.yunit.RunFunctestLocal"
                   disabledIcon="icons/full/dlcl16/run_dev.png"
                   icon="icons/full/elcl16/run_dev.png"
-                  label="Run Local"
+                  label="%command.label.2"
                   style="push"
-                  tooltip="Run workspace functional tests against local server">
+                  tooltip="%command.tooltip.2">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestStaging"
                   disabledIcon="icons/full/dlcl16/run_tst.png"
                   icon="icons/full/elcl16/run_tst.png"
-                  label="Run Staging"
+                  label="%command.label.3"
                   style="push"
-                  tooltip="Run workspace functional tests against staging server">
+                  tooltip="%command.tooltip.3">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestProduction"
                   disabledIcon="icons/full/dlcl16/run_prod.png"
                   icon="icons/full/elcl16/run_prod.png"
-                  label="Run Production"
+                  label="%command.label.4"
                   style="push"
-                  tooltip="Run workspace functional tests against production server">
+                  tooltip="%command.tooltip.4">
             </command>
          </menuContribution>
       </extension>
@@ -589,7 +589,7 @@
                extensions="impex"
                icon="icons/sample.gif"
                id="com.lambda.plugin.impex.editor.ImpexEditor"
-               name="ImpEx Editor">
+               name="%editor.name">
             <contentTypeBinding
                   contentTypeId="com.lambda.plugin.impexFile">
             </contentTypeBinding>
@@ -631,7 +631,7 @@
     <content-type
           file-extensions="impex"
           id="com.lambda.plugin.impexFile"
-          name="Impex File"
+          name="%content-type.name"
           priority="normal">
     </content-type>
  </extension>

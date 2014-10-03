@@ -25,6 +25,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YPlugin;
@@ -32,8 +33,12 @@ import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
-    // TODO translations
     private final static String[] MODE_PROPOSALS = new String[] { "INSERT", "INSERT_UPDATE", "UPDATE", "REMOVE" };
+    private final ITextEditor editor;
+
+    public ImpexContentAssistProcessor(ITextEditor editor) {
+        this.editor = editor;
+    }
 
     @Override
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
@@ -42,47 +47,47 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 ImpexLexer.Comma, ImpexLexer.Dot, ImpexLexer.DoubleQuote);
         SingleLineMeaningfulTokenInspector inspector = new SingleLineMeaningfulTokenInspector(doc.getTokens(), offset,
                 restrictedTypes);
-        if (inspector.getLastToken() != null) {
-            final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
-            switch (inspector.getLastToken().getTokenType()) {
-            // case ImpexLexer.Insert:
-            // case ImpexLexer.InsertUpdate:
-            // case ImpexLexer.Update:
-            // case ImpexLexer.Remove:
-            case ImpexLexer.Mode:
-                final String qualifier = getQualifier(doc, offset);
-                final int qlen = qualifier.length();
-                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                    @Override
-                    public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        String name = match.getType().getElementName();
-                        result.add(new CompletionProposal(name, offset - qlen, qlen, name.length()));
-                    }
-                };
-                SearchEngine engine = new SearchEngine();
-                String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
-                IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-                try {
-                    IType type = project.findType("de.hybris.platform.jalo.GenericItem");
-                    if (type != null) {
-                        engine.searchAllTypeNames(null, SearchPattern.R_EXACT_MATCH, qualifier.toCharArray(),
-                                SearchPattern.R_PREFIX_MATCH, IJavaSearchConstants.CLASS,
-                                SearchEngine.createHierarchyScope(type), nameMatchRequestor,
-                                IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
-                    }
-                } catch (JavaModelException e) {
-                    YPlugin.logError(e);
-                }
-                final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
-                return cproposals;
-            }
-            return new ICompletionProposal[0];
-            // new line - suggest mode
-        } else {
-            final String qualifier = getQualifier(doc, offset);
-            return computeModeProposals(qualifier, MODE_PROPOSALS, offset);
+        // the beginning of the line - suggest mode
+        if (inspector.getLastToken() == null) {
+            return computeModeProposals(doc, offset);
         }
-        // token.
+
+        final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
+        switch (inspector.getLastToken().getTokenType()) {
+        case ImpexLexer.Mode:
+            // JavaTypeCompletionProposalComputer javaTypeCompletionProposalComputer = new
+            // JavaTypeCompletionProposalComputer();
+            // JavaContentAssistInvocationContext context = new JavaContentAssistInvocationContext(viewer, offset,
+            // editor);
+            // javaTypeCompletionProposalComputer.computeCompletionProposals(context, new NullProgressMonitor());
+            final String qualifier = getQualifier(doc, offset);
+            final int qlen = qualifier.length();
+            final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                @Override
+                public void acceptTypeNameMatch(final TypeNameMatch match) {
+                    String name = match.getType().getElementName();
+                    result.add(new CompletionProposal(name, offset - qlen, qlen, name.length()));
+                }
+            };
+            SearchEngine engine = new SearchEngine();
+            String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
+            IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+            try {
+                IType type = project.findType("de.hybris.platform.jalo.GenericItem");
+                if (type != null) {
+                    engine.searchAllTypeNames(null, SearchPattern.R_EXACT_MATCH, qualifier.toCharArray(),
+                            SearchPattern.R_PREFIX_MATCH, IJavaSearchConstants.CLASS,
+                            SearchEngine.createHierarchyScope(type), nameMatchRequestor,
+                            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
+                }
+            } catch (JavaModelException e) {
+                YPlugin.logError(e);
+            }
+            final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
+            // final ICompletionProposal[] cproposals = new ICompletionProposal[0];
+            return cproposals;
+        }
+        return new ICompletionProposal[0];
     }
 
     private ILexerTokenRegion getToken(final int offset, final ImpexDocument doc) {
@@ -92,31 +97,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
             YPlugin.logError(e);
         }
         return null;
-    }
-
-    private String getQualifier(final IDocument doc, int documentOffset) {
-
-        // Use string buffer to collect characters
-        final StringBuffer buf = new StringBuffer();
-        while (true) {
-            try {
-
-                // Read character backwards
-                final char c = doc.getChar(--documentOffset);
-
-                // Start of tag. Return qualifier
-                if (Character.isWhitespace(c)) {
-                    return buf.reverse().toString();
-                }
-
-                // Collect character
-                buf.append(c);
-
-            } catch (final BadLocationException e) {
-                // Document start reached, no tag found
-                return "";
-            }
-        }
     }
 
     @Override
@@ -147,20 +127,38 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         return new ContextInformationValidator(this);
     }
 
-    private ICompletionProposal[] computeModeProposals(final String qualifier, String[] proposals,
-            final int documentOffset) {
+    private ICompletionProposal[] computeModeProposals(IDocument doc, final int offset) {
+        final String qualifier = getQualifier(doc, offset);
         final List<ICompletionProposal> propList = new ArrayList<ICompletionProposal>();
         final int qlen = qualifier.length();
-        for (int i = 0; i < proposals.length; i++) {
-            final String proposal = proposals[i];
-
+        for (int i = 0; i < MODE_PROPOSALS.length; i++) {
+            final String proposal = MODE_PROPOSALS[i];
             if (proposal.startsWith(qualifier.toUpperCase())) {
                 final int cursor = proposal.length();
-                propList.add(new CompletionProposal(proposal, documentOffset - qlen, qlen, cursor));
+                propList.add(new CompletionProposal(proposal, offset - qlen, qlen, cursor));
             }
         }
         final ICompletionProposal[] cproposals = propList.toArray(new ICompletionProposal[propList.size()]);
         return cproposals;
+    }
+
+    private String getQualifier(final IDocument doc, int documentOffset) {
+        final StringBuffer buf = new StringBuffer();
+        while (true) {
+            try {
+                // Read character backwards
+                final char c = doc.getChar(--documentOffset);
+                // Whitespace. Return qualifier
+                if (Character.isWhitespace(c)) {
+                    return buf.reverse().toString();
+                }
+                // Collect character
+                buf.append(c);
+            } catch (final BadLocationException e) {
+                // Document start reached, no tag found
+                return "";
+            }
+        }
     }
 
     /**

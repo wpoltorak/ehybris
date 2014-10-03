@@ -27,6 +27,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
     public void initializeDefaultProblemsPreferences(IPreferenceStore store) {
         store.setDefault(PreferenceConstants.PROBLEM_MACRO_EMPTY, PreferenceConstants.IMPEX_WARNING);
+        store.setDefault(PreferenceConstants.PROBLEM_MACRO_UNDEFINED, PreferenceConstants.IMPEX_ERROR);
     }
 
     public void initializeDefaultSyntaxColoringPreferences(final IPreferenceStore store) {

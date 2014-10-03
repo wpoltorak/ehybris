@@ -1,21 +1,17 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenSource;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPartitioningException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -37,6 +33,11 @@ import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 
+import com.lambda.impex.ast.ErrorReportingImpexModel;
+import com.lambda.impex.ast.ImpexModel;
+import com.lambda.impex.ast.ImpexParser;
+import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
+import com.lambda.impex.ast.ImpexParserDefaultListener;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 import com.lambda.plugin.impex.model.LexerTokenRegion;
@@ -47,6 +48,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
     private List<ILexerTokenRegion> tokens = Collections.emptyList();
     private final IDocument delegate;
     private final TokenSourceProvider tokenSource;
+    private ImpexModel impexModel;
 
     public ImpexDocument(IDocument delegate, TokenSourceProvider tokenSource) {
         this.delegate = delegate;
@@ -72,6 +74,26 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
             }
         }
         return null;
+    }
+
+    public void validate() {
+        TokenSourceProvider tokenSource = new TokenSourceProvider();
+        Lexer lexer = tokenSource.get();
+        lexer.removeErrorListeners();
+        impexModel = new ErrorReportingImpexModel();
+        lexer.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
+        lexer.setInputStream(new ANTLRInputStream(this.get()));
+        ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
+
+        final ParseTree impex = parser.impex();
+
+        final ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(new ImpexParserDefaultListener(impexModel), impex);
+
+    }
+
+    public ImpexModel getModel() {
+        return impexModel;
     }
 
     protected IRegion computeDamageRegion(final DocumentEvent e) {
@@ -215,35 +237,6 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
     protected TokenSource createTokenSource(String text) {
         Lexer source = tokenSource.get();
         source.removeErrorListeners();
-        source.addErrorListener(new ANTLRErrorListener() {
-
-            @Override
-            public void syntaxError(Recognizer<?, ?> arg0, Object arg1, int arg2, int arg3, String arg4,
-                    RecognitionException arg5) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void reportContextSensitivity(Parser arg0, DFA arg1, int arg2, int arg3, int arg4, ATNConfigSet arg5) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void reportAttemptingFullContext(Parser arg0, DFA arg1, int arg2, int arg3, BitSet arg4,
-                    ATNConfigSet arg5) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void reportAmbiguity(Parser arg0, DFA arg1, int arg2, int arg3, boolean arg4, BitSet arg5,
-                    ATNConfigSet arg6) {
-                // TODO Auto-generated method stub
-
-            }
-        });
         source.setInputStream(new ANTLRInputStream(text));
         return source;
     }
@@ -498,6 +491,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void startSequentialRewrite(boolean normalize) {
         if (delegate instanceof IDocumentExtension) {
@@ -505,6 +499,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void stopSequentialRewrite() {
         if (delegate instanceof IDocumentExtension) {

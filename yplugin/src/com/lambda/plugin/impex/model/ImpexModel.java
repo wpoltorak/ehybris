@@ -18,21 +18,15 @@ import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.impex.ast.ImpexProblem.Type;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.antlr.AntlrProblemTypeToSeverityMapper;
-import com.lambda.plugin.impex.editor.ImpexProblemAnnotation;
 
 public class ImpexModel implements IImpexModel {
+
+    public static final String IMPEXFILE_PROBLEM_MARKER = YPlugin.PLUGIN_ID + ".impexFileProblem"; //$NON-NLS-1$
 
     private final IFileEditorInput editorInput;
 
     public ImpexModel(final IFileEditorInput editorInput) {
         this.editorInput = editorInput;
-    }
-
-    private void createProblemAnnotations(List<ImpexProblem> problems) {
-        for (ImpexProblem problem : problems) {
-            ImpexProblemAnnotation impexProblemAnnotation = new ImpexProblemAnnotation(new ImpexModelProblem(problem,
-                    IMarker.SEVERITY_ERROR));
-        }
     }
 
     @Override
@@ -59,11 +53,12 @@ public class ImpexModel implements IImpexModel {
                         return;
                     }
                     Map<String, Object> map = new HashMap<String, Object>();
-                    MarkerUtilities.setLineNumber(map, problem.getLineNumber());
-                    MarkerUtilities.setMessage(map, problem.getText());
-                    MarkerUtilities.setCharStart(map, problem.getStartIndex());
-                    MarkerUtilities.setCharEnd(map, problem.getStartIndex() + problem.getLength() + 1);
                     Type type = problem.getType();
+                    MarkerUtilities.setLineNumber(map, problem.getLineNumber());
+                    MarkerUtilities.setMessage(map,
+                            AntlrProblemTypeToSeverityMapper.getMessage(problem.getText(), type));
+                    MarkerUtilities.setCharStart(map, problem.getStartIndex());
+                    MarkerUtilities.setCharEnd(map, problem.getStartIndex() + problem.getLength());
                     map.put(IMarker.SEVERITY, AntlrProblemTypeToSeverityMapper.getSeverity(store, type));
                     map.put(IMarker.SOURCE_ID, type.toString());
 
