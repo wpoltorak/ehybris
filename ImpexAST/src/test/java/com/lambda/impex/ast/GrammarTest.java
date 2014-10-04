@@ -110,7 +110,7 @@ public class GrammarTest {
         System.out.println("Checking " + file.getName());
         final String text = FileUtils.readFileToString(file);
         final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
-        final ErrorReportingImpexModel context = new ErrorReportingImpexModel();
+        final DefaultImpexModel context = new DefaultImpexModel();
         lexer.addErrorListener(new ImpexParserDefaultErrorListener(context, true));
         final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 

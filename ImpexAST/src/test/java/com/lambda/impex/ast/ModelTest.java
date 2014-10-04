@@ -13,13 +13,13 @@ import org.apache.commons.io.IOUtils;
 
 public abstract class ModelTest {
 
-    protected ErrorReportingImpexModel context;
+    protected DefaultImpexModel context;
 
     //    private ImpexValidator validator;
 
     protected ParseTree init(final String name) throws Exception {
         final char[] source = IOUtils.toCharArray(getClass().getResourceAsStream(name));
-        context = new ErrorReportingImpexModel();
+        context = new DefaultImpexModel();
         final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
         final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context, true);
 

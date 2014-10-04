@@ -14,7 +14,7 @@ import org.junit.Test;
 public class MacroModelTest extends ModelTest {
 
     public void setup() {
-        final ImpexModel model = new ErrorReportingImpexModel();
+        final ImpexModel model = new DefaultImpexModel();
     }
 
     /**
