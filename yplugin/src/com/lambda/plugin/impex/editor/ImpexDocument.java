@@ -33,7 +33,7 @@ import org.eclipse.jface.text.ITypedRegion;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 
-import com.lambda.impex.ast.ErrorReportingImpexModel;
+import com.lambda.impex.ast.DefaultImpexModel;
 import com.lambda.impex.ast.ImpexModel;
 import com.lambda.impex.ast.ImpexParser;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
@@ -80,7 +80,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         TokenSourceProvider tokenSource = new TokenSourceProvider();
         Lexer lexer = tokenSource.get();
         lexer.removeErrorListeners();
-        impexModel = new ErrorReportingImpexModel();
+        impexModel = new DefaultImpexModel();
         lexer.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
         lexer.setInputStream(new ANTLRInputStream(this.get()));
         ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));

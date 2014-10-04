@@ -6,7 +6,10 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
+import org.eclipse.jface.text.contentassist.ContentAssistEvent;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
+import org.eclipse.jface.text.contentassist.ICompletionListener;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -42,23 +45,23 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
     public IContentAssistant getContentAssistant(final ISourceViewer sourceViewer) {
         // Create content assistant
         final ContentAssistant assistant = new ContentAssistant();
-        // assistant.addCompletionListener(new ICompletionListener() {
-        // @Override
-        // public void selectionChanged(ICompletionProposal proposal, boolean smartToggle) {
-        // System.out.println();
-        // }
-        //
-        // @Override
-        // public void assistSessionStarted(ContentAssistEvent event) {
-        // System.out.println();
-        // }
-        //
-        // @Override
-        // public void assistSessionEnded(ContentAssistEvent event) {
-        // System.out.println();
-        //
-        // }
-        // });
+        assistant.addCompletionListener(new ICompletionListener() {
+            @Override
+            public void selectionChanged(ICompletionProposal proposal, boolean smartToggle) {
+                System.out.println();
+            }
+
+            @Override
+            public void assistSessionStarted(ContentAssistEvent event) {
+                System.out.println();
+            }
+
+            @Override
+            public void assistSessionEnded(ContentAssistEvent event) {
+                System.out.println();
+
+            }
+        });
         // Create content assistant processor
         final IContentAssistProcessor processor = new ImpexContentAssistProcessor(editor);
 

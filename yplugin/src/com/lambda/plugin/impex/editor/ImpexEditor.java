@@ -244,7 +244,7 @@ public class ImpexEditor extends TextEditor {
         public List<Position> perform() {
             try {
                 ILexerTokenRegion token = document.getToken(offset);
-                List<Token> tokens = document.getModel().getMacroreferences(token.getTokenType(), token.getOffset());
+                List<Token> tokens = document.getModel().getOccurrenceTokens(token.getTokenType(), token.getOffset());
                 List<Position> positions = new ArrayList<>(tokens.size());
                 for (Token occurrence : tokens) {
                     positions.add(new Position(occurrence.getStartIndex(), occurrence.getStopIndex()
@@ -253,8 +253,8 @@ public class ImpexEditor extends TextEditor {
                 return positions;
             } catch (BadLocationException e) {
                 YPlugin.logError(e);
-                return Collections.emptyList();
             }
+            return Collections.emptyList();
         }
     }
 
