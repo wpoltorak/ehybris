@@ -12,31 +12,27 @@ import org.antlr.v4.runtime.tree.RuleNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.ImpexContext;
-import com.lambda.impex.ast.ImpexProblem.Type;
 
 public class ImpexValidator {
 
-    private ImpexParseContext context;
     private ImpexContext impex;
+    private final ImpexModel model;
 
-    public ImpexValidator() {
+    public ImpexValidator(final ImpexModel model) {
+        this.model = model;
     }
 
     public void compile(final char[] source) {
         try {
             internalCompile(source);
         } catch (final RecognitionException e) {
-            final ImpexProblem error = new ImpexProblem(Type.GeneralSyntaxError);
-            error.setText(e.getMessage());
-            context.addProblem(error);
-            e.printStackTrace();
+            model.addProblem(e);
         }
     }
 
     protected void internalCompile(final char[] source) throws RecognitionException {
-        context = new ImpexParseContext();
-        final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
-        final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context);
+        final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(model);
+        final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(model);
 
         final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
         lexer.removeErrorListeners();
@@ -47,7 +43,7 @@ public class ImpexValidator {
         parser.addErrorListener(errorListener);
         impex = parser.impex();
 
-        if (!context.isSyntaxInvalid()) {
+        if (!model.hasProblems()) {
             final ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(impexListener, impex);
         }
@@ -103,8 +99,8 @@ public class ImpexValidator {
         return getChildrenWithType(impex, ImpexParser.RULE_block);
     }
 
-    public ImpexParseContext getContext() {
-        return context;
+    public ImpexModel getModel() {
+        return model;
     }
 
     public ParseTree getParseTree() {

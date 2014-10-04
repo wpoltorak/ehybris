@@ -4,7 +4,6 @@ package com.lambda.impex.ast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,20 +34,21 @@ import com.lambda.impex.ast.ImpexProblem.Type;
  */
 public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
+    private static final Pattern javaClassNamePattern = Pattern.compile("[A-Za-z_]+[a-zA-Z0-9_]*");
     private static final Pattern separatorWithWhitespacePattern = Pattern.compile("([ \t]*)\\\\[ \t]*\r?[\n\r]([ \t]*)");
     private static final Pattern separatorPattern = Pattern.compile("\\\\[ \t]*\r?[\n\r]");
-    private static final Pattern javaClassNamePattern = Pattern.compile("[A-Za-z_]+[a-zA-Z0-9_]*");
+
     private static final Set<String> javaKeywords = new HashSet<String>(Arrays.asList("abstract", "assert", "boolean", "break", "byte",
             "case", "catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends", "false", "final",
             "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int", "interface", "long", "native", "new",
             "null", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
-    private final ImpexParseContext context;
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
-    private final HashMap<Token, List<Token>> macroReferences = new HashMap<>();
 
-    public ImpexParserDefaultListener(final ImpexParseContext context) {
+    private final ImpexModel context;
+
+    public ImpexParserDefaultListener(final ImpexModel context) {
         this.context = context;
     }
 
@@ -59,48 +59,33 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void enterMacro(@NotNull final ImpexParser.MacroContext ctx) {
-        final String macrodef = removeSeparators(ctx.Macrodef().getText()); //remove possible separators from the middle of text
         final MacroValueContext macroValue = ctx.macroValue();
-        final Token macrodefToken = ctx.Macrodef().getSymbol();
+
         if (macroValue.getText().isEmpty()) {
-            final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
-            problem.setLineNumber(macrodefToken.getLine());
-            problem.setLength(ctx.getStop().getStopIndex() - ctx.getStart().getStartIndex() + 1);
-            problem.setText(macrodef);
-            problem.setStartIndex(ctx.getStart().getStartIndex());
-            problem.setStopIndex(ctx.getStop().getStopIndex());
-            context.addProblem(problem);
+            context.addProblem(invalidMacroValueProblem(ctx));
+            final String macrodefText = removeSeparators(ctx.Macrodef().getText());
+            currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
+            return;
         }
 
-        context.registerMacro(macrodef, macroValue.getText(), macrodefToken.getLine());
-        currentMacros.put(macrodef, macrodefToken);
+        checkMacroReferences(ctx.macroValue().Macroref());
+        final String macrodefText = removeSeparators(ctx.Macrodef().getText());
+        currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
+        context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), ctx.macroValue());
     }
 
-    @Override
-    public void enterMacroValue(final MacroValueContext ctx) {
-        checkMacroReferences(ctx.Macroref());
+    private ImpexProblem invalidMacroValueProblem(final ImpexParser.MacroContext ctx) {
+        final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
+        problem.setLineNumber(ctx.getStart().getLine());
+        problem.setLength(getStopIndex(ctx) - ctx.getStart().getStartIndex() + 1);
+        problem.setText("invalid.macro.value");
+        problem.setStartIndex(ctx.getStart().getStartIndex());
+        problem.setStopIndex(getStopIndex(ctx));
+        return problem;
     }
 
-    private void checkMacroReferences(final List<TerminalNode> macroReferences) {
-        for (final TerminalNode macroReference : macroReferences) {
-            final Token macroReferenceToken = macroReference.getSymbol();
-            final String macroreftext = removeSeparators(macroReferenceToken.getText());
-            final Token macroDefinitonToken = currentMacros.get(macroreftext);
-            if (macroDefinitonToken == null) {
-                context.registerProblem(macroReferenceToken, Type.UnknownMacro);
-                continue;
-            }
-            storeMacroReference(macroDefinitonToken, macroReferenceToken);
-        }
-    }
-
-    private void storeMacroReference(final Token macroDefinitonToken, final Token macroReferenceToken) {
-        List<Token> list = macroReferences.get(macroDefinitonToken);
-        if (list == null) {
-            list = new ArrayList<>();
-            macroReferences.put(macroDefinitonToken, list);
-        }
-        list.add(macroReferenceToken);
+    private int getStopIndex(final ImpexParser.MacroContext ctx) {
+        return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
     }
 
     @Override
@@ -232,12 +217,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     /**
      * {@inheritDoc}
      * <p/>
-     * The default implementation does nothing.
+     * final ImpexProblem problem = new ImpexProblem( The default implementation does nothing.
      */
     @Override
     public void enterImpex(@NotNull final ImpexParser.ImpexContext ctx) {
         currentMacros.clear();
-        macroReferences.clear();
     }
 
     /**
@@ -285,6 +269,32 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void visitErrorNode(@NotNull final ErrorNode node) {
     }
 
+    private static boolean isJavaClassName(final String text) {
+        for (final String part : text.split("\\.")) {
+            if (javaKeywords.contains(part) || !javaClassNamePattern.matcher(part).matches()) {
+                return false;
+            }
+        }
+        return text.length() > 0;
+    }
+
+    public void checkMacroReferences(final List<TerminalNode> macroReferences) {
+        if (macroReferences == null || macroReferences.isEmpty()) {
+            return;
+        }
+
+        for (final TerminalNode macroReference : macroReferences) {
+            final Token macroReferenceToken = macroReference.getSymbol();
+            final String macroreftext = removeSeparators(macroReferenceToken.getText());
+            final Token macroDefinitonToken = currentMacros.get(macroreftext);
+            if (macroDefinitonToken == null) {
+                context.addProblem(macroReferenceToken, Type.UnknownMacro);
+                continue;
+            }
+            context.addMacroReference(macroDefinitonToken, macroReferenceToken);
+        }
+    }
+
     private static String removeSeparators(final String text) {
         final Matcher m = separatorPattern.matcher(text);
         final StringBuffer sb = new StringBuffer();
@@ -304,15 +314,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
         m.appendTail(sb);
         return sb.toString();
-    }
-
-    private static boolean isJavaClassName(final String text) {
-        for (final String part : text.split("\\.")) {
-            if (javaKeywords.contains(part) || !javaClassNamePattern.matcher(part).matches()) {
-                return false;
-            }
-        }
-        return text.length() > 0;
     }
 
     private Locale toLocale(final String str) {

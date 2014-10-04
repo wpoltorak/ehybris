@@ -11,14 +11,14 @@ import org.antlr.v4.runtime.dfa.DFA;
 
 public class ImpexParserDefaultErrorListener extends BaseErrorListener {
 
-    private final ImpexParseContext context;
+    private final ImpexModel context;
     private final boolean throwExceptions;
 
-    public ImpexParserDefaultErrorListener(final ImpexParseContext context) {
+    public ImpexParserDefaultErrorListener(final ImpexModel context) {
         this(context, false);
     }
 
-    public ImpexParserDefaultErrorListener(final ImpexParseContext context, final boolean throwExceptions) {
+    public ImpexParserDefaultErrorListener(final ImpexModel context, final boolean throwExceptions) {
         this.context = context;
         this.throwExceptions = throwExceptions;
     }

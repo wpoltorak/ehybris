@@ -13,13 +13,13 @@ import org.apache.commons.io.IOUtils;
 
 public abstract class ModelTest {
 
-    protected com.lambda.impex.ast.ImpexParseContext context;
+    protected ErrorReportingImpexModel context;
 
     //    private ImpexValidator validator;
 
     protected ParseTree init(final String name) throws Exception {
         final char[] source = IOUtils.toCharArray(getClass().getResourceAsStream(name));
-        context = new ImpexParseContext();
+        context = new ErrorReportingImpexModel();
         final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
         final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context, true);
 
@@ -32,7 +32,7 @@ public abstract class ModelTest {
         parser.addErrorListener(errorListener);
         final ParseTree impex = parser.impex();
 
-        if (!context.isSyntaxInvalid()) {
+        if (!context.hasProblems()) {
             final ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(impexListener, impex);
         }

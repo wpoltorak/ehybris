@@ -242,7 +242,7 @@ MacrovalSeparator		: LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
 MacrovalMacroref		: Macrodef -> type(Macroref);
 MacrovalLb				: Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
 MacrovalEOF				: Ws* EOF -> type(EOF), popMode, popMode;
-MacrovalMulti			: ~[\r\n\t\\ ] ~[\r\n]* ~[\r\n\t\\ ] -> type(Macroval);
+MacrovalMulti			: ~[\r\n\t\\ $] ~[\r\n$]* ~[\r\n\t\\ $] -> type(Macroval);
 Macroval				: ~[\r\n];
 
 
@@ -329,7 +329,7 @@ ModifiervalSeparator		: LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifiervalDQuotes			: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
 ModifiervalDQuote			: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
 ModifiervalQuoted			: '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
-ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ ] ~[\r\n\[\],;\']* ~[\r\n\[\],;\'\t\\ ] -> type(Modifierval);
+ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ $] ~[\r\n\[\],;\'$]* ~[\r\n\[\],;\'\t\\ $] -> type(Modifierval);
 Modifierval					: ~[\r\n\[\],;\'];
 
 /*
