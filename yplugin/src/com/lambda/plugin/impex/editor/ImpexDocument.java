@@ -683,5 +683,4 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
             this.tokenSource = lexer;
         }
     }
-
 }

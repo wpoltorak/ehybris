@@ -6,10 +6,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
-import org.eclipse.jface.text.contentassist.ContentAssistEvent;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
-import org.eclipse.jface.text.contentassist.ICompletionListener;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.contentassist.ICompletionProposalSorter;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -22,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
 import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
+import com.lambda.plugin.impex.editor.assist.ImpexContentAssistProcessor;
 
 public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
@@ -43,36 +43,34 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
     @Override
     public IContentAssistant getContentAssistant(final ISourceViewer sourceViewer) {
+
         // Create content assistant
         final ContentAssistant assistant = new ContentAssistant();
-        assistant.addCompletionListener(new ICompletionListener() {
+        assistant.enableColoredLabels(true);
+        assistant.setSorter(new ICompletionProposalSorter() {
             @Override
-            public void selectionChanged(ICompletionProposal proposal, boolean smartToggle) {
-                System.out.println();
-            }
-
-            @Override
-            public void assistSessionStarted(ContentAssistEvent event) {
-                System.out.println();
-            }
-
-            @Override
-            public void assistSessionEnded(ContentAssistEvent event) {
-                System.out.println();
-
+            public int compare(ICompletionProposal p1, ICompletionProposal p2) {
+                return p1.getDisplayString().compareTo(p2.getDisplayString());
             }
         });
         // Create content assistant processor
         final IContentAssistProcessor processor = new ImpexContentAssistProcessor(editor);
-
         // Set this processor for each supported content type
         // assistant.setContentAssistProcessor(processor, ImpexPartitionScanner.IMPEX_HEADER);
         // assistant.setContentAssistProcessor(processor, XMLPartitionScanner.XML_DEFAULT);
         assistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
         assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+
         // Return the content assistant
         return assistant;
     }
+
+    // @Override
+    // public IQuickAssistAssistant getQuickAssistAssistant(ISourceViewer sourceViewer) {
+    // QuickAssistAssistant assistant = new QuickAssistAssistant();
+    // assistant.setQuickAssistProcessor(new ImpexQuickAssistProcessor());
+    // return assistant;
+    // }
 
     @Override
     public IInformationControlCreator getInformationControlCreator(final ISourceViewer sourceViewer) {
