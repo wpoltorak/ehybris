@@ -2,11 +2,14 @@ package com.lambda.plugin.impex.editor.assist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
@@ -17,20 +20,15 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.TypeNameMatch;
 import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
-import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ContextInformationValidator;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.contentassist.ICompletionProposalExtension6;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.jface.viewers.StyledString;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
@@ -41,8 +39,7 @@ import com.lambda.plugin.impex.model.ILexerTokenRegion;
 public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
     private final static String[] MODE_PROPOSALS = new String[] { "INSERT", "INSERT_UPDATE", "UPDATE", "REMOVE" };
-    private final JavaElementLabelProvider javaElementLabelProvider = new JavaElementLabelProvider(
-            JavaElementLabelProvider.SHOW_DEFAULT);
+    private final ImpexCompletionProposalFactory completionProposalFactory = new ImpexCompletionProposalFactory();
     private final ITextEditor editor;
     private IType type;
     private IJavaSearchScope scope;
@@ -55,8 +52,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
         long millis = System.currentTimeMillis();
         final ImpexDocument document = (ImpexDocument) viewer.getDocument();
-        List<Integer> skipped = Arrays.asList(ImpexLexer.Separator, ImpexLexer.Ws, ImpexLexer.Comma, ImpexLexer.Dot,
-                ImpexLexer.DoubleQuote);
+        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.Comma, ImpexLexer.Dot, ImpexLexer.DoubleQuote);
         ActivationTokenInspector inspector = new ActivationTokenInspector(document.getTokens(), offset, skipped);
         // the beginning of the line - suggest mode
         if (inspector.getLastToken() == null) {
@@ -65,7 +61,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
         final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
         switch (inspector.getLastToken().getTokenType()) {
-        case ImpexLexer.Mode:
+        case ImpexLexer.Mode: {
             // JavaTypeCompletionProposalComputer javaTypeCompletionProposalComputer = new
             // JavaTypeCompletionProposalComputer();
             // JavaContentAssistInvocationContext context = new JavaContentAssistInvocationContext(viewer, offset,
@@ -76,7 +72,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 @Override
                 public void acceptTypeNameMatch(final TypeNameMatch match) {
                     if (!match.getSimpleTypeName().startsWith("Generated")) {
-                        result.add(new TypeCompletionProposal(qualifier, match.getType(), offset));
+                        result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
                     }
                 }
             };
@@ -94,11 +90,53 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
             } catch (JavaModelException e) {
                 YPlugin.logError(e);
             }
-            final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
-            System.err.println("took: " + (System.currentTimeMillis() - millis));
-            return cproposals;
+            break;
         }
-        return new ICompletionProposal[0];
+        case ImpexLexer.Separator: {
+            final String qualifier = getQualifier(document, offset);
+            final String typename = "User";
+            final Set<IType> types = new HashSet<>();
+            final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                @Override
+                public void acceptTypeNameMatch(final TypeNameMatch match) {
+                    if (match.getSimpleTypeName().equals("Generated" + typename)) {
+                        types.add(match.getType());
+                    }
+                }
+            };
+            SearchEngine engine = new SearchEngine();
+            try {
+                IJavaSearchScope scope = extensibleItemHierarchyScope();
+                if (scope != null) {
+                    engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
+                            ("Generated" + typename).toCharArray(), SearchPattern.R_EXACT_MATCH,
+                            IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
+                            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
+                }
+                if (types.isEmpty()) {
+                    break;
+                }
+
+                // TODO open type ctrl+shift+T & open resource ctrl+shift+R does not work in impex editor
+                // TODO open type with ctrl + click on type in impex editor - show menu to choose Type or Generated
+                // type. provide option to save choice as default action
+
+                IType type = types.iterator().next();
+                IField[] fields = type.getFields();
+                for (IField field : fields) {
+                    if (field.getElementName().startsWith(qualifier)) {
+                        result.add(completionProposalFactory.newAttributeProposal(qualifier, offset, field));
+                    }
+                }
+            } catch (JavaModelException e) {
+                YPlugin.logError(e);
+            }
+            break;
+        }
+        }
+        final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
+        System.err.println("took: " + (System.currentTimeMillis() - millis));
+        return cproposals;
     }
 
     private IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
@@ -167,77 +205,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 // Document start reached, no tag found
                 return "";
             }
-        }
-    }
-
-    private class TypeCompletionProposal implements ICompletionProposal, ICompletionProposalExtension6 {
-
-        final String qualifier;
-        final IType type;
-        final int cursorPosition;
-        final int replacementOffset;
-        final StyledString display;
-
-        public TypeCompletionProposal(String qualifier, IType type, int offset) {
-            this.qualifier = qualifier;
-            this.type = type;
-            this.cursorPosition = offset;
-            this.replacementOffset = offset - qualifier.length();
-            this.display = initDisplay(type);
-
-        }
-
-        private StyledString initDisplay(IType type) {
-            StyledString display = new StyledString();
-            display.append(type.getElementName());
-            display.append(" - "); //$NON-NLS-1$
-            display.append(type.getPackageFragment().getElementName(), StyledString.QUALIFIER_STYLER);
-            return display;
-        }
-
-        @Override
-        public void apply(IDocument document) {
-            try {
-                // result.add(new CompletionProposal(name, offset - qlen, qlen, name.length()));
-                // public CompletionProposal(String replacementString, int replacementOffset, int replacementLength, int
-                // cursorPosition) {
-                // document.replace(fReplacementOffset, fReplacementLength, fReplacementString);
-                int qlen = qualifier.length();
-
-                document.replace(replacementOffset, qlen, type.getElementName());
-            } catch (BadLocationException x) {
-                // ignore
-            }
-        }
-
-        @Override
-        public Point getSelection(IDocument document) {
-            return new Point(replacementOffset + cursorPosition, 0);
-        }
-
-        @Override
-        public String getAdditionalProposalInfo() {
-            return null;
-        }
-
-        @Override
-        public Image getImage() {
-            return javaElementLabelProvider.getImage(type);
-        }
-
-        @Override
-        public String getDisplayString() {
-            return display.toString();
-        }
-
-        @Override
-        public StyledString getStyledDisplayString() {
-            return display;
-        }
-
-        @Override
-        public IContextInformation getContextInformation() {
-            return null;
         }
     }
 
