@@ -79,6 +79,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         setPageComplete(false);
     }
 
+    @Override
+    @SuppressWarnings("restriction")
     public void createControl(Composite parent) {
         final Composite composite = new Composite(parent, SWT.NULL);
         composite.setFont(parent.getFont());
@@ -128,6 +130,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         projectTreeViewer = new CheckboxTreeViewer(platformComposite, SWT.BORDER);
 
         projectTreeViewer.addCheckStateListener(new ICheckStateListener() {
+            @Override
             public void checkStateChanged(CheckStateChangedEvent event) {
                 updateCheckedState();
                 setPageComplete();
@@ -136,6 +139,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         projectTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+            @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 IStructuredSelection selection = (IStructuredSelection) event.getSelection();
                 if (selection.getFirstElement() != null) {
@@ -150,6 +154,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         projectTreeViewer.setContentProvider(new ITreeContentProvider() {
 
+            @Override
             public Object[] getElements(Object element) {
                 if (element instanceof List) {
                     @SuppressWarnings("unchecked")
@@ -161,6 +166,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 return new Object[0];
             }
 
+            @Override
             public Object[] getChildren(Object parentElement) {
                 if (parentElement instanceof List) {
                     @SuppressWarnings("unchecked")
@@ -173,10 +179,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 return new Object[0];
             }
 
+            @Override
             public Object getParent(Object element) {
                 return ((PlatformExtension) element).parent;
             }
 
+            @Override
             public boolean hasChildren(Object parentElement) {
                 if (parentElement instanceof List) {
                     List<?> projects = (List<?>) parentElement;
@@ -188,9 +196,11 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 return false;
             }
 
+            @Override
             public void dispose() {
             }
 
+            @Override
             public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             }
         });
@@ -315,6 +325,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         root.addExtension(new PlatformConfig(platform.getConfigLocation(), configProjectName, configProjectName));
 
         IRunnableWithProgress runnable = new IRunnableWithProgress() {
+            @Override
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 try {
                     monitor.beginTask("Searching for extensions", IProgressMonitor.UNKNOWN);
@@ -359,6 +370,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                         root.addExtension(new PlatformExtension(path, extName, projectName, referenced));
                     } else if (!platform.getPlatformLocation().equals(path)) {
                         File[] files = path.toFile().listFiles(new FileFilter() {
+                            @Override
                             public boolean accept(File pathname) {
                                 return pathname.isDirectory();
                             }
@@ -460,6 +472,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         }
         final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
         Display.getDefault().syncExec(new Runnable() {
+            @Override
             public void run() {
                 Object[] elements = projectTreeViewer.getCheckedElements();
                 for (int i = 0; i < elements.length; i++) {
@@ -587,6 +600,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         protected final boolean referenced;
         protected final TreeSet<PlatformExtension> children = new TreeSet<PlatformExtension>(
                 new Comparator<PlatformExtension>() {
+                    @Override
                     public int compare(PlatformExtension o1, PlatformExtension o2) {
                         if (o1.parent == null) {
                             return 1;
@@ -637,6 +651,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
          * 
          * @see org.eclipse.jface.viewers.IColorProvider#getBackground(java.lang.Object)
          */
+        @Override
         public Color getForeground(Object element) {
             if (element instanceof PlatformExtension) {
                 PlatformExtension ext = (PlatformExtension) element;
@@ -655,6 +670,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
          * 
          * @see org.eclipse.jface.viewers.IColorProvider#getForeground(java.lang.Object)
          */
+        @Override
         public Color getBackground(Object element) {
             return null;
         }
@@ -666,6 +682,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
          * org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider#getStyledText(java.lang.
          * Object)
          */
+        @Override
         public StyledString getStyledText(Object element) {
             if (element instanceof PlatformExtension) {
                 return ((PlatformExtension) element).styledText();
