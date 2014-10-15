@@ -1,8 +1,7 @@
 package com.lambda.plugin.impex.editor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -45,7 +44,7 @@ import com.lambda.plugin.impex.model.LexerTokenRegion;
 public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentExtension2, IDocumentExtension3,
         IDocumentExtension4 {
 
-    private List<ILexerTokenRegion> tokens = Collections.emptyList();
+    private NavigableMap<Integer, ILexerTokenRegion> tokens = null;
     private final IDocument delegate;
     private final TokenSourceProvider tokenSource;
     private ImpexModel impexModel;
@@ -56,24 +55,31 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         setTokens(createTokens(this.get()));
     }
 
-    private void setTokens(List<ILexerTokenRegion> tokens) {
+    private void setTokens(TreeMap<Integer, ILexerTokenRegion> tokens) {
         this.tokens = tokens;
     }
 
     public Iterable<ILexerTokenRegion> getTokens() {
-        return tokens;
+        return tokens.values();
+    }
+
+    public Iterable<ILexerTokenRegion> getLineTokensForOffset(int offset) throws BadLocationException {
+        IRegion line = getLineInformationOfOffset(offset);
+        return tokens.subMap(tokens.floorKey(line.getOffset()), tokens.floorKey(line.getOffset() + line.getLength()))
+                .values();
+    }
+
+    public Iterable<ILexerTokenRegion> getLineTokens(int line) throws BadLocationException {
+        IRegion lineinfo = getLineInformation(line);
+        return tokens.subMap(tokens.floorKey(lineinfo.getOffset()),
+                tokens.floorKey(lineinfo.getOffset() + lineinfo.getLength())).values();
     }
 
     public ILexerTokenRegion getToken(int offset) throws BadLocationException {
         if ((0 > offset) || (offset > getLength())) {
             throw new BadLocationException();
         }
-        for (ILexerTokenRegion region : tokens) {
-            if (region.getOffset() <= offset && region.getOffset() + region.getLength() >= offset) {
-                return region;
-            }
-        }
-        return null;
+        return tokens.get(tokens.floorKey(offset));
     }
 
     public void validate() {
@@ -217,13 +223,13 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         // }
     }
 
-    private List<ILexerTokenRegion> createTokens(String text) {
-        List<ILexerTokenRegion> tokens = new ArrayList<ILexerTokenRegion>();
+    private TreeMap<Integer, ILexerTokenRegion> createTokens(String text) {
+        TreeMap<Integer, ILexerTokenRegion> tokens = new TreeMap<>();
         TokenSource source = createTokenSource(text);
         Token token = null;
         do {
             token = source.nextToken();
-            tokens.add(createTokenInfo(token));
+            tokens.put(token.getStartIndex(), createTokenInfo(token));
         } while (token.getType() != Token.EOF);
 
         return tokens;

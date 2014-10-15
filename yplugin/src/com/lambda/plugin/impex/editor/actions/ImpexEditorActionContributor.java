@@ -47,6 +47,12 @@ public class ImpexEditorActionContributor extends TextEditorActionContributor {
                 AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS));
         YImages.setLocalImageDescriptors(showWhitespaceCharactersAction, "show_whitespace_chars.gif");
 
+        // ToggleLineCommentAction action = new ToggleLineCommentAction(YMessages.getImpexEditorActionsBundle(),
+        //                "ToggleComment.", this); //$NON-NLS-1$
+        // action.setActionDefinitionId(IJavaEditorActionDefinitionIds.TOGGLE_COMMENT);
+        //        setAction("ToggleComment", action); //$NON-NLS-1$
+        //        markAsStateDependentAction("ToggleComment", true); //$NON-NLS-1$
+
         // showWhitespaceCharactersAction.setActionDefinitionId(ITextEditorActionDefinitionIds.SHOW_WHITESPACE_CHARACTERS);
         //        fContentAssistProposal = new RetargetTextEditorAction(bundle, "ContentAssistProposal."); //$NON-NLS-1$
         // fContentAssistProposal.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);

@@ -1,50 +1,113 @@
 package com.lambda.plugin.impex.editor.actions;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.DocumentRewriteSession;
+import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRewriteTarget;
+import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.lambda.impex.ast.ImpexLexer;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexEditor;
+import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 public class ToggleLineCommentAction extends AbstractHandler {
 
+    private ITextOperationTarget operationTarget;
+
+    // public ToggleLineCommentAction(ResourceBundle bundle, String prefix, ITextEditor editor) {
+    // super(bundle, prefix, editor);
+    // }
+    //
+    // @Override
+    // public void setEditor(ITextEditor editor) {
+    // super.setEditor(editor);
+    // operationTarget = null;
+    // }
+
+    // @Override
+    // public void update() {
+    // super.update();
+    // if (isEnabled() && operationTarget == null) {
+    // ITextEditor editor = getTextEditor();
+    // operationTarget = (ITextOperationTarget) editor.getAdapter(ITextOperationTarget.class);
+    // boolean enabled = (operationTarget != null && operationTarget.canDoOperation(ITextOperationTarget.PREFIX) &&
+    // operationTarget
+    // .canDoOperation(ITextOperationTarget.STRIP_PREFIX));
+    // setEnabled(enabled);
+    // }
+    // }
+
+    @Override
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         final IEditorPart activeEditor = HandlerUtil.getActiveEditor(event);
         if (activeEditor instanceof ImpexEditor) {
             final ImpexEditor impexEditor = (ImpexEditor) activeEditor;
-            final IDocument document = impexEditor.getDocumentProvider().getDocument(impexEditor.getEditorInput());
+            final ImpexDocument document = (ImpexDocument) impexEditor.getDocumentProvider().getDocument(
+                    impexEditor.getEditorInput());
             if (document != null) {
-                //            if (document != null && document instanceof IStructuredDocument) {
-                // get current text selection
-                final ITextSelection textSelection = getCurrentSelection(impexEditor);
-                if (!textSelection.isEmpty()) {
-                    try {
-                        YPlugin.logError("Start line: " + textSelection.getStartLine(), null);
-                        YPlugin.logError("End line: " + textSelection.getEndLine(), null);
-                        YPlugin.logError("Offset: " + textSelection.getOffset(), null);
-                        YPlugin.logError("End Line Offset: " + document.getLineOffset(textSelection.getEndLine()), null);
-                        YPlugin.logError("Length: " + textSelection.getLength(), null);
-                        YPlugin.logError("Text: " + textSelection.getText(), null);
-                        //call the implementers code to deal with the event
-                        //                    processAction(impexEditor, (IStructuredDocument) document, textSelection);
-                    } catch (final BadLocationException e) {
-                        e.printStackTrace();
-                    }
-                }
+                // operationTarget = (ITextOperationTarget) activeEditor.getAdapter(ITextOperationTarget.class);
+                // if (operationTarget != null && operationTarget.canDoOperation(ITextOperationTarget.PREFIX)
+                // && operationTarget.canDoOperation(ITextOperationTarget.STRIP_PREFIX)) {
+                toggleComment(impexEditor, document);
+                // }
             }
-
         }
         return null;
+    }
+
+    // @Override
+    // public void run() {
+    // if (operationTarget == null) {
+    // return;
+    // }
+    // final ImpexEditor impexEditor = (ImpexEditor) getTextEditor();
+    // final ImpexDocument document = (ImpexDocument) impexEditor.getDocumentProvider().getDocument(
+    // impexEditor.getEditorInput());
+    // if (document != null) {
+    // toggleComment(impexEditor, document);
+    // }
+    // }
+
+    private void toggleComment(final ImpexEditor editor, final ImpexDocument document) {
+        final ITextSelection textSelection = getCurrentSelection(editor);
+        if (!textSelection.isEmpty()) {
+            try {
+                // save the selection position since it will be changing
+                // final Position selectionPosition = new Position(textSelection.getOffset(),
+                // textSelection.getLength());
+                // document.addPosition(selectionPosition);
+                // // editor.selectAndReveal(textSelection.getOffset(), textSelection.getLength());
+                // toggle comments in a sepatrate thread
+                final IRunnableWithProgress toggleCommentsRunnable = new ToggleLinesRunnable(editor, document,
+                        textSelection);
+                toggleCommentsRunnable.run(new NullProgressMonitor());
+            } catch (final InvocationTargetException | InterruptedException e) {
+                YPlugin.logError(e);
+            }
+        }
     }
 
     private static ITextSelection getCurrentSelection(final ITextEditor textEditor) {
@@ -58,191 +121,195 @@ public class ToggleLineCommentAction extends AbstractHandler {
         return TextSelection.emptySelection();
     }
 
-    //    protected void processAction(final ITextEditor textEditor, final IStructuredDocument document, final ITextSelection textSelection) {
-    //
-    //        IStructuredModel model = null;
-    //        DocumentRewriteSession session = null;
-    //        boolean changed = false;
-    //
-    //        try {
-    //            // get text selection lines info
-    //            final int selectionStartLine = textSelection.getStartLine();
-    //            int selectionEndLine = textSelection.getEndLine();
-    //
-    //            final int selectionEndLineOffset = document.getLineOffset(selectionEndLine);
-    //            final int selectionEndOffset = textSelection.getOffset() + textSelection.getLength();
-    //
-    //            // adjust selection end line
-    //            if ((selectionEndLine > selectionStartLine) && (selectionEndLineOffset == selectionEndOffset)) {
-    //                selectionEndLine--;
-    //            }
-    //
-    //            // save the selection position since it will be changing
-    //            final Position selectionPosition = new Position(textSelection.getOffset(), textSelection.getLength());
-    //            document.addPosition(selectionPosition);
-    //
-    //            model = StructuredModelManager.getModelManager().getModelForEdit(document);
-    //            if (model != null) {
-    //                //makes it so one undo will undo all the edits to the document
-    //                model.beginRecording(this, SSEUIMessages.ToggleComment_label, SSEUIMessages.ToggleComment_description);
-    //
-    //                //keeps listeners from doing anything until updates are all done
-    //                model.aboutToChangeModel();
-    //                if (document instanceof IDocumentExtension4) {
-    //                    session = ((IDocumentExtension4) document).startRewriteSession(DocumentRewriteSessionType.UNRESTRICTED);
-    //                }
-    //                changed = true;
-    //
-    //                //get the display for the editor if we can
-    //                Display display = null;
-    //                if (textEditor instanceof StructuredTextEditor) {
-    //                    final StructuredTextViewer viewer = ((StructuredTextEditor) textEditor).getTextViewer();
-    //                    if (viewer != null) {
-    //                        display = viewer.getControl().getDisplay();
-    //                    }
-    //                }
-    //
-    //                //create the toggling operation
-    //                final IRunnableWithProgress toggleCommentsRunnable = new ToggleLinesRunnable(model.getContentTypeIdentifier(), document,
-    //                        selectionStartLine, selectionEndLine, display);
-    //
-    //                //if toggling lots of lines then use progress monitor else just run the operation
-    //                if ((selectionEndLine - selectionStartLine) > TOGGLE_LINES_MAX_NO_BUSY_INDICATOR && display != null) {
-    //                    final ProgressMonitorDialog dialog = new ProgressMonitorDialog(display.getActiveShell());
-    //                    dialog.run(false, true, toggleCommentsRunnable);
-    //                } else {
-    //                    toggleCommentsRunnable.run(new NullProgressMonitor());
-    //                }
-    //            }
-    //        } catch (final InvocationTargetException e) {
-    //            YPlugin.logError("Problem running toggle comment progess dialog.", e); //$NON-NLS-1$
-    //        } catch (final InterruptedException e) {
-    //            YPlugin.logError("Problem running toggle comment progess dialog.", e); //$NON-NLS-1$
-    //        } catch (final BadLocationException e) {
-    //            YPlugin.logError("The given selection " + textSelection + " must be invalid", e); //$NON-NLS-1$ //$NON-NLS-2$
-    //        } finally {
-    //            //clean everything up
-    //            if (session != null && document instanceof IDocumentExtension4) {
-    //                ((IDocumentExtension4) document).stopRewriteSession(session);
-    //            }
-    //
-    //            if (model != null) {
-    //                model.endRecording(this);
-    //                if (changed) {
-    //                    model.changedModel();
-    //                }
-    //                model.releaseFromEdit();
-    //            }
-    //        }
-    //    }
-    //
-    //    /**
-    //     * <p>
-    //     * The actual line toggling takes place in a runnable so it can be run as part of a progress dialog if there are many lines to toggle
-    //     * and thus the operation will take a noticeable amount of time the user should be aware of, this also allows for the operation to be
-    //     * canceled by the user
-    //     * </p>
-    //     * 
-    //     */
-    //    private static class ToggleLinesRunnable implements IRunnableWithProgress {
-    //        /** the content type for the document being commented */
-    //        private final String fContentType;
-    //
-    //        /** the document that the lines will be toggled on */
-    //        private final IStructuredDocument fDocument;
-    //
-    //        /** the first line in the document to toggle */
-    //        private final int fSelectionStartLine;
-    //
-    //        /** the last line in the document to toggle */
-    //        private final int fSelectionEndLine;
-    //
-    //        /** the display, so that it can be updated during a long operation */
-    //        private final Display fDisplay;
-    //
-    //        /**
-    //         * @param model {@link IStructuredModel} that the lines will be toggled on
-    //         * @param document {@link IDocument} that the lines will be toggled on
-    //         * @param selectionStartLine first line in the document to toggle
-    //         * @param selectionEndLine last line in the document to toggle
-    //         * @param display {@link Display}, so that it can be updated during a long operation
-    //         */
-    //        protected ToggleLinesRunnable(final String contentTypeIdentifier, final IStructuredDocument document, final int selectionStartLine,
-    //                final int selectionEndLine, final Display display) {
-    //
-    //            this.fContentType = contentTypeIdentifier;
-    //            this.fDocument = document;
-    //            this.fSelectionStartLine = selectionStartLine;
-    //            this.fSelectionEndLine = selectionEndLine;
-    //            this.fDisplay = display;
-    //        }
-    //
-    //        /**
-    //         * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
-    //         */
-    //        public void run(final IProgressMonitor monitor) {
-    //            //start work
-    //            monitor.beginTask(SSEUIMessages.ToggleComment_progress, this.fSelectionEndLine - this.fSelectionStartLine);
-    //            try {
-    //                //toggle each line so long as task not canceled
-    //                for (int line = this.fSelectionStartLine; line <= this.fSelectionEndLine && !monitor.isCanceled(); ++line) {
-    //
-    //                    //allows the user to be able to click the cancel button
-    //                    readAndDispatch(this.fDisplay);
-    //
-    //                    //get the line region
-    //                    final IRegion lineRegion = this.fDocument.getLineInformation(line);
-    //
-    //                    //don't toggle empty lines
-    //                    final String content = this.fDocument.get(lineRegion.getOffset(), lineRegion.getLength());
-    //                    if (content.trim().length() > 0) {
-    //                        //try to get a line comment type
-    //                        final ITypedRegion[] lineTypedRegions = this.fDocument.computePartitioning(lineRegion.getOffset(),
-    //                                lineRegion.getLength());
-    //                        CommentingStrategy commentType = CommentingStrategyRegistry.getDefault().getLineCommentingStrategy(
-    //                                this.fContentType, lineTypedRegions);
-    //
-    //                        //could not find line comment type so find block comment type to use on line
-    //                        if (commentType == null) {
-    //                            commentType = CommentingStrategyRegistry.getDefault().getBlockCommentingStrategy(this.fContentType,
-    //                                    lineTypedRegions);
-    //                        }
-    //
-    //                        //toggle the comment on the line
-    //                        if (commentType != null) {
-    //                            if (commentType.alreadyCommenting(this.fDocument, lineTypedRegions)) {
-    //                                commentType.remove(this.fDocument, lineRegion.getOffset(), lineRegion.getLength(), true);
-    //                            } else {
-    //                                commentType.apply(this.fDocument, lineRegion.getOffset(), lineRegion.getLength());
-    //                            }
-    //                        }
-    //                    }
-    //                    monitor.worked(1);
-    //                }
-    //            } catch (final BadLocationException e) {
-    //                YPlugin.logError("Bad location while toggling comments.", e); //$NON-NLS-1$
-    //            }
-    //            //done work
-    //            monitor.done();
-    //        }
-    //
-    //        private void readAndDispatch(final Display display) {
-    //            try {
-    //                display.readAndDispatch();
-    //            } catch (final Exception e) {
-    //                YPlugin.logWarning("Exception caused by readAndDispatch, not caused by or fatal to caller", e);
-    //            } catch (final LinkageError e) {
-    //                YPlugin.logWarning("LinkageError caused by readAndDispatch, not caused by or fatal to caller", e);
-    //            } catch (final VirtualMachineError e) {
-    //                // re-throw these
-    //                throw e;
-    //            } catch (final ThreadDeath e) {
-    //                // re-throw these
-    //                throw e;
-    //            } catch (final Error e) {
-    //                // catch every error, except for a few that we don't want to handle
-    //                YPlugin.logWarning("Error caused by readAndDispatch, not caused by or fatal to caller", e);
-    //            }
-    //        }
-    //    }
+    public static Display getDisplay() {
+        Display display = Display.getCurrent();
+        // may be null if outside the UI thread
+        if (display == null) {
+            display = Display.getDefault();
+        }
+        return display;
+    }
+
+    /**
+     * <p>
+     * The actual line toggling takes place in a runnable so it can be run as part of a progress dialog if there are
+     * many lines to toggle and thus the operation will take a noticeable amount of time the user should be aware of,
+     * this also allows for the operation to be canceled by the user
+     * </p>
+     * 
+     */
+    private static class ToggleLinesRunnable implements IRunnableWithProgress {
+        private final List<Integer> skipped = Arrays.asList(ImpexLexer.Ws);
+
+        /** the document that the lines will be toggled on */
+        private final ImpexDocument document;
+
+        /** the first line in the document to toggle */
+        private final int selectionStartLine;
+
+        /** the last line in the document to toggle */
+        private final int selectionEndLine;
+
+        /** the display, so that it can be updated during a long operation */
+        private final Display display;
+
+        private final ImpexEditor editor;
+
+        /**
+         * @param editor
+         * @param model {@link IStructuredModel} that the lines will be toggled on
+         * @param document {@link IDocument} that the lines will be toggled on
+         * @param selectionStartLine first line in the document to toggle
+         * @param selectionEndLine last line in the document to toggle
+         * @param display {@link Display}, so that it can be updated during a long operation
+         */
+        protected ToggleLinesRunnable(ImpexEditor editor, final ImpexDocument document,
+                final ITextSelection textSelection) {
+            this.editor = editor;
+            this.document = document;
+            this.selectionStartLine = textSelection.getStartLine();
+            this.selectionEndLine = textSelection.getEndLine();
+            this.display = getDisplay();
+        }
+
+        /**
+         * @see org.eclipse.jface.operation.IRunnableWithProgress#run(org.eclipse.core.runtime.IProgressMonitor)
+         */
+        @Override
+        public void run(final IProgressMonitor monitor) {
+
+            // start work
+            monitor.beginTask(YMessages.ImpexToggleComment_progress, this.selectionEndLine - this.selectionStartLine);
+
+            // mark single undo operation
+            IRewriteTarget rewriteTarget = (IRewriteTarget) editor.getAdapter(IRewriteTarget.class);
+            if (rewriteTarget != null) {
+                rewriteTarget.beginCompoundChange();
+            }
+            DocumentRewriteSession session = null;
+            try {
+                Iterable<ILexerTokenRegion>[] lines = getLines(document);
+                session = document.startRewriteSession(DocumentRewriteSessionType.SEQUENTIAL);
+                // ITextOperationTarget textOperationTarget = (ITextOperationTarget) editor
+                // .getAdapter(ITextOperationTarget.class);
+                // gather information about positions of existing comments in each line
+                LineInformation[] li = new LineInformation[selectionEndLine - selectionStartLine + 1];
+                // Arrays.fill(li, -1);
+                boolean doComment = checkExistingComments(lines, li);
+                // int operationCode = doComment ? ITextOperationTarget.PREFIX : ITextOperationTarget.STRIP_PREFIX;
+                //
+                // if (textOperationTarget != null) {
+                // textOperationTarget.doOperation(operationCode);
+                // }
+
+                // toggle comment based on existing information
+                toggleComment(document, doComment, li, monitor);
+
+            } catch (final BadLocationException e) {
+                YPlugin.logError("Bad location while toggling comments.", e); //$NON-NLS-1$
+            } finally {
+                // document.validate();
+                if (session != null) {
+                    document.stopRewriteSession(session);
+                }
+                if (rewriteTarget != null) {
+                    rewriteTarget.endCompoundChange();
+                }
+
+            }
+            // done work
+            monitor.done();
+        }
+
+        private Iterable<ILexerTokenRegion>[] getLines(final ImpexDocument document) throws BadLocationException {
+            Iterable<ILexerTokenRegion>[] lines = new Iterable[selectionEndLine - selectionStartLine + 1];
+            for (int i = selectionStartLine, j = 0; i <= selectionEndLine; i++, j++) {
+                lines[j] = document.getLineTokens(i);
+            }
+            return lines;
+        }
+
+        private boolean checkExistingComments(Iterable<ILexerTokenRegion>[] lines, LineInformation[] lineInformation)
+                throws BadLocationException {
+            boolean comment = false;
+            for (int i = 0; i < lines.length; i++) {
+                Iterator<ILexerTokenRegion> lineTokens = lines[i].iterator();
+                LineInformation li = new LineInformation();
+                lineInformation[i] = li;
+                comment |= checkExistingCommentInLine(skipped, li, i, lineTokens);
+            }
+            return comment;
+        }
+
+        // private boolean checkExistingComments(final ImpexDocument document, int[] offsets) throws
+        // BadLocationException {
+        // boolean comment = false;
+        // for (int i = selectionStartLine, j = 0; i <= selectionEndLine; i++, j++) {
+        // Iterator<ILexerTokenRegion> lineTokens = document.getLineTokens(i).iterator();
+        // comment |= checkExistingCommentInLine(skipped, offsets, j, lineTokens);
+        // }
+        // return comment;
+        // }
+
+        private boolean checkExistingCommentInLine(List<Integer> skipped, LineInformation li, int line,
+                Iterator<ILexerTokenRegion> lineTokens) {
+            while (lineTokens.hasNext()) {
+                ILexerTokenRegion token = lineTokens.next();
+                // store first token offset- this is the beginning of the line
+                if (li.lineOffset == -1) {
+                    li.lineOffset = token.getOffset();
+                }
+
+                if (!skipped.contains(token.getTokenType())) {
+                    if (ImpexLexer.Comment == token.getTokenType()) {
+                        // store comment offset if such exists
+                        li.prefixOffset = token.getOffset();
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void toggleComment(final ImpexDocument document, boolean comment, LineInformation[] lineInformation,
+                IProgressMonitor monitor) throws BadLocationException {
+            // toggle each line so long as task not canceled
+            for (int i = selectionEndLine, j = lineInformation.length - 1; i >= selectionStartLine
+                    && !monitor.isCanceled(); i--, j--) {
+                // allow the user to be able to click the cancel button
+                readAndDispatch(this.display);
+                if (comment) {
+                    document.replace(lineInformation[j].lineOffset, 0, "#");
+                } else {
+                    document.replace(lineInformation[j].prefixOffset, 1, "");
+                }
+                monitor.worked(1);
+            }
+        }
+
+        private void readAndDispatch(final Display display) {
+            try {
+                display.readAndDispatch();
+            } catch (final Exception e) {
+                YPlugin.logWarning("Exception caused by readAndDispatch, not caused by or fatal to caller", e);
+            } catch (final LinkageError e) {
+                YPlugin.logWarning("LinkageError caused by readAndDispatch, not caused by or fatal to caller", e);
+            } catch (final VirtualMachineError e) {
+                // re-throw these
+                throw e;
+            } catch (final ThreadDeath e) {
+                // re-throw these
+                throw e;
+            } catch (final Error e) {
+                // catch every error, except for a few that we don't want to handle
+                YPlugin.logWarning("Error caused by readAndDispatch, not caused by or fatal to caller", e);
+            }
+        }
+    }
+
+    private static class LineInformation {
+        int lineOffset = -1;
+        int prefixOffset = -1;
+    }
 }

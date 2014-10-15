@@ -1,5 +1,6 @@
 package com.lambda.plugin.impex.antlr;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,8 +18,14 @@ public class TypeToPartitionTokenMapper {
 
     // private final Map<Integer, IToken> tokenMap = new HashMap<Integer, IToken>();
 
-    private static final Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+    private static final Map<Integer, String> map = new LinkedHashMap<>();
+    private static final Map<String, String[]> defaultPrefixesMap = new HashMap<>();
     static {
+        defaultPrefixesMap.put(COMMENT, new String[] { "#" });
+        defaultPrefixesMap.put(IDocument.DEFAULT_CONTENT_TYPE, new String[] { "#" });
+        defaultPrefixesMap.put(BEANSHELL, new String[] { "#" });
+        defaultPrefixesMap.put(MACRO, new String[] { "#" });
+        // defaultPrefixMap.put(IDocument.DEFAULT_CONTENT_TYPE, "#");
         // map.put(ImpexLexer.Insert, MODE);
         // map.put(ImpexLexer.InsertUpdate, MODE);
         // map.put(ImpexLexer.Update, MODE);
@@ -41,12 +48,7 @@ public class TypeToPartitionTokenMapper {
         return partitionType;
     }
 
-    // public IToken getToken(int antlrTokenType, Object tokenData) {
-    // IToken token = tokenMap.get(antlrTokenType);
-    // if (token == null) {
-    // token = new Token(tokenData);
-    // tokenMap.put(antlrTokenType, token);
-    // }
-    // return token;
-    // }
+    public static String[] defaultPrefixes(String partitionType) {
+        return defaultPrefixesMap.get(partitionType);
+    }
 }

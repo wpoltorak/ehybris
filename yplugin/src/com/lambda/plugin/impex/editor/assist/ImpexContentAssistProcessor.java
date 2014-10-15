@@ -52,32 +52,35 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
         long millis = System.currentTimeMillis();
         final ImpexDocument document = (ImpexDocument) viewer.getDocument();
-        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.Comma, ImpexLexer.Dot, ImpexLexer.DoubleQuote);
-        ActivationTokenInspector inspector = new ActivationTokenInspector(document.getTokens(), offset, skipped);
-        // the beginning of the line - suggest mode
-        if (inspector.getLastToken() == null) {
-            return computeModeProposals(document, offset);
-        }
-
+        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.LineSeparator, ImpexLexer.Comma,
+                ImpexLexer.Dot, ImpexLexer.DoubleQuote);
         final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
-        switch (inspector.getLastToken().getTokenType()) {
-        case ImpexLexer.Mode: {
-            // JavaTypeCompletionProposalComputer javaTypeCompletionProposalComputer = new
-            // JavaTypeCompletionProposalComputer();
-            // JavaContentAssistInvocationContext context = new JavaContentAssistInvocationContext(viewer, offset,
-            // editor);
-            // javaTypeCompletionProposalComputer.computeCompletionProposals(context, new NullProgressMonitor());
-            final String qualifier = getQualifier(document, offset);
-            final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                @Override
-                public void acceptTypeNameMatch(final TypeNameMatch match) {
-                    if (!match.getSimpleTypeName().startsWith("Generated")) {
-                        result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
+        try {
+            Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensForOffset(offset);
+            ActivationTokenInspector inspector = new ActivationTokenInspector(lineTokens, offset, skipped);
+            // the beginning of the line - suggest mode
+            if (inspector.getLastToken() == null) {
+                return computeModeProposals(document, offset);
+            }
+
+            switch (inspector.getLastToken().getTokenType()) {
+            case ImpexLexer.Mode: {
+                // JavaTypeCompletionProposalComputer javaTypeCompletionProposalComputer = new
+                // JavaTypeCompletionProposalComputer();
+                // JavaContentAssistInvocationContext context = new JavaContentAssistInvocationContext(viewer, offset,
+                // editor);
+                // javaTypeCompletionProposalComputer.computeCompletionProposals(context, new NullProgressMonitor());
+                final String qualifier = getQualifier(document, offset);
+                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        if (!match.getSimpleTypeName().startsWith("Generated")) {
+                            result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
+                        }
                     }
-                }
-            };
-            SearchEngine engine = new SearchEngine();
-            try {
+                };
+                SearchEngine engine = new SearchEngine();
+
                 // TODO performance of the popup is slow. should it be loaded in a background thread for the first time
                 // during plugin startup?
                 IJavaSearchScope scope = extensibleItemHierarchyScope();
@@ -87,25 +90,21 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                             IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
                             IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
                 }
-            } catch (JavaModelException e) {
-                YPlugin.logError(e);
+                break;
             }
-            break;
-        }
-        case ImpexLexer.Separator: {
-            final String qualifier = getQualifier(document, offset);
-            final String typename = "User";
-            final Set<IType> types = new HashSet<>();
-            final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                @Override
-                public void acceptTypeNameMatch(final TypeNameMatch match) {
-                    if (match.getSimpleTypeName().equals("Generated" + typename)) {
-                        types.add(match.getType());
+            case ImpexLexer.Separator: {
+                final String qualifier = getQualifier(document, offset);
+                final String typename = "User";
+                final Set<IType> types = new HashSet<>();
+                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        if (match.getSimpleTypeName().equals("Generated" + typename)) {
+                            types.add(match.getType());
+                        }
                     }
-                }
-            };
-            SearchEngine engine = new SearchEngine();
-            try {
+                };
+                SearchEngine engine = new SearchEngine();
                 IJavaSearchScope scope = extensibleItemHierarchyScope();
                 if (scope != null) {
                     engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
@@ -128,15 +127,17 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                         result.add(completionProposalFactory.newAttributeProposal(qualifier, offset, field));
                     }
                 }
-            } catch (JavaModelException e) {
-                YPlugin.logError(e);
+                break;
             }
-            break;
-        }
+            }
+
+        } catch (BadLocationException | JavaModelException e) {
+            YPlugin.logError(e);
         }
         final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
         System.err.println("took: " + (System.currentTimeMillis() - millis));
         return cproposals;
+
     }
 
     private IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
@@ -217,9 +218,10 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     private class ActivationTokenInspector {
         private final Iterator<ILexerTokenRegion> delegate;
         private final int offset;
-        private ILexerTokenRegion lastToken;
+        private ILexerTokenRegion previousToken;
         private ILexerTokenRegion token;
         private ILexerTokenRegion nextToken;
+        private ILexerTokenRegion firstToken;
         private final List<Integer> skipped;
 
         public ActivationTokenInspector(Iterable<ILexerTokenRegion> iterable, int offset, List<Integer> skipped) {
@@ -230,7 +232,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         }
 
         public ILexerTokenRegion getLastToken() {
-            return lastToken;
+            return previousToken;
         }
 
         public ILexerTokenRegion getNextToken() {
@@ -247,26 +249,22 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
             while (delegate.hasNext()) {
                 ILexerTokenRegion candidate = delegate.next();
 
-                // when new line char appears reset last token or break the loop
-                if (candidate.getTokenType() == ImpexLexer.Lb) {
-                    if (seekNext) {
-                        break;
-                    } else {
-                        lastToken = null;
-                        continue;
-                    }
-                }
-
                 if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
                     token = candidate;
                     seekNext = true;
+                    if (firstToken == null) {
+                        firstToken = candidate;
+                    }
                 } else {
                     if (!skipped.contains(candidate.getTokenType())) {
                         if (seekNext) {
                             nextToken = candidate;
                             break;
                         } else {
-                            lastToken = candidate;
+                            previousToken = candidate;
+                            if (firstToken == null) {
+                                firstToken = candidate;
+                            }
                         }
                     }
                 }

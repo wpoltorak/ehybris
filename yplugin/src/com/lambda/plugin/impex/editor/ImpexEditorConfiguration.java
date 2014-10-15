@@ -20,6 +20,7 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
+import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
 import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.assist.ImpexContentAssistProcessor;
 
@@ -179,5 +180,10 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
                 ImpexPartitionScanner.CONTENT_TYPES.length);
         contentTypes[0] = IDocument.DEFAULT_CONTENT_TYPE;
         return contentTypes;
+    }
+
+    @Override
+    public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
+        return TypeToPartitionTokenMapper.defaultPrefixes(contentType);
     }
 }
