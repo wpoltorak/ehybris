@@ -55,11 +55,8 @@ public class TypeToStyleTokenMapper {
 
     private static Map<Integer, String> initTokenTypeToColorPreferenceKeyMap() {
         Map<Integer, String> map = new HashMap<Integer, String>();
-        // map.put(ImpexLexer.Insert, PreferenceConstants.COLOR_MODE);
-        // map.put(ImpexLexer.InsertUpdate, PreferenceConstants.COLOR_MODE);
-        // map.put(ImpexLexer.Update, PreferenceConstants.COLOR_MODE);
-        // map.put(ImpexLexer.Remove, PreferenceConstants.COLOR_MODE);
         map.put(ImpexLexer.Mode, PreferenceConstants.COLOR_MODE);
+        map.put(ImpexLexer.Type, PreferenceConstants.COLOR_TYPE);
         map.put(ImpexLexer.Macrodef, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Macroref, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Comment, PreferenceConstants.COLOR_COMMENT);
