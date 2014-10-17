@@ -2,6 +2,7 @@ lexer grammar ImpexLexer;
 
 tokens {
     Mode,
+    Type,
     Separator,
     Macroref,
     BooleanAttributeModifier,
@@ -46,6 +47,8 @@ tokens {
     
     private static String readType(final Token token) {
         switch (token.getType()) {
+            case ImpexLexer.Type:
+                return "Type                         ";
             case ImpexLexer.Mode:
                 return "Mode                         ";
             case ImpexLexer.Separator:
@@ -254,7 +257,7 @@ TQuote              : Quote -> type(Quote);
 LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
 TLb                 : Lb -> type(Lb), popMode, pushMode(record);
 TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-TIdentifier         : Identifier -> type(Identifier);
+TIdentifier         : Identifier -> type(Type);
 TMacroref           : Macrodef -> type(Macroref);
 TWs                 : Ws -> type(Ws), channel(HIDDEN);
 

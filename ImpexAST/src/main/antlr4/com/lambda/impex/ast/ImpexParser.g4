@@ -66,7 +66,7 @@ modifierValue
 
 
 headerTypeName
-	: Identifier | Macroref
+	: Type | Macroref
         ;
 
 macro

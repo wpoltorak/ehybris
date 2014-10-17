@@ -17,24 +17,24 @@ public class ImpexParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		FieldQuoted=33, Field=34, IntAttributeModifier=5, UserRights=27, UnknownModifier=13, 
-		Ws=31, ClassHeaderModifier=11, ModifierBracket=38, BooleanAttributeModifier=4, 
-		NumberFormatAttributeModifier=7, Quote=17, LParenthesis=18, Lb=30, Identifier=25, 
-		LineSeparator=22, Separator=2, RParenthesis=19, TextAttributeModifier=9, 
-		DocumentID=23, ModifiervalBracket=39, BooleanHeaderModifier=10, TextHeaderModifier=12, 
-		Macroref=3, SpecialAttribute=24, Comment=29, ClassAttributeModifier=8, 
-		Macrodef=26, Mode=1, DoubleQuote=16, Error=32, Dot=15, Modifierval=40, 
-		ABracket=37, DateFormatAttributeModifier=6, Macroval=35, LBracket=36, 
-		Or=21, BeanShell=28, Comma=14, Equals=20;
+		FieldQuoted=34, Field=35, IntAttributeModifier=6, UserRights=28, UnknownModifier=14, 
+		Ws=32, Type=2, ClassHeaderModifier=12, ModifierBracket=39, BooleanAttributeModifier=5, 
+		NumberFormatAttributeModifier=8, Quote=18, LParenthesis=19, Lb=31, Identifier=26, 
+		LineSeparator=23, Separator=3, RParenthesis=20, TextAttributeModifier=10, 
+		DocumentID=24, ModifiervalBracket=40, BooleanHeaderModifier=11, Macroref=4, 
+		TextHeaderModifier=13, SpecialAttribute=25, Comment=30, ClassAttributeModifier=9, 
+		Macrodef=27, Mode=1, DoubleQuote=17, Error=33, Dot=16, Modifierval=41, 
+		ABracket=38, DateFormatAttributeModifier=7, Macroval=36, LBracket=37, 
+		Or=22, BeanShell=29, Comma=15, Equals=21;
 	public static final String[] tokenNames = {
-		"<INVALID>", "Mode", "';'", "Macroref", "BooleanAttributeModifier", "IntAttributeModifier", 
-		"DateFormatAttributeModifier", "NumberFormatAttributeModifier", "ClassAttributeModifier", 
-		"TextAttributeModifier", "BooleanHeaderModifier", "ClassHeaderModifier", 
-		"TextHeaderModifier", "UnknownModifier", "','", "'.'", "'\"'", "'''", 
-		"'('", "')'", "'='", "'|'", "LineSeparator", "DocumentID", "SpecialAttribute", 
-		"Identifier", "Macrodef", "UserRights", "BeanShell", "Comment", "Lb", 
-		"Ws", "Error", "FieldQuoted", "Field", "Macroval", "LBracket", "ABracket", 
-		"']'", "ModifiervalBracket", "Modifierval"
+		"<INVALID>", "Mode", "Type", "';'", "Macroref", "BooleanAttributeModifier", 
+		"IntAttributeModifier", "DateFormatAttributeModifier", "NumberFormatAttributeModifier", 
+		"ClassAttributeModifier", "TextAttributeModifier", "BooleanHeaderModifier", 
+		"ClassHeaderModifier", "TextHeaderModifier", "UnknownModifier", "','", 
+		"'.'", "'\"'", "'''", "'('", "')'", "'='", "'|'", "LineSeparator", "DocumentID", 
+		"SpecialAttribute", "Identifier", "Macrodef", "UserRights", "BeanShell", 
+		"Comment", "Lb", "Ws", "Error", "FieldQuoted", "Field", "Macroval", "LBracket", 
+		"ABracket", "']'", "ModifiervalBracket", "Modifierval"
 	};
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
@@ -1207,7 +1207,7 @@ public class ImpexParser extends Parser {
 
 	public static class HeaderTypeNameContext extends ParserRuleContext {
 		public TerminalNode Macroref() { return getToken(ImpexParser.Macroref, 0); }
-		public TerminalNode Identifier() { return getToken(ImpexParser.Identifier, 0); }
+		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public HeaderTypeNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1231,7 +1231,7 @@ public class ImpexParser extends Parser {
 			{
 			setState(176);
 			_la = _input.LA(1);
-			if ( !(_la==Macroref || _la==Identifier) ) {
+			if ( !(_la==Type || _la==Macroref) ) {
 			_errHandler.recoverInline(this);
 			}
 			consume();
@@ -1352,7 +1352,7 @@ public class ImpexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3*\u00bf\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3+\u00bf\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\3\2\3\2\3\2\3\2\7\2+\n\2\f\2\16\2.\13\2\3\2\3\2\7\2\62\n\2"+
@@ -1367,51 +1367,51 @@ public class ImpexParser extends Parser {
 		"\r\u00a5\n\r\3\16\3\16\3\17\6\17\u00aa\n\17\r\17\16\17\u00ab\3\20\6\20"+
 		"\u00af\n\20\r\20\16\20\u00b0\3\21\3\21\3\22\3\22\3\22\3\22\3\23\7\23\u00ba"+
 		"\n\23\f\23\16\23\u00bd\13\23\3\23\2\2\24\2\4\6\b\n\f\16\20\22\24\26\30"+
-		"\32\34\36 \"$\2\n\3\2\22\23\3\2\f\16\4\2\5\5#$\3\2\6\13\4\2\5\5\17\17"+
-		"\4\2\5\5**\4\2\5\5\33\33\4\2\5\5%%\u00cd\2,\3\2\2\2\48\3\2\2\2\6B\3\2"+
-		"\2\2\bT\3\2\2\2\nV\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20k\3\2\2\2\22s\3\2"+
-		"\2\2\24|\3\2\2\2\26\u0096\3\2\2\2\30\u00a4\3\2\2\2\32\u00a6\3\2\2\2\34"+
-		"\u00a9\3\2\2\2\36\u00ae\3\2\2\2 \u00b2\3\2\2\2\"\u00b4\3\2\2\2$\u00bb"+
-		"\3\2\2\2&+\7\35\2\2\'+\7\36\2\2(+\7\37\2\2)+\5\"\22\2*&\3\2\2\2*\'\3\2"+
-		"\2\2*(\3\2\2\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\63\3\2\2\2.,\3"+
-		"\2\2\2/\62\5\4\3\2\60\62\7\35\2\2\61/\3\2\2\2\61\60\3\2\2\2\62\65\3\2"+
-		"\2\2\63\61\3\2\2\2\63\64\3\2\2\2\64\66\3\2\2\2\65\63\3\2\2\2\66\67\7\2"+
-		"\2\3\67\3\3\2\2\28?\5\6\4\29>\7\36\2\2:>\7\37\2\2;>\5\"\22\2<>\5\16\b"+
-		"\2=9\3\2\2\2=:\3\2\2\2=;\3\2\2\2=<\3\2\2\2>A\3\2\2\2?=\3\2\2\2?@\3\2\2"+
-		"\2@\5\3\2\2\2A?\3\2\2\2BC\7\3\2\2CG\5 \21\2DF\5\n\6\2ED\3\2\2\2FI\3\2"+
-		"\2\2GE\3\2\2\2GH\3\2\2\2HN\3\2\2\2IG\3\2\2\2JK\7\4\2\2KM\5\22\n\2LJ\3"+
-		"\2\2\2MP\3\2\2\2NL\3\2\2\2NO\3\2\2\2OR\3\2\2\2PN\3\2\2\2QS\7 \2\2RQ\3"+
-		"\2\2\2RS\3\2\2\2S\7\3\2\2\2TU\t\2\2\2U\t\3\2\2\2VW\5\f\7\2WX\7\26\2\2"+
-		"XY\5\36\20\2Y\13\3\2\2\2Z[\t\3\2\2[\r\3\2\2\2\\^\7\33\2\2]\\\3\2\2\2]"+
-		"^\3\2\2\2^a\3\2\2\2_`\7\4\2\2`b\5\20\t\2a_\3\2\2\2bc\3\2\2\2ca\3\2\2\2"+
-		"cd\3\2\2\2df\3\2\2\2eg\7 \2\2fe\3\2\2\2fg\3\2\2\2g\17\3\2\2\2hj\t\4\2"+
-		"\2ih\3\2\2\2jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\21\3\2\2\2mk\3\2\2\2nt\5\26"+
-		"\f\2op\5\b\5\2pq\5\26\f\2qr\5\b\5\2rt\3\2\2\2sn\3\2\2\2so\3\2\2\2t\23"+
-		"\3\2\2\2u}\7\34\2\2v}\7\32\2\2wz\7\33\2\2xy\7\21\2\2y{\5\24\13\2zx\3\2"+
-		"\2\2z{\3\2\2\2{}\3\2\2\2|u\3\2\2\2|v\3\2\2\2|w\3\2\2\2}\25\3\2\2\2~\u0094"+
-		"\7\31\2\2\177\u008b\5\24\13\2\u0080\u0081\7\24\2\2\u0081\u0086\5\26\f"+
-		"\2\u0082\u0083\7\20\2\2\u0083\u0085\5\26\f\2\u0084\u0082\3\2\2\2\u0085"+
-		"\u0088\3\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0089\3\2"+
-		"\2\2\u0088\u0086\3\2\2\2\u0089\u008a\7\25\2\2\u008a\u008c\3\2\2\2\u008b"+
-		"\u0080\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u0090\3\2\2\2\u008d\u008f\5\30"+
-		"\r\2\u008e\u008d\3\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0090"+
-		"\u0091\3\2\2\2\u0091\u0094\3\2\2\2\u0092\u0090\3\2\2\2\u0093~\3\2\2\2"+
-		"\u0093\177\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0097\3\2\2\2\u0096\u0093"+
-		"\3\2\2\2\u0096\u0095\3\2\2\2\u0097\27\3\2\2\2\u0098\u0099\5\32\16\2\u0099"+
-		"\u009b\7\26\2\2\u009a\u009c\5\36\20\2\u009b\u009a\3\2\2\2\u009b\u009c"+
-		"\3\2\2\2\u009c\u00a5\3\2\2\2\u009d\u009f\5\34\17\2\u009e\u00a0\7\26\2"+
-		"\2\u009f\u009e\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0\u00a2\3\2\2\2\u00a1\u00a3"+
-		"\5\36\20\2\u00a2\u00a1\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a5\3\2\2\2"+
-		"\u00a4\u0098\3\2\2\2\u00a4\u009d\3\2\2\2\u00a5\31\3\2\2\2\u00a6\u00a7"+
-		"\t\5\2\2\u00a7\33\3\2\2\2\u00a8\u00aa\t\6\2\2\u00a9\u00a8\3\2\2\2\u00aa"+
-		"\u00ab\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\35\3\2\2"+
-		"\2\u00ad\u00af\t\7\2\2\u00ae\u00ad\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00ae"+
-		"\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\37\3\2\2\2\u00b2\u00b3\t\b\2\2\u00b3"+
-		"!\3\2\2\2\u00b4\u00b5\7\34\2\2\u00b5\u00b6\7\26\2\2\u00b6\u00b7\5$\23"+
-		"\2\u00b7#\3\2\2\2\u00b8\u00ba\t\t\2\2\u00b9\u00b8\3\2\2\2\u00ba\u00bd"+
-		"\3\2\2\2\u00bb\u00b9\3\2\2\2\u00bb\u00bc\3\2\2\2\u00bc%\3\2\2\2\u00bd"+
-		"\u00bb\3\2\2\2\36*,\61\63=?GNR]cfksz|\u0086\u008b\u0090\u0093\u0096\u009b"+
-		"\u009f\u00a2\u00a4\u00ab\u00b0\u00bb";
+		"\32\34\36 \"$\2\n\3\2\23\24\3\2\r\17\4\2\6\6$%\3\2\7\f\4\2\6\6\20\20\4"+
+		"\2\6\6++\4\2\4\4\6\6\4\2\6\6&&\u00cd\2,\3\2\2\2\48\3\2\2\2\6B\3\2\2\2"+
+		"\bT\3\2\2\2\nV\3\2\2\2\fZ\3\2\2\2\16]\3\2\2\2\20k\3\2\2\2\22s\3\2\2\2"+
+		"\24|\3\2\2\2\26\u0096\3\2\2\2\30\u00a4\3\2\2\2\32\u00a6\3\2\2\2\34\u00a9"+
+		"\3\2\2\2\36\u00ae\3\2\2\2 \u00b2\3\2\2\2\"\u00b4\3\2\2\2$\u00bb\3\2\2"+
+		"\2&+\7\36\2\2\'+\7\37\2\2(+\7 \2\2)+\5\"\22\2*&\3\2\2\2*\'\3\2\2\2*(\3"+
+		"\2\2\2*)\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\63\3\2\2\2.,\3\2\2\2/"+
+		"\62\5\4\3\2\60\62\7\36\2\2\61/\3\2\2\2\61\60\3\2\2\2\62\65\3\2\2\2\63"+
+		"\61\3\2\2\2\63\64\3\2\2\2\64\66\3\2\2\2\65\63\3\2\2\2\66\67\7\2\2\3\67"+
+		"\3\3\2\2\28?\5\6\4\29>\7\37\2\2:>\7 \2\2;>\5\"\22\2<>\5\16\b\2=9\3\2\2"+
+		"\2=:\3\2\2\2=;\3\2\2\2=<\3\2\2\2>A\3\2\2\2?=\3\2\2\2?@\3\2\2\2@\5\3\2"+
+		"\2\2A?\3\2\2\2BC\7\3\2\2CG\5 \21\2DF\5\n\6\2ED\3\2\2\2FI\3\2\2\2GE\3\2"+
+		"\2\2GH\3\2\2\2HN\3\2\2\2IG\3\2\2\2JK\7\5\2\2KM\5\22\n\2LJ\3\2\2\2MP\3"+
+		"\2\2\2NL\3\2\2\2NO\3\2\2\2OR\3\2\2\2PN\3\2\2\2QS\7!\2\2RQ\3\2\2\2RS\3"+
+		"\2\2\2S\7\3\2\2\2TU\t\2\2\2U\t\3\2\2\2VW\5\f\7\2WX\7\27\2\2XY\5\36\20"+
+		"\2Y\13\3\2\2\2Z[\t\3\2\2[\r\3\2\2\2\\^\7\34\2\2]\\\3\2\2\2]^\3\2\2\2^"+
+		"a\3\2\2\2_`\7\5\2\2`b\5\20\t\2a_\3\2\2\2bc\3\2\2\2ca\3\2\2\2cd\3\2\2\2"+
+		"df\3\2\2\2eg\7!\2\2fe\3\2\2\2fg\3\2\2\2g\17\3\2\2\2hj\t\4\2\2ih\3\2\2"+
+		"\2jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\21\3\2\2\2mk\3\2\2\2nt\5\26\f\2op\5"+
+		"\b\5\2pq\5\26\f\2qr\5\b\5\2rt\3\2\2\2sn\3\2\2\2so\3\2\2\2t\23\3\2\2\2"+
+		"u}\7\35\2\2v}\7\33\2\2wz\7\34\2\2xy\7\22\2\2y{\5\24\13\2zx\3\2\2\2z{\3"+
+		"\2\2\2{}\3\2\2\2|u\3\2\2\2|v\3\2\2\2|w\3\2\2\2}\25\3\2\2\2~\u0094\7\32"+
+		"\2\2\177\u008b\5\24\13\2\u0080\u0081\7\25\2\2\u0081\u0086\5\26\f\2\u0082"+
+		"\u0083\7\21\2\2\u0083\u0085\5\26\f\2\u0084\u0082\3\2\2\2\u0085\u0088\3"+
+		"\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\u0089\3\2\2\2\u0088"+
+		"\u0086\3\2\2\2\u0089\u008a\7\26\2\2\u008a\u008c\3\2\2\2\u008b\u0080\3"+
+		"\2\2\2\u008b\u008c\3\2\2\2\u008c\u0090\3\2\2\2\u008d\u008f\5\30\r\2\u008e"+
+		"\u008d\3\2\2\2\u008f\u0092\3\2\2\2\u0090\u008e\3\2\2\2\u0090\u0091\3\2"+
+		"\2\2\u0091\u0094\3\2\2\2\u0092\u0090\3\2\2\2\u0093~\3\2\2\2\u0093\177"+
+		"\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0097\3\2\2\2\u0096\u0093\3\2\2\2\u0096"+
+		"\u0095\3\2\2\2\u0097\27\3\2\2\2\u0098\u0099\5\32\16\2\u0099\u009b\7\27"+
+		"\2\2\u009a\u009c\5\36\20\2\u009b\u009a\3\2\2\2\u009b\u009c\3\2\2\2\u009c"+
+		"\u00a5\3\2\2\2\u009d\u009f\5\34\17\2\u009e\u00a0\7\27\2\2\u009f\u009e"+
+		"\3\2\2\2\u009f\u00a0\3\2\2\2\u00a0\u00a2\3\2\2\2\u00a1\u00a3\5\36\20\2"+
+		"\u00a2\u00a1\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a5\3\2\2\2\u00a4\u0098"+
+		"\3\2\2\2\u00a4\u009d\3\2\2\2\u00a5\31\3\2\2\2\u00a6\u00a7\t\5\2\2\u00a7"+
+		"\33\3\2\2\2\u00a8\u00aa\t\6\2\2\u00a9\u00a8\3\2\2\2\u00aa\u00ab\3\2\2"+
+		"\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\35\3\2\2\2\u00ad\u00af"+
+		"\t\7\2\2\u00ae\u00ad\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b0"+
+		"\u00b1\3\2\2\2\u00b1\37\3\2\2\2\u00b2\u00b3\t\b\2\2\u00b3!\3\2\2\2\u00b4"+
+		"\u00b5\7\35\2\2\u00b5\u00b6\7\27\2\2\u00b6\u00b7\5$\23\2\u00b7#\3\2\2"+
+		"\2\u00b8\u00ba\t\t\2\2\u00b9\u00b8\3\2\2\2\u00ba\u00bd\3\2\2\2\u00bb\u00b9"+
+		"\3\2\2\2\u00bb\u00bc\3\2\2\2\u00bc%\3\2\2\2\u00bd\u00bb\3\2\2\2\36*,\61"+
+		"\63=?GNR]cfksz|\u0086\u008b\u0090\u0093\u0096\u009b\u009f\u00a2\u00a4"+
+		"\u00ab\u00b0\u00bb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

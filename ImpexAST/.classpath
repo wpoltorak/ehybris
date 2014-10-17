@@ -14,7 +14,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry including="**/*.java" kind="src" path="src/test/resources"/>
-	<classpathentry kind="src" path="src/main/antlr3"/>
 	<classpathentry kind="src" path="src/main/antlr4"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
