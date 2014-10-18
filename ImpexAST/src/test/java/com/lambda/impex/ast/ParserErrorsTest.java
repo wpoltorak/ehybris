@@ -25,7 +25,7 @@ public class ParserErrorsTest extends ModelTest {
         init("/errors/macro/macro-blank.impex");
         final List<ImpexProblem> problems = context.getProblems();
         assertEquals(1, problems.size());
-        assertEquals(ImpexProblem.Type.InvalidMacroValue, problems.get(0).getType());
+        assertEquals(ImpexProblem.Type.EmptyMacroValue, problems.get(0).getType());
     }
 
     @Test

@@ -4,7 +4,7 @@ public class ImpexProblem {
     public enum Type {
         InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
         InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro,
-        InvalidMacroValue, DuplicateDocumentID, SyntaxError, InvalidSubtype;
+        EmptyMacroValue, DuplicateDocumentID, SyntaxError, SubtypeRequired, InvalidSubtype, InvalidType;
     }
 
     private int lineNumber;

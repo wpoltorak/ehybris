@@ -45,7 +45,7 @@ tokens {
         System.out.println("Enter mode: " + getModeNames()[m]);
     }
     
-    private static String readType(final Token token) {
+    public static String readType(final Token token) {
         switch (token.getType()) {
             case ImpexLexer.Type:
                 return "Type                         ";
@@ -213,7 +213,7 @@ RecordInsert              : Insert -> popMode, pushMode(type), type(Mode);
 RecordInsertUpdate        : InsertUpdate -> popMode, pushMode(type), type(Mode);
 RecordUpdate              : Update -> popMode, pushMode(type), type(Mode);
 RecordRemove              : Remove -> popMode, pushMode(type), type(Mode);
-RecordIdentifier          : Identifier -> type(Identifier);
+RecordIdentifier          : Identifier -> type(Type);
 RecordBeanShell           : BeanShell -> type(BeanShell);
 RecordUserRights          : UserRights -> type(UserRights);
 RecordSeparator           : Ws* Separator Ws* -> type(Separator), pushMode(field);
@@ -227,8 +227,9 @@ FieldLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 FieldSeparator          : Ws* Separator Ws* -> type(Separator);
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
 FieldMacroref           : Macrodef -> type(Macroref);
-Field                   :  ~[\r\n";];
 FieldLb                 : Lb -> type(Lb), popMode;
+FieldMulti				: ~[\r\n";\t\\ $] ~[\r\n";$]* ~[\r\n";\t\\ $] -> type(Field);
+Field                   : ~[\r\n";];
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?
 

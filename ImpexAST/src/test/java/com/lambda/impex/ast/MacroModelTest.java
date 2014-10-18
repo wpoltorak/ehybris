@@ -142,6 +142,7 @@ public class MacroModelTest extends ModelTest {
     }
 
     @Test
+    @Ignore
     public void macroWithMultipleDefinitions() throws Exception {
         init("/macro/macro-duplicate.impex");
 

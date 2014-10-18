@@ -22,9 +22,12 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
+import com.lambda.impex.ast.ImpexParser.BlockContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
+import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
 import com.lambda.impex.ast.ImpexParser.MacroValueContext;
 import com.lambda.impex.ast.ImpexParser.ModifierValueContext;
+import com.lambda.impex.ast.ImpexParser.RecordContext;
 import com.lambda.impex.ast.ImpexParser.UnknownModifierContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
@@ -46,10 +49,16 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
 
+    private TypeFinder typeFinder;
+    private TypeDescription typeDescription;
     private final ImpexModel context;
 
     public ImpexParserDefaultListener(final ImpexModel context) {
         this.context = context;
+    }
+
+    public void setTypeFinder(final TypeFinder typeFinder) {
+        this.typeFinder = typeFinder;
     }
 
     /**
@@ -62,7 +71,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final MacroValueContext macroValue = ctx.macroValue();
 
         if (macroValue.getText().isEmpty()) {
-            context.addProblem(invalidMacroValueProblem(ctx));
+            context.addProblem(problem(ctx, Type.EmptyMacroValue));
             final String macrodefText = removeSeparators(ctx.Macrodef().getText());
             currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
             return;
@@ -74,17 +83,25 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), ctx.macroValue());
     }
 
-    private ImpexProblem invalidMacroValueProblem(final ImpexParser.MacroContext ctx) {
-        final ImpexProblem problem = new ImpexProblem(Type.InvalidMacroValue);
-        problem.setLineNumber(ctx.getStart().getLine());
-        problem.setLength(getStopIndex(ctx) - ctx.getStart().getStartIndex() + 1);
-        problem.setText("invalid.macro.value");
-        problem.setStartIndex(ctx.getStart().getStartIndex());
-        problem.setStopIndex(getStopIndex(ctx));
+    private ImpexProblem problem(final ParserRuleContext context, final Type type) {
+        final ImpexProblem problem = new ImpexProblem(type);
+        problem.setLineNumber(context.getStart().getLine());
+        problem.setLength(stopIndex(context) - context.getStart().getStartIndex() + 1);
+        problem.setStartIndex(context.getStart().getStartIndex());
+        problem.setStopIndex(stopIndex(context));
         return problem;
     }
 
-    private int getStopIndex(final ImpexParser.MacroContext ctx) {
+    private ImpexProblem problem(final Token token, final Type type) {
+        final ImpexProblem problem = new ImpexProblem(type);
+        problem.setLineNumber(token.getLine());
+        problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
+        problem.setStartIndex(token.getStartIndex());
+        problem.setStopIndex(token.getStopIndex());
+        return problem;
+    }
+
+    private int stopIndex(final ParserRuleContext ctx) {
         return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
     }
 
@@ -178,6 +195,51 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void enterHeaderTypeName(final HeaderTypeNameContext ctx) {
+        checkMacroReferences(ctx.Macroref());
+        typeDescription = typeFinder.findType(getText(ctx));
+
+        if (!typeDescription.exists()) {
+            context.addProblem(new ImpexProblem(Type.InvalidType));
+        }
+    }
+
+    @Override
+    public void enterRecord(final RecordContext ctx) {
+        final TerminalNode subtype = ctx.Type();
+        if (typeDescription.exists()) {
+            final String subtypeName = getText(subtype);
+            if (subtype == null || "".equals(subtypeName)) {
+                context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
+            } else if (!typeDescription.contains(subtypeName)) {
+                context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
+            }
+        }
+        super.enterRecord(ctx);
+    }
+
+    //TODO evaluate macros using regexp
+    private String getText(final ParserRuleContext ctx) {
+        if (ctx == null) {
+            return null;
+        }
+        return ctx.getText();
+    }
+
+    private String getText(final TerminalNode node) {
+        if (node == null) {
+            return null;
+        }
+        return node.getText();
+    }
+
+    @Override
+    public void exitBlock(final BlockContext ctx) {
+        typeDescription = null;
+        super.exitBlock(ctx);
     }
 
     @Override
@@ -284,15 +346,22 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
 
         for (final TerminalNode macroReference : macroReferences) {
-            final Token macroReferenceToken = macroReference.getSymbol();
-            final String macroreftext = removeSeparators(macroReferenceToken.getText());
-            final Token macroDefinitonToken = currentMacros.get(macroreftext);
-            if (macroDefinitonToken == null) {
-                context.addProblem(macroReferenceToken, Type.UnknownMacro);
-                continue;
-            }
-            context.addMacroReference(macroDefinitonToken, macroReferenceToken);
+            checkMacroReferences(macroReference);
         }
+    }
+
+    private void checkMacroReferences(final TerminalNode macroReference) {
+        if (macroReference == null) {
+            return;
+        }
+        final Token macroReferenceToken = macroReference.getSymbol();
+        final String macroreftext = removeSeparators(macroReferenceToken.getText());
+        final Token macroDefinitonToken = currentMacros.get(macroreftext);
+        if (macroDefinitonToken == null) {
+            context.addProblem(macroReferenceToken, Type.UnknownMacro);
+            return;
+        }
+        context.addMacroReference(macroDefinitonToken, macroReferenceToken);
     }
 
     private static String removeSeparators(final String text) {

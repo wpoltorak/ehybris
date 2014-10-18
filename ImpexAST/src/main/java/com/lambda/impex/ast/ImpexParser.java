@@ -241,7 +241,7 @@ public class ImpexParser extends Parser {
 			setState(61);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Separator) | (1L << Identifier) | (1L << Macrodef) | (1L << BeanShell) | (1L << Comment))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Type) | (1L << Separator) | (1L << Macrodef) | (1L << BeanShell) | (1L << Comment))) != 0)) {
 				{
 				setState(59);
 				switch (_input.LA(1)) {
@@ -260,8 +260,8 @@ public class ImpexParser extends Parser {
 					setState(57); macro();
 					}
 					break;
+				case Type:
 				case Separator:
-				case Identifier:
 					{
 					setState(58); record();
 					}
@@ -520,13 +520,13 @@ public class ImpexParser extends Parser {
 			return getRuleContext(FieldContext.class,i);
 		}
 		public TerminalNode Lb() { return getToken(ImpexParser.Lb, 0); }
-		public TerminalNode Identifier() { return getToken(ImpexParser.Identifier, 0); }
 		public List<FieldContext> field() {
 			return getRuleContexts(FieldContext.class);
 		}
 		public TerminalNode Separator(int i) {
 			return getToken(ImpexParser.Separator, i);
 		}
+		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public RecordContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -551,9 +551,9 @@ public class ImpexParser extends Parser {
 			{
 			setState(91);
 			_la = _input.LA(1);
-			if (_la==Identifier) {
+			if (_la==Type) {
 				{
-				setState(90); match(Identifier);
+				setState(90); match(Type);
 				}
 			}
 
@@ -695,6 +695,7 @@ public class ImpexParser extends Parser {
 			switch (_input.LA(1)) {
 			case EOF:
 			case Mode:
+			case Type:
 			case Separator:
 			case DocumentID:
 			case SpecialAttribute:
@@ -1382,8 +1383,8 @@ public class ImpexParser extends Parser {
 		"\2\2GH\3\2\2\2HN\3\2\2\2IG\3\2\2\2JK\7\5\2\2KM\5\22\n\2LJ\3\2\2\2MP\3"+
 		"\2\2\2NL\3\2\2\2NO\3\2\2\2OR\3\2\2\2PN\3\2\2\2QS\7!\2\2RQ\3\2\2\2RS\3"+
 		"\2\2\2S\7\3\2\2\2TU\t\2\2\2U\t\3\2\2\2VW\5\f\7\2WX\7\27\2\2XY\5\36\20"+
-		"\2Y\13\3\2\2\2Z[\t\3\2\2[\r\3\2\2\2\\^\7\34\2\2]\\\3\2\2\2]^\3\2\2\2^"+
-		"a\3\2\2\2_`\7\5\2\2`b\5\20\t\2a_\3\2\2\2bc\3\2\2\2ca\3\2\2\2cd\3\2\2\2"+
+		"\2Y\13\3\2\2\2Z[\t\3\2\2[\r\3\2\2\2\\^\7\4\2\2]\\\3\2\2\2]^\3\2\2\2^a"+
+		"\3\2\2\2_`\7\5\2\2`b\5\20\t\2a_\3\2\2\2bc\3\2\2\2ca\3\2\2\2cd\3\2\2\2"+
 		"df\3\2\2\2eg\7!\2\2fe\3\2\2\2fg\3\2\2\2g\17\3\2\2\2hj\t\4\2\2ih\3\2\2"+
 		"\2jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2l\21\3\2\2\2mk\3\2\2\2nt\5\26\f\2op\5"+
 		"\b\5\2pq\5\26\f\2qr\5\b\5\2rt\3\2\2\2sn\3\2\2\2so\3\2\2\2t\23\3\2\2\2"+

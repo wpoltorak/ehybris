@@ -25,7 +25,7 @@ headerModifier
 
 // handles record line: optional identifier (subtype) and semicolon separated list of fields and quoted fields
 record
-   	: Identifier? (Separator field)+ Lb?
+   	: Type? (Separator field)+ Lb?
         ;
 
 field   : (FieldQuoted | Field | Macroref)*
