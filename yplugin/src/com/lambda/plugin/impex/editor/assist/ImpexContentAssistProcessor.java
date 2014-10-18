@@ -7,12 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
@@ -42,7 +39,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     private final ImpexCompletionProposalFactory completionProposalFactory = new ImpexCompletionProposalFactory();
     private final ITextEditor editor;
     private IType type;
-    private IJavaSearchScope scope;
 
     public ImpexContentAssistProcessor(ITextEditor editor) {
         this.editor = editor;
@@ -83,7 +79,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
                 // TODO performance of the popup is slow. should it be loaded in a background thread for the first time
                 // during plugin startup?
-                IJavaSearchScope scope = extensibleItemHierarchyScope();
+                IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
                 if (scope != null) {
                     engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
                             qualifier.toCharArray(), SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH,
@@ -105,7 +101,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                     }
                 };
                 SearchEngine engine = new SearchEngine();
-                IJavaSearchScope scope = extensibleItemHierarchyScope();
+                IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
                 if (scope != null) {
                     engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
                             ("Generated" + typename).toCharArray(), SearchPattern.R_EXACT_MATCH,
@@ -138,16 +134,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
         System.err.println("took: " + (System.currentTimeMillis() - millis));
         return cproposals;
 
-    }
-
-    private IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
-        if (scope == null) {
-            String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
-            IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-            IType type = project.findType("de.hybris.platform.jalo.ExtensibleItem");
-            scope = SearchEngine.createHierarchyScope(type);
-        }
-        return scope;
     }
 
     @Override

@@ -37,6 +37,7 @@ import com.lambda.impex.ast.ImpexModel;
 import com.lambda.impex.ast.ImpexParser;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
 import com.lambda.impex.ast.ImpexParserDefaultListener;
+import com.lambda.plugin.impex.antlr.JavaTypeFinder;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 import com.lambda.plugin.impex.model.LexerTokenRegion;
@@ -94,7 +95,9 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         final ParseTree impex = parser.impex();
 
         final ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(new ImpexParserDefaultListener(impexModel), impex);
+        ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
+        listener.setTypeFinder(new JavaTypeFinder());
+        walker.walk(listener, impex);
 
     }
 

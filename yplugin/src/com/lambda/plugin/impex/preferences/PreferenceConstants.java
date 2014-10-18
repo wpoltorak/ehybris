@@ -132,9 +132,35 @@ public class PreferenceConstants {
     public static final String PROBLEM_MACRO_EMPTY = IMPEX_PROBLEM + "_empty_macro";
 
     /**
-     * Empty macro assignment problem.<br/>
-     * Example: $macro =
+     * Undefined macro problem.<br/>
+     * There is no macro definition for the given macro reference
      */
     public static final String PROBLEM_MACRO_UNDEFINED = IMPEX_PROBLEM + "_undefined_macro";
+
+    /**
+     * Invalid type problem.<br/>
+     * <ul>
+     * <li>Type does not exist</li>
+     * <li>Type is not a child of <code>de.hybris.platform.jalo.ExtensibleItem</li>
+     * </ul>
+     */
+    public static final String PROBLEM_TYPE_INVALID = IMPEX_PROBLEM + "_invalid_type";
+
+    /**
+     * Invalid subtype problem.<br/>
+     * <ul>
+     * <li>Subtype does not exist</li>
+     * <li>Subtype is not a child of type
+     * </ul>
+     */
+    public static final String PROBLEM_SUBTYPE_INVALID = IMPEX_PROBLEM + "_invalid_subtype";
+
+    /**
+     * Missing subtype problem.<br/>
+     * <ul>
+     * <li>Subtype han't been defined</li>
+     * </ul>
+     */
+    public static final String PROBLEM_SUBTYPE_MISSING = IMPEX_PROBLEM + "_missing_subtype";
 
 }

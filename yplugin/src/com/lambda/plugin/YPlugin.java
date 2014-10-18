@@ -14,7 +14,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchScope;
+import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -74,10 +78,13 @@ public class YPlugin extends AbstractUIPlugin {
     private PlatformContainer platformContainer;
     private ProblemsPropertyChangeListener problemsPropertyChangeListener;
 
+    private IJavaSearchScope scope;
+
     /**
      * The constructor
      */
     public YPlugin() {
+        System.out.println();
     }
 
     /*
@@ -342,4 +349,15 @@ public class YPlugin extends AbstractUIPlugin {
         }
         return platformContainer;
     }
+
+    public IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
+        if (scope == null) {
+            String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
+            IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+            IType type = project.findType("de.hybris.platform.jalo.ExtensibleItem");
+            scope = SearchEngine.createStrictHierarchyScope(null, type, true, false, null);
+        }
+        return scope;
+    }
+
 }

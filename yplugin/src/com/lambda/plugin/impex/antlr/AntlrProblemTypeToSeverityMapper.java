@@ -13,10 +13,16 @@ public class AntlrProblemTypeToSeverityMapper {
 
     public static int getSeverity(IPreferenceStore store, ImpexProblem.Type type) {
         switch (type) {
-        case InvalidMacroValue:
+        case EmptyMacroValue:
             return getSeverity(store, PreferenceConstants.PROBLEM_MACRO_EMPTY);
         case UnknownMacro:
             return getSeverity(store, PreferenceConstants.PROBLEM_MACRO_UNDEFINED);
+        case InvalidType:
+            return getSeverity(store, PreferenceConstants.PROBLEM_TYPE_INVALID);
+        case InvalidSubtype:
+            return getSeverity(store, PreferenceConstants.PROBLEM_SUBTYPE_INVALID);
+        case SubtypeRequired:
+            return getSeverity(store, PreferenceConstants.PROBLEM_SUBTYPE_MISSING);
         default:
             return IMarker.SEVERITY_ERROR;
         }
@@ -29,10 +35,16 @@ public class AntlrProblemTypeToSeverityMapper {
 
     public static String getMessage(String text, ImpexProblem.Type type) {
         switch (type) {
-        case InvalidMacroValue:
+        case EmptyMacroValue:
             return YMessages.Impex_problem_blankMacro;
         case UnknownMacro:
             return MessageFormat.format(YMessages.Impex_problem_unknownMacro, text);
+        case InvalidType:
+            return YMessages.Impex_problem_invalidType;
+        case InvalidSubtype:
+            return YMessages.Impex_problem_invalidSubtype;
+        case SubtypeRequired:
+            return YMessages.Impex_problem_noSubtype;
         default:
             return text;
         }
