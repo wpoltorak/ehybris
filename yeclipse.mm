@@ -23,8 +23,12 @@
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1351805711304" ID="ID_1091460623" MODIFIED="1351805723533" TEXT="Unknown Document ID"/>
-<node CREATED="1351786620905" ID="ID_559717125" MODIFIED="1351786641296" TEXT="Type - Subtype - no inheritance"/>
-<node CREATED="1351786642196" ID="ID_1977072846" MODIFIED="1351786667603" TEXT="If abstract type check if each row starts with subtype"/>
+<node CREATED="1351786620905" ID="ID_559717125" MODIFIED="1413657928928" TEXT="Type - Subtype - no inheritance">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1351786642196" ID="ID_1977072846" MODIFIED="1413657939003" TEXT="If abstract type check if each row starts with subtype">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1351786701933" ID="ID_98603508" MODIFIED="1351786848288" TEXT="Check if class specified in modifiers exists"/>
 <node CREATED="1354302294835" ID="ID_969299094" MODIFIED="1354302306629" TEXT="Header without records"/>
 </node>
@@ -43,7 +47,9 @@
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1346848877550" ID="ID_621096877" MODIFIED="1355558484241" TEXT="attribute modifiers"/>
-<node CREATED="1399309372654" ID="ID_1163795434" MODIFIED="1399309380135" TEXT="types"/>
+<node CREATED="1399309372654" ID="ID_1163795434" MODIFIED="1413571355947" TEXT="types">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 <node CREATED="1346848611350" ID="ID_1143451399" MODIFIED="1346848783476" TEXT="Qick Assist (Ctrl+1)">
 <node CREATED="1346848773646" ID="ID_1008274618" MODIFIED="1346848777364" TEXT="Rename in file">
@@ -194,8 +200,10 @@
 <node CREATED="1355685370996" ID="ID_754403165" MODIFIED="1355693633061" TEXT="sprawdzic czy typ jest abstrakcyjny jesli tak to info gdy nie ma subtypu + sprawdzic hierarchie dziedziczenia"/>
 <node CREATED="1358194517542" ID="ID_1460040549" MODIFIED="1358194540759" TEXT="documentid - error gdy wartosc w rekordzie sie powtarza - sprawdzic"/>
 <node CREATED="1358194541795" ID="ID_717377560" MODIFIED="1358194565124" TEXT="modifiery - wartosci wszedzie maja miec mozliwosc wstawienia makra"/>
-<node CREATED="1358194569831" ID="ID_90513017" MODIFIED="1358194599220" TEXT="makro jako osobny wezel w drzewie?"/>
-<node CREATED="1358538303961" FOLDED="true" ID="ID_630182703" MODIFIED="1359872002893" TEXT="lokacja b&#x142;&#x119;d&#xf3;w">
+<node CREATED="1358194569831" ID="ID_90513017" MODIFIED="1413658472667" TEXT="makro jako osobny wezel w drzewie?">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1358538303961" ID="ID_630182703" MODIFIED="1413658458590" TEXT="lokacja b&#x142;&#x119;d&#xf3;w">
 <node CREATED="1358538313521" ID="ID_998462029" MODIFIED="1358538323404" TEXT="nazwa klasy"/>
 <node CREATED="1358538326215" ID="ID_1233139369" MODIFIED="1358538330173" TEXT="format daty"/>
 <node CREATED="1358538331079" ID="ID_828799284" MODIFIED="1358538332161" TEXT="itp"/>
@@ -220,9 +228,10 @@
 <node CREATED="1348055961863" ID="ID_698789002" MODIFIED="1348055964038" TEXT="platform">
 <node CREATED="1348056007503" ID="ID_1118801350" MODIFIED="1348056015286" TEXT="icon">
 <node CREATED="1380601851604" ID="ID_689068989" MODIFIED="1380601862791" TEXT="osobna dla platformy "/>
-<node CREATED="1380601863415" ID="ID_238042015" MODIFIED="1380601871455" TEXT="osobna dla extensions">
+<node CREATED="1380601863415" FOLDED="true" ID="ID_238042015" MODIFIED="1413571486103" TEXT="osobna dla extensions">
 <node CREATED="1380601872771" ID="ID_1417597342" MODIFIED="1380601888897" TEXT="szara dla tych ktore nie sa powiazane z platforma"/>
 </node>
+<node CREATED="1413571487248" ID="ID_1819769792" MODIFIED="1413571492073" TEXT="osobna dla config"/>
 </node>
 <node CREATED="1348056015927" ID="ID_799620683" MODIFIED="1380563433829" TEXT="specific editor for various modules and properties"/>
 <node CREATED="1348056074375" ID="ID_1119455003" MODIFIED="1348056076214" TEXT="config"/>
@@ -230,8 +239,12 @@
 <node CREATED="1380566768000" ID="ID_143740740" MODIFIED="1380566775272" TEXT="sprawdzic czy "/>
 </node>
 <node CREATED="1380601630218" ID="ID_1135540179" MODIFIED="1380601641655" TEXT="import">
-<node CREATED="1380601634750" ID="ID_1834788723" MODIFIED="1380601673664" TEXT="zamiast sekcji w preferences zrobic import platformy tak samo jak w m2e import pom"/>
-<node CREATED="1380601682034" ID="ID_255926243" MODIFIED="1380601709310" TEXT="odpadnie wowczas synchronizacja workspace z defaultowa platforma"/>
+<node CREATED="1380601634750" ID="ID_1834788723" MODIFIED="1413571518590" TEXT="zamiast sekcji w preferences zrobic import platformy tak samo jak w m2e import pom">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1380601682034" ID="ID_255926243" MODIFIED="1413571522409" TEXT="odpadnie wowczas synchronizacja workspace z defaultowa platforma">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1380601710095" ID="ID_999417815" MODIFIED="1380601730911" TEXT="wystarczy sorawdzac ktore projekty juz sa w workspace i powiadomic o nich na stronie importu"/>
 <node CREATED="1380601732114" ID="ID_1249393862" MODIFIED="1380601780449" TEXT="importowac te projeky ktore beda includowane sa zaincludowane w  platformie"/>
 <node CREATED="1380601780957" ID="ID_1509205543" MODIFIED="1380601815277" TEXT="dac opcje aktualizacji extensions.xml jesli ktos zechce zaimportowac mniej z nich"/>
