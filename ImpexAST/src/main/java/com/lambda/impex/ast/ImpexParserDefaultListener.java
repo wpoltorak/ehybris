@@ -197,7 +197,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final TerminalNode subtype = ctx.Type();
         if (typeDescription.exists()) {
             final String subtypeName = getText(subtype);
-            if (subtype == null || "".equals(subtypeName)) {
+            if (typeDescription.isAbstract() && (subtype == null || "".equals(subtypeName))) {
                 context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
             } else if (!typeDescription.contains(subtypeName)) {
                 context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
