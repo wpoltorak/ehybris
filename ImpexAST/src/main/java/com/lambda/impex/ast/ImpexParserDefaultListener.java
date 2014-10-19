@@ -48,7 +48,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
-
+    private final List<String> supportedModes = Arrays.asList("append", "remove");
     private TypeFinder typeFinder;
     private TypeDescription typeDescription;
     private final ImpexModel context;
@@ -109,21 +109,13 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void enterAttributeModifierAssignment(final AttributeModifierAssignmentContext ctx) {
         final UnknownModifierContext unknownModifier = ctx.unknownModifier();
         if (unknownModifier != null) {
-            final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
-            problem.setLineNumber(unknownModifier.getStart().getLine());
-            problem.setLength(unknownModifier.getStop().getStopIndex() - unknownModifier.getStart().getStartIndex() - 1);
-            problem.setText(unknownModifier.getText());
-            context.addProblem(problem);
+            context.addProblem(problem(unknownModifier, Type.InvalidAttributeModifier));
             return;
         }
 
         if (ctx.modifierValue() == null) {
             final AttributeModifierContext attributeModifier = ctx.attributeModifier();
-            final ImpexProblem problem = new ImpexProblem(Type.InvalidAttributeModifier);
-            problem.setLineNumber(attributeModifier.getStart().getLine());
-            problem.setLength(attributeModifier.getStop().getStopIndex() - attributeModifier.getStart().getStartIndex());
-            problem.setText(attributeModifier.getText());
-            context.addProblem(problem);
+            context.addProblem(problem(attributeModifier, Type.InvalidAttributeModifier));
             return;
         }
 
@@ -134,34 +126,31 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 //TODO resolve macros
                 if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
                         && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
-                    final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
-                    problem.setLineNumber(modifierval.getStart().getLine());
-                    problem.setLength(modifierval.getStop().getStopIndex() - modifierval.getStart().getStartIndex());
-                    problem.setText(modifierval.getText());
-                    context.addProblem(problem);
+                    context.addProblem(problem(modifierval, Type.InvalidBoolean));
                 }
                 break;
             case ImpexLexer.TextAttributeModifier:
                 if ("mode".equalsIgnoreCase(attributeModifier.getText())) {
-                    if (!"append".equalsIgnoreCase(modifierval.getText()) && !"remove".equalsIgnoreCase(modifierval.getText())) {
-                        context.addProblem(new ImpexProblem(Type.InvalidMode));
+                    if (!supportedModes.contains(modifierval.getText().toLowerCase())) {
+                        context.addProblem(problem(modifierval, Type.InvalidMode));
                     }
                 } else if ("lang".equalsIgnoreCase(attributeModifier.getText())) {
                     try {
+                        //parse long to verify if it's a number - a PK
                         Long.parseLong(modifierval.getText());
                     } catch (final NumberFormatException e) {
                         // is not a PK number so verify locale name
                         try {
                             toLocale(modifierval.getText());
                         } catch (final IllegalArgumentException ex) {
-                            context.addProblem(new ImpexProblem(Type.InvalidLang));
+                            context.addProblem(problem(modifierval, Type.InvalidLang));
                         }
                     }
                 }
                 break;
             case ImpexLexer.ClassAttributeModifier:
                 if (!isJavaClassName(modifierval.getText())) {
-                    context.addProblem(new ImpexProblem(Type.InvalidClassname));
+                    context.addProblem(problem(modifierval, Type.InvalidClassname));
                 }
                 break;
             case ImpexLexer.IntAttributeModifier:
@@ -169,29 +158,25 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                     try {
                         final Integer pos = Integer.valueOf(modifierval.getText());
                         if (pos.intValue() < 0) {
-                            context.addProblem(new ImpexProblem(Type.InvalidPosition));
+                            context.addProblem(problem(modifierval, Type.InvalidPosition));
                         }
                     } catch (final NumberFormatException e) {
-                        context.addProblem(new ImpexProblem(Type.InvalidPosition));
+                        context.addProblem(problem(modifierval, Type.InvalidPosition));
                     }
                 }
                 break;
             case ImpexLexer.DateFormatAttributeModifier:
                 try {
                     new SimpleDateFormat(modifierval.getText());
-                } catch (final NullPointerException e) {
-                    context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
-                } catch (final IllegalArgumentException e) {
-                    context.addProblem(new ImpexProblem(Type.InvalidDateFormat));
+                } catch (final NullPointerException | IllegalArgumentException e) {
+                    context.addProblem(problem(modifierval, Type.InvalidDateFormat));
                 }
                 break;
             case ImpexLexer.NumberFormatAttributeModifier:
                 try {
                     new DecimalFormat(modifierval.getText());
-                } catch (final NullPointerException e) {
-                    context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
-                } catch (final IllegalArgumentException e) {
-                    context.addProblem(new ImpexProblem(Type.InvalidNumberFormat));
+                } catch (final NullPointerException | IllegalArgumentException e) {
+                    context.addProblem(problem(modifierval, Type.InvalidNumberFormat));
                 }
                 break;
         }
@@ -358,7 +343,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final String macroreftext = removeSeparators(macroReferenceToken.getText());
         final Token macroDefinitonToken = currentMacros.get(macroreftext);
         if (macroDefinitonToken == null) {
-            context.addProblem(macroReferenceToken, Type.UnknownMacro);
+            context.addProblem(problem(macroReferenceToken, Type.UnknownMacro));
             return;
         }
         context.addMacroReference(macroDefinitonToken, macroReferenceToken);

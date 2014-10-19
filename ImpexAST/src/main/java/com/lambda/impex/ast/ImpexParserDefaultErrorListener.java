@@ -3,9 +3,11 @@ package com.lambda.impex.ast;
 import java.util.BitSet;
 
 import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 
@@ -44,7 +46,14 @@ public class ImpexParserDefaultErrorListener extends BaseErrorListener {
     @Override
     public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line, final int charPositionInLine,
             final String msg, final RecognitionException e) {
-        context.syntaxProblem(offendingSymbol, line, charPositionInLine, msg, e);
+        //Lexer
+        if (recognizer instanceof Lexer) {
+            final int startIndex = ((Lexer) recognizer).getCharIndex();
+            context.syntaxProblem(line, startIndex, msg, e);
+            //Parser    
+        } else if (offendingSymbol instanceof Token) {
+            context.syntaxProblem(line, (Token) offendingSymbol, msg, e);
+        }
         if (throwExceptions) {
             if (e == null) {
                 throw new IllegalStateException("Syntax error. " + msg);

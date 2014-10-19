@@ -33,18 +33,32 @@ public class DefaultImpexModel implements ImpexModel {
     }
 
     @Override
-    public void syntaxProblem(final Object offendingSymbol, final int line, final int charPositionInLine, final String msg,
-            final RecognitionException e) {
+    public void syntaxProblem(final int line, final int startIndex, final String msg, final RecognitionException e) {
+        if (!problems.isEmpty()) {
+            final ImpexProblem last = problems.get(problems.size() - 1);
+            if (last.getLineNumber() == line && last.getStopIndex() == startIndex && last.getType() == ImpexProblem.Type.SyntaxError) {
+                last.setLength(last.getLength() + 1);
+                last.setStopIndex(startIndex + 1);
+                return;
+            }
+        }
+
         final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.SyntaxError);
         problem.setLineNumber(line);
-        problem.setPositionInRow(charPositionInLine);
         problem.setText(msg);
-        if (offendingSymbol instanceof Token) {
-            final Token token = (Token) offendingSymbol;
-            //problem.setLength(token.getSgetgetStartIndex());
-            problem.setStartIndex(token.getStartIndex());
-            problem.setStopIndex(token.getStopIndex());
-        }
+        problem.setStartIndex(startIndex);
+        problem.setStopIndex(startIndex + 1);
+        addProblem(problem);
+    }
+
+    @Override
+    public void syntaxProblem(final int line, final Token token, final String msg, final RecognitionException e) {
+        final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.SyntaxError);
+        problem.setLineNumber(line);
+        problem.setText(msg);
+        problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
+        problem.setStartIndex(token.getStartIndex());
+        problem.setStopIndex(token.getStopIndex());
         addProblem(problem);
     }
 
@@ -56,11 +70,9 @@ public class DefaultImpexModel implements ImpexModel {
 
     @Override
     public void addProblem(final Token token, final Type type) {
-
         final ImpexProblem problem = new ImpexProblem(type);
         problem.setLineNumber(token.getLine());
-        problem.setPositionInRow(token.getCharPositionInLine());
-        problem.setLength(token.getText().length());
+        problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
         problem.setStartIndex(token.getStartIndex());
         problem.setStopIndex(token.getStopIndex());
         problem.setText(token.getText());

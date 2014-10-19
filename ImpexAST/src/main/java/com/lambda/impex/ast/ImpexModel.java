@@ -23,7 +23,9 @@ public interface ImpexModel {
 
     void addProblem(Token token, Type type);
 
-    void syntaxProblem(Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e);
+    void syntaxProblem(int line, Token token, String msg, RecognitionException e);
+
+    void syntaxProblem(int line, int startIndex, String msg, RecognitionException e);
 
     boolean hasProblems();
 

@@ -3,12 +3,13 @@ package com.lambda.impex.ast;
 public class ImpexProblem {
     public enum Type {
         InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
-        InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro,
-        EmptyMacroValue, DuplicateDocumentID, SyntaxError, SubtypeRequired, InvalidSubtype, InvalidType;
+        InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, EmptyMacroValue,
+        DuplicateDocumentID, SyntaxError, SubtypeRequired, InvalidSubtype, InvalidType;
     }
 
     private int lineNumber;
-    private int positionInRow;
+    private int startPositionInRow;
+    private int stopPositionInRow;
     private int startIndex;
     private int stopIndex;
     private Type type;
@@ -36,12 +37,20 @@ public class ImpexProblem {
         this.lineNumber = lineNumber;
     }
 
-    public int getPositionInRow() {
-        return positionInRow;
+    public int getStartPositionInRow() {
+        return startPositionInRow;
     }
 
-    public void setPositionInRow(final int positionInRow) {
-        this.positionInRow = positionInRow;
+    public void setStartPositionInRow(final int startPositionInRow) {
+        this.startPositionInRow = startPositionInRow;
+    }
+
+    public int getStopPositionInRow() {
+        return stopPositionInRow;
+    }
+
+    public void setStopPositionInRow(final int stopPositionInRow) {
+        this.stopPositionInRow = stopPositionInRow;
     }
 
     public int getStartIndex() {

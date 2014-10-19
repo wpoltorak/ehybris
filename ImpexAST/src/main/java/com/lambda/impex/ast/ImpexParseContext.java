@@ -84,7 +84,7 @@ public class ImpexParseContext {
             final RecognitionException e) {
         final ImpexProblem problem = new ImpexProblem(ImpexProblem.Type.SyntaxError);
         problem.setLineNumber(line);
-        problem.setPositionInRow(charPositionInLine);
+        problem.setStartPositionInRow(charPositionInLine);
         problem.setText(msg);
         if (offendingSymbol instanceof CommonToken) {
             final CommonToken token = (CommonToken) offendingSymbol;
@@ -99,7 +99,7 @@ public class ImpexParseContext {
     void registerProblem(final Token token, final ImpexProblem.Type type) {
         final ImpexProblem problem = new ImpexProblem(type);
         problem.setLineNumber(token.getLine());
-        problem.setPositionInRow(token.getCharPositionInLine());
+        problem.setStartPositionInRow(token.getCharPositionInLine());
         problem.setLength(token.getText().length());
         problem.setStartIndex(token.getStartIndex());
         problem.setStopIndex(token.getStopIndex());
