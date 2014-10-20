@@ -22,6 +22,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
+import com.lambda.impex.ast.ImpexParser.AttributeValueContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
@@ -89,6 +90,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         problem.setLength(stopIndex(context) - context.getStart().getStartIndex() + 1);
         problem.setStartIndex(context.getStart().getStartIndex());
         problem.setStopIndex(stopIndex(context));
+        problem.setText(context.getText());
         return problem;
     }
 
@@ -98,11 +100,18 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
         problem.setStartIndex(token.getStartIndex());
         problem.setStopIndex(token.getStopIndex());
+        problem.setText(token.getText());
         return problem;
     }
 
     private int stopIndex(final ParserRuleContext ctx) {
         return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+    }
+
+    @Override
+    public void enterAttributeValue(final AttributeValueContext ctx) {
+
+        super.enterAttributeValue(ctx);
     }
 
     @Override
@@ -229,13 +238,10 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     @Override
     public void enterHeaderModifierAssignment(final HeaderModifierAssignmentContext ctx) {
-        if (ctx.modifierValue().getText().isEmpty()) {
-            final ImpexProblem problem = new ImpexProblem(Type.InvalidHeaderModifier);
-            final Token token = ctx.headerModifier().getStop();
-            problem.setLineNumber(token.getLine());
-            problem.setLength(token.getStopIndex() - token.getStartIndex());
-            problem.setText(token.getText());
-            context.addProblem(problem);
+        //TODO test dla null: INSERT User[cacheUnique]
+        //TODO test dla empty: INSERT User[cacheUnique = ]
+        if (ctx.modifierValue() == null || ctx.modifierValue().getText().isEmpty()) {
+            context.addProblem(problem(ctx.headerModifier(), Type.InvalidHeaderModifier));
             return;
         }
         final ModifierValueContext modifierval = ctx.modifierValue();

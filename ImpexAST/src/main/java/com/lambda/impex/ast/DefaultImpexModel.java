@@ -18,6 +18,13 @@ public class DefaultImpexModel implements ImpexModel {
     private static final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
     private final Map<String, List<MacroValueContext>> macros = new HashMap<>();
 
+    /**
+     * documentID definition
+     * 
+     */
+    private final Map<DocumentIDQualifier, String> documentIDs = new HashMap<>();
+    //    private final Map<DocumentIDQualifier, String> documentIDReferences = new HashMap<>();
+
     private final List<ImpexProblem> problems = new ArrayList<>();
     private final Map<Token, List<Token>> macroReferences = new HashMap<>();
     private final Map<Token, MacroValueContext> macrosValues = new HashMap<>();
@@ -77,6 +84,10 @@ public class DefaultImpexModel implements ImpexModel {
         problem.setStopIndex(token.getStopIndex());
         problem.setText(token.getText());
         addProblem(problem);
+    }
+
+    public void addDocumentIDQualifier(final String qualifier, final String documentID, final String type) {
+        documentIDs.put(new DocumentIDQualifier(qualifier, documentID), type);
     }
 
     @Override
