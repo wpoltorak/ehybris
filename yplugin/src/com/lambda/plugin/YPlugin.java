@@ -84,7 +84,6 @@ public class YPlugin extends AbstractUIPlugin {
      * The constructor
      */
     public YPlugin() {
-        System.out.println();
     }
 
     /*

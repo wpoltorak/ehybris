@@ -21,6 +21,12 @@ import com.lambda.plugin.YPlugin;
 public class JavaTypeFinder implements TypeFinder {
 
     @Override
+    public TypeDescription findFieldType(String fieldName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public TypeDescription findType(final String typename) {
         SearchEngine engine = new SearchEngine();
         final Set<IType> types = new LinkedHashSet<>();
@@ -58,7 +64,7 @@ public class JavaTypeFinder implements TypeFinder {
             YPlugin.logError(e);
         }
 
-        return JavaTypeDescription.fromTypes(types);
+        return JavaTypeDescription.fromTypeHierarchy(types);
     }
 
     private boolean isAbstract(IType type) {
