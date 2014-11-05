@@ -41,7 +41,7 @@ public class HeaderModelTest extends ModelTest {
 
     private void assertEmptyAttribute(final ParseTree attribute) {
         assertEquals(1, attribute.getChildCount());
-        final ParseTree value = getFirstChildWithType(attribute, ImpexParser.RULE_attributeValue);
+        final ParseTree value = getFirstChildWithType(attribute, ImpexParser.RULE_simpleAttribute);
         assertEquals(0, value.getChildCount());
     }
 

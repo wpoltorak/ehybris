@@ -1,0 +1,90 @@
+package com.lambda.impex.ast;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+public class DefaultColumnDescription implements ColumnDescription {
+
+    private final TypeDescription type;
+    private final ColumnDescription parent;
+    private String documentID;
+    private boolean documentIDReference;
+    private boolean documentIDDefinition;
+    private final Map<String, TypeDescription> names = new LinkedHashMap<>();
+
+    private String refRegex;
+    private final List<ColumnDescription> children = new ArrayList<>();
+
+    public DefaultColumnDescription(final TypeDescription type) {
+        this.type = type;
+        this.parent = null;
+    }
+
+    public DefaultColumnDescription(final ColumnDescription parent) {
+        this.parent = parent;
+        this.type = parent.getType();
+        this.parent.addChild(this);
+    }
+
+    public void addChild(final ColumnDescription columnDescription) {
+        children.add(columnDescription);
+
+    }
+
+    //DocumentID, Integer, String, Boolean, Text, PK, Long, Complex
+
+    public List<ColumnDescription> getChildren() {
+        return children;
+    }
+
+    public TypeDescription getType() {
+        return type;
+    }
+
+    public ColumnDescription getParent() {
+        return parent;
+    }
+
+    public boolean hasParent() {
+        return parent != null;
+    }
+
+    public boolean isDocumentIDReferrence() {
+        return documentIDReference;
+    }
+
+    public void setDocumentIDReference(final boolean documentIDReference) {
+        this.documentIDReference = documentIDReference;
+    }
+
+    public boolean isDocumentIDDefinition() {
+        return documentIDDefinition;
+    }
+
+    public void setDocumentIDDefinition(final boolean documentIDDefinition) {
+        this.documentIDDefinition = documentIDDefinition;
+    }
+
+    private Pattern getRegex() {
+        return Pattern.compile(refRegex);
+    }
+
+    public String getDocumentID() {
+        return documentID;
+    }
+
+    public void setDocumentID(final String documentID) {
+        this.documentID = documentID;
+    }
+
+    public void addAttribute(final TypeDescription type, final String name) {
+        names.put(name, type);
+    }
+
+    public void addAttribute(final String name) {
+        names.put(name, type);
+    }
+}

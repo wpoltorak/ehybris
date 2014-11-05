@@ -21,6 +21,7 @@ public abstract class ModelTest {
         final char[] source = IOUtils.toCharArray(getClass().getResourceAsStream(name));
         context = new DefaultImpexModel();
         final ImpexParserDefaultListener impexListener = new ImpexParserDefaultListener(context);
+        //        impexListener.setTypeFinder(MockmockTypeFinder.mtypeFinder);
         final ImpexParserDefaultErrorListener errorListener = new ImpexParserDefaultErrorListener(context, true);
 
         final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
@@ -102,7 +103,7 @@ public abstract class ModelTest {
 
     protected ParseTree attribute(final ParseTree tree, final int blockNo, final int attributeNo) {
         final ParseTree attribute = getNthChildWithType(header(tree, blockNo), attributeNo, ImpexParser.RULE_attribute);
-        return getFirstChildWithType(attribute, ImpexParser.RULE_attributeValue);
+        return getFirstChildWithType(attribute, ImpexParser.RULE_simpleAttribute);
     }
 
     protected ParseTree type(final ParseTree tree, final int blockNo) {

@@ -4,6 +4,7 @@ package com.lambda.impex.ast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,15 +21,23 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import com.lambda.impex.ast.ImpexParser.AttributeContext;
 import com.lambda.impex.ast.ImpexParser.AttributeModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
-import com.lambda.impex.ast.ImpexParser.AttributeValueContext;
+import com.lambda.impex.ast.ImpexParser.AttributeNameContext;
+import com.lambda.impex.ast.ImpexParser.AttributeSubtypeContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
+import com.lambda.impex.ast.ImpexParser.FieldContext;
+import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
 import com.lambda.impex.ast.ImpexParser.MacroValueContext;
 import com.lambda.impex.ast.ImpexParser.ModifierValueContext;
 import com.lambda.impex.ast.ImpexParser.RecordContext;
+import com.lambda.impex.ast.ImpexParser.SimpleAttributeContext;
+import com.lambda.impex.ast.ImpexParser.SimpleAttributeNameContext;
+import com.lambda.impex.ast.ImpexParser.SpecialAttributeContext;
+import com.lambda.impex.ast.ImpexParser.SubtypeAttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.UnknownModifierContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
@@ -49,10 +58,17 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
+
     private final List<String> supportedModes = Arrays.asList("append", "remove");
     private TypeFinder typeFinder;
     private TypeDescription typeDescription;
+    private final List<ColumnDescription> columnDescriptions = new ArrayList<>();
     private final ImpexModel context;
+    private String currentAttributeName;
+    private int columnIndex;
+    private ColumnDescription currentColumnDescription;
+    private final Set<DocumentIDDescription> documentIDDescriptions = new HashSet<>();
+    private final Set<DocumentIDDescription> documentIDReferences = new HashSet<>();
 
     public ImpexParserDefaultListener(final ImpexModel context) {
         this.context = context;
@@ -84,34 +100,101 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), ctx.macroValue());
     }
 
-    private ImpexProblem problem(final ParserRuleContext context, final Type type) {
-        final ImpexProblem problem = new ImpexProblem(type);
-        problem.setLineNumber(context.getStart().getLine());
-        problem.setLength(stopIndex(context) - context.getStart().getStartIndex() + 1);
-        problem.setStartIndex(context.getStart().getStartIndex());
-        problem.setStopIndex(stopIndex(context));
-        problem.setText(context.getText());
-        return problem;
-    }
+    @Override
+    public void enterHeaderTypeName(final HeaderTypeNameContext ctx) {
+        checkMacroReferences(ctx.Macroref());
+        typeDescription = typeFinder.findType(getText(ctx));
 
-    private ImpexProblem problem(final Token token, final Type type) {
-        final ImpexProblem problem = new ImpexProblem(type);
-        problem.setLineNumber(token.getLine());
-        problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
-        problem.setStartIndex(token.getStartIndex());
-        problem.setStopIndex(token.getStopIndex());
-        problem.setText(token.getText());
-        return problem;
-    }
-
-    private int stopIndex(final ParserRuleContext ctx) {
-        return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+        if (!typeDescription.exists()) {
+            context.addProblem(new ImpexProblem(Type.InvalidType));
+        }
     }
 
     @Override
-    public void enterAttributeValue(final AttributeValueContext ctx) {
+    public void enterHeader(final HeaderContext ctx) {
+        columnIndex = -1;
+        columnDescriptions.clear();
+    }
 
-        super.enterAttributeValue(ctx);
+    @Override
+    public void enterAttribute(final AttributeContext ctx) {
+        columnIndex++;
+        System.out.println();
+    }
+
+    @Override
+    public void exitAttribute(final AttributeContext ctx) {
+        columnDescriptions.add(currentColumnDescription);
+        System.out.println();
+    }
+
+    @Override
+    public void enterSpecialAttribute(final SpecialAttributeContext ctx) {
+        currentColumnDescription = new DefaultColumnDescription(typeDescription);
+        System.out.println();
+    }
+
+    @Override
+    public void enterSimpleAttribute(final SimpleAttributeContext ctx) {
+        if (currentColumnDescription == null) {
+            currentColumnDescription = new DefaultColumnDescription(typeDescription);
+        } else {
+
+            currentColumnDescription = new DefaultColumnDescription(currentColumnDescription);
+
+        }
+        if (ctx.DocumentID() != null) {
+            currentColumnDescription.setDocumentIDDefinition(currentAttributeName == null);
+            currentColumnDescription.setDocumentIDReference(currentAttributeName != null);
+            currentColumnDescription.setDocumentID(ctx.DocumentID().getText());
+            return;
+        }
+    }
+
+    @Override
+    public void exitSimpleAttribute(final SimpleAttributeContext ctx) {
+        if (currentColumnDescription.hasParent()) {
+            currentColumnDescription = currentColumnDescription.getParent();
+        }
+    }
+
+    @Override
+    public void enterSimpleAttributeName(final SimpleAttributeNameContext ctx) {
+        final AttributeNameContext attributeName = ctx.attributeName();
+        final String name = getText(attributeName);
+        if (!currentColumnDescription.getType().containsField(name)) {
+            context.addProblem(problem(attributeName, Type.InvalidAttribute));
+        }
+        currentColumnDescription.addAttribute(name);
+    }
+
+    @Override
+    public void enterAttributeName(final AttributeNameContext ctx) {
+        super.enterAttributeName(ctx);
+    }
+
+    @Override
+    public void enterSubtypeAttributeName(final SubtypeAttributeNameContext ctx) {
+        final List<AttributeSubtypeContext> attributeSubtypes = ctx.attributeSubtype();
+        final List<AttributeNameContext> attributeNames = ctx.attributeName();
+
+        for (int i = 0; i < attributeSubtypes.size() && i < attributeNames.size(); i++) {
+            final AttributeSubtypeContext subtypeContext = attributeSubtypes.get(i);
+
+            //TODO cached?
+            final TypeDescription type = typeFinder.findType(getText(subtypeContext.attributeName()));
+            if (!type.exists()) {
+                context.addProblem(problem(subtypeContext, Type.InvalidType));
+                continue;
+            }
+
+            final AttributeNameContext nameContext = attributeNames.get(i);
+            final String attributeName = getText(nameContext);
+            if (!type.containsField(attributeName)) {
+                context.addProblem(problem(nameContext, Type.InvalidTypedAttribute));
+            }
+            currentColumnDescription.addAttribute(type, attributeName);
+        }
     }
 
     @Override
@@ -192,42 +275,39 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     }
 
     @Override
-    public void enterHeaderTypeName(final HeaderTypeNameContext ctx) {
-        checkMacroReferences(ctx.Macroref());
-        typeDescription = typeFinder.findType(getText(ctx));
-
-        if (!typeDescription.exists()) {
-            context.addProblem(new ImpexProblem(Type.InvalidType));
+    public void enterRecord(final RecordContext ctx) {
+        // cleanup record data  
+        columnIndex = -1;
+        // Subtype check
+        final TerminalNode subtype = ctx.Type();
+        if (typeDescription.exists()) {
+            final String subtypeName = nullIfEmpty(getText(subtype));
+            if (subtype == null && typeDescription.isAbstract()) {
+                context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
+            } else if (subtype != null && !typeDescription.isParentOf(subtypeName)) {
+                context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
+            }
         }
     }
 
     @Override
-    public void enterRecord(final RecordContext ctx) {
-        final TerminalNode subtype = ctx.Type();
-        if (typeDescription.exists()) {
-            final String subtypeName = getText(subtype);
-            if (typeDescription.isAbstract() && (subtype == null || "".equals(subtypeName))) {
-                context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
-            } else if (!typeDescription.contains(subtypeName)) {
-                context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
-            }
-        }
-        super.enterRecord(ctx);
+    public void exitRecord(final RecordContext ctx) {
+        columnIndex = -1;
     }
 
-    //TODO evaluate macros using regexp
-    private String getText(final ParserRuleContext ctx) {
-        if (ctx == null) {
-            return null;
-        }
-        return ctx.getText();
-    }
+    @Override
+    public void enterField(final FieldContext ctx) {
+        columnIndex++;
 
-    private String getText(final TerminalNode node) {
-        if (node == null) {
-            return null;
+        final ColumnDescription column = columnDescriptions.get(columnIndex);
+
+        if (column.isDocumentIDDefinition()) {
+            documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()));
         }
-        return node.getText();
+        if (column.isDocumentIDReferrence()) {
+
+            //            documentIDReferences.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()))
+        }
     }
 
     @Override
@@ -414,4 +494,52 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
     }
 
+    private ImpexProblem problem(final ParserRuleContext context, final Type type) {
+        final ImpexProblem problem = new ImpexProblem(type);
+        problem.setLineNumber(context.getStart().getLine());
+        problem.setLength(stopIndex(context) - context.getStart().getStartIndex() + 1);
+        problem.setStartIndex(context.getStart().getStartIndex());
+        problem.setStopIndex(stopIndex(context));
+        problem.setText(context.getText());
+        return problem;
+    }
+
+    private ImpexProblem problem(final Token token, final Type type) {
+        final ImpexProblem problem = new ImpexProblem(type);
+        problem.setLineNumber(token.getLine());
+        problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
+        problem.setStartIndex(token.getStartIndex());
+        problem.setStopIndex(token.getStopIndex());
+        problem.setText(token.getText());
+        return problem;
+    }
+
+    private int stopIndex(final ParserRuleContext ctx) {
+        return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+    }
+
+    //TODO evaluate macros using regexp
+    private String getText(final ParserRuleContext ctx) {
+        if (ctx == null) {
+            return null;
+        }
+        if (ctx instanceof AttributeNameContext) {
+
+        }
+        return ctx.getText();
+    }
+
+    private String getText(final TerminalNode node) {
+        if (node == null) {
+            return null;
+        }
+        return node.getText();
+    }
+
+    private String nullIfEmpty(final String text) {
+        if (text == null) {
+            return null;
+        }
+        return text.isEmpty() ? null : text;
+    }
 }

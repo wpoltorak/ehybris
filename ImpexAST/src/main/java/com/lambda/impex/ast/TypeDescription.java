@@ -6,5 +6,10 @@ public interface TypeDescription {
 
     boolean exists();
 
-    boolean contains(String subtype);
+    boolean isParentOf(String subtype);
+
+    boolean containsField(String fieldName);
+
+    TypeDescription getReturnType(String fieldName);
+
 }

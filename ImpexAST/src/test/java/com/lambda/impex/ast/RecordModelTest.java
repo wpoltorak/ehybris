@@ -1,8 +1,6 @@
 package com.lambda.impex.ast;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -88,31 +86,6 @@ public class RecordModelTest extends ModelTest {
         assertFields(fields(tree, 0, 1), "\"jsmith\"", "\"John \"\"Texas\"\" Smith\"", "\"L4506-D2005\"", "");
         assertFields(fields(tree, 0, 2), "\"owan\"", "\"Obi;Wan\"", "\"L4536-D2005\"", "");
         assertFields(fields(tree, 0, 3), "\"owan\"", "\"Obi	\n 	Wan\"", "\"L4536-D2005\"", "");
-    }
-
-    @Test
-    public void typeSpecificationDifferentSuptypes() throws Exception {
-        final ParseTree tree = init("/record/record-type-specification.impex");
-        assertTypeSpecification(record(tree, 0, 0), "Customer");
-        assertTypeSpecification(record(tree, 0, 1), "Employee");
-    }
-
-    @Test
-    public void typeSpecificationNoSubtype() throws Exception {
-        final ParseTree tree = init("/record/record-type-specification-not-all-records.impex");
-        assertTypeSpecification(record(tree, 0, 0), "Customer");
-        assertTypeSpecification(record(tree, 0, 1), null);
-    }
-
-    private void assertTypeSpecification(final ParseTree record, final String text) {
-        final ParseTree subtype = getFirstChildWithType(record, ImpexParser.Identifier);
-        if (text != null) {
-            assertTrue(matchesType(subtype, ImpexParser.Identifier));
-            assertEquals(text, subtype.getText());
-        } else {
-            //no subtype specification defined
-            assertNull(subtype);
-        }
     }
 
     private void assertFields(final List<ParseTree> tree, final String... values) {
