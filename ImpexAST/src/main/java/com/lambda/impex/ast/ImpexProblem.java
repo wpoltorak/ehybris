@@ -18,7 +18,9 @@ public class ImpexProblem {
         /** Attribute does not exist as a field in the type specified at the beginning of the header or */
         InvalidAttribute,
         /** type of the attribute does not exist */
-        InvalidAttributeType, ;
+        InvalidAttributeType,
+        /** Field has no header attribute */
+        FieldWithoutHeaderAttribute, ;
     }
 
     private int lineNumber;

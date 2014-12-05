@@ -167,7 +167,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final AttributeNameContext attributeName = ctx.attributeName();
         final String name = getText(attributeName);
         final TypeDescription owner = currentColumnDescription.getOwner();
-        //        validateAttributeType(attributeName, name, owner);
         if (owner.exists() && !owner.containsField(name)) {
             context.addProblem(problem(attributeName, Type.InvalidAttribute));
         } else {
@@ -185,11 +184,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         super.enterAttributeName(ctx);
     }
 
-    //insert Typ;attrx(attry)
-    //attrx - owner = typ
-    //attrx - type = typ.getReturnType(name)
-    //attry - owner = attrx.type
-    //attry = type = attrx.type.getReturnType(name)
     @Override
     public void enterSubtypeAttributeName(final SubtypeAttributeNameContext ctx) {
         final List<AttributeSubtypeContext> attributeSubtypes = ctx.attributeSubtype();
@@ -321,7 +315,10 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterField(final FieldContext ctx) {
         columnIndex++;
-
+        if (columnIndex >= columnDescriptions.size()) {
+            context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
+            return;
+        }
         final ColumnDescription column = columnDescriptions.get(columnIndex);
 
         if (column.isDocumentIDDefinition()) {
