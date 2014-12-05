@@ -108,19 +108,6 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterHeader(@NotNull ImpexParser.HeaderContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHeader(@NotNull ImpexParser.HeaderContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterSubtypeAttributeName(@NotNull ImpexParser.SubtypeAttributeNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -128,6 +115,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSubtypeAttributeName(@NotNull ImpexParser.SubtypeAttributeNameContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHeader(@NotNull ImpexParser.HeaderContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHeader(@NotNull ImpexParser.HeaderContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -212,6 +212,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEmptyAttribute(@NotNull ImpexParser.EmptyAttributeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmptyAttribute(@NotNull ImpexParser.EmptyAttributeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMacro(@NotNull ImpexParser.MacroContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -245,6 +258,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitQuote(@NotNull ImpexParser.QuoteContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSubtypeAttribute(@NotNull ImpexParser.SubtypeAttributeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSubtypeAttribute(@NotNull ImpexParser.SubtypeAttributeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

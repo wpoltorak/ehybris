@@ -40,11 +40,14 @@ field
 ////////////////////// ATTRIBUTES ////////////////////////////////
 
 attribute
-        : specialAttribute | simpleAttribute |
+        : specialAttribute | subtypeAttribute | simpleAttribute | emptyAttribute
         ;
 
+emptyAttribute
+		:;
+
 specialAttribute
-        : SpecialAttribute attributeModifierAssignment
+        : SpecialAttribute attributeModifierAssignment+
         ;
 
 attributeSubtype
@@ -63,8 +66,12 @@ simpleAttributeName
         : attributeName
         ;
 
+subtypeAttribute
+        : simpleAttributeName LParenthesis subtypeAttributeName RParenthesis attributeModifierAssignment*
+        ;
+
 simpleAttribute
-        : (DocumentID | subtypeAttributeName | simpleAttributeName) (LParenthesis  simpleAttribute (Comma simpleAttribute)* RParenthesis )? attributeModifierAssignment*
+        : (DocumentID | simpleAttributeName) (LParenthesis  simpleAttribute (Comma simpleAttribute)* RParenthesis )? attributeModifierAssignment*
         ;
 
 attributeModifierAssignment

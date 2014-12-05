@@ -6,11 +6,15 @@ public interface ColumnDescription {
 
     List<ColumnDescription> getChildren();
 
+    TypeDescription getOwner();
+
     TypeDescription getType();
+
+    //    TypeDescription getType();
 
     void addChild(ColumnDescription columnDescription);
 
-    void setDocumentIDDefinition(boolean docuemntIDDefinitioon);
+    void setDocumentIDDefinition(boolean docuemntIDDefinition);
 
     void setDocumentIDReference(boolean docuemntIDReference);
 
@@ -22,12 +26,14 @@ public interface ColumnDescription {
 
     void addAttribute(String name);
 
-    void addAttribute(TypeDescription type, String attributeName);
+    void addAttribute(String attributeName, TypeDescription owner);
 
     boolean isDocumentIDDefinition();
 
     boolean isDocumentIDReferrence();
 
     String getDocumentID();
+
+    void setType(TypeDescription returnType);
 
 }

@@ -4,12 +4,17 @@ public interface TypeDescription {
 
     boolean isAbstract();
 
+    boolean iseCommerce();
+
     boolean exists();
 
     boolean isParentOf(String subtype);
 
     boolean containsField(String fieldName);
 
-    TypeDescription getReturnType(String fieldName);
+    boolean sameAs(String name);
 
+    String getReturnType(String fieldName);
+
+    String getName();
 }

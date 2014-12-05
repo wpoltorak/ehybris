@@ -86,17 +86,6 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitHeaderModifier(@NotNull ImpexParser.HeaderModifierContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link ImpexParser#header}.
-	 * @param ctx the parse tree
-	 */
-	void enterHeader(@NotNull ImpexParser.HeaderContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ImpexParser#header}.
-	 * @param ctx the parse tree
-	 */
-	void exitHeader(@NotNull ImpexParser.HeaderContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link ImpexParser#subtypeAttributeName}.
 	 * @param ctx the parse tree
 	 */
@@ -106,6 +95,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSubtypeAttributeName(@NotNull ImpexParser.SubtypeAttributeNameContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#header}.
+	 * @param ctx the parse tree
+	 */
+	void enterHeader(@NotNull ImpexParser.HeaderContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#header}.
+	 * @param ctx the parse tree
+	 */
+	void exitHeader(@NotNull ImpexParser.HeaderContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#modifierValue}.
@@ -174,6 +174,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitRecord(@NotNull ImpexParser.RecordContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ImpexParser#emptyAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyAttribute(@NotNull ImpexParser.EmptyAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#emptyAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyAttribute(@NotNull ImpexParser.EmptyAttributeContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ImpexParser#macro}.
 	 * @param ctx the parse tree
 	 */
@@ -205,6 +216,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitQuote(@NotNull ImpexParser.QuoteContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#subtypeAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubtypeAttribute(@NotNull ImpexParser.SubtypeAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#subtypeAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubtypeAttribute(@NotNull ImpexParser.SubtypeAttributeContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#macroValue}.

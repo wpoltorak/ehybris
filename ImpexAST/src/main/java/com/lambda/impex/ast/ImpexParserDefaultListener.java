@@ -37,6 +37,7 @@ import com.lambda.impex.ast.ImpexParser.RecordContext;
 import com.lambda.impex.ast.ImpexParser.SimpleAttributeContext;
 import com.lambda.impex.ast.ImpexParser.SimpleAttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.SpecialAttributeContext;
+import com.lambda.impex.ast.ImpexParser.SubtypeAttributeContext;
 import com.lambda.impex.ast.ImpexParser.SubtypeAttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.UnknownModifierContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
@@ -139,9 +140,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         if (currentColumnDescription == null) {
             currentColumnDescription = new DefaultColumnDescription(typeDescription);
         } else {
-
             currentColumnDescription = new DefaultColumnDescription(currentColumnDescription);
-
         }
         if (ctx.DocumentID() != null) {
             currentColumnDescription.setDocumentIDDefinition(currentAttributeName == null);
@@ -149,6 +148,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             currentColumnDescription.setDocumentID(ctx.DocumentID().getText());
             return;
         }
+    }
+
+    @Override
+    public void enterSubtypeAttribute(final SubtypeAttributeContext ctx) {
+        currentColumnDescription = new DefaultColumnDescription(typeDescription);
     }
 
     @Override
@@ -162,8 +166,16 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void enterSimpleAttributeName(final SimpleAttributeNameContext ctx) {
         final AttributeNameContext attributeName = ctx.attributeName();
         final String name = getText(attributeName);
-        if (!currentColumnDescription.getType().containsField(name)) {
+        final TypeDescription owner = currentColumnDescription.getOwner();
+        //        validateAttributeType(attributeName, name, owner);
+        if (owner.exists() && !owner.containsField(name)) {
             context.addProblem(problem(attributeName, Type.InvalidAttribute));
+        } else {
+            final TypeDescription returnType = typeFinder.findType(owner.getReturnType(name));
+            //        if (owner.exists() && !returnType.exists()) {
+            //            context.addProblem(problem(attributeName, Type.InvalidAttributeType));
+            //        }
+            currentColumnDescription.setType(returnType);
         }
         currentColumnDescription.addAttribute(name);
     }
@@ -173,27 +185,38 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         super.enterAttributeName(ctx);
     }
 
+    //insert Typ;attrx(attry)
+    //attrx - owner = typ
+    //attrx - type = typ.getReturnType(name)
+    //attry - owner = attrx.type
+    //attry = type = attrx.type.getReturnType(name)
     @Override
     public void enterSubtypeAttributeName(final SubtypeAttributeNameContext ctx) {
         final List<AttributeSubtypeContext> attributeSubtypes = ctx.attributeSubtype();
         final List<AttributeNameContext> attributeNames = ctx.attributeName();
-
         for (int i = 0; i < attributeSubtypes.size() && i < attributeNames.size(); i++) {
-            final AttributeSubtypeContext subtypeContext = attributeSubtypes.get(i);
-
-            //TODO cached?
-            final TypeDescription type = typeFinder.findType(getText(subtypeContext.attributeName()));
-            if (!type.exists()) {
-                context.addProblem(problem(subtypeContext, Type.InvalidType));
-                continue;
+            final AttributeSubtypeContext subtypeCtx = attributeSubtypes.get(i);
+            final AttributeNameContext nameCtx = attributeNames.get(i);
+            final AttributeNameContext subtypenameCtx = subtypeCtx.attributeName();
+            final String typeName = getText(subtypenameCtx);
+            final String attributeName = getText(nameCtx);
+            final TypeDescription type = currentColumnDescription.getType();
+            if (type.sameAs(typeName)) {
+                if (type.exists() && !type.containsField(attributeName)) {
+                    context.addProblem(problem(nameCtx, Type.InvalidAttribute));
+                }
+            } else {
+                //TODO cached?
+                final TypeDescription subtype = typeFinder.findType(typeName);
+                if (!subtype.exists()) {
+                    context.addProblem(problem(subtypenameCtx, Type.InvalidType));
+                    //jesli typ attr(Typ.uid)
+                } else if (!type.isParentOf(subtype.getName())) {
+                    context.addProblem(problem(subtypenameCtx, Type.InvalidSubtype));
+                } else if (!subtype.containsField(attributeName)) {
+                    context.addProblem(problem(nameCtx, Type.InvalidAttribute));
+                }
             }
-
-            final AttributeNameContext nameContext = attributeNames.get(i);
-            final String attributeName = getText(nameContext);
-            if (!type.containsField(attributeName)) {
-                context.addProblem(problem(nameContext, Type.InvalidTypedAttribute));
-            }
-            currentColumnDescription.addAttribute(type, attributeName);
         }
     }
 

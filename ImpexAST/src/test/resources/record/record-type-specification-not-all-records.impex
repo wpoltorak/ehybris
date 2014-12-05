@@ -1,3 +1,4 @@
 INSERT User;uid[unique=true]
 Customer;SampleCustomer
 	;SampleEmployee
+	;Aaa

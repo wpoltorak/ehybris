@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 public class DefaultColumnDescription implements ColumnDescription {
 
-    private final TypeDescription type;
+    //    private final TypeDescription type;
+    private final TypeDescription owner;
     private final ColumnDescription parent;
     private String documentID;
     private boolean documentIDReference;
@@ -17,21 +18,21 @@ public class DefaultColumnDescription implements ColumnDescription {
 
     private String refRegex;
     private final List<ColumnDescription> children = new ArrayList<>();
+    private TypeDescription type;
 
-    public DefaultColumnDescription(final TypeDescription type) {
-        this.type = type;
+    public DefaultColumnDescription(final TypeDescription owner) {
+        this.owner = owner;
         this.parent = null;
     }
 
     public DefaultColumnDescription(final ColumnDescription parent) {
         this.parent = parent;
-        this.type = parent.getType();
+        this.owner = parent.getType();
         this.parent.addChild(this);
     }
 
     public void addChild(final ColumnDescription columnDescription) {
         children.add(columnDescription);
-
     }
 
     //DocumentID, Integer, String, Boolean, Text, PK, Long, Complex
@@ -40,8 +41,19 @@ public class DefaultColumnDescription implements ColumnDescription {
         return children;
     }
 
+    @Override
+    public TypeDescription getOwner() {
+        return owner;
+    }
+
+    @Override
     public TypeDescription getType() {
         return type;
+    }
+
+    @Override
+    public void setType(final TypeDescription type) {
+        this.type = type;
     }
 
     public ColumnDescription getParent() {
@@ -80,11 +92,11 @@ public class DefaultColumnDescription implements ColumnDescription {
         this.documentID = documentID;
     }
 
-    public void addAttribute(final TypeDescription type, final String name) {
+    public void addAttribute(final String name, final TypeDescription type) {
         names.put(name, type);
     }
 
     public void addAttribute(final String name) {
-        names.put(name, type);
+        names.put(name, owner);
     }
 }

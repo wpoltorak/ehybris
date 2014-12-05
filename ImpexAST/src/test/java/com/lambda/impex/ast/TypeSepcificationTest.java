@@ -28,11 +28,12 @@ public class TypeSepcificationTest {
         final TypeDescription childdesc = mock(TypeDescription.class);
 
         when(finder.findType("User")).thenReturn(desc);
+        when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.FALSE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
-        when(desc.getReturnType("uid")).thenReturn(childdesc);
+        when(desc.getReturnType("uid")).thenReturn("ChildType");
 
-        final DefaultImpexModel model = init("/record/record-type-specification.impex", finder);
+        final DefaultImpexModel model = init("/typespecification/TypeSpecificationTest1.impex", finder);
 
         assertEquals(1, model.getProblems().size());
         assertEquals(model.getProblems().get(0).getType(), Type.InvalidType);
@@ -50,13 +51,14 @@ public class TypeSepcificationTest {
         final TypeDescription childdesc = mock(TypeDescription.class);
 
         when(finder.findType("User")).thenReturn(desc);
+        when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.FALSE);
         when(desc.isParentOf("Customer")).thenReturn(Boolean.TRUE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
-        when(desc.getReturnType("uid")).thenReturn(childdesc);
+        when(desc.getReturnType("uid")).thenReturn("ChildType");
 
-        final DefaultImpexModel model = init("/record/record-type-specification-not-all-records.impex", finder);
+        final DefaultImpexModel model = init("/typespecification/TypeSpecificationTest2.impex", finder);
         assertTrue(model.getProblems().isEmpty());
     }
 
@@ -72,13 +74,14 @@ public class TypeSepcificationTest {
         final TypeDescription childdesc = mock(TypeDescription.class);
 
         when(finder.findType("User")).thenReturn(desc);
+        when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.TRUE);
         when(desc.isParentOf("Customer")).thenReturn(Boolean.TRUE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
-        when(desc.getReturnType("uid")).thenReturn(childdesc);
+        when(desc.getReturnType("uid")).thenReturn("ChildType");
 
-        final DefaultImpexModel model = init("/record/record-type-specification-not-all-records.impex", finder);
+        final DefaultImpexModel model = init("/typespecification/TypeSpecificationTest2.impex", finder);
         assertEquals(1, model.getProblems().size());
         assertEquals(model.getProblems().get(0).getType(), Type.SubtypeRequired);
     }
@@ -95,13 +98,14 @@ public class TypeSepcificationTest {
         final TypeDescription childdesc = mock(TypeDescription.class);
 
         when(finder.findType("User")).thenReturn(desc);
+        when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.FALSE);
         when(desc.isParentOf("Customer")).thenReturn(Boolean.FALSE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
-        when(desc.getReturnType("uid")).thenReturn(childdesc);
+        when(desc.getReturnType("uid")).thenReturn("ChildType");
 
-        final DefaultImpexModel model = init("/record/record-type-specification-not-all-records.impex", finder);
+        final DefaultImpexModel model = init("/typespecification/TypeSpecificationTest2.impex", finder);
         assertEquals(1, model.getProblems().size());
         assertEquals(model.getProblems().get(0).getType(), Type.InvalidSubtype);
     }

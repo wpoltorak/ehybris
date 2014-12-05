@@ -1,10 +1,24 @@
 package com.lambda.impex.ast;
 
 public class ImpexProblem {
+    public static final String SEPARATOR = "<%>";
+
     public enum Type {
         InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
         InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, EmptyMacroValue,
-        DuplicateDocumentID, SyntaxError, SubtypeRequired, InvalidSubtype, InvalidType, InvalidTypedAttribute, InvalidAttribute;
+        DuplicateDocumentID, SyntaxError,
+        /** Subtype is not specified at the beginning of record for the abstract type defined at the beginning of the header */
+        SubtypeRequired,
+        /** Subtype is not in type hierarchy of the header type or column type */
+        InvalidSubtype,
+        /** Type does not exist */
+        InvalidType,
+        /** Attribute does not exist as a field in the type specified at the beginning of the header */
+        InvalidTypedAttribute,
+        /** Attribute does not exist as a field in the type specified at the beginning of the header or */
+        InvalidAttribute,
+        /** type of the attribute does not exist */
+        InvalidAttributeType, ;
     }
 
     private int lineNumber;
