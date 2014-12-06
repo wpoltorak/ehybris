@@ -322,8 +322,10 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         columnIndex++;
         final String text = getText(ctx);
         final boolean notBlank = !isBlank(text);
-        if (notBlank && columnIndex >= columnDescriptions.size()) {
-            context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
+        if (columnIndex >= columnDescriptions.size()) {
+            if (notBlank) {
+                context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
+            }
             return;
         }
         final ColumnDescription column = columnDescriptions.get(columnIndex);
