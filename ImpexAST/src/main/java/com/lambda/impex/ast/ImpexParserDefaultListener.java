@@ -320,17 +320,19 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterField(final FieldContext ctx) {
         columnIndex++;
-        if (columnIndex >= columnDescriptions.size() && isBlank(getText(ctx))) {
+        final String text = getText(ctx);
+        final boolean notBlank = !isBlank(text);
+        if (notBlank && columnIndex >= columnDescriptions.size()) {
             context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
             return;
         }
         final ColumnDescription column = columnDescriptions.get(columnIndex);
-        if (column.isEmpty()) {
+        if (notBlank && column.isEmpty()) {
             context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
             return;
         }
         if (column.isDocumentIDDefinition()) {
-            documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()));
+            documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), text));
         }
         if (column.isDocumentIDReferrence()) {
 
