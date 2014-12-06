@@ -20,6 +20,12 @@ public class DefaultColumnDescription implements ColumnDescription {
     private final List<ColumnDescription> children = new ArrayList<>();
     private TypeDescription type;
 
+    public DefaultColumnDescription() {
+        this.type = null;
+        this.owner = null;
+        this.parent = null;
+    }
+
     public DefaultColumnDescription(final TypeDescription owner) {
         this.owner = owner;
         this.parent = null;
@@ -62,6 +68,10 @@ public class DefaultColumnDescription implements ColumnDescription {
 
     public boolean hasParent() {
         return parent != null;
+    }
+
+    public boolean isEmpty() {
+        return owner == null;
     }
 
     public boolean isDocumentIDReferrence() {

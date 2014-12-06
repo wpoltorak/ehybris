@@ -27,6 +27,7 @@ import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
 import com.lambda.impex.ast.ImpexParser.AttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.AttributeSubtypeContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
+import com.lambda.impex.ast.ImpexParser.EmptyAttributeContext;
 import com.lambda.impex.ast.ImpexParser.FieldContext;
 import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
@@ -130,9 +131,13 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     }
 
     @Override
+    public void enterEmptyAttribute(final EmptyAttributeContext ctx) {
+        currentColumnDescription = new DefaultColumnDescription();
+    }
+
+    @Override
     public void enterSpecialAttribute(final SpecialAttributeContext ctx) {
         currentColumnDescription = new DefaultColumnDescription(typeDescription);
-        System.out.println();
     }
 
     @Override
@@ -315,12 +320,15 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterField(final FieldContext ctx) {
         columnIndex++;
-        if (columnIndex >= columnDescriptions.size()) {
+        if (columnIndex >= columnDescriptions.size() && isBlank(getText(ctx))) {
             context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
             return;
         }
         final ColumnDescription column = columnDescriptions.get(columnIndex);
-
+        if (column.isEmpty()) {
+            context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
+            return;
+        }
         if (column.isDocumentIDDefinition()) {
             documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()));
         }
@@ -556,10 +564,15 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         return node.getText();
     }
 
-    private String nullIfEmpty(final String text) {
+    private static String nullIfEmpty(final String text) {
         if (text == null) {
             return null;
         }
         return text.isEmpty() ? null : text;
     }
+
+    private static boolean isBlank(final String text) {
+        return text == null || "".equals(text.trim());
+    }
+
 }
