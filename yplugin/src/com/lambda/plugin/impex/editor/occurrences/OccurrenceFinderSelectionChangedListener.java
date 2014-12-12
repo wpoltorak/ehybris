@@ -14,7 +14,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ISelectionValidator;
 import org.eclipse.jface.text.ITextSelection;
-import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.link.LinkedModeModel;
 import org.eclipse.jface.text.source.Annotation;
@@ -121,6 +120,9 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         }
 
         ISourceViewer sourceViewer = (ISourceViewer) editor.getAdapter(ISourceViewer.class);
+        if (sourceViewer == null) {
+            return;
+        }
         ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
 
         List<Position> positions = null;
@@ -222,12 +224,12 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
                 return Status.CANCEL_STATUS;
             }
 
-            ITextViewer textViewer = (ITextViewer) editor.getAdapter(ITextViewer.class);
-            if (textViewer == null) {
+            ISourceViewer sourceViewer = (ISourceViewer) editor.getAdapter(ISourceViewer.class);
+            if (sourceViewer == null) {
                 return Status.CANCEL_STATUS;
             }
 
-            IDocument document = textViewer.getDocument();
+            IDocument document = sourceViewer.getDocument();
             if (!(document instanceof ImpexDocument)) {
                 return Status.CANCEL_STATUS;
             }

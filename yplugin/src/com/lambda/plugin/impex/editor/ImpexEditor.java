@@ -121,6 +121,14 @@ public class ImpexEditor extends TextEditor {
     }
 
     @Override
+    public Object getAdapter(Class adapter) {
+        if (ISourceViewer.class.equals(adapter)) {
+            return getSourceViewer();
+        }
+        return super.getAdapter(adapter);
+    }
+
+    @Override
     protected ISourceViewer createSourceViewer(final Composite parent, final IVerticalRuler ruler, final int styles) {
         final ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(),
                 styles);
