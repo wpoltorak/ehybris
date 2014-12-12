@@ -27,6 +27,8 @@ public class DefaultImpexModel implements ImpexModel {
 
     private final List<ImpexProblem> problems = new ArrayList<>();
     private final Map<Token, List<Token>> macroReferences = new HashMap<>();
+    private final Map<String, List<Token>> typeName2Tokens = new HashMap<>();
+    private final Map<Integer, String> typeOffset2Text = new HashMap<>();
     private final Map<Token, MacroValueContext> macrosValues = new HashMap<>();
     /* Macro reference index to macro definition token */
     private final Map<Integer, Token> macroReferenceOffsetToDefinition = new HashMap<>();
@@ -93,6 +95,7 @@ public class DefaultImpexModel implements ImpexModel {
     @Override
     public void addMacroReference(final Token macroDefiniton, final Token macroReference) {
         macroReferenceOffsetToDefinition.put(macroReference.getStartIndex(), macroDefiniton);
+        addListValue(macroReferences, macroDefiniton, macroReference);
         List<Token> list = macroReferences.get(macroDefiniton);
         if (list == null) {
             list = new ArrayList<>();
@@ -105,12 +108,21 @@ public class DefaultImpexModel implements ImpexModel {
     public void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue) {
         macrosValues.put(macroDefiniton, macroValue);
         macroDefinitionOffsetToDefinition.put(macroDefiniton.getStartIndex(), macroDefiniton);
-        List<MacroValueContext> values = macros.get(macrodefText);
+        addListValue(macros, macrodefText, macroValue);
+    }
+
+    private <T, R> void addListValue(final Map<R, List<T>> map, final R key, final T value) {
+        List<T> values = map.get(key);
         if (values == null) {
             values = new ArrayList<>();
-            macros.put(macrodefText, values);
+            map.put(key, values);
         }
-        values.add(macroValue);
+        values.add(value);
+    }
+
+    public void addType(final String typeText, final Token typeToken) {
+        typeOffset2Text.put(typeToken.getStartIndex(), typeText);
+        addListValue(typeName2Tokens, typeText, typeToken);
     }
 
     @Override
@@ -155,13 +167,32 @@ public class DefaultImpexModel implements ImpexModel {
 
     @Override
     public List<Token> getOccurrenceTokens(final int tokenType, final int offset) {
+        switch (tokenType) {
+            case ImpexLexer.Macrodef:
+            case ImpexLexer.Macroref:
+                return getMacroOccurrenceTokens(tokenType, offset);
+            case ImpexLexer.Type:
+                return getTypeOccurrenceTokens(offset);
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Token> getTypeOccurrenceTokens(final int offset) {
+        final String typeName = typeOffset2Text.get(offset);
+        final List<Token> result = typeName2Tokens.get(typeName);
+        if (result != null) {
+            return result;
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Token> getMacroOccurrenceTokens(final int tokenType, final int offset) {
         Token macrodef = null;
         if (tokenType == ImpexLexer.Macrodef) {
             macrodef = macroDefinitionOffsetToDefinition.get(offset);
         } else if (tokenType == ImpexLexer.Macroref) {
             macrodef = macroReferenceOffsetToDefinition.get(offset);
         }
-
         if (macrodef == null) {
             return Collections.emptyList();
         }

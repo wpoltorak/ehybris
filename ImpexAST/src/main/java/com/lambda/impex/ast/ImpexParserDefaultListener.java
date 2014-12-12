@@ -62,6 +62,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
+    private final HashMap<String, Token> currentTypes = new HashMap<>();
 
     private final List<String> supportedModes = Arrays.asList("append", "remove");
     private TypeFinder typeFinder;
@@ -106,9 +107,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     @Override
     public void enterHeaderTypeName(final HeaderTypeNameContext ctx) {
-        checkMacroReferences(ctx.Macroref());
-        typeDescription = typeFinder.findType(getText(ctx));
-
+        final String typename = getText(ctx);
+        typeDescription = typeFinder.findType(typename);
+        if (ctx.Type() != null) {
+            context.addType(typename, ctx.Type().getSymbol());
+        }
         if (!typeDescription.exists()) {
             context.addProblem(new ImpexProblem(Type.InvalidType));
         }

@@ -38,4 +38,6 @@ public interface ImpexModel {
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros();
 
     List<Token> getOccurrenceTokens(int tokenType, int offset);
+
+    void addType(String typeText, Token typeToken);
 }
