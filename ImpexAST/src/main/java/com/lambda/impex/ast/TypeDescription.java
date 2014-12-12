@@ -6,6 +6,8 @@ public interface TypeDescription {
 
     boolean iseCommerce();
 
+    boolean isCollection();
+
     boolean exists();
 
     boolean isParentOf(String subtype);

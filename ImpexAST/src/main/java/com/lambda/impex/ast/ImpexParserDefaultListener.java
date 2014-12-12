@@ -2,6 +2,8 @@
 
 package com.lambda.impex.ast;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,7 +98,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             return;
         }
 
-        checkMacroReferences(ctx.macroValue().Macroref());
+        //        checkMacroReferences(ctx.macroValue().Macroref());
         final String macrodefText = removeSeparators(ctx.Macrodef().getText());
         currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
         context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), ctx.macroValue());
@@ -121,13 +123,12 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterAttribute(final AttributeContext ctx) {
         columnIndex++;
-        System.out.println();
     }
 
     @Override
     public void exitAttribute(final AttributeContext ctx) {
         columnDescriptions.add(currentColumnDescription);
-        System.out.println();
+        currentColumnDescription = null;
     }
 
     @Override
@@ -405,6 +406,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void enterEveryRule(@NotNull final ParserRuleContext ctx) {
+        checkMacroReferences(ctx);
     }
 
     /**
@@ -443,7 +445,24 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         return text.length() > 0;
     }
 
-    public void checkMacroReferences(final List<TerminalNode> macroReferences) {
+    @SuppressWarnings("unchecked")
+    private void checkMacroReferences(final ParserRuleContext context) {
+        Method m;
+        try {
+            m = context.getClass().getMethod("Macroref");
+
+            final Object result = m.invoke(context);
+            if (result instanceof List) {
+                checkMacroReferences((List<TerminalNode>) result);
+            } else if (result instanceof TerminalNode) {
+                checkMacroReferences((TerminalNode) result);
+            }
+
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+        }
+    }
+
+    private void checkMacroReferences(final List<TerminalNode> macroReferences) {
         if (macroReferences == null || macroReferences.isEmpty()) {
             return;
         }

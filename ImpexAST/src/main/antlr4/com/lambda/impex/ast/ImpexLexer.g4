@@ -25,7 +25,7 @@ tokens {
     public void emit(Token token) {
     super.emit(token);
     
-    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
+    //System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
     
     if (token.getChannel() == Token.HIDDEN_CHANNEL) {
         return;
@@ -35,14 +35,14 @@ tokens {
     
     if (_mode == attribute && lastTokenType == DoubleQuote) {
         insideQuotedAttribute = !insideQuotedAttribute;
-        System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+        //System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
     }
     }
   
       @Override
     public void mode(final int m) {
         super.mode(m);
-        System.out.println("Enter mode: " + getModeNames()[m]);
+        //System.out.println("Enter mode: " + getModeNames()[m]);
     }
     
     public static String readType(final Token token) {
