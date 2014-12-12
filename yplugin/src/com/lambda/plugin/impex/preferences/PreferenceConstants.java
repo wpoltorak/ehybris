@@ -126,7 +126,7 @@ public class PreferenceConstants {
     public static final String IMPEX_PROBLEM = "impex_problem";
 
     /**
-     * Empty macro assignment problem.<br/>
+     * Empty macro assignment problem<br/>
      * Example: $macro =
      */
     public static final String PROBLEM_MACRO_EMPTY = IMPEX_PROBLEM + "_empty_macro";
@@ -138,7 +138,7 @@ public class PreferenceConstants {
     public static final String PROBLEM_MACRO_UNDEFINED = IMPEX_PROBLEM + "_undefined_macro";
 
     /**
-     * Invalid type problem.<br/>
+     * Invalid type problem<br/>
      * <ul>
      * <li>Type does not exist</li>
      * <li>Type is not a child of <code>de.hybris.platform.jalo.ExtensibleItem</li>
@@ -147,7 +147,7 @@ public class PreferenceConstants {
     public static final String PROBLEM_TYPE_INVALID = IMPEX_PROBLEM + "_invalid_type";
 
     /**
-     * Invalid subtype problem.<br/>
+     * Invalid subtype problem<br/>
      * <ul>
      * <li>Subtype does not exist</li>
      * <li>Subtype is not a child of type
@@ -156,11 +156,25 @@ public class PreferenceConstants {
     public static final String PROBLEM_SUBTYPE_INVALID = IMPEX_PROBLEM + "_invalid_subtype";
 
     /**
-     * Missing subtype problem.<br/>
+     * Missing subtype problem<br/>
      * <ul>
      * <li>Subtype han't been defined</li>
      * </ul>
      */
     public static final String PROBLEM_SUBTYPE_MISSING = IMPEX_PROBLEM + "_missing_subtype";
+
+    /**
+     * Invalid attribute problem<br/>
+     * <ul>
+     * <li>Attribute doesn't exist in an owner type</li>
+     * </ul>
+     */
+    public static final String PROBLEM_ATTRIBUTE_INVALID = IMPEX_PROBLEM + "_invalid_attribute";
+
+    /**
+     * Field without header attribute. When number of field exceeds number of attributes in the header.
+     */
+    public static final String PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE = IMPEX_PROBLEM
+            + "_field_without_header_attribute";
 
 }

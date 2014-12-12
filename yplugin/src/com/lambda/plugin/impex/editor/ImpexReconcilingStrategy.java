@@ -1,6 +1,7 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocument;
@@ -45,7 +46,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
         }
 
         try {
-            System.out.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
+            System.err.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
                     + "##################");
             ImpexDocument impexDocument = (ImpexDocument) document;
             impexDocument.validate();
@@ -80,7 +81,8 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
             // });
 
         } finally {
-            System.out.println("===> TOOK " + (System.nanoTime() - start) / 1000);
+            System.err.println("===> TOOK " + TimeUnit.SECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS)
+                    + " seconds");
 
         }
 

@@ -2,6 +2,7 @@ package com.lambda.plugin.impex.editor;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonToken;
@@ -84,20 +85,27 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
     }
 
     public void validate() {
-        TokenSourceProvider tokenSource = new TokenSourceProvider();
-        Lexer lexer = tokenSource.get();
-        lexer.removeErrorListeners();
-        impexModel = new DefaultImpexModel();
-        lexer.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
-        lexer.setInputStream(new ANTLRInputStream(this.get()));
-        ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
+        long nanoTime = System.nanoTime();
+        try {
+            System.err.println("===> VALIDATE BEGIN");
+            TokenSourceProvider tokenSource = new TokenSourceProvider();
+            Lexer lexer = tokenSource.get();
+            lexer.removeErrorListeners();
+            impexModel = new DefaultImpexModel();
+            lexer.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
+            lexer.setInputStream(new ANTLRInputStream(this.get()));
+            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
 
-        final ParseTree impex = parser.impex();
+            final ParseTree impex = parser.impex();
 
-        final ParseTreeWalker walker = new ParseTreeWalker();
-        ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
-        listener.setTypeFinder(new JavaTypeFinder());
-        walker.walk(listener, impex);
+            final ParseTreeWalker walker = new ParseTreeWalker();
+            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
+            listener.setTypeFinder(new JavaTypeFinder());
+            walker.walk(listener, impex);
+        } finally {
+            System.err.println("===> VALIDATE END: took "
+                    + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");
+        }
 
     }
 

@@ -1,7 +1,11 @@
 package com.lambda.plugin.impex.antlr;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
@@ -20,7 +24,8 @@ import com.lambda.plugin.YPlugin;
 
 public class JavaTypeFinder implements TypeFinder {
 
-    @Override
+    private final Map<String, Set<IType>> cache = new HashMap<>();
+
     public TypeDescription findFieldType(String fieldName) {
         // TODO Auto-generated method stub
         return null;
@@ -28,6 +33,48 @@ public class JavaTypeFinder implements TypeFinder {
 
     @Override
     public TypeDescription findType(final String typename) {
+
+        if (isJavaType(typename)) {
+            if (isCollection(typename)) {
+                String collectionTypeName = getCollectionTypeName(typename);
+                if (isJavaType(collectionTypeName)) {
+                    return JavaTypeDescription.fromTypeName(typename, true);
+                }
+                Set<IType> types = getTypeHierarchy(typename);
+                return JavaTypeDescription.fromTypeHierarchy(types, true);
+
+            }
+            return JavaTypeDescription.fromTypeName(typename, false);
+        }
+
+        Set<IType> types = getTypeHierarchy(typename);
+        return JavaTypeDescription.fromTypeHierarchy(types, false);
+    }
+
+    private String getCollectionTypeName(String typename) {
+        Pattern pattern = Pattern.compile(".*<(([a-zA-Z0-9\\.\\$]+))>$");
+        Matcher matcher = pattern.matcher(typename);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return typename;
+    }
+
+    private boolean isJavaType(final String typename) {
+        return typename == null || typename.startsWith("java.");
+    }
+
+    private Set<IType> getTypeHierarchy(final String typename) {
+        if (cache.containsKey(typename)) {
+            return cache.get(typename);
+        }
+
+        Set<IType> types = searchTypeHierarchy(typename);
+        cache.put(typename, types);
+        return types;
+    }
+
+    private Set<IType> searchTypeHierarchy(final String typename) {
         SearchEngine engine = new SearchEngine();
         final Set<IType> types = new LinkedHashSet<>();
         try {
@@ -63,11 +110,10 @@ public class JavaTypeFinder implements TypeFinder {
         } catch (JavaModelException e) {
             YPlugin.logError(e);
         }
-
-        return JavaTypeDescription.fromTypeHierarchy(types);
+        return types;
     }
 
-    private boolean isAbstract(IType type) {
+    private static boolean isAbstract(IType type) {
         try {
             return Flags.isAbstract(type.getFlags());
         } catch (JavaModelException e) {
@@ -76,4 +122,11 @@ public class JavaTypeFinder implements TypeFinder {
         return false;
     }
 
+    private static boolean isCollection(String fullTypeName) {
+        if (fullTypeName == null) {
+            return false;
+        }
+        return fullTypeName.startsWith("java.util.Collection") || fullTypeName.startsWith("java.util.List")
+                || fullTypeName.startsWith("java.util.Set");
+    }
 }

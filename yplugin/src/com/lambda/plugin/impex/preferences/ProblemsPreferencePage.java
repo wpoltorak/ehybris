@@ -30,9 +30,12 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
     private final String[][] problems = new String[][] {
             { YMessages.ImpexEditorPreferencePage_problem_emptyMacro, PreferenceConstants.PROBLEM_MACRO_EMPTY },
             { YMessages.ImpexEditorPreferencePage_problem_undefinedMacro, PreferenceConstants.PROBLEM_MACRO_UNDEFINED },
-            { YMessages.ImpexEditorPreferencePage_problem_invalidType, PreferenceConstants.PROBLEM_TYPE_INVALID },
-            { YMessages.ImpexEditorPreferencePage_problem_invalidSubtype, PreferenceConstants.PROBLEM_SUBTYPE_INVALID },
-            { YMessages.ImpexEditorPreferencePage_problem_missingSubtype, PreferenceConstants.PROBLEM_SUBTYPE_MISSING }, };
+            { YMessages.ImpexEditorPreferencePage_problem_fieldWithoutHeaderAttribute,
+                    PreferenceConstants.PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE },
+    // { YMessages.ImpexEditorPreferencePage_problem_invalidType, PreferenceConstants.PROBLEM_TYPE_INVALID },
+    // { YMessages.ImpexEditorPreferencePage_problem_invalidSubtype, PreferenceConstants.PROBLEM_SUBTYPE_INVALID },
+    // { YMessages.ImpexEditorPreferencePage_problem_missingSubtype, PreferenceConstants.PROBLEM_SUBTYPE_MISSING },
+    };
 
     private final String[] errorWarningIgnoreLabels = new String[] { YMessages.ImpexEditorPreferencePage_error,
             YMessages.ImpexEditorPreferencePage_warning, YMessages.ImpexEditorPreferencePage_ignore };

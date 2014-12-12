@@ -23,8 +23,36 @@ public class AntlrProblemTypeToSeverityMapper {
             return getSeverity(store, PreferenceConstants.PROBLEM_SUBTYPE_INVALID);
         case SubtypeRequired:
             return getSeverity(store, PreferenceConstants.PROBLEM_SUBTYPE_MISSING);
+        case InvalidAttribute:
+            return getSeverity(store, PreferenceConstants.PROBLEM_ATTRIBUTE_INVALID);
+        case FieldWithoutHeaderAttribute:
+            return getSeverity(store, PreferenceConstants.PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE);
+
         default:
             return IMarker.SEVERITY_ERROR;
+        }
+    }
+
+    public static String getMessage(String text, ImpexProblem.Type type) {
+        Object[] params = text.split(ImpexProblem.SEPARATOR);
+        switch (type) {
+        case EmptyMacroValue:
+            return YMessages.Impex_problem_blankMacro;
+        case UnknownMacro:
+            return MessageFormat.format(YMessages.Impex_problem_unknownMacro, params);
+        case InvalidType:
+            return YMessages.Impex_problem_invalidType;
+        case InvalidSubtype:
+            return YMessages.Impex_problem_invalidSubtype;
+        case SubtypeRequired:
+            return YMessages.Impex_problem_noSubtype;
+        case InvalidAttribute:
+            return MessageFormat.format(YMessages.Impex_problem_invalidAttribute, params);
+        case FieldWithoutHeaderAttribute:
+            return YMessages.Impex_problem_fieldWithoutHeaderAttribute;
+
+        default:
+            return text;
         }
     }
 
@@ -33,20 +61,4 @@ public class AntlrProblemTypeToSeverityMapper {
         return severity == 0 ? IMarker.SEVERITY_ERROR : severity;
     }
 
-    public static String getMessage(String text, ImpexProblem.Type type) {
-        switch (type) {
-        case EmptyMacroValue:
-            return YMessages.Impex_problem_blankMacro;
-        case UnknownMacro:
-            return MessageFormat.format(YMessages.Impex_problem_unknownMacro, text);
-        case InvalidType:
-            return YMessages.Impex_problem_invalidType;
-        case InvalidSubtype:
-            return YMessages.Impex_problem_invalidSubtype;
-        case SubtypeRequired:
-            return YMessages.Impex_problem_noSubtype;
-        default:
-            return text;
-        }
-    }
 }

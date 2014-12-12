@@ -50,7 +50,7 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
         public void connect(final IDocument document, final boolean delayInitialization) {
             super.connect(document, delayInitialization);
             YPlugin.logInfo("ImpexPartitionar connecting document", null);
-            printPartitions(document, 0, document.getLength());
+            // printPartitions(document, 0, document.getLength());
         }
 
         /**
@@ -70,7 +70,7 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
             ensureCorrectDocument(e);
             IRegion updateStructure = updateStructure(e);
             IRegion region = super.documentChanged2(e);
-            printPartitions(fDocument, e.getOffset(), e.getLength());
+            // printPartitions(fDocument, e.getOffset(), e.getLength());
             return region;
         }
 
@@ -92,7 +92,7 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
             }
         }
 
-        public void printPartitions(final IDocument document, int offset, int length) {
+        private void printPartitions(final IDocument document, int offset, int length) {
             final StringBuffer buffer = new StringBuffer();
 
             final ITypedRegion[] partitions = computePartitioning(offset, length);
