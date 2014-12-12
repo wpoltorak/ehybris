@@ -1,0 +1,3 @@
+INSERT User;uid[unique=true]
+Customer;SampleCustomer
+	Employee;SampleEmployee
