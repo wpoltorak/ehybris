@@ -204,7 +204,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             final String typeName = getText(subtypenameCtx);
             final String attributeName = getText(nameCtx);
             final TypeDescription type = currentColumnDescription.getType();
-            if (type.sameAs(typeName)) {
+            if (type != null && type.sameAs(typeName)) {
                 if (type.exists() && !type.containsField(attributeName)) {
                     context.addProblem(problem(nameCtx, Type.InvalidAttribute));
                 }

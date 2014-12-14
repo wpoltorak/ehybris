@@ -63,6 +63,7 @@ public class AntlrTypeToStyleTokenMapper {
         map.put(ImpexLexer.Comment, PreferenceConstants.COLOR_COMMENT);
         map.put(ImpexLexer.DocumentID, PreferenceConstants.COLOR_DOCUMENTID);
         map.put(ImpexLexer.DocumentIdField, PreferenceConstants.COLOR_DOCUMENTID_FIELD);
+        map.put(ImpexLexer.DocumentIdRefField, PreferenceConstants.COLOR_DOCUMENTID_FIELD);
         map.put(ImpexLexer.SpecialAttribute, PreferenceConstants.COLOR_SPECIAL_ATTRIBUTE);
         map.put(ImpexLexer.BooleanAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
         map.put(ImpexLexer.ClassAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);

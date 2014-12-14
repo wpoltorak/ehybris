@@ -7,6 +7,7 @@ tokens {
     Macroref,
     SkippedField,
     DocumentIdField,
+    DocumentIdRefField,
     BooleanAttributeModifier,
     IntAttributeModifier,
     DateFormatAttributeModifier,
@@ -27,28 +28,28 @@ import java.util.*;
     private boolean insideQuotedAttribute = false;
     private List<Integer> columnTypes = null;
     private int columnIndex = -1;
+    private boolean isDocumentIdReference;
     
     public void emit(Token token) {
-    super.emit(token);
+    	super.emit(token);
     
-    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
+    	if ( LexerATNSimulator.debug ) System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
     
-    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
-        return;
-    }
+	    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
+	        return;
+	    }
     
-    lastTokenType = token.getType();
-    
-    if (_mode == attribute && lastTokenType == DoubleQuote) {
-        insideQuotedAttribute = !insideQuotedAttribute;
-        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
-    }
+	    lastTokenType = token.getType();
+	    
+	    if (_mode == attribute && lastTokenType == DoubleQuote) {
+	        insideQuotedAttribute = !insideQuotedAttribute;
+	        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+	    }
     }
   
       @Override
     public void mode(final int m) {
         super.mode(m);
-        
         if ( LexerATNSimulator.debug ) System.out.println("Enter mode: " + getModeNames()[m]);
     }
     
@@ -56,11 +57,12 @@ import java.util.*;
     public void pushMode(int m) {
         if (m == type) {
         	columnTypes = new ArrayList<>();
-        }
-    	if (m == record){
+        } else if (m == record){
     		columnIndex = -1;
     	} else if (m == field){
     		columnIndex++;
+    	} else if (m == attribute) {
+    		isDocumentIdReference = false;
     	}
     	super.pushMode(m);
     }
@@ -73,9 +75,12 @@ import java.util.*;
         		if ( LexerATNSimulator.debug ) System.out.println("empty attribute");
         	} else if (lastTokenType == DocumentID){
         		columnTypes.add(1); // docid
-        		if ( LexerATNSimulator.debug ) System.out.println("docid attribute");
+        		if ( LexerATNSimulator.debug ) System.out.println("docid def attribute");
+        	} else if (isDocumentIdReference) {
+        		columnTypes.add(2); // docid ref
+        		if ( LexerATNSimulator.debug ) System.out.println("docid ref attribute");
         	} else {
-        		columnTypes.add(2); // default
+        		columnTypes.add(3); // default
         		if ( LexerATNSimulator.debug ) System.out.println("default attribute");
         	}
         }
@@ -97,11 +102,20 @@ import java.util.*;
 			case 1: 
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
 				setType(DocumentIdField); 
-				break; 
+				break;
+			case 2:
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
+				setType(DocumentIdRefField); 
+				break;
 			default: 
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
 				setType(Field);
 		}
+    }
+    
+    private void handleDocumentId() {
+    	setType(DocumentID);
+    	isDocumentIdReference = lastTokenType == LParenthesis;
     }
     
     private void handleFieldLb() {
@@ -347,7 +361,7 @@ ALb                 : Lb -> type(Lb), popMode, pushMode(record);
 ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 AIdentifier         : Identifier -> type(Identifier);
 ASpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
-ADocumentID         : DocumentID -> type(DocumentID);
+ADocumentID         : DocumentID {handleDocumentId();};
 AMacroref           : Macrodef -> type(Macroref);
 AWs                 : Ws -> type(Ws), channel(HIDDEN);
 
