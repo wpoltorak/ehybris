@@ -62,9 +62,14 @@ public class PreferenceConstants {
     public static final String COLOR_BEANSHELL = IMPEX_SYNTAX_COLORING + "_beanshell";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
 
     /**
+     * Preference key for color of beanshell in impex editor
+     */
+    public static final String COLOR_SPECIAL_ATTRIBUTE = IMPEX_SYNTAX_COLORING + "_specialattribute";// ImpexLexer.tokenNames[ImpexLexer.SpecialAttribute];
+
+    /**
      * Preference key for color of userrights section in impex editor
      */
-    public static final String COLOR_USERRIGHTS = IMPEX_SYNTAX_COLORING + "_userrights";// ImpexLexer.tokenNames[ImpexLexer.Beanshell];
+    public static final String COLOR_USERRIGHTS = IMPEX_SYNTAX_COLORING + "_userrights";// ImpexLexer.tokenNames[ImpexLexer.Usserrights];
 
     /**
      * Preference key for color of quoted string in impex editor
@@ -86,6 +91,11 @@ public class PreferenceConstants {
      */
     public static final String COLOR_OTHERS = IMPEX_SYNTAX_COLORING + "_others";
 
+    /** Preference key for color of skipped field */
+    public static final String COLOR_SKIPPED_FIELD = IMPEX_SYNTAX_COLORING + "_skipped_field";
+
+    /** Preference key for color of document id field */
+    public static final String COLOR_DOCUMENTID_FIELD = IMPEX_SYNTAX_COLORING + "_documentid_field";
     /**
      * Preference key suffix for text style preference keys.
      */

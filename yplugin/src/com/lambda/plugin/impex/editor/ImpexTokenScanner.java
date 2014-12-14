@@ -10,16 +10,16 @@ import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.jface.text.rules.Token;
 
-import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
+import com.lambda.plugin.impex.antlr.AntlrTypeToStyleTokenMapper;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 public class ImpexTokenScanner implements ITokenScanner {
 
     private ILexerTokenRegion nextToken;
     private Iterator<ILexerTokenRegion> tokenIterator;
-    private final TypeToStyleTokenMapper tokenMapper;
+    private final AntlrTypeToStyleTokenMapper tokenMapper;
 
-    public ImpexTokenScanner(TypeToStyleTokenMapper tokenMapper) {
+    public ImpexTokenScanner(AntlrTypeToStyleTokenMapper tokenMapper) {
         this.tokenMapper = tokenMapper;
     }
 

@@ -34,7 +34,7 @@ public class AntlrProblemTypeToSeverityMapper {
     }
 
     public static String getMessage(String text, ImpexProblem.Type type) {
-        Object[] params = text.split(ImpexProblem.SEPARATOR);
+        Object[] params = text == null ? null : text.split(ImpexProblem.SEPARATOR);
         switch (type) {
         case EmptyMacroValue:
             return YMessages.Impex_problem_blankMacro;

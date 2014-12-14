@@ -34,7 +34,7 @@ record
         ;
 
 field
-        : (FieldQuoted | Field | Macroref)*
+        : (FieldQuoted | Field | Macroref | DocumentIdField | SkippedField)*
         ;
         
 ////////////////////// ATTRIBUTES ////////////////////////////////

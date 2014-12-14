@@ -64,6 +64,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             { YMessages.ImpexEditorPreferencePage_modes, PreferenceConstants.COLOR_MODE },
             { YMessages.ImpexEditorPreferencePage_types, PreferenceConstants.COLOR_TYPE },
             { YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_ATTRIBUTE },
+            { YMessages.ImpexEditorPreferencePage_specialAttributes, PreferenceConstants.COLOR_SPECIAL_ATTRIBUTE },
             { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_HEADER_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_attributeModifiers, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_strings, PreferenceConstants.COLOR_STRING },
@@ -71,6 +72,8 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             { YMessages.ImpexEditorPreferencePage_beanshell, PreferenceConstants.COLOR_BEANSHELL },
             { YMessages.ImpexEditorPreferencePage_userrights, PreferenceConstants.COLOR_USERRIGHTS },
             { YMessages.ImpexEditorPreferencePage_documentIDs, PreferenceConstants.COLOR_DOCUMENTID },
+            { YMessages.impexEditorPreferencePage_documentIdFields, PreferenceConstants.COLOR_DOCUMENTID_FIELD },
+            { YMessages.ImpexEditorPreferencePage_skippedFields, PreferenceConstants.COLOR_SKIPPED_FIELD },
             { YMessages.ImpexEditorPreferencePage_others, PreferenceConstants.COLOR_OTHERS }, };
 
     private ColorFieldEditor syntaxForegroundColorEditor;

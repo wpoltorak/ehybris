@@ -152,8 +152,8 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             currentColumnDescription = new DefaultColumnDescription(currentColumnDescription);
         }
         if (ctx.DocumentID() != null) {
-            currentColumnDescription.setDocumentIDDefinition(currentAttributeName == null);
-            currentColumnDescription.setDocumentIDReference(currentAttributeName != null);
+            currentColumnDescription.setDocumentIDDefinition(!currentColumnDescription.hasParent());
+            currentColumnDescription.setDocumentIDReference(currentColumnDescription.hasParent());
             currentColumnDescription.setDocumentID(ctx.DocumentID().getText());
             return;
         }

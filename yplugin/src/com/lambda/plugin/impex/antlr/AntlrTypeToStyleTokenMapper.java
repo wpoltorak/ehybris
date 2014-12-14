@@ -14,14 +14,14 @@ import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.impex.editor.ColorManager;
 import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
-public class TypeToStyleTokenMapper {
+public class AntlrTypeToStyleTokenMapper {
 
     private static final Map<Integer, String> tokenTypeToColorPreferenceKeyMap = initTokenTypeToColorPreferenceKeyMap();
     private static final Map<Integer, IToken> tokenTypeToTokenMap = initTokenTypeToTokenMap();
 
     private final IPreferenceStore preferenceStore;
 
-    public TypeToStyleTokenMapper(IPreferenceStore preferenceStore) {
+    public AntlrTypeToStyleTokenMapper(IPreferenceStore preferenceStore) {
         this.preferenceStore = preferenceStore;
     }
 
@@ -57,10 +57,13 @@ public class TypeToStyleTokenMapper {
         Map<Integer, String> map = new HashMap<Integer, String>();
         map.put(ImpexLexer.Mode, PreferenceConstants.COLOR_MODE);
         map.put(ImpexLexer.Type, PreferenceConstants.COLOR_TYPE);
+        map.put(ImpexLexer.SkippedField, PreferenceConstants.COLOR_SKIPPED_FIELD);
         map.put(ImpexLexer.Macrodef, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Macroref, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Comment, PreferenceConstants.COLOR_COMMENT);
         map.put(ImpexLexer.DocumentID, PreferenceConstants.COLOR_DOCUMENTID);
+        map.put(ImpexLexer.DocumentIdField, PreferenceConstants.COLOR_DOCUMENTID_FIELD);
+        map.put(ImpexLexer.SpecialAttribute, PreferenceConstants.COLOR_SPECIAL_ATTRIBUTE);
         map.put(ImpexLexer.BooleanAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
         map.put(ImpexLexer.ClassAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
         map.put(ImpexLexer.DateFormatAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
@@ -72,6 +75,7 @@ public class TypeToStyleTokenMapper {
         map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
         map.put(ImpexLexer.BeanShell, PreferenceConstants.COLOR_BEANSHELL);
         map.put(ImpexLexer.UserRights, PreferenceConstants.COLOR_USERRIGHTS);
+        map.put(ImpexLexer.SkippedField, PreferenceConstants.COLOR_SKIPPED_FIELD);
         return map;
     }
 

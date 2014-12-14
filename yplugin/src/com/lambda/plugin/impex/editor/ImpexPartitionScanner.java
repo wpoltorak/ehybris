@@ -10,7 +10,7 @@ import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.Token;
 
-import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
+import com.lambda.plugin.impex.antlr.AntlrTypeToPartitionTokenMapper;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 /**
@@ -26,12 +26,12 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
     private int currentPartitionOffset;
     private int currentPartitionLength;
     private ILexerTokenRegion nextToken;
-    private final TypeToPartitionTokenMapper tokenMapper;
+    private final AntlrTypeToPartitionTokenMapper tokenMapper;
     private Iterator<ILexerTokenRegion> tokenIterator;
 
-    static final String[] CONTENT_TYPES = TypeToPartitionTokenMapper.getContentTypes();
+    static final String[] CONTENT_TYPES = AntlrTypeToPartitionTokenMapper.getContentTypes();
 
-    public ImpexPartitionScanner(TypeToPartitionTokenMapper tokenMapper) {
+    public ImpexPartitionScanner(AntlrTypeToPartitionTokenMapper tokenMapper) {
         this.tokenMapper = tokenMapper;
     }
 
@@ -59,11 +59,11 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
 
         this.currentPartitionOffset = nextToken.getOffset();
         this.currentPartitionLength = nextToken.getLength();
-        String partitionType = TypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
+        String partitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
 
         while (tokenIterator.hasNext()) {
             nextToken = tokenIterator.next();
-            String nextPartitionType = TypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
+            String nextPartitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
             currentPartitionLength = nextToken.getOffset() - currentPartitionOffset;
             if (!partitionType.equals(nextPartitionType) || !IDocument.DEFAULT_CONTENT_TYPE.equals(partitionType)) {
                 return new Token(partitionType);

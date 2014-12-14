@@ -12,16 +12,16 @@ import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPartitionTokenScanner;
 
 import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
+import com.lambda.plugin.impex.antlr.AntlrTypeToPartitionTokenMapper;
 
 public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
-    private final TypeToPartitionTokenMapper tokenMapper;
+    private final AntlrTypeToPartitionTokenMapper tokenMapper;
     private DocumentEvent previousEvent;
     private IRegion previousRegion;
 
     public ImpexDocumentParticipant() {
-        this.tokenMapper = new TypeToPartitionTokenMapper();
+        this.tokenMapper = new AntlrTypeToPartitionTokenMapper();
     }
 
     @Override

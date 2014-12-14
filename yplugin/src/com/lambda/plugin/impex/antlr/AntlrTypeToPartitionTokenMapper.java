@@ -8,7 +8,7 @@ import org.eclipse.jface.text.IDocument;
 
 import com.lambda.impex.ast.ImpexLexer;
 
-public class TypeToPartitionTokenMapper {
+public class AntlrTypeToPartitionTokenMapper {
 
     private static final String MODE = "__block_partition_content_type";
     private static final String MACRO = "__macro_partition_content_type";

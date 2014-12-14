@@ -5,6 +5,8 @@ tokens {
     Type,
     Separator,
     Macroref,
+    SkippedField,
+    DocumentIdField,
     BooleanAttributeModifier,
     IntAttributeModifier,
     DateFormatAttributeModifier,
@@ -16,16 +18,20 @@ tokens {
     TextHeaderModifier,
     UnknownModifier
 }
-
+@header{
+import java.util.*;
+}
 @members{
 	/* last type from non Token.HIDDEN_CHANNEL token */
     private int lastTokenType = 0;
     private boolean insideQuotedAttribute = false;
+    private List<Integer> columnTypes = null;
+    private int columnIndex = -1;
     
     public void emit(Token token) {
     super.emit(token);
     
-    //System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
+    System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
     
     if (token.getChannel() == Token.HIDDEN_CHANNEL) {
         return;
@@ -35,18 +41,81 @@ tokens {
     
     if (_mode == attribute && lastTokenType == DoubleQuote) {
         insideQuotedAttribute = !insideQuotedAttribute;
-        //System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
     }
     }
   
       @Override
     public void mode(final int m) {
         super.mode(m);
-        //System.out.println("Enter mode: " + getModeNames()[m]);
+        
+        if ( LexerATNSimulator.debug ) System.out.println("Enter mode: " + getModeNames()[m]);
+    }
+    
+    @Override
+    public void pushMode(int m) {
+        if (m == type) {
+        	columnTypes = new ArrayList<>();
+        }
+    	if (m == record){
+    		columnIndex = -1;
+    	} else if (m == field){
+    		columnIndex++;
+    	}
+    	super.pushMode(m);
+    }
+
+    @Override
+    public int popMode() {
+        if (_mode == attribute) {
+        	if (lastTokenType == Separator){
+        		columnTypes.add(0); // empty attribute
+        		if ( LexerATNSimulator.debug ) System.out.println("empty attribute");
+        	} else if (lastTokenType == DocumentID){
+        		columnTypes.add(1); // docid
+        		if ( LexerATNSimulator.debug ) System.out.println("docid attribute");
+        	} else {
+        		columnTypes.add(2); // default
+        		if ( LexerATNSimulator.debug ) System.out.println("default attribute");
+        	}
+        }
+    	if ( LexerATNSimulator.debug ) System.out.println("attribute pop mode");
+        return super.popMode();
+    }
+    
+    private void handleField() {
+   		if (columnIndex >= columnTypes.size()) {
+   			if ( LexerATNSimulator.debug ) System.out.println("handle field - index too large: " + columnIndex + " >= " + columnTypes.size());
+			setType(SkippedField);
+			return;
+		}
+		switch (columnTypes.get(columnIndex)) { 
+			case 0: 
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - skipped");
+				setType(SkippedField); 
+				break; 
+			case 1: 
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
+				setType(DocumentIdField); 
+				break; 
+			default: 
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
+				setType(Field);
+		}
+    }
+    
+    private void handleFieldLb() {
+    	setType(Lb);
+    	popMode();
+    	columnIndex = -1;
     }
     
     public static String readType(final Token token) {
         switch (token.getType()) {
+            case ImpexLexer.DocumentIdField:
+                return "DocumentIdField              ";
+            case ImpexLexer.SkippedField:
+                return "SkippedField                 ";
             case ImpexLexer.Type:
                 return "Type                         ";
             case ImpexLexer.Mode:
@@ -224,12 +293,12 @@ RecordWs                  : Ws -> type(Ws), channel(HIDDEN);
 
 mode field;
 FieldLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-FieldSeparator          : Ws* Separator Ws* -> type(Separator);
+FieldSeparator          : Ws* Separator Ws* -> type(Separator), popMode, pushMode(field);
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
 FieldMacroref           : Macrodef -> type(Macroref);
-FieldLb                 : Lb -> type(Lb), popMode;
-FieldMulti				: ~[\r\n";\t\\ $] ~[\r\n";$]* ~[\r\n";\t\\ $] -> type(Field);
-Field                   : ~[\r\n";];
+FieldLb                 : Lb {handleFieldLb();};
+FieldMulti				: ~[\r\n";\t\\ $] ~[\r\n";$]* ~[\r\n";\t\\ $] { handleField();};
+Field                   : ~[\r\n";] { handleField();};
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?
 
@@ -264,7 +333,7 @@ TWs                 : Ws -> type(Ws), channel(HIDDEN);
 
 mode attribute;
 AComma              : Comma -> type(Comma);
-ASeparator          : Separator -> type(Separator);
+ASeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
 ADot                : Dot -> type(Dot);
 ADoubleQuote        : DoubleQuote -> type(DoubleQuote);
 AQuote              : Quote -> type(Quote);

@@ -20,8 +20,8 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 
-import com.lambda.plugin.impex.antlr.TypeToPartitionTokenMapper;
-import com.lambda.plugin.impex.antlr.TypeToStyleTokenMapper;
+import com.lambda.plugin.impex.antlr.AntlrTypeToPartitionTokenMapper;
+import com.lambda.plugin.impex.antlr.AntlrTypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.assist.ImpexContentAssistProcessor;
 
 public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
@@ -30,7 +30,7 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
     private ImpexDoubleClickStrategy doubleClickStrategy;
     private ImpexTokenScanner scanner;
     private final ImpexEditor editor;
-    private final TypeToStyleTokenMapper styleTokenMapper;
+    private final AntlrTypeToStyleTokenMapper styleTokenMapper;
 
     public ImpexEditorConfiguration(IPreferenceStore preferenceStore) {
         this(preferenceStore, null);
@@ -39,7 +39,7 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
     public ImpexEditorConfiguration(IPreferenceStore preferenceStore, final ImpexEditor editor) {
         super(preferenceStore);
         this.editor = editor;
-        this.styleTokenMapper = new TypeToStyleTokenMapper(preferenceStore);
+        this.styleTokenMapper = new AntlrTypeToStyleTokenMapper(preferenceStore);
     }
 
     @Override
@@ -184,6 +184,6 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
     @Override
     public String[] getDefaultPrefixes(ISourceViewer sourceViewer, String contentType) {
-        return TypeToPartitionTokenMapper.defaultPrefixes(contentType);
+        return AntlrTypeToPartitionTokenMapper.defaultPrefixes(contentType);
     }
 }
