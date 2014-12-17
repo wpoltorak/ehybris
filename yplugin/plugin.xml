@@ -215,6 +215,15 @@
       </initializer>
    </extension>
    <extension
+         point="org.eclipse.ui.actionSetPartAssociations">
+      <actionSetPartAssociation
+            targetID="org.eclipse.jdt.ui.JavaActionSet">
+         <part
+               id="com.lambda.plugin.impex.editor.ImpexEditor">
+         </part>
+      </actionSetPartAssociation>
+   </extension>
+   <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut"
