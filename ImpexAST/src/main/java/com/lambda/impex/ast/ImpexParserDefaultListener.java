@@ -29,6 +29,8 @@ import com.lambda.impex.ast.ImpexParser.AttributeModifierContext;
 import com.lambda.impex.ast.ImpexParser.AttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.AttributeSubtypeContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
+import com.lambda.impex.ast.ImpexParser.DocumentIdDefinitionContext;
+import com.lambda.impex.ast.ImpexParser.DocumentIdReferenceContext;
 import com.lambda.impex.ast.ImpexParser.EmptyAttributeContext;
 import com.lambda.impex.ast.ImpexParser.FieldContext;
 import com.lambda.impex.ast.ImpexParser.HeaderContext;
@@ -72,8 +74,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     private String currentAttributeName;
     private int columnIndex;
     private ColumnDescription currentColumnDescription;
-    private final Set<DocumentIDDescription> documentIDDescriptions = new HashSet<>();
-    private final Set<DocumentIDDescription> documentIDReferences = new HashSet<>();
 
     public ImpexParserDefaultListener(final ImpexModel context) {
         this.context = context;
@@ -135,6 +135,20 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     }
 
     @Override
+    public void enterDocumentIdReference(final DocumentIdReferenceContext ctx) {
+        currentColumnDescription = new DefaultColumnDescription(typeDescription);
+        currentColumnDescription.setDocumentIDReference(true);
+        currentColumnDescription.setDocumentID(getText(ctx.DocumentID()));
+    }
+
+    @Override
+    public void enterDocumentIdDefinition(final DocumentIdDefinitionContext ctx) {
+        currentColumnDescription = new DefaultColumnDescription(typeDescription);
+        currentColumnDescription.setDocumentIDDefinition(true);
+        currentColumnDescription.setDocumentID(getText(ctx.DocumentID()));
+    }
+
+    @Override
     public void enterEmptyAttribute(final EmptyAttributeContext ctx) {
         currentColumnDescription = new DefaultColumnDescription();
     }
@@ -150,12 +164,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             currentColumnDescription = new DefaultColumnDescription(typeDescription);
         } else {
             currentColumnDescription = new DefaultColumnDescription(currentColumnDescription);
-        }
-        if (ctx.DocumentID() != null) {
-            currentColumnDescription.setDocumentIDDefinition(!currentColumnDescription.hasParent());
-            currentColumnDescription.setDocumentIDReference(currentColumnDescription.hasParent());
-            currentColumnDescription.setDocumentID(ctx.DocumentID().getText());
-            return;
         }
     }
 
@@ -180,12 +188,8 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem(attributeName, Type.InvalidAttribute));
         } else {
             final TypeDescription returnType = typeFinder.findType(owner.getReturnType(name));
-            //        if (owner.exists() && !returnType.exists()) {
-            //            context.addProblem(problem(attributeName, Type.InvalidAttributeType));
-            //        }
             currentColumnDescription.setType(returnType);
         }
-        currentColumnDescription.addAttribute(name);
     }
 
     @Override
@@ -204,10 +208,12 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             final String typeName = getText(subtypenameCtx);
             final String attributeName = getText(nameCtx);
             final TypeDescription type = currentColumnDescription.getType();
-            if (type != null && type.sameAs(typeName)) {
-                if (type.exists() && !type.containsField(attributeName)) {
-                    context.addProblem(problem(nameCtx, Type.InvalidAttribute));
-                }
+            if (type == null) {
+                // already reported InvalidAttribute error in enterSimpleAttributeName(method)
+                return;
+            }
+            if (type.sameAs(typeName) && !type.containsField(attributeName)) {
+                context.addProblem(problem(nameCtx, Type.InvalidAttribute));
             } else {
                 //TODO cached?
                 final TypeDescription subtype = typeFinder.findType(typeName);
@@ -338,10 +344,13 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             return;
         }
         if (column.isDocumentIDDefinition()) {
-            documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), text));
+            context.addDocumentIDDefinitionQualifier(new DocumentIDDescription(column.getDocumentID(), text), ctx.DocumentIdField()
+                    .getSymbol());
         }
         if (column.isDocumentIDReferrence()) {
-
+            context.addDocumentIDReferenceQualifier(new DocumentIDDescription(column.getDocumentID(), text), ctx.DocumentIdRefField()
+                    .getSymbol());
+            //          documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), text));
             //            documentIDReferences.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()))
         }
     }

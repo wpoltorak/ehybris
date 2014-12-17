@@ -26,10 +26,6 @@ public interface ColumnDescription {
 
     ColumnDescription getParent();
 
-    void addAttribute(String name);
-
-    void addAttribute(String attributeName, TypeDescription owner);
-
     boolean isDocumentIDDefinition();
 
     boolean isDocumentIDReferrence();

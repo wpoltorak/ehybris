@@ -4,7 +4,15 @@
 <node CREATED="1348473652039" ID="ID_107991129" MODIFIED="1354566012166" POSITION="right" TEXT="yeclipse">
 <node CREATED="1346848553270" ID="ID_224474371" MODIFIED="1351889314768" TEXT="Impex Editor">
 <node CREATED="1346848561046" ID="ID_1811607809" MODIFIED="1346849139296" TEXT="Syntax Coloring"/>
-<node CREATED="1346848569598" ID="ID_1603819541" MODIFIED="1346848575267" TEXT="Syntax Highlighting"/>
+<node CREATED="1346848569598" ID="ID_1603819541" MODIFIED="1346848575267" TEXT="Syntax Highlighting">
+<node CREATED="1418760608139" ID="ID_697209460" MODIFIED="1418760633423" TEXT="macro">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1418760612182" ID="ID_476149783" MODIFIED="1418760639264" TEXT="types">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1418760620576" ID="ID_503084576" MODIFIED="1418760626439" TEXT="document ids"/>
+</node>
 <node CREATED="1346848575942" ID="ID_1268190906" MODIFIED="1346848582387" TEXT="Vertical Ruler">
 <node CREATED="1348727094721" ID="ID_402431221" MODIFIED="1348727141914" TEXT="Highligh current line / block"/>
 </node>
@@ -34,7 +42,9 @@
 </node>
 <node CREATED="1350845632636" ID="ID_179087172" MODIFIED="1350845637683" TEXT="Warning">
 <node CREATED="1350845656895" ID="ID_1559636110" MODIFIED="1350845694701" TEXT="Duplicate macro assignment"/>
-<node CREATED="1351787208048" ID="ID_106127349" MODIFIED="1351787247760" TEXT="For any value for which header attrib is skipped (empty)"/>
+<node CREATED="1351787208048" ID="ID_106127349" MODIFIED="1418760667273" TEXT="For any value for which header attrib is skipped (empty)">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1351889215347" ID="ID_577119729" MODIFIED="1351889228874" TEXT="Duplicate modifier definition"/>
 <node CREATED="1353876882200" ID="ID_716301912" MODIFIED="1353876951906" TEXT="Macro ref inside &apos; or &quot; is not replaced by definition">
 <node CREATED="1353876933988" ID="ID_890815196" MODIFIED="1353876947804" TEXT="inside modifier assignement"/>
@@ -47,6 +57,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1346848877550" ID="ID_621096877" MODIFIED="1355558484241" TEXT="attribute modifiers"/>
+<node CREATED="1418760683446" ID="ID_1436862429" MODIFIED="1418760686434" TEXT="attributes"/>
 <node CREATED="1399309372654" ID="ID_1163795434" MODIFIED="1413571355947" TEXT="types">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -78,7 +89,9 @@
 <node CREATED="1348173976168" ID="ID_1893692198" MODIFIED="1348173991819" TEXT="Preferences - separate page"/>
 <node CREATED="1348173996014" ID="ID_1852213542" MODIFIED="1348174011752" TEXT="Mark entities"/>
 <node CREATED="1348174013020" ID="ID_1593524753" MODIFIED="1348174023344" TEXT="Mark column names"/>
-<node CREATED="1348174037813" ID="ID_117525857" MODIFIED="1348174051062" TEXT="Mark table names"/>
+<node CREATED="1348174037813" ID="ID_117525857" MODIFIED="1418760711228" TEXT="Mark table names">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1348174023775" ID="ID_1898382876" MODIFIED="1348174029380" TEXT="Mark values"/>
 <node CREATED="1348467106680" ID="ID_1329422842" MODIFIED="1352231092443" TEXT="Toolbar button">
 <icon BUILTIN="button_ok"/>
@@ -105,14 +118,15 @@
 <node CREATED="1351807984400" ID="ID_1752344220" MODIFIED="1352231110203" TEXT="DocumentID &amp;param">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1351808098209" ID="ID_1147273267" MODIFIED="1354457057156" TEXT="Special Attribute">
+<node CREATED="1351808098209" FOLDED="true" ID="ID_1147273267" MODIFIED="1418760785824" TEXT="Special Attribute">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1351808104789" ID="ID_912433692" MODIFIED="1351808107619" TEXT="@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator]"/>
 </node>
-<node CREATED="1351808132567" ID="ID_1454945020" MODIFIED="1352230919523" TEXT="Alternative Pattern">
+<node CREATED="1351808132567" FOLDED="true" ID="ID_1454945020" MODIFIED="1418760784107" TEXT="Alternative Pattern">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
-<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1356592141056" TEXT="line continuation">
+<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1418760556609" TEXT="line continuation">
 <icon BUILTIN="help"/>
 <node CREATED="1356592161083" ID="ID_550461144" MODIFIED="1356592176798" TEXT="inside makro value"/>
 <node CREATED="1356592182749" ID="ID_525888285" MODIFIED="1356592192118" TEXT="inside unquoted fields"/>
@@ -123,7 +137,8 @@
 <node CREATED="1351808024055" ID="ID_1778351720" MODIFIED="1351808044534" TEXT="[modifier=value][modifier=value][modifier=value]"/>
 <node CREATED="1351808001760" ID="ID_217467757" MODIFIED="1351808018626" TEXT="[modifier=value,modifier=value,modifier=value]"/>
 </node>
-<node CREATED="1351808231072" ID="ID_1216241507" MODIFIED="1352230916846" TEXT="Macro">
+<node CREATED="1351808231072" ID="ID_1216241507" MODIFIED="1418760552504" TEXT="Macro">
+<icon BUILTIN="button_ok"/>
 <node CREATED="1351808335417" ID="ID_1085046320" MODIFIED="1351808337286" TEXT="INSERT Product; code; $catalogVersion"/>
 </node>
 <node CREATED="1351808381254" ID="ID_270178730" MODIFIED="1351808384646" TEXT="Abbreviations"/>
@@ -197,7 +212,9 @@
 <node CREATED="1355684396641" ID="ID_349681220" MODIFIED="1355684399497" TEXT=";;;;;;;;;"/>
 <node CREATED="1355773794162" ID="ID_1868712476" MODIFIED="1355773811950" TEXT="nie trzeba specjalnego parsowania, walker zajmie si&#x119; tym przypadkiem i zglosi blad"/>
 </node>
-<node CREATED="1355685370996" ID="ID_754403165" MODIFIED="1355693633061" TEXT="sprawdzic czy typ jest abstrakcyjny jesli tak to info gdy nie ma subtypu + sprawdzic hierarchie dziedziczenia"/>
+<node CREATED="1355685370996" ID="ID_754403165" MODIFIED="1418760732680" TEXT="sprawdzic czy typ jest abstrakcyjny jesli tak to info gdy nie ma subtypu + sprawdzic hierarchie dziedziczenia">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1358194517542" ID="ID_1460040549" MODIFIED="1358194540759" TEXT="documentid - error gdy wartosc w rekordzie sie powtarza - sprawdzic"/>
 <node CREATED="1358194541795" ID="ID_717377560" MODIFIED="1358194565124" TEXT="modifiery - wartosci wszedzie maja miec mozliwosc wstawienia makra"/>
 <node CREATED="1358194569831" ID="ID_90513017" MODIFIED="1413658472667" TEXT="makro jako osobny wezel w drzewie?">

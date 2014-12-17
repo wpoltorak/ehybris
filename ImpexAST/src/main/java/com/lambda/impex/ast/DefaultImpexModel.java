@@ -34,6 +34,11 @@ public class DefaultImpexModel implements ImpexModel {
     private final Map<Integer, Token> macroReferenceOffsetToDefinition = new HashMap<>();
     private final Map<Integer, Token> macroDefinitionOffsetToDefinition = new HashMap<>();
 
+    //    private final Map<Integer, Token> offset2IDDescriptions = new HashMap<>();
+    //    private final Map<Integer, Token> documentIDReferences = new HashMap<>();
+    private final Map<DocumentIDDescription, List<Token>> documentIDReferences = new HashMap<>();
+    private final Map<Integer, DocumentIDDescription> offset2DocumentID = new HashMap<>();
+
     @Override
     public void addProblem(final RecognitionException e) {
         final ImpexProblem error = new ImpexProblem(Type.GeneralSyntaxError);
@@ -111,6 +116,18 @@ public class DefaultImpexModel implements ImpexModel {
         addListValue(macros, macrodefText, macroValue);
     }
 
+    @Override
+    public void addDocumentIDDefinitionQualifier(final DocumentIDDescription documentIDDescription, final Token symbol) {
+        addListValue(documentIDReferences, documentIDDescription, symbol);
+        offset2DocumentID.put(symbol.getStartIndex(), documentIDDescription);
+    }
+
+    @Override
+    public void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, final Token symbol) {
+        addListValue(documentIDReferences, documentIDDescription, symbol);
+        offset2DocumentID.put(symbol.getStartIndex(), documentIDDescription);
+    }
+
     private <T, R> void addListValue(final Map<R, List<T>> map, final R key, final T value) {
         List<T> values = map.get(key);
         if (values == null) {
@@ -171,6 +188,11 @@ public class DefaultImpexModel implements ImpexModel {
             case ImpexLexer.Macrodef:
             case ImpexLexer.Macroref:
                 return getMacroOccurrenceTokens(tokenType, offset);
+            case ImpexLexer.DocumentID:
+                return getDocumentIDOccurrenceTokens(tokenType, offset);
+            case ImpexLexer.DocumentIdField:
+            case ImpexLexer.DocumentIdRefField:
+                return getDocumentIDQualifierOccurrenceTokens(tokenType, offset);
             case ImpexLexer.Type:
                 return getTypeOccurrenceTokens(offset);
         }
@@ -202,6 +224,24 @@ public class DefaultImpexModel implements ImpexModel {
         final List<Token> refs = macroReferences.get(macrodef);
         if (refs != null) {
             result.addAll(refs);
+        }
+        return result;
+    }
+
+    private List<Token> getDocumentIDOccurrenceTokens(final int tokenType, final int offset) {
+        final List<Token> result = new ArrayList<>();
+        return result;
+    }
+
+    private List<Token> getDocumentIDQualifierOccurrenceTokens(final int tokenType, final int offset) {
+        final DocumentIDDescription documentID = offset2DocumentID.get(offset);
+        if (documentID == null) {
+            return Collections.emptyList();
+        }
+        final List<Token> result = new ArrayList<>();
+        final List<Token> list = documentIDReferences.get(documentID);
+        if (list != null) {
+            result.addAll(list);
         }
         return result;
     }

@@ -33,6 +33,10 @@ public interface ImpexModel {
 
     void addMacroValue(String macrodefText, Token macroDefiniton, MacroValueContext macroValue);
 
+    void addDocumentIDDefinitionQualifier(DocumentIDDescription documentIDDescription, Token symbol);
+
+    void addDocumentIDReferenceQualifier(DocumentIDDescription documentIDDescription, Token symbol);
+
     List<ImpexProblem> getProblems();
 
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros();
@@ -40,4 +44,5 @@ public interface ImpexModel {
     List<Token> getOccurrenceTokens(int tokenType, int offset);
 
     void addType(String typeText, Token typeToken);
+
 }

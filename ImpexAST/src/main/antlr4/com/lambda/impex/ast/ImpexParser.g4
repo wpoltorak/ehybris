@@ -34,15 +34,23 @@ record
         ;
 
 field
-        : (FieldQuoted | Field | Macroref | DocumentIdField | DocumentIdRefField | SkippedField)*
+        : ((FieldQuoted | Field | Macroref | SkippedField)* | DocumentIdField | DocumentIdRefField)
         ;
         
 ////////////////////// ATTRIBUTES ////////////////////////////////
 
 attribute
-        : specialAttribute | subtypeAttribute | simpleAttribute | emptyAttribute
+        : specialAttribute | subtypeAttribute | documentIdReference | documentIdDefinition | simpleAttribute | emptyAttribute
         ;
 
+documentIdReference
+        : simpleAttributeName LParenthesis DocumentID RParenthesis attributeModifierAssignment*
+        ;
+
+documentIdDefinition
+        : DocumentID
+        ;
+        
 emptyAttribute
 		:;
 
@@ -71,7 +79,7 @@ subtypeAttribute
         ;
 
 simpleAttribute
-        : (DocumentID | simpleAttributeName) (LParenthesis  simpleAttribute (Comma simpleAttribute)* RParenthesis )? attributeModifierAssignment*
+        : simpleAttributeName (LParenthesis  simpleAttribute (Comma simpleAttribute)* RParenthesis )? attributeModifierAssignment*
         ;
 
 attributeModifierAssignment

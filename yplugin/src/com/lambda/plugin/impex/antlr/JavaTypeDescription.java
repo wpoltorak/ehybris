@@ -180,7 +180,7 @@ public class JavaTypeDescription implements TypeDescription {
         try {
             IType[] supertypeOf = getSupertypes(type);
             for (IType supertype : supertypeOf) {
-                if (supertype.getElementName().startsWith("Generated")) {
+                if (supertype.getElementName().startsWith("Generated") || supertype.getElementName().equals("Item")) {
                     addFields(desc, methods, supertype.getMethods());
                 }
             }

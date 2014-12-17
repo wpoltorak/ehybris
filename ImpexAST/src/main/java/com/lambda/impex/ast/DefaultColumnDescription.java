@@ -1,9 +1,7 @@
 package com.lambda.impex.ast;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class DefaultColumnDescription implements ColumnDescription {
@@ -14,7 +12,6 @@ public class DefaultColumnDescription implements ColumnDescription {
     private String documentID;
     private boolean documentIDReference;
     private boolean documentIDDefinition;
-    private final Map<String, TypeDescription> names = new LinkedHashMap<>();
 
     private String refRegex;
     private final List<ColumnDescription> children = new ArrayList<>();
@@ -100,13 +97,5 @@ public class DefaultColumnDescription implements ColumnDescription {
 
     public void setDocumentID(final String documentID) {
         this.documentID = documentID;
-    }
-
-    public void addAttribute(final String name, final TypeDescription type) {
-        names.put(name, type);
-    }
-
-    public void addAttribute(final String name) {
-        names.put(name, owner);
     }
 }
