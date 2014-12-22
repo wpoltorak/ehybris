@@ -1,5 +1,7 @@
 package com.lambda.plugin.impex.editor;
 
+import java.util.Map;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.DefaultInformationControl;
 import org.eclipse.jface.text.IDocument;
@@ -40,6 +42,14 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
         super(preferenceStore);
         this.editor = editor;
         this.styleTokenMapper = new AntlrTypeToStyleTokenMapper(preferenceStore);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    protected Map getHyperlinkDetectorTargets(ISourceViewer sourceViewer) {
+        Map targets = super.getHyperlinkDetectorTargets(sourceViewer);
+        targets.put("com.lambda.plugin.impex.ui.impexCode", editor);
+        return targets;
     }
 
     @Override

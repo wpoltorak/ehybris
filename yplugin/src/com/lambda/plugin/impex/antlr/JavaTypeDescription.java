@@ -28,6 +28,7 @@ public class JavaTypeDescription implements TypeDescription {
     private boolean eCommerce;
     private boolean exists;
     private String name;
+    private Object target;
 
     private final List<String> children = new ArrayList<>();
 
@@ -66,6 +67,11 @@ public class JavaTypeDescription implements TypeDescription {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Object getTarget() {
+        return target;
     }
 
     @Override
@@ -137,7 +143,7 @@ public class JavaTypeDescription implements TypeDescription {
         desc.isCollection = isCollection;
         desc.eCommerce = iseCommerceType(type);
         desc.name = type.getElementName();
-
+        desc.target = type;
         if (desc.eCommerce) {
             addFields(desc, type);
         }

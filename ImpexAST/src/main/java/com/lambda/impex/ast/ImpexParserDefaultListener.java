@@ -110,7 +110,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final String typename = getText(ctx);
         typeDescription = typeFinder.findType(typename);
         if (ctx.Type() != null) {
-            context.addType(typename, ctx.Type().getSymbol());
+            context.addType(typeDescription, ctx.Type().getSymbol());
         }
         if (!typeDescription.exists()) {
             context.addProblem(new ImpexProblem(Type.InvalidType));
@@ -184,6 +184,10 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final AttributeNameContext attributeName = ctx.attributeName();
         final String name = getText(attributeName);
         final TypeDescription owner = currentColumnDescription.getOwner();
+        if (owner == null) {
+            // already reported InvalidAttribute error in enterSimpleAttributeName(method)
+            return;
+        }
         if (owner.exists() && !owner.containsField(name)) {
             context.addProblem(problem(attributeName, Type.InvalidAttribute));
         } else {

@@ -659,6 +659,9 @@
     <target
           id="com.lambda.plugin.impex.ui.impexCode"
           name="%ImpexEditorHyperlinkTarget">
+       <context
+             type="com.lambda.plugin.impex.editor.ImpexEditor">
+       </context>
     </target>
  </extension>
 

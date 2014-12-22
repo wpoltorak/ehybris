@@ -28,7 +28,7 @@ public class DefaultImpexModel implements ImpexModel {
     private final List<ImpexProblem> problems = new ArrayList<>();
     private final Map<Token, List<Token>> macroReferences = new HashMap<>();
     private final Map<String, List<Token>> typeName2Tokens = new HashMap<>();
-    private final Map<Integer, String> typeOffset2Text = new HashMap<>();
+    private final Map<Integer, TypeDescription> typeOffset2Text = new HashMap<>();
     private final Map<Token, MacroValueContext> macrosValues = new HashMap<>();
     /* Macro reference index to macro definition token */
     private final Map<Integer, Token> macroReferenceOffsetToDefinition = new HashMap<>();
@@ -137,9 +137,10 @@ public class DefaultImpexModel implements ImpexModel {
         values.add(value);
     }
 
-    public void addType(final String typeText, final Token typeToken) {
-        typeOffset2Text.put(typeToken.getStartIndex(), typeText);
-        addListValue(typeName2Tokens, typeText, typeToken);
+    @Override
+    public void addType(final TypeDescription type, final Token token) {
+        typeOffset2Text.put(token.getStartIndex(), type);
+        addListValue(typeName2Tokens, type.getName(), token);
     }
 
     @Override
@@ -200,8 +201,8 @@ public class DefaultImpexModel implements ImpexModel {
     }
 
     private List<Token> getTypeOccurrenceTokens(final int offset) {
-        final String typeName = typeOffset2Text.get(offset);
-        final List<Token> result = typeName2Tokens.get(typeName);
+        final TypeDescription type = typeOffset2Text.get(offset);
+        final List<Token> result = typeName2Tokens.get(type.getName());
         if (result != null) {
             return result;
         }
@@ -244,5 +245,16 @@ public class DefaultImpexModel implements ImpexModel {
             result.addAll(list);
         }
         return result;
+    }
+
+    @Override
+    public Object getHyperlinkElement(final int tokenType, final int offset) {
+        switch (tokenType) {
+            case ImpexLexer.Type:
+                final TypeDescription type = typeOffset2Text.get(offset);
+                return type.getTarget();
+            default:
+                return null;
+        }
     }
 }

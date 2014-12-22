@@ -1,13 +1,8 @@
 package com.lambda.plugin.impex.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.jdt.core.ICodeAssist;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.ITypeRoot;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.corext.util.CollectionsUtil;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.ui.actions.OpenAction;
 import org.eclipse.jdt.ui.actions.SelectionDispatchAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.text.BadLocationException;
@@ -17,26 +12,29 @@ import org.eclipse.jface.text.hyperlink.AbstractHyperlinkDetector;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.eclipse.ui.texteditor.ITextEditor;
 
+import com.lambda.impex.ast.ImpexModel;
+import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexEditor;
+import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
 
     /* cache for the last result from codeSelect(..) */
-    private static ITypeRoot fLastInput;
-    private static long fLastModStamp;
-    private static IRegion fLastWordRegion;
-    private static IJavaElement[] fLastElements;
+    private static ImpexModel lastModel;
+    private static long lastModStamp;
+    private static IRegion lastWordRegion;
+    private static IJavaElement lastElement;
 
     @Override
     public IHyperlink[] detectHyperlinks(ITextViewer textViewer, IRegion region, boolean canShowMultipleHyperlinks) {
-        ITextEditor textEditor = (ITextEditor) getAdapter(ITextEditor.class);
-        if (region == null || !(textEditor instanceof ImpexEditor))
+        ImpexEditor textEditor = (ImpexEditor) getAdapter(ImpexEditor.class);
+        if (region == null) {
             return null;
+        }
 
-        IAction openAction = textEditor.getAction("OpenEditor"); //$NON-NLS-1$
+        IAction openAction = new OpenAction(YPlugin.getActivePart().getSite());
         if (!(openAction instanceof SelectionDispatchAction))
             return null;
 
@@ -46,69 +44,46 @@ public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
             IDocumentProvider documentProvider = textEditor.getDocumentProvider();
             IEditorInput editorInput = textEditor.getEditorInput();
             ImpexDocument document = (ImpexDocument) documentProvider.getDocument(editorInput);
-            IRegion wordRegion = document.getToken(offset);
-            if (wordRegion == null || wordRegion.getLength() == 0)
+            ILexerTokenRegion token = document.getToken(offset);
+            if (token == null || token.getLength() == 0) {
                 return null;
-
-            IJavaElement[] elements;
+            }
+            IJavaElement element;
+            ImpexModel model = document.getModel();
             long modStamp = documentProvider.getModificationStamp(editorInput);
-            if (editorInput.equals(fLastInput) && modStamp == fLastModStamp && wordRegion.equals(fLastWordRegion)) {
-                elements = fLastElements;
+            if (model.equals(lastModel) && modStamp == lastModStamp && token.equals(lastWordRegion)) {
+                element = lastElement;
             } else {
-                elements = document.getModel().get((ICodeAssist) input)
-                        .codeSelect(wordRegion.getOffset(), wordRegion.getLength());
-                elements = selectOpenableElements(elements);
-                fLastInput = input;
-                fLastModStamp = modStamp;
-                fLastWordRegion = wordRegion;
-                fLastElements = elements;
+                element = element(model, token);
+                lastModel = model;
+                lastModStamp = modStamp;
+                lastWordRegion = token;
+                lastElement = element;
             }
-            if (elements.length == 0)
+            if (element == null) {
                 return null;
-
-            ArrayList<IHyperlink> links = new ArrayList<IHyperlink>(elements.length);
-            for (int i = 0; i < elements.length; i++) {
-                addHyperlinks(links, wordRegion, (SelectionDispatchAction) openAction, elements[i]);
             }
-            if (links.size() == 0)
-                return null;
 
-            return CollectionsUtil.toArray(links, IHyperlink.class);
+            return new IHyperlink[] { new JavaElementHyperlink(token, (SelectionDispatchAction) openAction, element) };
 
-        } catch (JavaModelException | BadLocationException e) {
+        } catch (BadLocationException e) {
             return null;
         }
+    }
+
+    private IJavaElement element(ImpexModel model, ILexerTokenRegion token) {
+        Object hyperlinkElement = model.getHyperlinkElement(token.getTokenType(), token.getOffset());
+        if (hyperlinkElement instanceof IType) {
+            return (IType) hyperlinkElement;
+        }
+        return null;
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        fLastElements = null;
-        fLastInput = null;
-        fLastWordRegion = null;
-    }
-
-    protected void addHyperlinks(List<IHyperlink> hyperlinksCollector, IRegion wordRegion,
-            SelectionDispatchAction openAction, IJavaElement element) {
-        hyperlinksCollector.add(new JavaElementHyperlink(wordRegion, openAction, element));
-    }
-
-    private IJavaElement[] selectOpenableElements(IJavaElement[] elements) {
-        List<IJavaElement> result = new ArrayList<IJavaElement>(elements.length);
-        for (int i = 0; i < elements.length; i++) {
-            IJavaElement element = elements[i];
-            switch (element.getElementType()) {
-            case IJavaElement.PACKAGE_DECLARATION:
-            case IJavaElement.PACKAGE_FRAGMENT:
-            case IJavaElement.PACKAGE_FRAGMENT_ROOT:
-            case IJavaElement.JAVA_PROJECT:
-            case IJavaElement.JAVA_MODEL:
-                break;
-            default:
-                result.add(element);
-                break;
-            }
-        }
-        return result.toArray(new IJavaElement[result.size()]);
+        lastElement = null;
+        lastModel = null;
+        lastWordRegion = null;
     }
 }

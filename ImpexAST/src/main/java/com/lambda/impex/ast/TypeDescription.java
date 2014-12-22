@@ -19,4 +19,6 @@ public interface TypeDescription {
     String getReturnType(String fieldName);
 
     String getName();
+
+    Object getTarget();
 }

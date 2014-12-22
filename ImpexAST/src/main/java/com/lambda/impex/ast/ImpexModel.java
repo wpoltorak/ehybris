@@ -17,32 +17,33 @@ public interface ImpexModel {
      * 
      * @param e
      */
-    void addProblem(RecognitionException e);
+    void addProblem(final RecognitionException e);
 
-    void addProblem(ImpexProblem problem);
+    void addProblem(final ImpexProblem problem);
 
-    void addProblem(Token token, Type type);
+    void addProblem(final Token token, final Type type);
 
-    void syntaxProblem(int line, Token token, String msg, RecognitionException e);
+    void syntaxProblem(final int line, final Token token, final String msg, final RecognitionException e);
 
-    void syntaxProblem(int line, int startIndex, String msg, RecognitionException e);
+    void syntaxProblem(final int line, final int startIndex, final String msg, final RecognitionException e);
 
     boolean hasProblems();
 
-    void addMacroReference(Token macroDefiniton, Token macroReference);
+    void addMacroReference(final Token macroDefiniton, final Token macroReference);
 
-    void addMacroValue(String macrodefText, Token macroDefiniton, MacroValueContext macroValue);
+    void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue);
 
-    void addDocumentIDDefinitionQualifier(DocumentIDDescription documentIDDescription, Token symbol);
+    void addDocumentIDDefinitionQualifier(final DocumentIDDescription documentIDDescription, final Token symbol);
 
-    void addDocumentIDReferenceQualifier(DocumentIDDescription documentIDDescription, Token symbol);
+    void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, final Token symbol);
+
+    void addType(final TypeDescription type, final Token token);
 
     List<ImpexProblem> getProblems();
 
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros();
 
-    List<Token> getOccurrenceTokens(int tokenType, int offset);
+    List<Token> getOccurrenceTokens(final int tokenType, final int offset);
 
-    void addType(String typeText, Token typeToken);
-
+    Object getHyperlinkElement(final int tokenType, final int offset);
 }
