@@ -20,7 +20,7 @@
       <wizard
             category="com.lambda.plugin.importWizard"
             class="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
-            icon="icons/sample.gif"
+            icon="icons/obj16/hybris.gif"
             id="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             name="%wizard.name">
       </wizard>
@@ -114,7 +114,7 @@
       <wizard
             category="com.lambda.plugin.wizard"
             class="com.lambda.plugin.wizards.impex.ImpexNewWizard"
-            icon="icons/sample.gif"
+            icon="icons/obj16/impex.gif"
             id="com.lambda.plugin.wizards.impex.ImpexNewWizard"
             name="%wizard.name.3">
          <description>
@@ -596,7 +596,7 @@
                class="com.lambda.plugin.impex.editor.ImpexEditor"
                contributorClass="com.lambda.plugin.impex.editor.actions.ImpexEditorActionContributor"
                extensions="impex"
-               icon="icons/sample.gif"
+               icon="icons/obj16/impex.gif"
                id="com.lambda.plugin.impex.editor.ImpexEditor"
                name="%editor.name">
             <contentTypeBinding
