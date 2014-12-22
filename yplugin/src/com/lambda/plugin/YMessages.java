@@ -373,5 +373,6 @@ public final class YMessages extends NLS {
     public static String Impex_problem_fieldWithoutHeaderAttribute;
 
     // Impex others
-    public static final String ImpexToggleComment_progress = null;
+    public static String ImpexToggleComment_progress;
+    public static String ImpexTypeHyperlink_hyperlinkText;
 }

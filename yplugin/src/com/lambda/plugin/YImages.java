@@ -17,7 +17,7 @@ public class YImages {
         public static final String TOGGLE_MARK_OCCURENCES = "mark_occurences.gif";
     }
 
-    public static final IPath ICONS_PATH = new Path("$nl$/icons/full");
+    public static final IPath ICONS_PATH = new Path("$nl$/icons");
 
     private static final String T_OBJ = "obj16"; //$NON-NLS-1$
     private static final String T_WIZBAN = "wizban"; //$NON-NLS-1$
@@ -35,12 +35,14 @@ public class YImages {
     public static final String FUNCTEST_PROJECT_IMAGE = "functestprj_obj.png";
     private static final String FUNCTEST_IMAGE = "functest.png";
 
-    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN, FUNCTEST_WIZARD_IMAGE);
+    public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN,
+            FUNCTEST_WIZARD_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST_PRJ = createImageDescriptor(T_OBJ, FUNCTEST_PROJECT_IMAGE);
     public static final ImageDescriptor DESC_FUNCTEST = createImageDescriptor(T_ETOOL, FUNCTEST_IMAGE);
 
     /**
-     * Sets the three image descriptors for enabled, disabled, and hovered to an action. The actions are retrieved from the *lcl16 folders.
+     * Sets the three image descriptors for enabled, disabled, and hovered to an action. The actions are retrieved from
+     * the *lcl16 folders.
      * 
      * @param action the action
      * @param iconName the icon name

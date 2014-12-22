@@ -36,7 +36,7 @@
             allowMultiple="false"
             category="com.lambda.plugin"
             class="com.lambda.plugin.yunit.view.YUnitView"
-            icon="icons/full/etool16/functest.png"
+            icon="icons/etool16/functest.png"
             id="com.lambda.plugin.yunit.view"
             name="%view.name"
             restorable="true">
@@ -50,7 +50,7 @@
             objectClass="org.eclipse.core.resources.IProject">
          <action
                class="com.lambda.plugin.actions.YActionsMenu"
-               icon="icons/full/kizoom.png"
+               icon="icons/kizoom.png"
                id="com.lambda.plugin.project.menu"
                label="%action.label"
                menubarPath="additions"
@@ -79,7 +79,7 @@
             category="com.lambda.plugin.wizard"
             class="com.lambda.plugin.yunit.wizard.NewYUnitProjectWizard"
             hasPages="true"
-            icon="icons/full/etool16/newfunctest_wiz.png"
+            icon="icons/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.yunit.wizard.NewFunctestProjectWizard"
             name="%wizard.name.0"
             project="true">
@@ -91,7 +91,7 @@
             category="com.lambda.plugin.wizard"
             class="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
             hasPages="true"
-            icon="icons/full/etool16/newfunctest_wiz.png"
+            icon="icons/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
             name="%wizard.name.1"
             project="true">
@@ -103,7 +103,7 @@
             category="com.lambda.plugin.wizard"
             class="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
             hasPages="true"
-            icon="icons/full/etool16/newfunctest_wiz.png"
+            icon="icons/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
             name="%wizard.name.2"
             project="true">
@@ -138,7 +138,7 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            icon="icons/full/dec8/functestprj_dec.png"
+            icon="icons/dec8/functestprj_dec.png"
             id="com.lambda.plugin.yunit.decorator"
             label="%decorator.label"
             lightweight="true"
@@ -227,7 +227,7 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut"
-            icon="icons/full/etool16/run_functest.png"
+            icon="icons/etool16/run_functest.png"
             id="com.lambda.plugin.yunit.launch.shortcut"
             label="%shortcut.label"
             modes="run,debug">
@@ -291,7 +291,7 @@
             point="org.eclipse.debug.ui.launchConfigurationTypeImages">
          <launchConfigurationTypeImage
                configTypeID="com.lambda.plugin.yunit.launchconfig"
-               icon="icons/full/etool16/run_functest.png"
+               icon="icons/etool16/run_functest.png"
                id="com.lambda.plugin.yunit.launchconfigimage">
          </launchConfigurationTypeImage>
       </extension>
@@ -413,23 +413,23 @@
             point="org.eclipse.ui.commandImages">
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-               disabledIcon="icons/full/dlcl16/run_prod.png"
-               icon="icons/full/elcl16/run_prod.png">
+               disabledIcon="icons/dlcl16/run_prod.png"
+               icon="icons/elcl16/run_prod.png">
          </image>
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-               disabledIcon="icons/full/dlcl16/run_tst.png"
-               icon="icons/full/elcl16/run_tst.png">
+               disabledIcon="icons/dlcl16/run_tst.png"
+               icon="icons/elcl16/run_tst.png">
          </image>
          <image
                commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-               disabledIcon="icons/full/dlcl16/run_dev.png"
-               icon="icons/full/elcl16/run_dev.png">
+               disabledIcon="icons/dlcl16/run_dev.png"
+               icon="icons/elcl16/run_dev.png">
          </image>
          <image
                commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
-               disabledIcon="icons/full/dlcl16/mark_occurrences.gif"
-               icon="icons/full/elcl16/mark_occurrences.gif">
+               disabledIcon="icons/dlcl16/mark_occurrences.gif"
+               icon="icons/elcl16/mark_occurrences.gif">
          </image>
       </extension>
       <extension
@@ -441,24 +441,24 @@
                   id="com.lambda.plugin.yunit.toolbar">
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                     disabledIcon="icons/full/dlcl16/run_dev.png"
-                     icon="icons/full/elcl16/run_dev.png"
+                     disabledIcon="icons/dlcl16/run_dev.png"
+                     icon="icons/elcl16/run_dev.png"
                      label="%command.label"
                      style="push"
                      tooltip="%command.tooltip">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                     disabledIcon="icons/full/dlcl16/run_tst.png"
-                     icon="icons/full/elcl16/run_tst.png"
+                     disabledIcon="icons/dlcl16/run_tst.png"
+                     icon="icons/elcl16/run_tst.png"
                      label="%command.label.0"
                      style="push"
                      tooltip="%command.tooltip.0">
                </command>
                <command
                      commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                     disabledIcon="icons/full/dlcl16/run_prod.png"
-                     icon="icons/full/elcl16/run_prod.png"
+                     disabledIcon="icons/dlcl16/run_prod.png"
+                     icon="icons/elcl16/run_prod.png"
                      label="%command.label.1"
                      style="push"
                      tooltip="%command.tooltip.1">
@@ -481,24 +481,24 @@
             </separator>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                  disabledIcon="icons/full/dlcl16/run_dev.png"
-                  icon="icons/full/elcl16/run_dev.png"
+                  disabledIcon="icons/dlcl16/run_dev.png"
+                  icon="icons/elcl16/run_dev.png"
                   label="%command.label.2"
                   style="push"
                   tooltip="%command.tooltip.2">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                  disabledIcon="icons/full/dlcl16/run_tst.png"
-                  icon="icons/full/elcl16/run_tst.png"
+                  disabledIcon="icons/dlcl16/run_tst.png"
+                  icon="icons/elcl16/run_tst.png"
                   label="%command.label.3"
                   style="push"
                   tooltip="%command.tooltip.3">
             </command>
             <command
                   commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                  disabledIcon="icons/full/dlcl16/run_prod.png"
-                  icon="icons/full/elcl16/run_prod.png"
+                  disabledIcon="icons/dlcl16/run_prod.png"
+                  icon="icons/elcl16/run_prod.png"
                   label="%command.label.4"
                   style="push"
                   tooltip="%command.tooltip.4">
@@ -643,6 +643,23 @@
           name="%content-type.name"
           priority="normal">
     </content-type>
+ </extension>
+ <extension
+       point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
+    <hyperlinkDetector
+          activate="true"
+          class="com.lambda.plugin.impex.ui.JavaElementHyperlinkDetector"
+          id="com.lambda.plugin.impex.ui.JavaElementHyperlinkDetector"
+          name="%JavaElementHyperlinkDetector"
+          targetId="com.lambda.plugin.impex.ui.impexCode">
+    </hyperlinkDetector>
+ </extension>
+ <extension
+       point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
+    <target
+          id="com.lambda.plugin.impex.ui.impexCode"
+          name="%ImpexEditorHyperlinkTarget">
+    </target>
  </extension>
 
 </plugin>
