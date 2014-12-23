@@ -33,9 +33,9 @@ public interface ImpexModel {
 
     void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue);
 
-    void addDocumentIDDefinitionQualifier(final DocumentIDDescription documentIDDescription, final Token symbol);
+    void addDocumentIDDefinitionQualifier(final DocumentIDDescription documentIDDescription, TypeDescription type, final Token symbol);
 
-    void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, final Token symbol);
+    void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, TypeDescription type, final Token symbol);
 
     void addType(final TypeDescription type, final Token token);
 
@@ -46,4 +46,6 @@ public interface ImpexModel {
     List<Token> getOccurrenceTokens(final int tokenType, final int offset);
 
     Object getHyperlinkElement(final int tokenType, final int offset);
+
+    void checkDocumentIDs();
 }

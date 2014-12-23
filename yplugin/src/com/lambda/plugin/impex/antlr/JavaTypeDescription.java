@@ -3,20 +3,15 @@ package com.lambda.plugin.impex.antlr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
-import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.Signature;
 
 import com.lambda.impex.ast.TypeDescription;
 import com.lambda.plugin.YPlugin;
@@ -33,6 +28,7 @@ public class JavaTypeDescription implements TypeDescription {
     private final List<String> children = new ArrayList<>();
 
     private final Map<String, String> fields = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static final Pattern eCommercePattern = Pattern.compile("de\\.hybris\\.platform.*\\.jalo.*");
 
     @Override
     public boolean isAbstract() {
@@ -97,8 +93,12 @@ public class JavaTypeDescription implements TypeDescription {
         return name.hashCode();
     }
 
-    private void addField(String name, String type) {
+    void addField(String name, String type) {
         fields.put(name, type);
+    }
+
+    void addFields(Map<String, String> fields) {
+        this.fields.putAll(fields);
     }
 
     /**
@@ -106,16 +106,18 @@ public class JavaTypeDescription implements TypeDescription {
      * element in the given collection
      * 
      * @param typehierarchy
+     * @param fieldCollector
      * @param b
      * @return
      */
-    public static final JavaTypeDescription fromTypeHierarchy(Collection<IType> typehierarchy, boolean isCollection) {
+    public static final JavaTypeDescription fromTypeHierarchy(Collection<IType> typehierarchy, boolean isCollection,
+            JavaFieldCollector fieldCollector) {
         if (typehierarchy.isEmpty()) {
-            return fromType(null, isCollection);
+            return fromType(null, isCollection, fieldCollector);
         }
 
         Iterator<IType> iterator = typehierarchy.iterator();
-        JavaTypeDescription desc = fromType(iterator.next(), isCollection);
+        JavaTypeDescription desc = fromType(iterator.next(), isCollection, fieldCollector);
 
         while (iterator.hasNext()) {
             IType subtype = iterator.next();
@@ -131,7 +133,7 @@ public class JavaTypeDescription implements TypeDescription {
      * @param isCollection2
      * @return
      */
-    public static final JavaTypeDescription fromType(IType type, boolean isCollection) {
+    public static final JavaTypeDescription fromType(IType type, boolean isCollection, JavaFieldCollector fieldCollector) {
         JavaTypeDescription desc = new JavaTypeDescription();
 
         if (type == null) {
@@ -145,7 +147,7 @@ public class JavaTypeDescription implements TypeDescription {
         desc.name = type.getElementName();
         desc.target = type;
         if (desc.eCommerce) {
-            addFields(desc, type);
+            fieldCollector.addFields(desc, type);
         }
         return desc;
     }
@@ -171,64 +173,6 @@ public class JavaTypeDescription implements TypeDescription {
         return desc;
     }
 
-    private static String returnType(IMethod method) {
-        try {
-            String signature = method.getReturnType();
-            return Signature.getSignatureQualifier(signature) + "." + Signature.getSignatureSimpleName(signature);
-        } catch (JavaModelException e) {
-            // ok
-        }
-        return null;
-    }
-
-    private static Set<IMethod> addFields(JavaTypeDescription desc, IType type) {
-        Set<IMethod> methods = new LinkedHashSet<>();
-        try {
-            IType[] supertypeOf = getSupertypes(type);
-            for (IType supertype : supertypeOf) {
-                if (supertype.getElementName().startsWith("Generated") || supertype.getElementName().equals("Item")) {
-                    addFields(desc, methods, supertype.getMethods());
-                }
-            }
-
-        } catch (CoreException e) {
-            // ok, we don't care
-            YPlugin.logError(e);
-        }
-        return methods;
-    }
-
-    private static void addFields(JavaTypeDescription desc, Set<IMethod> methods, IMethod[] allMethods) {
-        for (IMethod method : allMethods) {
-            if (method.getParameterTypes().length == 0 && isPublic(method)
-                    && (method.getElementName().startsWith("get") || method.getElementName().startsWith("is"))) {
-                methods.add(method);
-                String name = method.getElementName();
-                // getXxx or isXxx
-                int prefix = name.startsWith("get") ? 3 : 2;
-                name = (Character.toLowerCase(name.charAt(prefix)) + name.substring(prefix + 1)).intern();
-                String typename = returnType(method);
-                if (typename != null) {
-                    desc.addField(name, typename);
-                }
-            }
-        }
-    }
-
-    public static IType[] getSupertypes(final IType type) throws CoreException {
-        return type.newSupertypeHierarchy(new NullProgressMonitor()).getAllSuperclasses(type);
-    }
-
-    private static boolean isPublic(IMethod method) {
-        try {
-            return Flags.isPublic(method.getFlags());
-        } catch (JavaModelException e) {
-            // ok, we don't care
-            YPlugin.logError(e);
-        }
-        return false;
-    }
-
     private static boolean isAbstract(IType type) {
         try {
             return Flags.isAbstract(type.getFlags());
@@ -239,12 +183,12 @@ public class JavaTypeDescription implements TypeDescription {
         return false;
     }
 
-    private static boolean iseCommerceType(IType type) {
+    public static boolean iseCommerceType(IType type) {
         return iseCommerceType(type.getFullyQualifiedName());
     }
 
-    private static boolean iseCommerceType(String typename) {
-        return Pattern.matches("de\\.hybris\\.platform.*\\.jalo.*", typename);
+    public static boolean iseCommerceType(String typename) {
+        Matcher m = eCommercePattern.matcher(typename);
+        return m.matches();
     }
-
 }

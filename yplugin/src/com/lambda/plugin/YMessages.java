@@ -367,10 +367,11 @@ public final class YMessages extends NLS {
     public static String Impex_problem_invalidType;
     public static String Impex_problem_invalidSubtype;
     public static String Impex_problem_noSubtype;
-
     public static String Impex_problem_invalidAttribute;
-
     public static String Impex_problem_fieldWithoutHeaderAttribute;
+    public static String Impex_problem_duplicateDocumentId;
+    public static String Impex_problem_invalidDocumentId;
+    public static String Impex_problem_invalidDocumentIdTypeHierarchy;
 
     // Impex others
     public static String ImpexToggleComment_progress;

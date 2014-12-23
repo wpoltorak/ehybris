@@ -351,10 +351,11 @@ public class YPlugin extends AbstractUIPlugin {
 
     public IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
         if (scope == null) {
+            System.out.println("entered extensibleItemHierarchyScope");
             String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
             IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-            IType type = project.findType("de.hybris.platform.jalo.ExtensibleItem");
-            scope = SearchEngine.createStrictHierarchyScope(null, type, true, false, null);
+            IType type = project.findType("de.hybris.platform.jalo.Item");
+            scope = SearchEngine.createStrictHierarchyScope(null, type, true, true, null);
         }
         return scope;
     }

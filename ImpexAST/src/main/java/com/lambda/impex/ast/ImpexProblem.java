@@ -5,8 +5,13 @@ public class ImpexProblem {
 
     public enum Type {
         InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
-        InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownDocumentID, UnknownMacro, EmptyMacroValue,
-        DuplicateDocumentID, SyntaxError,
+        InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, UnknownMacro, EmptyMacroValue, SyntaxError,
+        /** There is already the same pair for: documentId definition attribute & qualifier */
+        DuplicateDocumentID,
+        /** There is no such pair of documentId definition attribute & qualifier for the documentId reference attribute & qualifier */
+        InvalidDocumentID,
+        /** DocumentId definition and DocumentId reference have types that are not in the same type hierarchy */
+        InvalidDocumentIDTypeHierarchy,
         /** Subtype is not specified at the beginning of record for the abstract type defined at the beginning of the header */
         SubtypeRequired,
         /** Subtype is not in type hierarchy of the header type or column type */

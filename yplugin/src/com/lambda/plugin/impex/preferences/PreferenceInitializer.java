@@ -34,6 +34,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         store.setDefault(PreferenceConstants.PROBLEM_SUBTYPE_MISSING, PreferenceConstants.IMPEX_ERROR);
         store.setDefault(PreferenceConstants.PROBLEM_ATTRIBUTE_INVALID, PreferenceConstants.IMPEX_ERROR);
         store.setDefault(PreferenceConstants.PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE, PreferenceConstants.IMPEX_IGNORE);
+        store.setDefault(PreferenceConstants.PROBLEM_DOCUMENTID_DUPLICATE, PreferenceConstants.IMPEX_ERROR);
+        store.setDefault(PreferenceConstants.PROBLEM_DOCUMENTID_INVALID, PreferenceConstants.IMPEX_ERROR);
+        store.setDefault(PreferenceConstants.PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY, PreferenceConstants.IMPEX_ERROR);
     }
 
     public void initializeDefaultSyntaxColoringPreferences(final IPreferenceStore store) {

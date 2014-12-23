@@ -187,4 +187,20 @@ public class PreferenceConstants {
     public static final String PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE = IMPEX_PROBLEM
             + "_field_without_header_attribute";
 
+    /**
+     * Same pair of Document ID attribute and qualifier already exists
+     */
+    public static final String PROBLEM_DOCUMENTID_DUPLICATE = IMPEX_PROBLEM + "_duplicate_documentid";
+
+    /**
+     * For a pair of Document ID reference attribute and qualifier there is no same Document ID attribute and qualifier
+     * defined
+     */
+    public static final String PROBLEM_DOCUMENTID_INVALID = IMPEX_PROBLEM + "_invalid_documentid";
+
+    /**
+     * Type of Document ID reference attribute is incompatible with type of Document ID attribute
+     */
+    public static final String PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY = "_invalid_documentid_type_hierarchy";
+
 }

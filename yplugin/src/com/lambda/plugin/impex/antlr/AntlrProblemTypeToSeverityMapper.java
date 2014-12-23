@@ -27,7 +27,12 @@ public class AntlrProblemTypeToSeverityMapper {
             return getSeverity(store, PreferenceConstants.PROBLEM_ATTRIBUTE_INVALID);
         case FieldWithoutHeaderAttribute:
             return getSeverity(store, PreferenceConstants.PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE);
-
+        case DuplicateDocumentID:
+            return getSeverity(store, PreferenceConstants.PROBLEM_DOCUMENTID_DUPLICATE);
+        case InvalidDocumentID:
+            return getSeverity(store, PreferenceConstants.PROBLEM_DOCUMENTID_INVALID);
+        case InvalidDocumentIDTypeHierarchy:
+            return getSeverity(store, PreferenceConstants.PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY);
         default:
             return IMarker.SEVERITY_ERROR;
         }
@@ -50,7 +55,12 @@ public class AntlrProblemTypeToSeverityMapper {
             return MessageFormat.format(YMessages.Impex_problem_invalidAttribute, params);
         case FieldWithoutHeaderAttribute:
             return YMessages.Impex_problem_fieldWithoutHeaderAttribute;
-
+        case DuplicateDocumentID:
+            return YMessages.Impex_problem_duplicateDocumentId;
+        case InvalidDocumentID:
+            return MessageFormat.format(YMessages.Impex_problem_invalidDocumentId, params);
+        case InvalidDocumentIDTypeHierarchy:
+            return MessageFormat.format(YMessages.Impex_problem_invalidDocumentIdTypeHierarchy, params);
         default:
             return text;
         }

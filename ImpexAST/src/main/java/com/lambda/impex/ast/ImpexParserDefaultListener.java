@@ -316,13 +316,16 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         columnIndex = -1;
         // Subtype check
         final TerminalNode subtype = ctx.Type();
-        if (typeDescription.exists()) {
-            final String subtypeName = nullIfEmpty(getText(subtype));
-            if (subtype == null && typeDescription.isAbstract()) {
-                context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
-            } else if (subtype != null && !typeDescription.isParentOf(subtypeName)) {
-                context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
-            }
+
+        if (!typeDescription.exists()) {
+            return;
+        }
+
+        final String subtypeName = nullIfEmpty(getText(subtype));
+        if (subtype == null && typeDescription.isAbstract()) {
+            context.addProblem(problem(ctx.Separator(0).getSymbol(), Type.SubtypeRequired));
+        } else if (subtype != null && !typeDescription.isParentOf(subtypeName)) {
+            context.addProblem(problem(subtype.getSymbol(), Type.InvalidSubtype));
         }
     }
 
@@ -347,12 +350,20 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
             return;
         }
+
         if (column.isDocumentIDDefinition()) {
-            context.addDocumentIDDefinitionQualifier(new DocumentIDDescription(column.getDocumentID(), text), ctx.DocumentIdField()
-                    .getSymbol());
+            if (!typeDescription.exists()) {
+                return;
+            }
+            context.addDocumentIDDefinitionQualifier(new DocumentIDDescription(column.getDocumentID(), text), typeDescription, ctx
+                    .DocumentIdField().getSymbol());
         }
         if (column.isDocumentIDReferrence()) {
-            context.addDocumentIDReferenceQualifier(new DocumentIDDescription(column.getDocumentID(), text), ctx.DocumentIdRefField()
+            final TypeDescription type = column.getType();
+            if (type == null || !type.exists()) {
+                return;
+            }
+            context.addDocumentIDReferenceQualifier(new DocumentIDDescription(column.getDocumentID(), text), type, ctx.DocumentIdRefField()
                     .getSymbol());
             //          documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), text));
             //            documentIDReferences.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()))
@@ -413,6 +424,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void exitImpex(@NotNull final ImpexParser.ImpexContext ctx) {
+        context.checkDocumentIDs();
     }
 
     /**
