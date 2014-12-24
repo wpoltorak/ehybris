@@ -376,4 +376,11 @@ public final class YMessages extends NLS {
     // Impex others
     public static String ImpexToggleComment_progress;
     public static String ImpexTypeHyperlink_hyperlinkText;
+    public static String ImpexEditorPreferencePage_markOccurrences_link;
+    public static String ImpexEditorPreferencePage_markOccurrences;
+    public static String ImpexEditorPreferencePage_markOccurrences_types;
+    public static String ImpexEditorPreferencePage_markOccurrences_macros;
+    public static String ImpexEditorPreferencePage_markOccurrences_documentIDQualifiers;
+    public static String ImpexEditorPreferencePage_markOccurrences_stickyOccurrences;
+
 }

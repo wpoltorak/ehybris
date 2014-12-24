@@ -124,7 +124,13 @@ public class PreferenceConstants {
     /**
      * Mark column name occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_VALUE_OCCURRENCES = PREFIX + ".impex_mark_value_occurrences";
+    public static final String IMPEX_EDITOR_MARK_DOCID_QUALIFIER_OCCURRENCES = PREFIX
+            + ".impex_mark_docid_qualifier_occurrences";
+
+    /**
+     * Keep marked occurrences if focus is lost
+     */
+    public static final String IMPEX_EDITOR_STICKY_OCCURRENCES = PREFIX + ".impex_sticky_occurrences";
 
     /**
      * Severity levels for Impex Editor problems
@@ -202,5 +208,4 @@ public class PreferenceConstants {
      * Type of Document ID reference attribute is incompatible with type of Document ID attribute
      */
     public static final String PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY = "_invalid_documentid_type_hierarchy";
-
 }
