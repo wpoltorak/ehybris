@@ -351,7 +351,7 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_specialAttributes;
     public static String ImpexEditorPreferencePage_attributeModifiers;
     public static String ImpexEditorPreferencePage_documentIDs;
-    public static String impexEditorPreferencePage_documentIdFields;
+    public static String ImpexEditorPreferencePage_documentIdFields;
     public static String ImpexEditorPreferencePage_skippedFields;
 
     // Platform definitions
