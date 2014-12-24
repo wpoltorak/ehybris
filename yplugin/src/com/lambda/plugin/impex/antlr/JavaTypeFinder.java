@@ -80,9 +80,39 @@ public class JavaTypeFinder implements TypeFinder {
         if (cache.containsKey(simplename)) {
             return cache.get(simplename);
         }
-
-        Set<IType> types = searchTypeHierarchy(simplename);
+        Set<IType> types = searchHierarchy(simplename);
         cache.put(simplename, types);
+        return types;
+    }
+
+    private Set<IType> searchHierarchy(String simplename) {
+        if ("Item".equals(simplename)) {
+            return searchItemTypeHierarchy(simplename);
+        }
+        return searchTypeHierarchy(simplename);
+    }
+
+    private Set<IType> searchItemTypeHierarchy(final String typename) {
+        SearchEngine engine = new SearchEngine();
+        final Set<IType> types = new LinkedHashSet<>();
+        try {
+            IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
+            if (scope != null) {
+                TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        if (!match.getSimpleTypeName().startsWith("Generated")) {
+                            types.add(match.getType());
+                        }
+                    }
+                };
+                engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
+                        null, SearchPattern.R_EXACT_MATCH, IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
+                        IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
+            }
+        } catch (JavaModelException e) {
+            YPlugin.logError(e);
+        }
         return types;
     }
 
