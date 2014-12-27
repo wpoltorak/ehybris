@@ -24,6 +24,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
         initializeDefaultSyntaxColoringPreferences(store);
         initializeDefaultProblemsPreferences(store);
+        initializeDefaultMarkOccurrencesPreferences(store);
     }
 
     public void initializeDefaultProblemsPreferences(IPreferenceStore store) {
@@ -58,6 +59,14 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_SKIPPED_FIELD, new RGB(0, 0, 0),
                 TextAttribute.STRIKETHROUGH);
         // store.setDefault(EDITOR_WHITESPACE_CHARACTER_ALPHA_VALUE, 80);
+    }
+
+    public void initializeDefaultMarkOccurrencesPreferences(IPreferenceStore store) {
+        store.setDefault(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES, true);
+        store.setDefault(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES, true);
+        store.setDefault(PreferenceConstants.IMPEX_EDITOR_MARK_MACRO_OCCURRENCES, true);
+        store.setDefault(PreferenceConstants.IMPEX_EDITOR_MARK_DOCID_QUALIFIER_OCCURRENCES, true);
+        store.setDefault(PreferenceConstants.IMPEX_EDITOR_MARK_TYPE_OCCURRENCES, true);
     }
 
     private void saveDefaultTokenStyle(final IPreferenceStore store, String name, RGB color, int styles) {

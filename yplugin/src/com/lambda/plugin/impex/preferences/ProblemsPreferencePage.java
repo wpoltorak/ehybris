@@ -3,6 +3,7 @@ package com.lambda.plugin.impex.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -68,7 +69,6 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
     @Override
     protected Control createContents(final Composite parent) {
         createComponents(parent);
-        initialize();
         applyDialogFont(parent);
         return parent;
     }
@@ -90,13 +90,20 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         gd = new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL);
         gd.horizontalSpan = 2;
         label.setLayoutData(gd);
-
+        addFiller(baseComposite);
         for (int i = 0; i < problems.length; i++) {
             addComboBox(baseComposite, problems[i][0], problems[i][1]);
         }
     }
 
-    private void initialize() {
+    private void addFiller(Composite composite) {
+        PixelConverter pixelConverter = new PixelConverter(composite);
+
+        Label filler = new Label(composite, SWT.LEFT);
+        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+        gd.horizontalSpan = 2;
+        gd.heightHint = pixelConverter.convertHeightInCharsToPixels(1) / 2;
+        filler.setLayoutData(gd);
     }
 
     @Override
@@ -113,9 +120,6 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
         comboBox.setData(errorWarningIgnore);
         comboBox.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false, 1, 1));
         comboBox.select(errorWarningIgnore.indexOf(store.getInt(key)));
-
-        Label placeHolder = new Label(parent, SWT.NONE);
-        placeHolder.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
         comboBox.addSelectionListener(new SelectionAdapter() {
             @SuppressWarnings("unchecked")
             @Override

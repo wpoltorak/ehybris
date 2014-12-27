@@ -114,7 +114,7 @@ public class PreferenceConstants {
     /**
      * Mark table name occurrences in Impex Editor
      */
-    public static final String IMPEX_EDITOR_MARK_TABLE_OCCURRENCES = PREFIX + ".impex_mark_table_occurrences";
+    public static final String IMPEX_EDITOR_MARK_TYPE_OCCURRENCES = PREFIX + ".impex_mark_type_occurrences";
 
     /**
      * Mark column name occurrences in Impex Editor
