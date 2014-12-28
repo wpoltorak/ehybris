@@ -75,6 +75,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitAttributeModifierAssignment(@NotNull ImpexParser.AttributeModifierAssignmentContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ImpexParser#macroref}.
+	 * @param ctx the parse tree
+	 */
+	void enterMacroref(@NotNull ImpexParser.MacrorefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#macroref}.
+	 * @param ctx the parse tree
+	 */
+	void exitMacroref(@NotNull ImpexParser.MacrorefContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ImpexParser#subtypeAttributeName}.
 	 * @param ctx the parse tree
 	 */

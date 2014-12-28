@@ -95,6 +95,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMacroref(@NotNull ImpexParser.MacrorefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMacroref(@NotNull ImpexParser.MacrorefContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSubtypeAttributeName(@NotNull ImpexParser.SubtypeAttributeNameContext ctx) { }
 	/**
 	 * {@inheritDoc}

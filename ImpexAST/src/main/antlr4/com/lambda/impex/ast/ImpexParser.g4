@@ -34,7 +34,7 @@ record
         ;
 
 field
-        : ((FieldQuoted | Field | Macroref | SkippedField)* | DocumentIdField | DocumentIdRefField)
+        : ((FieldQuoted | Field | macroref | SkippedField)* | DocumentIdField | DocumentIdRefField)
         ;
         
 ////////////////////// ATTRIBUTES ////////////////////////////////
@@ -67,7 +67,7 @@ subtypeAttributeName
         ;
 
 attributeName
-        : Macroref | Identifier
+        : macroref | Identifier
         ;
 
 simpleAttributeName
@@ -91,22 +91,28 @@ attributeModifier
         | ClassAttributeModifier | TextAttributeModifier;
 
 unknownModifier
-        : (UnknownModifier | Macroref)+
+        : (UnknownModifier | macroref)+
         ;
 
 modifierValue
-        : (Modifierval | Macroref)+
+        : (Modifierval | macroref)+
         ;
 
 headerTypeName
-        : Type | Macroref
+        : Type | macroref
         ;
 
 macro
         : Macrodef Equals macroValue
         ;
 
-macroValue: (Macroval | Macroref)*;
+macroValue
+        :(Macroval | macroref)*
+        ;
+
 	//(ValueAssignment {context.registerMacro($Macrodef, $ValueAssignment.text);} 
 	//|Equals {context.registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
 	
+macroref
+        : Macroref
+        ;		

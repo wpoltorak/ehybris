@@ -2,8 +2,6 @@
 
 package com.lambda.impex.ast;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +18,6 @@ import java.util.regex.Pattern;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeContext;
@@ -37,6 +34,7 @@ import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.HeaderModifierAssignmentContext;
 import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
 import com.lambda.impex.ast.ImpexParser.MacroValueContext;
+import com.lambda.impex.ast.ImpexParser.MacrorefContext;
 import com.lambda.impex.ast.ImpexParser.ModifierValueContext;
 import com.lambda.impex.ast.ImpexParser.RecordContext;
 import com.lambda.impex.ast.ImpexParser.SimpleAttributeContext;
@@ -427,41 +425,9 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         context.checkDocumentIDs();
     }
 
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * The default implementation does nothing.
-     */
     @Override
-    public void enterEveryRule(@NotNull final ParserRuleContext ctx) {
-        checkMacroReferences(ctx);
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * The default implementation does nothing.
-     */
-    @Override
-    public void exitEveryRule(@NotNull final ParserRuleContext ctx) {
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * The default implementation does nothing.
-     */
-    @Override
-    public void visitTerminal(@NotNull final TerminalNode node) {
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p/>
-     * The default implementation does nothing.
-     */
-    @Override
-    public void visitErrorNode(@NotNull final ErrorNode node) {
+    public void enterMacroref(final MacrorefContext ctx) {
+        checkMacroReferences(ctx.Macroref());
     }
 
     private static boolean isJavaClassName(final String text) {
@@ -471,33 +437,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             }
         }
         return text.length() > 0;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void checkMacroReferences(final ParserRuleContext context) {
-        Method m;
-        try {
-            m = context.getClass().getMethod("Macroref");
-
-            final Object result = m.invoke(context);
-            if (result instanceof List) {
-                checkMacroReferences((List<TerminalNode>) result);
-            } else if (result instanceof TerminalNode) {
-                checkMacroReferences((TerminalNode) result);
-            }
-
-        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-        }
-    }
-
-    private void checkMacroReferences(final List<TerminalNode> macroReferences) {
-        if (macroReferences == null || macroReferences.isEmpty()) {
-            return;
-        }
-
-        for (final TerminalNode macroReference : macroReferences) {
-            checkMacroReferences(macroReference);
-        }
     }
 
     private void checkMacroReferences(final TerminalNode macroReference) {
