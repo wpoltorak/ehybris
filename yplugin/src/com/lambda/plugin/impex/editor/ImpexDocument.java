@@ -48,13 +48,15 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
 
     private NavigableMap<Integer, ILexerTokenRegion> tokens = null;
     private final IDocument delegate;
-    private final TokenSourceProvider tokenSource;
     private ImpexModel impexModel;
+    private final Lexer lexer;
+    private ParseTree parseTree;
 
     public ImpexDocument(IDocument delegate, TokenSourceProvider tokenSource) {
         this.delegate = delegate;
-        this.tokenSource = tokenSource;
-        setTokens(createTokens(this.get()));
+        String text = this.get();
+        this.lexer = createLexer(tokenSource, text);
+        setTokens(createTokens(text));
     }
 
     private void setTokens(TreeMap<Integer, ILexerTokenRegion> tokens) {
@@ -88,29 +90,26 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         long nanoTime = System.nanoTime();
         try {
             System.err.println("===> VALIDATE BEGIN");
-            TokenSourceProvider tokenSource = new TokenSourceProvider();
-            Lexer lexer = tokenSource.get();
-            lexer.removeErrorListeners();
-            impexModel = new DefaultImpexModel();
-            lexer.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
-            lexer.setInputStream(new ANTLRInputStream(this.get()));
+            lexer.reset();
             ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
-
-            final ParseTree impex = parser.impex();
+            parseTree = parser.impex();
 
             final ParseTreeWalker walker = new ParseTreeWalker();
             ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
             listener.setTypeFinder(new JavaTypeFinder());
-            walker.walk(listener, impex);
+            walker.walk(listener, parseTree);
         } finally {
             System.err.println("===> VALIDATE END: took "
                     + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");
         }
-
     }
 
     public ImpexModel getModel() {
         return impexModel;
+    }
+
+    public ParseTree getParseTree() {
+        return parseTree;
     }
 
     protected IRegion computeDamageRegion(final DocumentEvent e) {
@@ -236,13 +235,12 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
 
     private TreeMap<Integer, ILexerTokenRegion> createTokens(String text) {
         TreeMap<Integer, ILexerTokenRegion> tokens = new TreeMap<>();
-        TokenSource source = createTokenSource(text);
+        lexer.setInputStream(new ANTLRInputStream(text));
         Token token = null;
         do {
-            token = source.nextToken();
+            token = lexer.nextToken();
             tokens.put(token.getStartIndex(), createTokenInfo(token));
         } while (token.getType() != Token.EOF);
-
         return tokens;
     }
 
@@ -251,9 +249,11 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
                 token.getType());
     }
 
-    protected TokenSource createTokenSource(String text) {
+    protected Lexer createLexer(TokenSourceProvider tokenSource, String text) {
         Lexer source = tokenSource.get();
         source.removeErrorListeners();
+        impexModel = new DefaultImpexModel();
+        source.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
         source.setInputStream(new ANTLRInputStream(text));
         return source;
     }

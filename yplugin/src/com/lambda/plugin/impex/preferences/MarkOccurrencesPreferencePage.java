@@ -35,11 +35,7 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
             { YMessages.ImpexEditorPreferencePage_markOccurrences_macros,
                     PreferenceConstants.IMPEX_EDITOR_MARK_MACRO_OCCURRENCES },
             { YMessages.ImpexEditorPreferencePage_markOccurrences_documentIDQualifiers,
-                    PreferenceConstants.IMPEX_EDITOR_MARK_DOCID_QUALIFIER_OCCURRENCES },
-    // { YMessages.ImpexEditorPreferencePage_problem_invalidType, PreferenceConstants.PROBLEM_TYPE_INVALID },
-    // { YMessages.ImpexEditorPreferencePage_problem_invalidSubtype, PreferenceConstants.PROBLEM_SUBTYPE_INVALID },
-    // { YMessages.ImpexEditorPreferencePage_problem_missingSubtype, PreferenceConstants.PROBLEM_SUBTYPE_MISSING },
-    };
+                    PreferenceConstants.IMPEX_EDITOR_MARK_DOCID_QUALIFIER_OCCURRENCES }, };
 
     private IPreferenceStore store;
 
@@ -180,14 +176,14 @@ public class MarkOccurrencesPreferencePage extends PreferencePage implements IWo
     public boolean performOk() {
         IPreferenceStore target = getPreferenceStore();
 
-        store.setValue(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES,
+        target.setValue(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES,
                 store.getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES));
 
         for (String[] occurrence : occurrences) {
             target.setValue(occurrence[1], store.getBoolean(occurrence[1]));
         }
 
-        store.setValue(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES,
+        target.setValue(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES,
                 store.getBoolean(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES));
         return super.performOk();
     }

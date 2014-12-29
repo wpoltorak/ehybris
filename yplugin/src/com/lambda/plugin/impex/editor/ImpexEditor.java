@@ -38,6 +38,7 @@ public class ImpexEditor extends TextEditor {
     public static final String ID = "com.lambda.plugin.impex.editor.ImpexEditor";
 
     private boolean markingOccurrences;
+    private boolean stickyOccurrences;
     private ProjectionSupport projectionSupport;
     private ProjectionAnnotationModel annotationModel;
     private Annotation[] oldAnnotations;
@@ -63,6 +64,7 @@ public class ImpexEditor extends TextEditor {
 
         setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
+        stickyOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES);
         setSourceViewerConfiguration(new ImpexEditorConfiguration(getPreferenceStore(), this));
     }
 
@@ -186,16 +188,25 @@ public class ImpexEditor extends TextEditor {
 
     @Override
     protected void handlePreferenceStoreChanged(final PropertyChangeEvent event) {
-        if (event.getProperty().equals(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES)) {
+        switch (event.getProperty()) {
+        case PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES:
             markingOccurrences = Boolean.TRUE.equals(event.getNewValue());
             occurrenceFinderSelectionChangeListener.updateOccurrenceAnnotations((ITextSelection) getSelectionProvider()
                     .getSelection(), getImpexModel(), true);
+            break;
+        case PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES:
+            stickyOccurrences = Boolean.TRUE.equals(event.getNewValue());
+            break;
         }
         super.handlePreferenceStoreChanged(event);
     }
 
     public boolean isMarkingOccurrences() {
         return markingOccurrences;
+    }
+
+    public boolean isStickyOccurrences() {
+        return stickyOccurrences;
     }
 
     @Override

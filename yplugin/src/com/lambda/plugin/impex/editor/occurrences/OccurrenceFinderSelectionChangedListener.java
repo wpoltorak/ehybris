@@ -124,11 +124,14 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
             return;
         }
         ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
+        AbstractOccurrencesFinderAdapter finder = new OccurrencesFinderFactory(document, selection.getOffset())
+                .createOccurrencesFinder();
 
-        List<Position> positions = null;
+        if (finder == null) {
+            return;
+        }
 
-        OccurrencesFinder finder = new OccurrencesFinder(model, document, selection.getOffset());
-        positions = finder.perform();
+        List<Position> positions = finder.findOccurrences();
 
         if (positions.isEmpty()) {
             removeOccurrenceAnnotations();
