@@ -9,17 +9,6 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface ImpexParserListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link ImpexParser#simpleAttributeName}.
-	 * @param ctx the parse tree
-	 */
-	void enterSimpleAttributeName(@NotNull ImpexParser.SimpleAttributeNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ImpexParser#simpleAttributeName}.
-	 * @param ctx the parse tree
-	 */
-	void exitSimpleAttributeName(@NotNull ImpexParser.SimpleAttributeNameContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link ImpexParser#headerTypeName}.
 	 * @param ctx the parse tree
 	 */
@@ -31,6 +20,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitHeaderTypeName(@NotNull ImpexParser.HeaderTypeNameContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ImpexParser#simpleAttributeName}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleAttributeName(@NotNull ImpexParser.SimpleAttributeNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#simpleAttributeName}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleAttributeName(@NotNull ImpexParser.SimpleAttributeNameContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ImpexParser#documentIdReference}.
 	 * @param ctx the parse tree
 	 */
@@ -40,6 +40,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDocumentIdReference(@NotNull ImpexParser.DocumentIdReferenceContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#documentIdField}.
+	 * @param ctx the parse tree
+	 */
+	void enterDocumentIdField(@NotNull ImpexParser.DocumentIdFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#documentIdField}.
+	 * @param ctx the parse tree
+	 */
+	void exitDocumentIdField(@NotNull ImpexParser.DocumentIdFieldContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#attribute}.
@@ -260,6 +271,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRecord(@NotNull ImpexParser.RecordContext ctx);
+
+	/**
+	 * Enter a parse tree produced by {@link ImpexParser#documentIdRefField}.
+	 * @param ctx the parse tree
+	 */
+	void enterDocumentIdRefField(@NotNull ImpexParser.DocumentIdRefFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#documentIdRefField}.
+	 * @param ctx the parse tree
+	 */
+	void exitDocumentIdRefField(@NotNull ImpexParser.DocumentIdRefFieldContext ctx);
 
 	/**
 	 * Enter a parse tree produced by {@link ImpexParser#subtypeAttribute}.

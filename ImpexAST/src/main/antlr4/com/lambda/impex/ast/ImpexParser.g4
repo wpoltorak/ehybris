@@ -34,7 +34,15 @@ record
         ;
 
 field
-        : ((FieldQuoted | Field | macroref | SkippedField)* | DocumentIdField | DocumentIdRefField)
+        : (FieldQuoted | Field | macroref | SkippedField)* | documentIdField | documentIdRefField
+        ;
+
+documentIdField
+        : DocumentIdField
+        ;
+     
+documentIdRefField
+        : DocumentIdRefField
         ;
         
 ////////////////////// ATTRIBUTES ////////////////////////////////

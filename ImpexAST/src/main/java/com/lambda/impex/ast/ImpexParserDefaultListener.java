@@ -27,6 +27,8 @@ import com.lambda.impex.ast.ImpexParser.AttributeNameContext;
 import com.lambda.impex.ast.ImpexParser.AttributeSubtypeContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
 import com.lambda.impex.ast.ImpexParser.DocumentIdDefinitionContext;
+import com.lambda.impex.ast.ImpexParser.DocumentIdFieldContext;
+import com.lambda.impex.ast.ImpexParser.DocumentIdRefFieldContext;
 import com.lambda.impex.ast.ImpexParser.DocumentIdReferenceContext;
 import com.lambda.impex.ast.ImpexParser.EmptyAttributeContext;
 import com.lambda.impex.ast.ImpexParser.FieldContext;
@@ -62,14 +64,12 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
     private final HashMap<String, Token> currentMacros = new HashMap<>();
-    private final HashMap<String, Token> currentTypes = new HashMap<>();
 
     private final List<String> supportedModes = Arrays.asList("append", "remove");
     private TypeFinder typeFinder;
     private TypeDescription typeDescription;
     private final List<ColumnDescription> columnDescriptions = new ArrayList<>();
     private final ImpexModel context;
-    private String currentAttributeName;
     private int columnIndex;
     private ColumnDescription currentColumnDescription;
 
@@ -328,11 +328,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     }
 
     @Override
-    public void exitRecord(final RecordContext ctx) {
-        columnIndex = -1;
-    }
-
-    @Override
     public void enterField(final FieldContext ctx) {
         columnIndex++;
         final String text = getText(ctx);
@@ -348,24 +343,30 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem(ctx, Type.FieldWithoutHeaderAttribute));
             return;
         }
+    }
 
-        if (column.isDocumentIDDefinition()) {
-            if (!typeDescription.exists()) {
-                return;
-            }
-            context.addDocumentIDDefinitionQualifier(new DocumentIDDescription(column.getDocumentID(), text), typeDescription, ctx
-                    .DocumentIdField().getSymbol());
+    @Override
+    public void enterDocumentIdField(final DocumentIdFieldContext ctx) {
+        final ColumnDescription column = columnDescriptions.get(columnIndex);
+        final String text = getText(ctx);
+        if (!typeDescription.exists()) {
+            return;
         }
-        if (column.isDocumentIDReferrence()) {
-            final TypeDescription type = column.getType();
-            if (type == null || !type.exists()) {
-                return;
-            }
-            context.addDocumentIDReferenceQualifier(new DocumentIDDescription(column.getDocumentID(), text), type, ctx.DocumentIdRefField()
-                    .getSymbol());
-            //          documentIDDescriptions.add(new DocumentIDDescription(column.getDocumentID(), text));
-            //            documentIDReferences.add(new DocumentIDDescription(column.getDocumentID(), ctx.getText()))
+        context.addDocumentIDDefinitionQualifier(new DocumentIDDescription(column.getDocumentID(), text), typeDescription, ctx
+                .DocumentIdField().getSymbol());
+    }
+
+    @Override
+    public void enterDocumentIdRefField(final DocumentIdRefFieldContext ctx) {
+        final ColumnDescription column = columnDescriptions.get(columnIndex);
+        final String text = getText(ctx);
+
+        final TypeDescription type = column.getType();
+        if (type == null || !type.exists()) {
+            return;
         }
+        context.addDocumentIDReferenceQualifier(new DocumentIDDescription(column.getDocumentID(), text), type, ctx.DocumentIdRefField()
+                .getSymbol());
     }
 
     @Override
