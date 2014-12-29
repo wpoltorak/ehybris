@@ -1,6 +1,10 @@
 package com.lambda.plugin.impex.editor.occurrences;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YPlugin;
@@ -16,7 +20,7 @@ public class OccurrencesFinderFactory {
         this.offset = offset;
     }
 
-    AbstractOccurrencesFinderAdapter createOccurrencesFinder() {
+    OccurrencesFinder createOccurrencesFinder() {
         try {
             ILexerTokenRegion token = document.getToken(offset);
             switch (token.getTokenType()) {
@@ -33,6 +37,12 @@ public class OccurrencesFinderFactory {
             YPlugin.logError(e);
         }
 
-        return null;
+        return new OccurrencesFinder() {
+
+            @Override
+            public List<Position> findOccurrences() {
+                return Collections.emptyList();
+            }
+        };
     }
 }

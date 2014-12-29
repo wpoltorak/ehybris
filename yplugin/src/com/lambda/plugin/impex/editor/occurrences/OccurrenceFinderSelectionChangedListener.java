@@ -115,26 +115,19 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
             return;
         }
 
-        if (selection == null || model == null) {
-            return;
-        }
-
         ISourceViewer sourceViewer = (ISourceViewer) editor.getAdapter(ISourceViewer.class);
-        if (sourceViewer == null) {
+        if (selection == null || model == null || sourceViewer == null) {
             return;
         }
         ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
-        AbstractOccurrencesFinderAdapter finder = new OccurrencesFinderFactory(document, selection.getOffset())
+        OccurrencesFinder finder = new OccurrencesFinderFactory(document, selection.getOffset())
                 .createOccurrencesFinder();
 
-        if (finder == null) {
-            return;
-        }
-
         List<Position> positions = finder.findOccurrences();
-
         if (positions.isEmpty()) {
-            removeOccurrenceAnnotations();
+            if (!editor.isStickyOccurrences()) {
+                removeOccurrenceAnnotations();
+            }
             return;
         }
 
