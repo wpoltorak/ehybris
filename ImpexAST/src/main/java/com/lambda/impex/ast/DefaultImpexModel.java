@@ -2,7 +2,6 @@ package com.lambda.impex.ast;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,19 +22,9 @@ public class DefaultImpexModel implements ImpexModel {
      * documentID definition
      * 
      */
-    private final Map<DocumentIDQualifier, String> documentIDs = new HashMap<>();
-    //    private final Map<DocumentIDQualifier, String> documentIDReferences = new HashMap<>();
-
     private final List<ImpexProblem> problems = new ArrayList<>();
 
-    private final Map<Token, List<Token>> macrodef2Macrorefs = new HashMap<>();
-    private final Map<Integer, Token> offset2Macrodef = new HashMap<>();
-
-    private final Map<String, List<Token>> typename2Tokens = new HashMap<>();
     private final Map<Integer, TypeDescription> offset2Type = new HashMap<>();
-
-    private final Map<DocumentIDDescription, List<Token>> documentIDReferences = new HashMap<>();
-    private final Map<Integer, DocumentIDDescription> offset2DocumentID = new HashMap<>();
 
     private final Map<DocumentIDDescription, Map<Token, TypeDescription>> docIDRef2Type = new HashMap<>();
     private final Map<DocumentIDDescription, TypeDescription> docIDDef2Type = new HashMap<>();
@@ -94,20 +83,7 @@ public class DefaultImpexModel implements ImpexModel {
     }
 
     @Override
-    public void addMacroReference(final Token macroDefiniton, final Token macroReference) {
-        offset2Macrodef.put(macroReference.getStartIndex(), macroDefiniton);
-        addListValue(macrodef2Macrorefs, macroDefiniton, macroReference);
-        List<Token> list = macrodef2Macrorefs.get(macroDefiniton);
-        if (list == null) {
-            list = new ArrayList<>();
-            macrodef2Macrorefs.put(macroDefiniton, list);
-        }
-        list.add(macroReference);
-    }
-
-    @Override
     public void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue) {
-        offset2Macrodef.put(macroDefiniton.getStartIndex(), macroDefiniton);
         addListValue(macros, macrodefText, macroValue);
     }
 
@@ -119,18 +95,12 @@ public class DefaultImpexModel implements ImpexModel {
             addProblem(symbol, Type.DuplicateDocumentID);
             return;
         }
-        addListValue(documentIDReferences, documentIDDescription, symbol);
-        offset2DocumentID.put(symbol.getStartIndex(), documentIDDescription);
-
         docIDDef2Type.put(documentIDDescription, type);
     }
 
     @Override
     public void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, final TypeDescription type,
             final Token symbol) {
-        addListValue(documentIDReferences, documentIDDescription, symbol);
-        offset2DocumentID.put(symbol.getStartIndex(), documentIDDescription);
-
         addMapValue(docIDRef2Type, documentIDDescription, symbol, type);
     }
 
@@ -171,7 +141,6 @@ public class DefaultImpexModel implements ImpexModel {
     @Override
     public void addType(final TypeDescription type, final Token token) {
         offset2Type.put(token.getStartIndex(), type);
-        addListValue(typename2Tokens, type.getName(), token);
     }
 
     @Override
@@ -212,65 +181,6 @@ public class DefaultImpexModel implements ImpexModel {
     public Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
         //        return macros;
         return null;
-    }
-
-    @Override
-    public List<Token> getOccurrenceTokens(final int tokenType, final int offset) {
-        switch (tokenType) {
-            case ImpexLexer.Macrodef:
-            case ImpexLexer.Macroref:
-                return getMacroOccurrenceTokens(tokenType, offset);
-            case ImpexLexer.DocumentID:
-                return getDocumentIDOccurrenceTokens(tokenType, offset);
-            case ImpexLexer.DocumentIdField:
-            case ImpexLexer.DocumentIdRefField:
-                return getDocumentIDQualifierOccurrenceTokens(tokenType, offset);
-            case ImpexLexer.Type:
-                return getTypeOccurrenceTokens(offset);
-        }
-        return Collections.emptyList();
-    }
-
-    private List<Token> getTypeOccurrenceTokens(final int offset) {
-        final TypeDescription type = offset2Type.get(offset);
-        final List<Token> result = typename2Tokens.get(type.getName());
-        if (result != null) {
-            return result;
-        }
-        return Collections.emptyList();
-    }
-
-    private List<Token> getMacroOccurrenceTokens(final int tokenType, final int offset) {
-        final Token macrodef = offset2Macrodef.get(offset);
-        if (macrodef == null) {
-            return Collections.emptyList();
-        }
-
-        final List<Token> result = new ArrayList<>();
-        result.add(macrodef);
-        final List<Token> refs = macrodef2Macrorefs.get(macrodef);
-        if (refs != null) {
-            result.addAll(refs);
-        }
-        return result;
-    }
-
-    private List<Token> getDocumentIDOccurrenceTokens(final int tokenType, final int offset) {
-        final List<Token> result = new ArrayList<>();
-        return result;
-    }
-
-    private List<Token> getDocumentIDQualifierOccurrenceTokens(final int tokenType, final int offset) {
-        final DocumentIDDescription documentID = offset2DocumentID.get(offset);
-        if (documentID == null) {
-            return Collections.emptyList();
-        }
-        final List<Token> result = new ArrayList<>();
-        final List<Token> list = documentIDReferences.get(documentID);
-        if (list != null) {
-            result.addAll(list);
-        }
-        return result;
     }
 
     @Override

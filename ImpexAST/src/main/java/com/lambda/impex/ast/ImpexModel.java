@@ -29,8 +29,6 @@ public interface ImpexModel {
 
     boolean hasProblems();
 
-    void addMacroReference(final Token macroDefiniton, final Token macroReference);
-
     void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue);
 
     void addDocumentIDDefinitionQualifier(final DocumentIDDescription documentIDDescription, TypeDescription type, final Token symbol);
@@ -42,8 +40,6 @@ public interface ImpexModel {
     List<ImpexProblem> getProblems();
 
     Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros();
-
-    List<Token> getOccurrenceTokens(final int tokenType, final int offset);
 
     Object getHyperlinkElement(final int tokenType, final int offset);
 

@@ -451,7 +451,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addProblem(problem(macroReferenceToken, Type.UnknownMacro));
             return;
         }
-        context.addMacroReference(macroDefinitonToken, macroReferenceToken);
     }
 
     private static String removeSeparators(final String text) {
