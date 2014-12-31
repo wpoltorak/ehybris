@@ -6,8 +6,6 @@ tokens {
     Separator,
     Macroref,
     SkippedField,
-    DocumentIdField,
-    DocumentIdRefField,
     BooleanAttributeModifier,
     IntAttributeModifier,
     DateFormatAttributeModifier,
@@ -99,14 +97,14 @@ import java.util.*;
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - skipped");
 				setType(SkippedField); 
 				break; 
-			case 1: 
-				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
-				setType(DocumentIdField); 
-				break;
-			case 2:
-				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
-				setType(DocumentIdRefField); 
-				break;
+//			case 1: 
+//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
+//				setType(DocumentIdField); 
+//				break;
+//			case 2:
+//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
+//				setType(DocumentIdRefField); 
+//				break;
 			default: 
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
 				setType(Field);
@@ -278,6 +276,7 @@ LineSeparator       : '\\' Ws* Lb -> channel(HIDDEN);
 
 Separator           : ';';
 
+fragment DocumentIDQualifier : [a-zA-Z0-9_\\-](LineSeparator* [a-zA-Z0-9_\\-])*;
 DocumentID          : '&' LineSeparator* Identifier;
 SpecialAttribute    : '@' LineSeparator* Identifier;
 Identifier          : [a-zA-Z_](LineSeparator* [a-zA-Z0-9_])*;
@@ -311,7 +310,10 @@ FieldSeparator          : Ws* Separator Ws* -> type(Separator), popMode, pushMod
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
 FieldMacroref           : Macrodef -> type(Macroref);
 FieldLb                 : Lb {handleFieldLb();};
-FieldMulti				: ~[\r\n";\t\\ $] ~[\r\n";$]* ~[\r\n";\t\\ $] { handleField();};
+DocumentIdField         : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 1}?; 
+DocumentIdRefField      : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2}?;
+FieldCommaSkipped       : Ws* Comma Ws* {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2}? -> channel(HIDDEN);
+FieldMulti              : ~[\r\n";\t\\ $&] ~[\r\n";$&]* ~[\r\n";\t\\ $&] {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) < 1}? { handleField();};
 Field                   : ~[\r\n";] { handleField();};
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?

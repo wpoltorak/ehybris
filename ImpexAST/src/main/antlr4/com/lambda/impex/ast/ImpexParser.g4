@@ -34,7 +34,7 @@ record
         ;
 
 field
-        : (FieldQuoted | Field | macroref | SkippedField)* | documentIdField | documentIdRefField
+        : (FieldQuoted | Field | macroref | SkippedField | documentIdRefField)* | documentIdField
         ;
 
 documentIdField
