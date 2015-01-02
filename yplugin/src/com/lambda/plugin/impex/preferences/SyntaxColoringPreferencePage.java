@@ -1,10 +1,14 @@
 package com.lambda.plugin.impex.preferences;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -313,11 +317,24 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 
     private String readExampleFile() {
         try {
-            return IOUtils.toString(getClass().getResourceAsStream("syntaxPreview.impex"));//$NON-NLS-1$
-        } catch (IOException e) {
+            return readFile(getClass().getResourceAsStream("syntaxPreview.impex"), StandardCharsets.UTF_8);//$NON-NLS-1$
+        } catch (IOException | URISyntaxException e) {
             YPlugin.logError(e);
         }
-        return "";
+        return "";//$NON-NLS-1$
+    }
+
+    static String readFile(InputStream inputStream, Charset charset) throws IOException, URISyntaxException {
+        Scanner s = null;
+        try {
+            s = new Scanner(inputStream);
+            s.useDelimiter("\\A");//$NON-NLS-1$
+            return s.hasNext() ? s.next() : "";//$NON-NLS-1$
+        } finally {
+            if (s != null) {
+                s.close();
+            }
+        }
     }
 
     private void initialize() {

@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.eclipse.core.runtime.IPath;
 
 import com.lambda.plugin.YPlugin;
@@ -32,7 +31,13 @@ public class PropertiesLoader {
             YPlugin.logError(e);
             return null;
         } finally {
-            IOUtils.closeQuietly(in);
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ioe) {
+                // ignore
+            }
         }
     }
 
