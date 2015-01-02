@@ -276,7 +276,7 @@ LineSeparator       : '\\' Ws* Lb -> channel(HIDDEN);
 
 Separator           : ';';
 
-fragment DocumentIDQualifier : [a-zA-Z0-9_\\-](LineSeparator* [a-zA-Z0-9_\\-])*;
+fragment DocumentIDQualifier : [a-zA-Z0-9_\\-\\.](LineSeparator* [a-zA-Z0-9_\\-\\.])*;
 DocumentID          : '&' LineSeparator* Identifier;
 SpecialAttribute    : '@' LineSeparator* Identifier;
 Identifier          : [a-zA-Z_](LineSeparator* [a-zA-Z0-9_])*;
