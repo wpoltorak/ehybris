@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: YLinks
 Bundle-SymbolicName: com.lambda.ylinks
 Bundle-Version: 0.0.1
-Bundle-ClassPath: commons-io-2.2.jar,
- impexast-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+Bundle-ClassPath: impexast-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 Export-Package: com.lambda.impex.ast,
  org.antlr.v4,
  org.antlr.v4.analysis,
@@ -23,11 +22,5 @@ Export-Package: com.lambda.impex.ast,
  org.antlr.v4.runtime.tree.gui,
  org.antlr.v4.semantics,
  org.antlr.v4.tool,
- org.antlr.v4.tool.ast,
- org.apache.commons.io,
- org.apache.commons.io.comparator,
- org.apache.commons.io.filefilter,
- org.apache.commons.io.input,
- org.apache.commons.io.monitor,
- org.apache.commons.io.output
+ org.antlr.v4.tool.ast 
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
