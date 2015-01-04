@@ -46,9 +46,9 @@ public class AntlrProblemTypeToSeverityMapper {
         case UnknownMacro:
             return MessageFormat.format(YMessages.Impex_problem_unknownMacro, params);
         case InvalidType:
-            return YMessages.Impex_problem_invalidType;
+            return MessageFormat.format(YMessages.Impex_problem_invalidType, params);
         case InvalidSubtype:
-            return YMessages.Impex_problem_invalidSubtype;
+            return MessageFormat.format(YMessages.Impex_problem_invalidSubtype, params);
         case SubtypeRequired:
             return YMessages.Impex_problem_noSubtype;
         case InvalidAttribute:

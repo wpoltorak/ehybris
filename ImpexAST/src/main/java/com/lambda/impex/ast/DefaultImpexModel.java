@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
@@ -15,12 +14,12 @@ import com.lambda.impex.ast.ImpexParser.MacroValueContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
 public class DefaultImpexModel implements ImpexModel {
-    private static final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
+    //    private static final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
     private final Map<String, List<MacroValueContext>> macros = new HashMap<>();
 
     /**
      * documentID definition
-     * 
+     *
      */
     private final List<ImpexProblem> problems = new ArrayList<>();
 
@@ -84,6 +83,7 @@ public class DefaultImpexModel implements ImpexModel {
 
     @Override
     public void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue) {
+
         addListValue(macros, macrodefText, macroValue);
     }
 
@@ -181,6 +181,16 @@ public class DefaultImpexModel implements ImpexModel {
     public Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
         //        return macros;
         return null;
+    }
+
+    @Override
+    public void reset() {
+        macros.clear();
+        problems.clear();
+        offset2Type.clear();
+        docIDRef2Type.clear();
+        docIDDef2Type.clear();
+
     }
 
     @Override

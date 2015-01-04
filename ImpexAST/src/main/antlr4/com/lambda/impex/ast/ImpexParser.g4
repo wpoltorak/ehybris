@@ -48,7 +48,7 @@ documentIdRefField
 ////////////////////// ATTRIBUTES ////////////////////////////////
 
 attribute
-        : specialAttribute | subtypeAttribute | documentIdReference | documentIdDefinition | simpleAttribute | emptyAttribute
+        : (specialAttribute | subtypeAttribute | documentIdReference | documentIdDefinition | simpleAttribute | emptyAttribute) | macroref
         ;
 
 documentIdReference

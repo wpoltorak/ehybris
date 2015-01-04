@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeContext;
@@ -63,7 +64,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             "null", "package", "private", "protected", "public", "return", "short", "static", "strictfp", "super", "switch",
             "synchronized", "this", "throw", "throws", "transient", "true", "try", "void", "volatile", "while"));
 
-    private final HashMap<String, Token> currentMacros = new HashMap<>();
+    private final HashMap<String, String> currentMacros = new HashMap<>();
 
     private final List<String> supportedModes = Arrays.asList("append", "remove");
     private TypeFinder typeFinder;
@@ -92,15 +93,28 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
         if (macroValue.getText().isEmpty()) {
             context.addProblem(problem(ctx, Type.EmptyMacroValue));
-            final String macrodefText = removeSeparators(ctx.Macrodef().getText());
-            currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
+            final String macrodefText = ctx.Macrodef().getText();
+            currentMacros.put(macrodefText, "");
             return;
         }
+        final String macrodefText = ctx.Macrodef().getText();
+        final String macrovalue = resolveMacroreferences(macroValue.children);
+        currentMacros.put(macrodefText, macrovalue);
+        context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), macroValue);
+    }
 
-        //        checkMacroReferences(ctx.macroValue().Macroref());
-        final String macrodefText = removeSeparators(ctx.Macrodef().getText());
-        currentMacros.put(macrodefText, ctx.Macrodef().getSymbol());
-        context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), ctx.macroValue());
+    private String resolveMacroreferences(final List<ParseTree> children) {
+        final StringBuilder builder = new StringBuilder();
+        for (final ParseTree tree : children) {
+            final String text = tree.getText();
+            if (MacrorefContext.class.isInstance(tree)) {
+                final String macrovalue = currentMacros.get(text);
+                builder.append(macrovalue != null ? macrovalue : text);
+            } else {
+                builder.append(text);
+            }
+        }
+        return builder.toString();
     }
 
     @Override
@@ -111,7 +125,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             context.addType(typeDescription, ctx.Type().getSymbol());
         }
         if (!typeDescription.exists()) {
-            context.addProblem(new ImpexProblem(Type.InvalidType));
+            context.addProblem(problem(ctx, Type.InvalidType));
         }
     }
 
@@ -124,6 +138,17 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterAttribute(final AttributeContext ctx) {
         columnIndex++;
+        if (ctx.macroref() != null) {
+            //            final String text = resolveMacroreferences(ctx.children);
+            //            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
+            //            lexer.removeErrorListeners();
+            //            lexer._mode = ImpexLexer.attribute;
+            //            final CommonTokenStream tokens = new CommonTokenStream(lexer);
+            //            final ImpexParser parser = new ImpexParser(tokens);
+            //            parser.removeErrorListeners();
+            //            final AttributeContext attribute = parser.attribute();
+
+        }
     }
 
     @Override
@@ -310,7 +335,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     @Override
     public void enterRecord(final RecordContext ctx) {
-        // cleanup record data  
+        // cleanup record data
         columnIndex = -1;
         // Subtype check
         final TerminalNode subtype = ctx.Type();
@@ -413,7 +438,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
      */
     @Override
     public void enterImpex(@NotNull final ImpexParser.ImpexContext ctx) {
+        columnDescriptions.clear();
         currentMacros.clear();
+        columnIndex = -1;
+        currentColumnDescription = null;
+        typeDescription = null;
     }
 
     /**
@@ -445,9 +474,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             return;
         }
         final Token macroReferenceToken = macroReference.getSymbol();
-        final String macroreftext = removeSeparators(macroReferenceToken.getText());
-        final Token macroDefinitonToken = currentMacros.get(macroreftext);
-        if (macroDefinitonToken == null) {
+        if (!currentMacros.containsKey(macroReferenceToken.getText())) {
             context.addProblem(problem(macroReferenceToken, Type.UnknownMacro));
             return;
         }

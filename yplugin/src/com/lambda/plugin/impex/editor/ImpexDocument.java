@@ -91,6 +91,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         try {
             System.err.println("===> VALIDATE BEGIN");
             lexer.reset();
+            impexModel.reset();
             ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
             parseTree = parser.impex();
 

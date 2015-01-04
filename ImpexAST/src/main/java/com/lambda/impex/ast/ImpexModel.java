@@ -14,7 +14,7 @@ public interface ImpexModel {
 
     /**
      * Registers new generic problem
-     * 
+     *
      * @param e
      */
     void addProblem(final RecognitionException e);
@@ -44,4 +44,6 @@ public interface ImpexModel {
     Object getHyperlinkElement(final int tokenType, final int offset);
 
     void checkDocumentIDs();
+
+    void reset();
 }
