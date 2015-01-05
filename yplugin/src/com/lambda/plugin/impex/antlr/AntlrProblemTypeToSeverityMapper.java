@@ -61,6 +61,24 @@ public class AntlrProblemTypeToSeverityMapper {
             return MessageFormat.format(YMessages.Impex_problem_invalidDocumentId, params);
         case InvalidDocumentIDTypeHierarchy:
             return MessageFormat.format(YMessages.Impex_problem_invalidDocumentIdTypeHierarchy, params);
+        case InvalidAttributeModifier:
+            return MessageFormat.format(YMessages.Impex_problem_invalidAttributeModifier, params);
+        case InvalidHeaderModifier:
+            return MessageFormat.format(YMessages.Impex_problem_invalidHeaderModifier, params);
+        case InvalidBoolean:
+            return YMessages.Impex_problem_invalidBoolean;
+        case InvalidMode:
+            return MessageFormat.format(YMessages.Impex_problem_invalidMode, params);
+        case InvalidClassname:
+            return MessageFormat.format(YMessages.Impex_problem_invalidClassname, params);
+        case InvalidPosition:
+            return YMessages.Impex_problem_invalidPosition;
+        case InvalidDateFormat:
+            return MessageFormat.format(YMessages.Impex_problem_invalidDateformat, params);
+        case InvalidNumberFormat:
+            return MessageFormat.format(YMessages.Impex_problem_invalidNumberformat, params);
+        case InvalidLang:
+            return MessageFormat.format(YMessages.Impex_problem_invalidLanguage, params);
         default:
             return text;
         }

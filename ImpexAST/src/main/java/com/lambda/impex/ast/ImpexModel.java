@@ -8,20 +8,15 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
 
 import com.lambda.impex.ast.ImpexParser.MacroValueContext;
-import com.lambda.impex.ast.ImpexProblem.Type;
 
 public interface ImpexModel {
 
     /**
      * Registers new generic problem
-     *
-     * @param e
      */
     void addProblem(final RecognitionException e);
 
     void addProblem(final ImpexProblem problem);
-
-    void addProblem(final Token token, final Type type);
 
     void syntaxProblem(final int line, final Token token, final String msg, final RecognitionException e);
 

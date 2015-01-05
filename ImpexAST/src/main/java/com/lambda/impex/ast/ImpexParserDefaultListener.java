@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.regex.Matcher;
 //import com.lambda.impex.ast.tree.*;
 import java.util.regex.Pattern;
 
@@ -55,8 +55,6 @@ import com.lambda.impex.ast.ImpexProblem.Type;
 public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     private static final Pattern javaClassNamePattern = Pattern.compile("[A-Za-z_]+[a-zA-Z0-9_]*");
-    private static final Pattern separatorWithWhitespacePattern = Pattern.compile("([ \t]*)\\\\[ \t]*\r?[\n\r]([ \t]*)");
-    private static final Pattern separatorPattern = Pattern.compile("\\\\[ \t]*\r?[\n\r]");
 
     private static final Set<String> javaKeywords = new HashSet<String>(Arrays.asList("abstract", "assert", "boolean", "break", "byte",
             "case", "catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends", "false", "final",
@@ -98,23 +96,9 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             return;
         }
         final String macrodefText = ctx.Macrodef().getText();
-        final String macrovalue = resolveMacroreferences(macroValue.children);
+        final String macrovalue = getText(macroValue);
         currentMacros.put(macrodefText, macrovalue);
         context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), macroValue);
-    }
-
-    private String resolveMacroreferences(final List<ParseTree> children) {
-        final StringBuilder builder = new StringBuilder();
-        for (final ParseTree tree : children) {
-            final String text = tree.getText();
-            if (MacrorefContext.class.isInstance(tree)) {
-                final String macrovalue = currentMacros.get(text);
-                builder.append(macrovalue != null ? macrovalue : text);
-            } else {
-                builder.append(text);
-            }
-        }
-        return builder.toString();
     }
 
     @Override
@@ -242,7 +226,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             if (type.sameAs(typeName) && !type.containsField(attributeName)) {
                 context.addProblem(problem(nameCtx, Type.InvalidAttribute));
             } else {
-                //TODO cached?
                 final TypeDescription subtype = typeFinder.findType(typeName);
                 if (!subtype.exists()) {
                     context.addProblem(problem(subtypenameCtx, Type.InvalidType));
@@ -272,27 +255,27 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
         final AttributeModifierContext attributeModifier = ctx.attributeModifier();
         final ModifierValueContext modifierval = ctx.modifierValue();
+        final String text = getText(modifierval);
         switch (attributeModifier.getStart().getType()) {
             case ImpexLexer.BooleanHeaderModifier:
-                //TODO resolve macros
-                if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
-                        && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
+                if (!Boolean.TRUE.toString().equalsIgnoreCase(text) && !Boolean.FALSE.toString().equalsIgnoreCase(text)) {
                     context.addProblem(problem(modifierval, Type.InvalidBoolean));
                 }
                 break;
             case ImpexLexer.TextAttributeModifier:
-                if ("mode".equalsIgnoreCase(attributeModifier.getText())) {
-                    if (!supportedModes.contains(modifierval.getText().toLowerCase())) {
-                        context.addProblem(problem(modifierval, Type.InvalidMode));
+                if ("mode".equalsIgnoreCase(text)) {
+                    if (!supportedModes.contains(text.toLowerCase())) {
+                        context.addProblem(problem(modifierval, Type.InvalidMode, join(supportedModes, ", ")));
                     }
                 } else if ("lang".equalsIgnoreCase(attributeModifier.getText())) {
+                    //TODO support error about restriction to localized attributes
                     try {
                         //parse long to verify if it's a number - a PK
-                        Long.parseLong(modifierval.getText());
+                        Long.parseLong(text);
                     } catch (final NumberFormatException e) {
                         // is not a PK number so verify locale name
                         try {
-                            toLocale(modifierval.getText());
+                            toLocale(text);
                         } catch (final IllegalArgumentException ex) {
                             context.addProblem(problem(modifierval, Type.InvalidLang));
                         }
@@ -300,14 +283,14 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 }
                 break;
             case ImpexLexer.ClassAttributeModifier:
-                if (!isJavaClassName(modifierval.getText())) {
+                if (!isJavaClassName(text)) {
                     context.addProblem(problem(modifierval, Type.InvalidClassname));
                 }
                 break;
             case ImpexLexer.IntAttributeModifier:
                 if ("pos".equalsIgnoreCase(attributeModifier.getText())) {
                     try {
-                        final Integer pos = Integer.valueOf(modifierval.getText());
+                        final Integer pos = Integer.valueOf(text);
                         if (pos.intValue() < 0) {
                             context.addProblem(problem(modifierval, Type.InvalidPosition));
                         }
@@ -318,19 +301,34 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
                 break;
             case ImpexLexer.DateFormatAttributeModifier:
                 try {
-                    new SimpleDateFormat(modifierval.getText());
+                    new SimpleDateFormat(text);
                 } catch (final NullPointerException | IllegalArgumentException e) {
                     context.addProblem(problem(modifierval, Type.InvalidDateFormat));
                 }
                 break;
             case ImpexLexer.NumberFormatAttributeModifier:
                 try {
-                    new DecimalFormat(modifierval.getText());
+                    new DecimalFormat(text);
                 } catch (final NullPointerException | IllegalArgumentException e) {
                     context.addProblem(problem(modifierval, Type.InvalidNumberFormat));
                 }
                 break;
         }
+    }
+
+    private String join(final List<String> list, final String separator) {
+        final Iterator<String> iterator = list.iterator();
+        if (!iterator.hasNext()) {
+            return "";
+        }
+        final StringBuilder builder = new StringBuilder(iterator.next());
+        if (list.size() > 1) {
+            while (iterator.hasNext()) {
+                builder.append(separator);
+                builder.append(iterator.next());
+            }
+        }
+        return builder.toString();
     }
 
     @Override
@@ -409,23 +407,18 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
             return;
         }
         final ModifierValueContext modifierval = ctx.modifierValue();
+        final String text = getText(modifierval);
         switch (ctx.headerModifier().getStart().getType()) {
             case ImpexLexer.BooleanHeaderModifier:
-                //TODO resolve macros
-                if (!Boolean.TRUE.toString().equalsIgnoreCase(modifierval.getText())
-                        && !Boolean.FALSE.toString().equalsIgnoreCase(modifierval.getText())) {
-                    final ImpexProblem problem = new ImpexProblem(Type.InvalidBoolean);
-                    problem.setLineNumber(modifierval.getStart().getLine());
-                    problem.setLength(modifierval.getStop().getStopIndex() - modifierval.getStart().getStartIndex() + 1);
-                    problem.setText(modifierval.getText());
-                    context.addProblem(problem);
+                if (!Boolean.TRUE.toString().equalsIgnoreCase(text) && !Boolean.FALSE.toString().equalsIgnoreCase(text)) {
+                    context.addProblem(problem(modifierval, Type.InvalidBoolean));
                 }
                 break;
             case ImpexLexer.TextHeaderModifier:
                 break;
             case ImpexLexer.ClassHeaderModifier:
-                if (!isJavaClassName(modifierval.getText())) {
-                    context.addProblem(new ImpexProblem(Type.InvalidClassname));
+                if (!isJavaClassName(text)) {
+                    context.addProblem(problem(modifierval, Type.InvalidClassname));
                 }
                 break;
         }
@@ -480,27 +473,6 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
     }
 
-    private static String removeSeparators(final String text) {
-        final Matcher m = separatorPattern.matcher(text);
-        final StringBuffer sb = new StringBuffer();
-        while (m.find()) {
-            m.appendReplacement(sb, "");
-        }
-        m.appendTail(sb);
-        return sb.toString();
-    }
-
-    private static String removeSeparatorsAndWhitespaces(final String text) {
-        final Matcher m = separatorWithWhitespacePattern.matcher(text);
-        final StringBuffer sb = new StringBuffer();
-        while (m.find()) {
-            final boolean noWhitespaceCaptured = m.group(1).isEmpty() && m.group(2).isEmpty();
-            m.appendReplacement(sb, noWhitespaceCaptured ? "" : " ");
-        }
-        m.appendTail(sb);
-        return sb.toString();
-    }
-
     private Locale toLocale(final String str) {
         if (str == null) {
             throw new IllegalArgumentException("Invalid locale format: " + String.valueOf(str));
@@ -539,23 +511,33 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         }
     }
 
-    private ImpexProblem problem(final ParserRuleContext context, final Type type) {
+    private ImpexProblem problem(final ParserRuleContext context, final Type type, final String... arguments) {
         final ImpexProblem problem = new ImpexProblem(type);
         problem.setLineNumber(context.getStart().getLine());
         problem.setLength(stopIndex(context) - context.getStart().getStartIndex() + 1);
         problem.setStartIndex(context.getStart().getStartIndex());
         problem.setStopIndex(stopIndex(context));
-        problem.setText(context.getText());
+        final StringBuilder builder = new StringBuilder(context.getText());
+        for (final String arg : arguments) {
+            builder.append(ImpexProblem.SEPARATOR);
+            builder.append(arg);
+        }
+        problem.setText(builder.toString());
         return problem;
     }
 
-    private ImpexProblem problem(final Token token, final Type type) {
+    private ImpexProblem problem(final Token token, final Type type, final String... arguments) {
         final ImpexProblem problem = new ImpexProblem(type);
         problem.setLineNumber(token.getLine());
         problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);
         problem.setStartIndex(token.getStartIndex());
         problem.setStopIndex(token.getStopIndex());
-        problem.setText(token.getText());
+        final StringBuilder builder = new StringBuilder(token.getText());
+        for (final String arg : arguments) {
+            builder.append(ImpexProblem.SEPARATOR);
+            builder.append(arg);
+        }
+        problem.setText(builder.toString());
         return problem;
     }
 
@@ -563,15 +545,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
     }
 
-    //TODO evaluate macros using regexp
     private String getText(final ParserRuleContext ctx) {
-        if (ctx == null) {
+        if (ctx == null || ctx.children == null) {
             return null;
         }
-        if (ctx instanceof AttributeNameContext) {
-
-        }
-        return ctx.getText();
+        return resolveMacroreferences(ctx.children);
     }
 
     private String getText(final TerminalNode node) {
@@ -592,4 +570,17 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         return text == null || "".equals(text.trim());
     }
 
+    private String resolveMacroreferences(final List<ParseTree> children) {
+        final StringBuilder builder = new StringBuilder();
+        for (final ParseTree tree : children) {
+            final String text = tree.getText();
+            if (tree instanceof MacrorefContext) {
+                final String macrovalue = currentMacros.get(text);
+                builder.append(macrovalue != null ? macrovalue : text);
+            } else {
+                builder.append(text);
+            }
+        }
+        return builder.toString();
+    }
 }

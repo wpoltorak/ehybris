@@ -70,8 +70,7 @@ public class DefaultImpexModel implements ImpexModel {
         problems.add(problem);
     }
 
-    @Override
-    public void addProblem(final Token token, final Type type) {
+    private void addProblem(final Token token, final Type type) {
         final ImpexProblem problem = new ImpexProblem(type);
         problem.setLineNumber(token.getLine());
         problem.setLength(token.getStopIndex() - token.getStartIndex() + 1);

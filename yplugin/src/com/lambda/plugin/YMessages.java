@@ -368,10 +368,19 @@ public final class YMessages extends NLS {
     public static String Impex_problem_invalidSubtype;
     public static String Impex_problem_noSubtype;
     public static String Impex_problem_invalidAttribute;
+    public static String Impex_problem_invalidAttributeModifier;
+    public static String Impex_problem_invalidHeaderModifier;
     public static String Impex_problem_fieldWithoutHeaderAttribute;
     public static String Impex_problem_duplicateDocumentId;
     public static String Impex_problem_invalidDocumentId;
     public static String Impex_problem_invalidDocumentIdTypeHierarchy;
+    public static String Impex_problem_invalidBoolean;
+    public static String Impex_problem_invalidMode;
+    public static String Impex_problem_invalidClassname;
+    public static String Impex_problem_invalidPosition;
+    public static String Impex_problem_invalidDateformat;
+    public static String Impex_problem_invalidNumberformat;
+    public static String Impex_problem_invalidLanguage;
 
     // Impex others
     public static String ImpexToggleComment_progress;
@@ -382,5 +391,4 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_markOccurrences_macros;
     public static String ImpexEditorPreferencePage_markOccurrences_documentIDQualifiers;
     public static String ImpexEditorPreferencePage_markOccurrences_stickyOccurrences;
-
 }
