@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -351,11 +352,28 @@ public class YPlugin extends AbstractUIPlugin {
 
     public IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
         if (scope == null) {
-            System.out.println("entered extensibleItemHierarchyScope");
-            String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
-            IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-            IType type = project.findType("de.hybris.platform.jalo.Item");
-            scope = SearchEngine.createStrictHierarchyScope(null, type, true, true, null);
+            long millis = System.currentTimeMillis();
+            System.err.println("entered extensibleItemHierarchyScope");
+            try {
+                String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
+                IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+                IType type = project.findType("de.hybris.platform.jalo.Item");
+                scope = SearchEngine.createStrictHierarchyScope(null, type, true, true, null);
+            } finally {
+                millis = System.currentTimeMillis() - millis;
+                // int seconds = (int) (millis / 1000) % 60 ;
+                // int minutes = (int) ((millis / (1000*60)) % 60);
+                // millis = millis % 60;
+                // System.err.println("Took " + " millis (" + + ")");
+                System.err.println(String.format(
+                        "Took %d:%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                        TimeUnit.MILLISECONDS.toSeconds(millis)
+                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                        TimeUnit.MILLISECONDS.toMillis(millis)
+                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
+            }
+            // type.newTypeHierarchy(new NullProgressMonitor()).getAllSubtypes(type);
         }
         return scope;
     }
