@@ -41,4 +41,6 @@ public interface ImpexModel {
     void checkDocumentIDs();
 
     void reset();
+
+    String getMacroValue(String name, int index);
 }

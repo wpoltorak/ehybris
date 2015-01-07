@@ -28,19 +28,19 @@ public class ImpexParserDefaultErrorListener extends BaseErrorListener {
     @Override
     public void reportAmbiguity(final Parser recognizer, final DFA dfa, final int startIndex, final int stopIndex, final boolean exact,
             final BitSet ambigAlts, final ATNConfigSet configs) {
-
+        System.out.println();
     }
 
     @Override
     public void reportAttemptingFullContext(final Parser recognizer, final DFA dfa, final int startIndex, final int stopIndex,
             final BitSet conflictingAlts, final ATNConfigSet configs) {
-
+        System.out.println();
     }
 
     @Override
     public void reportContextSensitivity(final Parser recognizer, final DFA dfa, final int startIndex, final int stopIndex,
             final int prediction, final ATNConfigSet configs) {
-
+        System.out.println();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ImpexParserDefaultErrorListener extends BaseErrorListener {
         if (recognizer instanceof Lexer) {
             final int startIndex = ((Lexer) recognizer).getCharIndex();
             context.syntaxProblem(line, startIndex, msg, e);
-            //Parser    
+            //Parser
         } else if (offendingSymbol instanceof Token) {
             context.syntaxProblem(line, (Token) offendingSymbol, msg, e);
         }

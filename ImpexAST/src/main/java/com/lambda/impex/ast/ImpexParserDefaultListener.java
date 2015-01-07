@@ -89,16 +89,17 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     public void enterMacro(@NotNull final ImpexParser.MacroContext ctx) {
         final MacroValueContext macroValue = ctx.macroValue();
 
+        final TerminalNode macrodef = ctx.Macrodef();
         if (macroValue.getText().isEmpty()) {
-            context.addProblem(problem(ctx, Type.EmptyMacroValue));
-            final String macrodefText = ctx.Macrodef().getText();
+            context.addProblem(problem(macrodef.getSymbol(), Type.EmptyMacroValue));
+            final String macrodefText = macrodef.getText();
             currentMacros.put(macrodefText, "");
             return;
         }
-        final String macrodefText = ctx.Macrodef().getText();
+        final String macrodefText = macrodef.getText();
         final String macrovalue = getText(macroValue);
         currentMacros.put(macrodefText, macrovalue);
-        context.addMacroValue(macrodefText, ctx.Macrodef().getSymbol(), macroValue);
+        context.addMacroValue(macrodefText, macrodef.getSymbol(), macroValue);
     }
 
     @Override

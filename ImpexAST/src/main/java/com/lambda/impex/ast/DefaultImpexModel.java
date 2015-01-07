@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Token;
@@ -14,13 +16,9 @@ import com.lambda.impex.ast.ImpexParser.MacroValueContext;
 import com.lambda.impex.ast.ImpexProblem.Type;
 
 public class DefaultImpexModel implements ImpexModel {
-    //    private static final Pattern macroPattern = Pattern.compile("$\\[ \t]*\r?[\r\n][a-zA-Z_](?:(?:\\[ \t]*\r?[\r\n])[a-zA-Z_0-9])*");
-    private final Map<String, List<MacroValueContext>> macros = new HashMap<>();
 
-    /**
-     * documentID definition
-     *
-     */
+    private final Map<String, NavigableMap<Integer, String>> macros = new HashMap<>();
+
     private final List<ImpexProblem> problems = new ArrayList<>();
 
     private final Map<Integer, TypeDescription> offset2Type = new HashMap<>();
@@ -51,6 +49,7 @@ public class DefaultImpexModel implements ImpexModel {
         problem.setText(msg);
         problem.setStartIndex(startIndex);
         problem.setStopIndex(startIndex + 1);
+        problem.setLength(1);
         addProblem(problem);
     }
 
@@ -82,8 +81,15 @@ public class DefaultImpexModel implements ImpexModel {
 
     @Override
     public void addMacroValue(final String macrodefText, final Token macroDefiniton, final MacroValueContext macroValue) {
+        addNavigableMapValue(macros, macrodefText, Integer.valueOf(macroDefiniton.getStartIndex()), macroValue.getText());
+    }
 
-        addListValue(macros, macrodefText, macroValue);
+    public String getMacroValue(final String name, final int index) {
+        final NavigableMap<Integer, String> map = macros.get(name);
+        if (map == null) {
+            return null;
+        }
+        return map.get(map.floorKey(index));
     }
 
     @Override
@@ -118,20 +124,21 @@ public class DefaultImpexModel implements ImpexModel {
         }
     }
 
-    private <Key, Value> void addListValue(final Map<Key, List<Value>> map, final Key key, final Value value) {
-        List<Value> values = map.get(key);
-        if (values == null) {
-            values = new ArrayList<>();
-            map.put(key, values);
-        }
-        values.add(value);
-    }
-
     private <Key, ValueKey, Value> void addMapValue(final Map<Key, Map<ValueKey, Value>> map, final Key key, final ValueKey valueKey,
             final Value value) {
         Map<ValueKey, Value> values = map.get(key);
         if (values == null) {
             values = new HashMap<>();
+            map.put(key, values);
+        }
+        values.put(valueKey, value);
+    }
+
+    private <Key, ValueKey, Value> void addNavigableMapValue(final Map<Key, NavigableMap<ValueKey, Value>> map, final Key key,
+            final ValueKey valueKey, final Value value) {
+        NavigableMap<ValueKey, Value> values = map.get(key);
+        if (values == null) {
+            values = new TreeMap<>();
             map.put(key, values);
         }
         values.put(valueKey, value);
@@ -151,32 +158,6 @@ public class DefaultImpexModel implements ImpexModel {
         return problems;
     }
 
-    //    private String getMacroValue(final String macroDef, final int refLine) {
-    //        final List<SimpleImmutableEntry<Integer, String>> list = macros.get(macroDef);
-    //        if (list == null) {
-    //            final ImpexProblem error = new ImpexProblem(Type.UnknownMacro);
-    //            error.setLineNumber(refLine);
-    //            error.setLength(macroDef.length());
-    //            problems.add(error);
-    //            return macroDef;
-    //        }
-    //
-    //        for (int i = list.size() - 1; i >= 0; --i) {
-    //            final SimpleImmutableEntry<Integer, String> entry = list.get(i);
-    //            if (entry.getKey().intValue() < refLine) {
-    //                String val = entry.getValue();
-    //                final Matcher m = macroPattern.matcher(val);
-    //                while (m.find()) {
-    //                    final String nestedMacroDef = m.group();
-    //                    final String nestedVal = getMacroValue(nestedMacroDef, entry.getKey());
-    //                    val = m.replaceFirst(nestedVal);
-    //                }
-    //                return val;
-    //            }
-    //        }
-    //        return macroDef;
-    //    }
-
     public Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
         //        return macros;
         return null;
@@ -189,7 +170,6 @@ public class DefaultImpexModel implements ImpexModel {
         offset2Type.clear();
         docIDRef2Type.clear();
         docIDDef2Type.clear();
-
     }
 
     @Override
