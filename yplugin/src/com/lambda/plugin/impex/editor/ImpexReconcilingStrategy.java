@@ -48,6 +48,9 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
         try {
             System.err.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
                     + "##################");
+            if (YPlugin.getDefault().getDefaultPlatform() == null) {
+                return;
+            }
             ImpexDocument impexDocument = (ImpexDocument) document;
             impexDocument.validate();
             List<ImpexProblem> problems = impexDocument.getModel().getProblems();

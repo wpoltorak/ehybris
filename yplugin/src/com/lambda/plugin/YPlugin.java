@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
@@ -31,10 +30,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.packageadmin.PackageAdmin;
 
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.PlatformContainer;
@@ -44,9 +40,6 @@ import com.lambda.plugin.nature.IYNatureManager;
 import com.lambda.plugin.nature.YNatureManager;
 import com.lambda.plugin.template.ITemplateManager;
 import com.lambda.plugin.template.TemplateManager;
-import com.lambda.plugin.yunit.IYUnitManager;
-import com.lambda.plugin.yunit.YUnitManager;
-import com.lambda.plugin.yunit.YUnitModel;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -59,10 +52,6 @@ public class YPlugin extends AbstractUIPlugin {
 
     public static final String LOGGER_NAME = "lambda";
 
-    private YUnitManager functestManager;
-
-    private final YUnitModel functestModel = new YUnitModel();
-
     // The shared instance
     private static YPlugin plugin;
     private static Object fPlatformTypeLock = new Object();
@@ -70,8 +59,6 @@ public class YPlugin extends AbstractUIPlugin {
     // private ImageDescriptorRegistry imageDescriptorRegistry;
 
     private TemplateManager templateManager;
-
-    private BundleContext fBundleContext;
 
     private IPreferenceStore fCombinedPreferenceStore;
 
@@ -96,8 +83,6 @@ public class YPlugin extends AbstractUIPlugin {
     public void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        ((YUnitManager) getFunctestManager()).initialize();
-        functestModel.start();
         problemsPropertyChangeListener = new ProblemsPropertyChangeListener(getPreferenceStore());
         getPreferenceStore().addPropertyChangeListener(problemsPropertyChangeListener);
 
@@ -111,8 +96,6 @@ public class YPlugin extends AbstractUIPlugin {
     @Override
     public void stop(final BundleContext context) throws Exception {
         try {
-            functestModel.stop();
-            ((YUnitManager) getFunctestManager()).dispose();
             getPlatformContainer().dispose();
             ColorManager.getDefault().dispose();
             getPreferenceStore().removePropertyChangeListener(problemsPropertyChangeListener);
@@ -139,22 +122,11 @@ public class YPlugin extends AbstractUIPlugin {
         return window.getActivePage();
     }
 
-    public static YUnitModel getModel() {
-        return getDefault().functestModel;
-    }
-
     public IYNatureManager getNatureManager() {
         if (natureManager == null) {
             natureManager = new YNatureManager();
         }
         return natureManager;
-    }
-
-    public IYUnitManager getFunctestManager() {
-        if (functestManager == null) {
-            functestManager = new YUnitManager();
-        }
-        return functestManager;
     }
 
     public static File getHistoryDirectory() throws IllegalStateException {
@@ -298,30 +270,6 @@ public class YPlugin extends AbstractUIPlugin {
     @Override
     public IPreferenceStore getPreferenceStore() {
         return super.getPreferenceStore();
-    }
-
-    public Bundle getBundle(final String bundleName) {
-        final Bundle[] bundles = getBundles(bundleName, null);
-        if (bundles != null && bundles.length > 0) {
-            return bundles[0];
-        }
-        return null;
-    }
-
-    public Bundle[] getBundles(final String bundleName, final String version) {
-        Bundle[] bundles = Platform.getBundles(bundleName, version);
-        if (bundles != null) {
-            return bundles;
-        }
-
-        // Accessing unresolved bundle
-        final ServiceReference serviceRef = fBundleContext.getServiceReference(PackageAdmin.class.getName());
-        final PackageAdmin admin = (PackageAdmin) fBundleContext.getService(serviceRef);
-        bundles = admin.getBundles(bundleName, version);
-        if (bundles != null && bundles.length > 0) {
-            return bundles;
-        }
-        return null;
     }
 
     @Deprecated

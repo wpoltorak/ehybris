@@ -48,8 +48,11 @@ public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
             if (token == null || token.getLength() == 0) {
                 return null;
             }
-            IJavaElement element;
             ImpexModel model = document.getModel();
+            if (model == null) {
+                return null;
+            }
+            IJavaElement element;
             long modStamp = documentProvider.getModificationStamp(editorInput);
             if (model.equals(lastModel) && modStamp == lastModStamp && token.equals(lastWordRegion)) {
                 element = lastElement;

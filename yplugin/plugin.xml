@@ -26,23 +26,6 @@
       </wizard>
    </extension>
    <extension
-         id="com.lambda.plugin.views"
-         point="org.eclipse.ui.views">
-      <category
-            id="com.lambda.plugin"
-            name="%category.name.0">
-      </category>
-      <view
-            allowMultiple="false"
-            category="com.lambda.plugin"
-            class="com.lambda.plugin.yunit.view.YUnitView"
-            icon="icons/etool16/functest.png"
-            id="com.lambda.plugin.yunit.view"
-            name="%view.name"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.popupMenus">
       <objectContribution
             adaptable="true"
@@ -77,18 +60,6 @@
       </category>
       <wizard
             category="com.lambda.plugin.wizard"
-            class="com.lambda.plugin.yunit.wizard.NewYUnitProjectWizard"
-            hasPages="true"
-            icon="icons/etool16/newfunctest_wiz.png"
-            id="com.lambda.plugin.yunit.wizard.NewFunctestProjectWizard"
-            name="%wizard.name.0"
-            project="true">
-         <description>
-            %wizard.description
-         </description>
-      </wizard>
-      <wizard
-            category="com.lambda.plugin.wizard"
             class="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
             hasPages="true"
             icon="icons/etool16/newfunctest_wiz.png"
@@ -121,18 +92,6 @@
             %wizard.description.2
          </description>
       </wizard>
-   </extension>
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.jdt.ui.JavaPerspective">
-         <view
-               id="com.lambda.plugin.yunit.view"
-               ratio="0.5"
-               relationship="right"
-               relative="org.eclipse.jdt.junit.ResultView">
-         </view>
-      </perspectiveExtension>
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
@@ -179,12 +138,6 @@
             name="%page.name.0">
       </page>
       <page
-            category="com.lambda.plugin.preferences.YPreferencePage"
-            class="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
-            id="com.lambda.plugin.yunit.preferences.YUnitPreferencePage"
-            name="%page.name.1">
-      </page>
-      <page
             category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
             class="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
             id="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
@@ -214,6 +167,7 @@
             class="com.lambda.plugin.impex.preferences.PreferenceInitializer">
       </initializer>
    </extension>
+   <!-- to support Java actions like Open Type from impex editor -->
    <extension
          point="org.eclipse.ui.actionSetPartAssociations">
       <actionSetPartAssociation
@@ -223,95 +177,6 @@
          </part>
       </actionSetPartAssociation>
    </extension>
-   <extension
-         point="org.eclipse.debug.ui.launchShortcuts">
-      <shortcut
-            class="com.lambda.plugin.yunit.launcher.YUnitLaunchShortcut"
-            icon="icons/etool16/run_functest.png"
-            id="com.lambda.plugin.yunit.launch.shortcut"
-            label="%shortcut.label"
-            modes="run,debug">
-         <contextualLaunch>
-            <enablement>
-               <with
-                     variable="selection">
-                  <count
-                        value="+">
-                  </count>
-                  <iterate>
-                     <adapt
-                           type="org.eclipse.jdt.core.IJavaElement">
-                        <test property="org.eclipse.jdt.core.isInJavaProject"/>
-		                <test property="org.eclipse.jdt.core.hasTypeOnClasspath" value="junit.framework.Test"/>
-                  <test
-                        forcePluginActivation="true"
-                        property="com.lambda.plugin.yunit.canLaunchAsYUnit">
-                  </test>
-                     </adapt>
-                  </iterate>
-               </with>
-            </enablement>
-          </contextualLaunch>
-          <configurationType
-               id="com.lambda.plugin.yunit.launchconfig">
-         </configurationType>
-      </shortcut>
-   </extension>
-      <extension
-         point="org.eclipse.debug.core.launchConfigurationTypes">
-      <launchConfigurationType
-            delegate="com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationDelegate"
-            delegateDescription="%launchConfigurationType.delegateDescription"
-            delegateName="%launchConfigurationType.delegateName"
-            id="com.lambda.plugin.yunit.launchconfig"
-            modes="run, debug"
-            name="%launchConfigurationType.name"
-            public="true"
-            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector">
-      </launchConfigurationType>
-   </extension>
-      <extension
-            point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-         <launchConfigurationTabGroup
-               class="com.lambda.plugin.yunit.launcher.YUnitLaunchConfigurationTabGroup"
-               id="com.lambda.plugin.yunit.launchgroup"
-               type="com.lambda.plugin.yunit.launchconfig">
-            <launchMode
-                  description="%launchMode.description"
-                  mode="run">
-            </launchMode>
-            <launchMode
-                  description="%launchMode.description.0"
-                  mode="debug"
-                  perspective="org.eclipse.debug.ui.DebugPerspective">
-            </launchMode>
-         </launchConfigurationTabGroup>
-      </extension>
-      <extension
-            point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-         <launchConfigurationTypeImage
-               configTypeID="com.lambda.plugin.yunit.launchconfig"
-               icon="icons/etool16/run_functest.png"
-               id="com.lambda.plugin.yunit.launchconfigimage">
-         </launchConfigurationTypeImage>
-      </extension>
-      <extension
-            point="org.eclipse.jdt.launching.classpathProviders">
-         <classpathProvider
-               class="com.lambda.plugin.yunit.YUnitClasspathProvider"
-               id="com.lambda.plugin.yunit.FunctestClasspathProvider">
-         </classpathProvider>
-      </extension>
-      <extension
-            point="org.eclipse.core.expressions.propertyTesters">
-         <propertyTester
-               class="com.lambda.plugin.yunit.YUnitPropertyTester"
-               id="com.lambda.plugin.yunit.FunctestLaunchPropertyTester"
-               namespace="com.lambda.plugin.functest"
-               properties="isFunctest,canLaunchAsFunctest"
-               type="org.eclipse.core.runtime.IAdaptable">
-         </propertyTester>
-      </extension>
       <extension
             point="org.eclipse.ui.bindings">
             <sequenceModifier
@@ -319,18 +184,6 @@
                   platforms="cocoa,carbon"
                   replace="M2+M3">
             </sequenceModifier>
-         <key
-               commandId="com.lambda.plugin.yunit.launch.shortcut.run"
-               contextId="org.eclipse.ui.contexts.window"
-               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M2+M3+X F">
-         </key>
-         <key
-               commandId="com.lambda.plugin.yunit.launch.shortcut.debug"
-               contextId="org.eclipse.ui.contexts.window"
-               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-               sequence="M2+M3+D F">
-         </key>
          <key
                commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
                contextId="org.eclipse.ui.contexts.window"
@@ -346,51 +199,6 @@
       </extension>
       <extension
             point="org.eclipse.ui.commands">
-         <command
-               categoryId="org.eclipse.debug.ui.category.run"
-               description="%command.description"
-               id="com.lambda.plugin.yunit.launch.shortcut.run"
-               name="%command.name">
-         </command>
-         <command
-               categoryId="org.eclipse.debug.ui.category.run"
-               description="%command.description.0"
-               id="com.lambda.plugin.yunit.launch.shortcut.debug"
-               name="%command.name.0">
-         </command>
-         <command
-            name="%command.name.1"
-            description="%command.description.1"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="com.lambda.plugin.yunit.launch.shortcut.rerunLast">
-         </command>
-         <command
-            name="%command.name.2"
-            description="%command.description.2"
-            categoryId="org.eclipse.debug.ui.category.run"
-            id="com.lambda.plugin.yunit.launch.shortcut.rerunFailed">
-         </command>
-         <command
-               categoryId="com.lambda.plugin"
-               defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="%command.description.3"
-               id="com.lambda.plugin.yunit.RunFunctestStaging"
-               name="%command.name.3">
-         </command>    
-         <command
-               categoryId="com.lambda.plugin"
-               defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="%command.description.4"
-               id="com.lambda.plugin.yunit.RunFunctestProduction"
-               name="%command.name.4">
-         </command>
-         <command
-               categoryId="com.lambda.plugin"
-               defaultHandler="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               description="%command.description.5"
-               id="com.lambda.plugin.yunit.RunFunctestLocal"
-               name="%command.name.5">
-         </command>
          <command
                categoryId="org.eclipse.ui.category.textEditor"
                defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
@@ -412,21 +220,6 @@
       <extension
             point="org.eclipse.ui.commandImages">
          <image
-               commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-               disabledIcon="icons/dlcl16/run_prod.png"
-               icon="icons/elcl16/run_prod.png">
-         </image>
-         <image
-               commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-               disabledIcon="icons/dlcl16/run_tst.png"
-               icon="icons/elcl16/run_tst.png">
-         </image>
-         <image
-               commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-               disabledIcon="icons/dlcl16/run_dev.png"
-               icon="icons/elcl16/run_dev.png">
-         </image>
-         <image
                commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
                disabledIcon="icons/dlcl16/mark_occurrences.gif"
                icon="icons/elcl16/mark_occurrences.gif">
@@ -434,37 +227,6 @@
       </extension>
       <extension
             point="org.eclipse.ui.menus">
-            
-         <menuContribution
-               locationURI="toolbar:org.eclipse.ui.main.toolbar">
-            <toolbar
-                  id="com.lambda.plugin.yunit.toolbar">
-               <command
-                     commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                     disabledIcon="icons/dlcl16/run_dev.png"
-                     icon="icons/elcl16/run_dev.png"
-                     label="%command.label"
-                     style="push"
-                     tooltip="%command.tooltip">
-               </command>
-               <command
-                     commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                     disabledIcon="icons/dlcl16/run_tst.png"
-                     icon="icons/elcl16/run_tst.png"
-                     label="%command.label.0"
-                     style="push"
-                     tooltip="%command.tooltip.0">
-               </command>
-               <command
-                     commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                     disabledIcon="icons/dlcl16/run_prod.png"
-                     icon="icons/elcl16/run_prod.png"
-                     label="%command.label.1"
-                     style="push"
-                     tooltip="%command.tooltip.1">
-               </command>
-            </toolbar>
-         </menuContribution>
          <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
         	<menu
@@ -473,90 +235,9 @@
                tooltip="%menu.tooltip">
          	</menu>
       	 </menuContribution>
-         <menuContribution
-               locationURI="menu:com.lambda.plugin.menu">
-            <separator
-                  name="com.lambda.plugin.yunit.menu.separator1"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="com.lambda.plugin.yunit.RunFunctestLocal"
-                  disabledIcon="icons/dlcl16/run_dev.png"
-                  icon="icons/elcl16/run_dev.png"
-                  label="%command.label.2"
-                  style="push"
-                  tooltip="%command.tooltip.2">
-            </command>
-            <command
-                  commandId="com.lambda.plugin.yunit.RunFunctestStaging"
-                  disabledIcon="icons/dlcl16/run_tst.png"
-                  icon="icons/elcl16/run_tst.png"
-                  label="%command.label.3"
-                  style="push"
-                  tooltip="%command.tooltip.3">
-            </command>
-            <command
-                  commandId="com.lambda.plugin.yunit.RunFunctestProduction"
-                  disabledIcon="icons/dlcl16/run_prod.png"
-                  icon="icons/elcl16/run_prod.png"
-                  label="%command.label.4"
-                  style="push"
-                  tooltip="%command.tooltip.4">
-            </command>
-         </menuContribution>
       </extension>
       <extension
             point="org.eclipse.ui.handlers">
-         <handler
-               class="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               commandId="com.lambda.plugin.yunit.RunFunctestLocal">
-            <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <or>
-                     <equals
-                           value="org.eclipse.jdt.ui.JavaPerspective">
-                     </equals>
-                     <equals
-                           value="org.eclipse.debug.ui.DebugPerspective">
-                     </equals>
-                  </or>
-               </with></activeWhen>
-         </handler>
-         
-         <handler
-               class="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               commandId="com.lambda.plugin.yunit.RunFunctestStaging">
-            <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <or>
-                     <equals
-                           value="org.eclipse.jdt.ui.JavaPerspective">
-                     </equals>
-                     <equals
-                           value="org.eclipse.debug.ui.DebugPerspective">
-                     </equals></or>
-               </with>
-            </activeWhen>
-         </handler>
-         <handler
-               class="com.lambda.plugin.yunit.actions.RunFunctestsAction"
-               commandId="com.lambda.plugin.yunit.RunFunctestProduction">
-            <activeWhen>
-               <with
-                     variable="activeWorkbenchWindow.activePerspective">
-                  <or>
-                     <equals
-                           value="org.eclipse.jdt.ui.JavaPerspective">
-                     </equals>
-                     <equals
-                           value="org.eclipse.debug.ui.DebugPerspective">
-                     </equals>
-                  </or>
-               </with>
-            </activeWhen>
-         </handler>
          <handler
                class="com.lambda.plugin.impex.editor.actions.ToggleLineCommentAction"
                commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment">
@@ -568,28 +249,6 @@
          </handler>
          
       </extension>
- <!--     <extension
-            point="org.eclipse.ui.propertyPages">
-         <page
-               class="com.lambda.plugin.yunit.properties.YUnitPropertyPage"
-               id="com.lambda.plugin.yunit.properties.samplePropertyPage"
-               name="Functional Tests"
-               nameFilter="*"
-               objectClass="org.eclipse.jdt.core.IJavaProject">
-            <enabledWhen>
-               <and>
-                  <test
-                        property="projectNature"
-                        value="com.lambda.ynature">
-                  </test>
-                  <adapt
-                        type="org.eclipse.core.resources.IProject">
-                  </adapt>
-               </and>
-            </enabledWhen>
-         </page>
-      </extension>
--->      
       <extension
             point="org.eclipse.ui.editors">
          <editor
@@ -604,17 +263,6 @@
             </contentTypeBinding>
          </editor>
       </extension>
-<!--
-      <extension
-            id="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
-            name="com.lambda.plugin.impex.ImpexAnnotationModelFactory"
-            point="org.eclipse.core.filebuffers.annotationModelCreation">
-         <factory
-               class="com.lambda.plugin.impex.editor.ImpexAnnotationModelFactory"
-               extensions="impex">
-         </factory>
-      </extension>
--->
       <extension
             point="org.eclipse.core.expressions.definitions">
          <definition
@@ -644,6 +292,7 @@
           priority="normal">
     </content-type>
  </extension>
+ <!-- impex Type hyperlink detectors -->
  <extension
        point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
     <hyperlinkDetector
@@ -664,5 +313,4 @@
        </context>
     </target>
  </extension>
-
 </plugin>
