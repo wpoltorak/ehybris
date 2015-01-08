@@ -123,17 +123,23 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterAttribute(final AttributeContext ctx) {
         columnIndex++;
-        if (ctx.macroref() != null) {
-            //            final String text = resolveMacroreferences(ctx.children);
-            //            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
-            //            lexer.removeErrorListeners();
-            //            lexer._mode = ImpexLexer.attribute;
-            //            final CommonTokenStream tokens = new CommonTokenStream(lexer);
-            //            final ImpexParser parser = new ImpexParser(tokens);
-            //            parser.removeErrorListeners();
-            //            final AttributeContext attribute = parser.attribute();
-
-        }
+        //        if (ctx.macroref() != null) {
+        //            final String text = resolveMacroreferences(ctx.children);
+        //            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
+        //            lexer.removeErrorListeners();
+        //            lexer._mode = ImpexLexer.attribute;
+        //            final CommonTokenStream tokens = new CommonTokenStream(lexer);
+        //            final ImpexParser parser = new ImpexParser(tokens);
+        //            parser.removeErrorListeners();
+        //            final AttributeContext attribute = parser.attribute();
+        //            final DefaultImpexModel model = new DefaultImpexModel();
+        //            final ImpexParserDefaultListener listener = new ImpexParserDefaultListener(model);
+        //            final ParseTreeWalker walker = new ParseTreeWalker();
+        //            walker.walk(listener, attribute);
+        //            if (model.hasProblems()) {
+        //                System.out.println();
+        //            }
+        //        }
     }
 
     @Override
