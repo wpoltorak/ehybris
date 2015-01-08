@@ -1,0 +1,53 @@
+lexer grammar CommonLexer;
+
+tokens {
+    Macroref
+}
+
+fragment A          : [Aa]LineSeparator*;
+fragment B          : [Bb]LineSeparator*;
+fragment C          : [Cc]LineSeparator*;
+fragment D          : [Dd]LineSeparator*;
+fragment E          : [Ee]LineSeparator*;
+fragment F          : [Ff]LineSeparator*;
+fragment G          : [Gg]LineSeparator*;
+fragment H          : [Hh]LineSeparator*;
+fragment I          : [Ii]LineSeparator*;
+fragment J          : [Jj]LineSeparator*;
+fragment K          : [Kk]LineSeparator*;
+fragment L          : [Ll]LineSeparator*;
+fragment M          : [Mm]LineSeparator*;
+fragment N          : [Nn]LineSeparator*;
+fragment O          : [Oo]LineSeparator*;
+fragment P          : [Pp]LineSeparator*;
+fragment Q          : [Qq]LineSeparator*;
+fragment R          : [Rr]LineSeparator*;
+fragment S          : [Ss]LineSeparator*;
+fragment T          : [Tt]LineSeparator*;
+fragment U          : [Uu]LineSeparator*;
+fragment V          : [Vv]LineSeparator*;
+fragment W          : [Ww]LineSeparator*;
+fragment X          : [Xx]LineSeparator*;
+fragment Y          : [Yy]LineSeparator*;
+fragment Z          : [Zz]LineSeparator*;
+fragment DASH       : [-]LineSeparator*;
+fragment UNDERSCORE : [_]LineSeparator*;
+fragment TWO        : [2]LineSeparator*;
+
+Comma               : ',';
+Dot                 : '.';
+DoubleQuote         : '"';
+Quote               : '\'';
+LParenthesis        : '(';
+RParenthesis        : ')';
+Equals              : '=';
+Or                  : '|';
+LineSeparator       : '\\' Ws* Lb -> channel(HIDDEN);
+
+Separator           : ';';
+
+Identifier          : [a-zA-Z_](LineSeparator* [a-zA-Z0-9_])*;
+fragment Macro            : '$' LineSeparator* Identifier;
+ 
+Lb                  : ('\r'?'\n'|'\r') -> channel(HIDDEN);
+Ws                  : [ \t] -> channel(HIDDEN);

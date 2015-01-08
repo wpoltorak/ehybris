@@ -1,0 +1,192 @@
+lexer grammar AttributeLexer;
+import CommonLexer;
+
+tokens {
+    Mode,
+    Type,
+    BooleanAttributeModifier,
+    IntAttributeModifier,
+    DateFormatAttributeModifier,
+    NumberFormatAttributeModifier,
+    ClassAttributeModifier,
+    TextAttributeModifier,
+    BooleanHeaderModifier,
+    ClassHeaderModifier,
+    TextHeaderModifier,
+    UnknownModifier
+}
+@header{
+import java.util.*;
+}
+@members{
+	static final int COLUMN_EMPTY = 0;
+	static final int COLUMN_DOCUMENT_ID = 1;
+	static final int COLUMN_DOCUMENT_ID_REF = 2;
+	static final int COLUMN_DEFAULT = 3;
+	 
+	/* last type from non Token.HIDDEN_CHANNEL token */
+    int lastTokenType = 0;
+    boolean insideQuotedAttribute = false;
+    List<Integer> columnTypes = null;
+    int columnIndex = -1;
+    boolean isDocumentIdReference;
+    
+    public void emit(Token token) {
+    	super.emit(token);
+    
+	    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
+	        return;
+	    }
+    
+	    lastTokenType = token.getType();
+	    
+	    if (_mode == attribute && lastTokenType == DoubleQuote) {
+	        insideQuotedAttribute = !insideQuotedAttribute;
+	        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+	    }
+    }
+  
+      @Override
+    public void mode(final int m) {
+        super.mode(m);
+        if ( LexerATNSimulator.debug ) System.out.println("Enter mode: " + getModeNames()[m]);
+    }
+    
+    @Override
+    public void pushMode(int m) {
+        if (m == type) {
+        	columnTypes = new ArrayList<>();
+        } else if (m == record){
+    		columnIndex = -1;
+    	} else if (m == field){
+    		columnIndex++;
+    	} else if (m == attribute) {
+    		isDocumentIdReference = false;
+    	}
+    	super.pushMode(m);
+    }
+
+    @Override
+    public int popMode() {
+        if (_mode == attribute) {
+        	if (lastTokenType == Separator){
+        		columnTypes.add(COLUMN_EMPTY); // empty attribute
+        		if ( LexerATNSimulator.debug ) System.out.println("empty attribute");
+        	} else if (lastTokenType == DocumentID){
+        		columnTypes.add(COLUMN_DOCUMENT_ID); // docid
+        		if ( LexerATNSimulator.debug ) System.out.println("docid def attribute");
+        	} else if (isDocumentIdReference) {
+        		columnTypes.add(COLUMN_DOCUMENT_ID_REF); // docid ref
+        		if ( LexerATNSimulator.debug ) System.out.println("docid ref attribute");
+        	} else {
+        		columnTypes.add(COLUMN_DEFAULT); // default
+        		if ( LexerATNSimulator.debug ) System.out.println("default attribute");
+        	}
+        }
+    	if ( LexerATNSimulator.debug ) System.out.println("attribute pop mode");
+        return super.popMode();
+    }
+    
+    private void handleDocumentId() {
+    	setType(DocumentID);
+    	isDocumentIdReference = lastTokenType == LParenthesis;
+    }
+}
+
+//Modes
+Insert              : I N S E R T -> pushMode(type), type(Mode);
+InsertUpdate        : I N S E R T UNDERSCORE U P D A T E -> pushMode(type), type(Mode);
+Update              : U P D A T E -> pushMode(type), type(Mode);
+Remove              : R E M O V E -> pushMode(type), type(Mode);
+
+fragment DocumentIDQualifier : [a-zA-Z0-9_\\-\\.](LineSeparator* [a-zA-Z0-9_\\-\\.])*;
+DocumentID          : '&' LineSeparator* Identifier;
+SpecialAttribute    : '@' LineSeparator* Identifier;
+Macrodef            : Macro -> pushMode(macro); 
+
+Error               : .;
+
+mode type;
+TSeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
+TDoubleQuote        : DoubleQuote -> type(DoubleQuote);
+TQuote              : Quote -> type(Quote);
+LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
+TLb                 : Lb -> type(Lb), popMode, pushMode(record);
+TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
+TIdentifier         : Identifier -> type(Type);
+TMacroref           : Macrodef -> type(Macroref);
+TWs                 : Ws -> type(Ws), channel(HIDDEN);
+
+mode attribute;
+AComma              : Comma -> type(Comma);
+ASeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
+ADot                : Dot -> type(Dot);
+ADoubleQuote        : DoubleQuote -> type(DoubleQuote);
+AQuote              : Quote -> type(Quote);
+ABracket            : '[' -> pushMode(modifier), channel(HIDDEN);
+ALParenthesis       : LParenthesis -> type(LParenthesis);
+ARParenthesis       : RParenthesis -> type(RParenthesis);
+AEquals             : Equals -> type(Equals);
+AOr                 : Or -> type(Or);
+AHiddenLb           : Lb {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
+ALb                 : Lb -> type(Lb), popMode, pushMode(record);
+ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
+AIdentifier         : Identifier -> type(Identifier);
+ASpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
+ADocumentID         : DocumentID {handleDocumentId();};
+AMacroref           : Macrodef -> type(Macroref);
+AWs                 : Ws -> type(Ws), channel(HIDDEN);
+
+
+mode modifier;
+//Type modifiers
+BatchMode           : B A T C H M O D E -> type(BooleanHeaderModifier);
+CacheUnique         : C A C H E U N I Q U E -> type(BooleanHeaderModifier);
+Processor           : P R O C E S S O R -> type(ClassHeaderModifier);
+//Argument modifiers
+Alias               : A L I A S -> type(TextAttributeModifier);
+AllowNull           : A L L O W N U L L -> type(BooleanAttributeModifier);
+CellDecorator       : C E L L D E C O R A T O R -> type(ClassAttributeModifier);
+CollectionDelimiter : C O L L E C T I O N DASH D E L I M I T E R -> type(TextAttributeModifier);
+Dateformat          : D A T E F O R M A T -> type(DateFormatAttributeModifier);
+Default             : D E F A U L T -> type(TextAttributeModifier);
+ForceWrite          : F O R C E W R I T E -> type(BooleanAttributeModifier);
+IgnoreKeyCase       : I G N O R E K E Y C A S E -> type(BooleanAttributeModifier);
+IgnoreNull          : I G N O R E N U L L -> type(BooleanAttributeModifier);
+KeyToValueDelimiter : K E Y TWO V A L U E DASH D E L I M I T E R -> type(TextAttributeModifier);
+Lang                : L A N G -> type(TextAttributeModifier);
+MapDelimiter        : M A P DASH D E L I M I T E R -> type(TextAttributeModifier);
+Mode                : M O D E -> type(TextAttributeModifier);
+NumberFormat        : N U M B E R F O R M A T -> type(NumberFormatAttributeModifier);
+PathDelimiter       : P A T H DASH D E L I M I T E R -> type(TextAttributeModifier);
+Pos                 : P O S -> type(IntAttributeModifier);
+Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
+Unique              : U N I Q U E -> type(BooleanAttributeModifier);
+Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
+
+ModifierBracket    : ']' -> popMode, channel(HIDDEN);
+ModifierLb				: Lb+ {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
+ModifierEquals          : '=' -> pushMode(modifierval), type(Equals);
+ModifierComma			: Comma -> type(Comma), channel(HIDDEN);
+ModifierLineSeparator   : LineSeparator -> type(LineSeparator), channel(HIDDEN);
+ModifierWs              : Ws -> type(Ws), channel(HIDDEN);
+ModifierUnknown			: ~[\r\n\[\],;=] -> type(UnknownModifier);
+
+//ErrorModifierval    : ~[= \t]~[,\r\n\]] -> type(Modifierval);
+//ModifierComma       : Ws* Comma Ws* (LineSeparator Ws*)* -> type(Comma), channel(HIDDEN);
+
+mode modifierval;
+ModifiervalLb				: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
+ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')}? -> type(Ws), channel(HIDDEN);
+//ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
+ModifiervalBracket			: ']' -> popMode, popMode, channel(HIDDEN);
+ModifiervalSingleComma		: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
+//ModifiervalSingleComma	: Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
+ModifiervalComma			: Comma -> type(Comma), popMode, channel(HIDDEN);
+ModifiervalMacroref			: Macrodef -> type(Macroref);
+ModifiervalSeparator		: LineSeparator -> type(LineSeparator), channel(HIDDEN);
+ModifiervalDQuotes			: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
+ModifiervalDQuote			: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
+ModifiervalQuoted			: '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
+ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ $] ~[\r\n\[\],;\'$]* ~[\r\n\[\],;\'\t\\ $] -> type(Modifierval);
+Modifierval					: ~[\r\n\[\],;\'];

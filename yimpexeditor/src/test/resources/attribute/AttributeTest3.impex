@@ -1,0 +1,2 @@
+INSERT Address; &addrID ; Town; owner( Principal.uid | AbstractOrder.code )
+; addr1 ; Wroclaw ; andi 
