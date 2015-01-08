@@ -1,0 +1,54 @@
+# Import essential data for the Accelerator
+#
+# English Localisation
+# 
+
+$lang=en
+
+# Languages
+UPDATE Language;isocode[unique=true];name[lang=$lang]
+;en;"English"
+;de;"German"
+;ja;"Japanese"
+
+# Currencies
+UPDATE Currency;isocode[unique=true];name[lang=$lang]
+;GBP;"Pound"
+;EUR;"Euro"
+;USD;"US Dollar"
+
+# Titles
+UPDATE Title;code[unique=true];name[lang=$lang];order
+;mr;"Mr";1
+;mrs;"Mrs";2
+;ms;"Ms";3
+;miss;"Miss";4
+;dr;"Doctor";5
+;prof;"Professor";6
+;rev;"Reverend";7
+;other;"";999
+
+# Credit / Debit Cards
+UPDATE CreditCardType;code[unique=true];name[lang=$lang]
+;maestro;"Maestro"
+;visa;"Visa"
+;switch;"Switch"
+;mastercard_eurocard;"Mastercard/Eurocard"
+;amex;"American Express"
+;diners;"Diner's Club"
+;master;"Mastercard"
+
+# DistanceUnits for Storelocator 
+UPDATE DistanceUnit;code[unique=true];name[lang=$lang]
+;km;"km"
+;miles;"miles"
+
+# MediaFormats
+UPDATE MediaFormat;qualifier[unique=true];name[lang=$lang];
+;1200Wx1200H;"1200Wx1200H"
+;515Wx515H;"515Wx515H"
+;365Wx246H;"365Wx246H"
+;300Wx300H;"300Wx300H"
+;96Wx96H;"96Wx96H"
+;65Wx65H;"65Wx65H"
+;30Wx30H;"30Wx30H"

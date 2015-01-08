@@ -1,0 +1,56 @@
+# ImpEx for Importing Product Reviews
+ 
+# Macros / Replacement Parameter definitions
+
+$catalogVersion=catalogVersion(catalog(id[default='web']),version[default='live'])[unique=true,default='web:live'];
+ 
+# Language
+$lang=en
+ 
+#NOTE will fail if your local product ISBN numbers don't exist. 
+INSERT_UPDATE CustomerReview;product(code,$catalogVersion)[unique=true];user(uid)[unique=true];alias;approvalStatus(code);blocked;comment;headline;language(isocode);rating
+;9780195115888;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780195115888;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;1
+;9780195115888;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;1
+;9781426437366;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;2
+;9781426437366;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;2
+;9781426437366;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;2  
+;9781437865349;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;3
+;9781437865349;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;3
+;9781437865349;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9781892777942;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;4
+;9781892777942;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9781892777942;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;4                               
+;9783540049111;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;5
+;9783540049111;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;5
+;9783540049111;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;5  
+;9780595235100;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;5
+;9780595235100;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780595235100;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9780595209293;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;5
+;9780595209293;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;1
+;9780595209293;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9781438912615;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;5
+;9781438912615;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;2
+;9781438912615;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9780826402714;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;2
+;9780826402714;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780826402714;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9780470192245;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780470192245;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;2                                                                       
+;9780470192245;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9780595372942;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780595372942;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780595372942;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;2  
+;9780195115888;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780195115888;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780195115888;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;2  
+;9780595449705;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780595449705;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780595449705;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3  
+;9781587364624;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9781587364624;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9781587364624;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;1  
+;9780554645681;TestUser1@test.com;TestUser1;approved;false;Lorem ipsum dolor sit amet;Great Product;$lang;1
+;9780554645681;TestUser2@test.com;TestUser2;approved;false;Lorem ipsum dolor sit amet;Very Good Product;$lang;4
+;9780554645681;TestUser3@test.com;TestUser3;approved;false;Lorem ipsum dolor sit amet;Good Product;$lang;3                                                                                          

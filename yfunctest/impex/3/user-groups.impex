@@ -1,0 +1,18 @@
+#
+# Import Customers
+# 
+$regulargroup=regulargroup
+$customergroup=customergroup
+
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;customergroup
+
+# Customers
+INSERT_UPDATE Customer;uid[unique=true];title(code);name;description;sessionLanguage(isocode);sessionCurrency(isocode);groups(uid);passwordEncoding;password;&userId;defaultPaymentAddress(&addId);defaultShipmentAddress(&addId)
+
+# Customer addresses
+INSERT_UPDATE Address;&addId;owner(&userId)[unique=true];streetname[unique=true];postalcode[unique=true];duplicate[unique=true];town;country(isocode);billingAddress;contactAddress;shippingAddress;unloadingAddress;firstname;lastname;email;gender(code);middlename;phone1;title(code);url;company;fax;department
+
+INSERT_UPDATE SearchRestriction;"code[unique=true,allownull=true]";"name";"active";"query";"restrictedType(code)";"principal(uid)";"generate"
+#;"customer_events";"customer_events";"true";"{Pk} IN ( {{ select {e.Pk} from  { Event AS e JOIN CatalogVersion As cv ON {e.catalogVersion} = {cv.Pk} JOIN Catalog AS c ON {cv.catalog} = {c.PK} JOIN PointOfService AS p ON {e.pointOfService} = {p.Pk}} WHERE {c.id} = 'web' AND {cv.version} IN ('Online') AND {p.openCloseStatusInternal} in ({{select {ocsi.PK} from {OpenCloseStatus as ocsi} where {ocsi.code} in ('OPEN','CLOSING1')}})}} )";"Event";$customergroup;"false"

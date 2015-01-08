@@ -1,0 +1,19 @@
+#
+# Initial preferences
+# 
+
+INSERT_UPDATE WaterstonesPreference;code[unique=true]
+;fiction
+;businessandacademic
+;crime
+;sffantasyandhorror
+;travelandtravelwriting
+;kids
+;ebooksandelectronics
+;specialeditions
+;events
+;mindbodyandspirit
+;historyandpolitics
+;gifting
+;foodhobbiesandhome
+;biographyandnonfiction

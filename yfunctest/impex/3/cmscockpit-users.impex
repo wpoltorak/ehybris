@@ -1,0 +1,12 @@
+#
+# Import CMS Cockpit Users
+# 
+
+INSERT_UPDATE Employee;UID[unique=true];password;description;name;groups(uid)[mode=append];sessionLanguage(isocode);sessionCurrency(isocode)
+;cmsmanager;1234;CMS manager;CMS Manager;cmsmanagergroup;en;USD
+
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];writePrincipals(uid);
+;waterstonesContentCatalog;Online;cmsmanagergroup,cmsmanager;
+;waterstonesContentCatalog;Staged;cmsmanagergroup,cmsmanager;
+;web;Online;cmsmanagergroup,cmsmanager;
+;web;Staged;cmsmanagergroup,cmsmanager;

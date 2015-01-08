@@ -1,0 +1,49 @@
+#
+# Import Delivery Modes / Zones
+#
+
+# Currencies
+$ukCurrency=GBP
+$usCurrency=USD
+$europeCurrency=EUR
+
+# Waterstones Delivery Zones
+INSERT_UPDATE WaterstonesZone;code[unique=true];countries(isocode)
+;eur;ad,at,pt,be,es,fr,cy,cz,dk,ee,fo,fi,fr,de,gi,gr,hu,ie,it,lv,li,lu,pt,mt,mc,nl,no,pl,pt,sm,it,sk,si,es,se,ch,va
+;cx;il
+;uk;gb
+;row;an,ar,br,ag,aw,au,bs,bh,bb,bz,bj,bm,bw,vg,bn,cm,ca,ky,cl,cn,cx,cc,km,cr,dm,do,ec,fk,fj,gf,pf,gl,gd,gp,gy,hk,is,in,jm,jp,jo,ke,kw,mo,mg,my,mv,ml,mq,mu,mx,na,nc,nz,nf,om,ph,pn,pr,qa,re,as,sa,sn,sc,sg,sb,za,kr,lk,sh,lc,pm,vc,sr,tw,tz,th,tg,to,tt,tn,tc,ae,us,ve,ws,zm,zw,ba,bg,hr,ru
+
+INSERT_UPDATE WaterstonesZoneDeliveryMode;code[unique=true];net;immediateShipment;active[default=true]
+;R1;false;true;
+;R2;false;true;false
+;UC;false;true;
+;WF;false;false;
+;SM;false;true;	
+;IC;false;true;
+
+INSERT_UPDATE WaterstonesShopZoneDeliveryMode;code[unique=true];net;immediateShipment;active[default=true]
+;WW;false;true;
+
+#fixedCharge
+INSERT_UPDATE WaterstonesZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='uk'][unique=true];currency(isocode)[unique=true][default=$ukCurrency];value;minimum[unique=true][default=0,00];perUnitCharge;maxUnits[default=999]
+;R1;;;2,20;;0,55;
+;R2;;;0,99;;0,50;
+;UC;;;4,45;;0,50;
+;WF;;;0,00;;0,00;
+
+#fixedCharge
+INSERT_UPDATE WaterstonesShopZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='uk'][unique=true];currency(isocode)[unique=true][default=$ukCurrency];value;minimum[unique=true][default=0,00];perUnitCharge;maxUnits[default=999]
+;WW;;;0,00;;0,00;
+
+INSERT_UPDATE WaterstonesZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='eur'][unique=true];currency(isocode)[unique=true][default=$ukCurrency];value;minimum[unique=true][default=0,00];perUnitCharge;maxUnits[default=999]
+;SM;;;3,99;;0,99;
+;IC;;;16,99;;2,99;
+
+INSERT_UPDATE WaterstonesZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='row'][unique=true];currency(isocode)[unique=true][default=$ukCurrency];value;minimum[unique=true][default=0,00];perUnitCharge;maxUnits[default=999]
+;SM;;;4,99;;2,99;
+;IC;;;25,99;;5,49;
+
+INSERT_UPDATE WaterstonesZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='cx'][unique=true];currency(isocode)[unique=true][default=$ukCurrency];value;minimum[unique=true][default=0,00];perUnitCharge;maxUnits[default=999]
+;SM;;;3,99;;2,99;
+;IC;;;18,99;;3,49;

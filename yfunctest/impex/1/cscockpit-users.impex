@@ -1,0 +1,4 @@
+#
+# Import Sample CS Cockpit User
+# 
+INSERT_UPDATE Employee;UID[unique=true];password;description;name;groups(uid);sessionLanguage(isocode);sessionCurrency(isocode)

@@ -1,0 +1,38 @@
+# 
+# Import the Product Catalog and Classification Catalog
+#
+
+$productCatalog=waterstonesProductCatalog
+$classificationCatalog=WaterstonesClassification
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$languages=ja,en,de
+
+$waterstonesWebCatalog=web
+$webCatalogVersion=catalogversion(catalog(id[default=$waterstonesWebCatalog]),version[default='Staged'])[unique=true,default=$waterstonesWebCatalog:Staged]
+
+# Product catalog
+INSERT_UPDATE Catalog;id[unique=true]
+;$productCatalog
+;$waterstonesWebCatalog
+
+# Waterstones Classification catalog
+INSERT_UPDATE ClassificationSystem;id[unique=true]
+;$classificationCatalog
+
+# Product versions for product catalogs
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];active;languages(isoCode);readPrincipals(uid)
+;$productCatalog;Staged;false;$languages;employeegroup
+;$productCatalog;Online;true;$languages;employeegroup
+;$waterstonesWebCatalog;Staged;false;$languages;employeegroup
+;$waterstonesWebCatalog;Online;true;$languages;employeegroup
+
+# Insert Classifications System Version
+INSERT_UPDATE ClassificationSystemVersion;catalog(id)[unique=true];version[unique=true];active;inclPacking[virtual=true,default=true];inclDuty[virtual=true,default=true];inclFreight[virtual=true,default=true];inclAssurance[virtual=true,default=true]
+;$classificationCatalog;1.0;true
+
+# Create default tax row for all products in product catalog
+INSERT_UPDATE TaxRow;$catalogVersion;tax(code)[unique=true];pg(code)[unique=true];ug(code)[unique=true]
+;;uk-vat-full;uk-vat-full;uk-taxes
+;;uk-vat-half;uk-vat-half;uk-taxes
+;;uk-vat-quarter;uk-vat-quarter;uk-taxes
+;;uk-vat-none;uk-vat-none;uk-taxes

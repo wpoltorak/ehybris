@@ -1,0 +1,21 @@
+# 
+# Create the Waterstones BaseStore
+#
+
+$productCatalog=waterstonesProductCatalog
+$classificationCatalog=WaterstonesClassification
+$currencies=GBP,USD
+$net=false
+$storeUid=waterstones
+$defaultCurrency=GBP
+$languages=en,de
+$defaultLanguage=en
+$unitedKingdom=gb,gg,im,je
+$europeNotUK=ad,al,at,ba,be,bg,by,ch,cy,cz,de,dk,ee,es,fi,fo,fr,gi,gl,gr,hr,hu,ie,is,it,li,lt,lu,lv,mc,md,me,mk,mt,nl,no,pl,pt,ro,rs,ru,se,si,sk,sm,tr,ua,va
+$deliveryCountries=$unitedKingdom,$europeNotUK,us
+
+$waterstonesWebCatalog=web
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id);currencies(isocode);net;taxGroup(code);storelocatorDistanceUnit(code);defaultCurrency(isocode);languages(isocode);defaultLanguage(isocode);deliveryCountries(isocode);
+;$storeUid;$waterstonesWebCatalog,$productCatalog;$currencies;$net;uk-taxes;km;$defaultCurrency;$languages;$defaultLanguage;$deliveryCountries;

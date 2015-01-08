@@ -1,0 +1,318 @@
+#
+# Import the CMS content for the Waterstones site emails
+#
+$contentCatalog=waterstonesContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$wideContent=CMSImageComponent,BannerComponent
+$jarResourceCms=jar:uk.co.eclipsegroup.core.setup.CoreSystemSetup&/waterstonescore/import/cockpits/cmscockpit
+
+# Email page Template
+INSERT_UPDATE EmailPageTemplate;$contentCV[unique=true];uid[unique=true];name;active;frontendTemplateName;subject(code);htmlTemplate(code);restrictedPageTypes(code)
+;;CustomerRegistrationEmailTemplate;Customer Registration Email Template;true;customerRegistrationEmail;waterstones_Email_Customer_Registration_Subject;waterstones_Email_Customer_Registration_HTML;EmailPage
+;;ForgottenPasswordEmailTemplate;Forgotten Password Email Template;true;forgottenPasswordEmail;waterstones_Email_Forgotten_Password_Subject;waterstones_Email_Forgotten_Password_HTML;EmailPage
+;;OrderConfirmationEmailTemplate;Order Confirmation Email Template;true;orderConfirmationEmail;waterstones_Email_Order_Confirmation_Subject;waterstones_Email_Order_Confirmation_HTML;EmailPage
+;;SendWishlistEmailTemplate;Send Wishlist Email Template;true;sendWishlistEmail;waterstones_Email_Send_Wishlist_Subject;waterstones_Email_Send_Wishlist_HTML;EmailPage
+;;ShopClosingNotificationEmailTemplate;Shop Closing Notification Email Template;true;shopClosingNotificationEmail;waterstones_Email_ShopClosing_Notification_Subject;waterstones_Email_ShopClosing_Notification_HTML;EmailPage
+;;BackorderedOrderItemEmailTemplate;Backordered Order Item Email Template;true;backorderedOrderItemEmail;waterstones_Backordered_Order_Item_Subject;waterstones_Email_Backordered_Order_Item_HTML;EmailPage
+;;OrderDespatchEmailTemplate;Full Order despatch Email Template;true;orderDespatchEmail;waterstones_Email_Order_Despatch_Subject;waterstones_Email_Order_Despatch_HTML;EmailPage
+;;PartialOrderDespatchEmailTemplate;Partial Order despatch Email Template;true;partialOrderDespatchEmail;waterstones_Email_Partial_Order_Despatch_Subject;waterstones_Email_Partial_Order_Despatch_HTML;EmailPage
+;;DeliverToShopOrderDespatchEmailTemplate;Deliver to Shop Order despatch Email Template;true;deliverToShopOrderDespatchEmail;waterstones_Email_Deliver_To_Shop_Order_Despatch_Subject;waterstones_Email_Deliver_To_Shop_Order_Despatch_HTML;EmailPage
+;;ZeroPickEmailTemplate;Zero pick Email Template;true;zeroPickEmail;waterstones_Email_Zero_Pick_Subject;waterstones_Email_Zero_Pick_HTML;EmailPage
+;;SuggestReviewEmailTemplate;Suggest review Email Template;true;suggestReviewEmail;waterstones_Email_Suggest_Review_Subject;waterstones_Email_Suggest_Review_HTML;EmailPage
+;;OrderNotFulfilledEmailTemplate;Order not fulfilled Email Template;true;orderNotFulfilledEmail;waterstones_Email_Order_Not_Fulfilled_Subject;waterstones_Email_Order_Not_Fulfilled_HTML;EmailPage
+;;OrderCancellationEmailTemplate;Order cancellation Email Template;true;orderCancellationEmail;waterstones_Email_Order_Cancellation_Subject;waterstones_Email_Order_Cancellation_HTML;EmailPage
+;;UnsuccessfulOrderCancellationEmailTemplate;Unsuccessful Order cancellation Email Template;true;unsuccessfulOrderCancellationEmail;waterstones_Email_Unsuccessful_Order_Cancellation_Subject;waterstones_Email_Unsuccessful_Order_Cancellation_HTML;EmailPage
+;;PaymentFailedEmailTemplate;Payment Failed Email Template;true;paymentFailedEmail;waterstones_Email_Payment_Failed_Subject;waterstones_Email_Payment_Failed_HTML;EmailPage
+;;ClickAndCollectToUserItemEmailTemplate;Click and collect user notification Email Template;true;clickAndCollectUserEmail;waterstones_Email_Click_And_Collect_User_Subject;waterstones_Email_Click_And_Collect_User_HTML;EmailPage
+;;ClickAndCollectToShopItemEmailTemplate;Click and collect shop notification Email Template;true;clickAndCollectShopEmail;waterstones_Email_Click_And_Collect_Shop_Subject;waterstones_Email_Click_And_Collect_Shop_HTML;EmailPage
+;;ProductPageEmailTemplate;Product Page Notification Email Template;true;productPageEmail;waterstones_Email_Product_Page_Subject;waterstones_Email_Product_Page_HTML;EmailPage
+
+# Templates for CMS Cockpit Page Edit
+UPDATE EmailPageTemplate;$contentCV[unique=true];uid[unique=true];velocityTemplate[translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;;CustomerRegistrationEmailTemplate;$jarResourceCms/structure-view/structure_customerRegistrationEmailTemplate.vm
+;;ForgottenPasswordEmailTemplate;$jarResourceCms/structure-view/structure_forgottenPasswordEmailTemplate.vm
+;;OrderConfirmationEmailTemplate;$jarResourceCms/structure-view/structure_orderConfirmationEmailTemplate.vm
+;;SendWishlistEmailTemplate;$jarResourceCms/structure-view/structure_sendWishlistEmailTemplate.vm
+;;ShopClosingNotificationEmailTemplate;$jarResourceCms/structure-view/structure_shopClosingNotificationEmailTemplate.vm
+;;BackorderedOrderItemEmailTemplate;$jarResourceCms/structure-view/structure_backorderedOrderItemEmailTemplate.vm
+;;OrderDespatchEmailTemplate;$jarResourceCms/structure-view/structure_OrderDespatchEmailTemplate.vm
+;;PartialOrderDespatchEmailTemplate;$jarResourceCms/structure-view/structure_PartialOrderDespatchEmailTemplate.vm
+;;DeliverToShopOrderDespatchEmailTemplate;$jarResourceCms/structure-view/structure_DeliverToShopOrderDespatchEmailTemplate.vm
+;;ZeroPickEmailTemplate;$jarResourceCms/structure-view/structure_ZeroPickEmailTemplate.vm
+;;SuggestReviewEmailTemplate;$jarResourceCms/structure-view/structure_SuggestReviewEmailTemplate.vm
+;;OrderNotFulfilledEmailTemplate;$jarResourceCms/structure-view/structure_OrderNotFulfilledEmailTemplate.vm
+;;OrderCancellationEmailTemplate;$jarResourceCms/structure-view/structure_OrderCancellationEmailTemplate.vm
+;;PaymentFailedEmailTemplate;$jarResourceCms/structure-view/structure_PaymentFailedEmailTemplate.vm
+;;UnsuccessfulOrderCancellationEmailTemplate;$jarResourceCms/structure-view/structure_UnsuccessfulOrderCancellationEmailTemplate.vm
+;;ClickAndCollectToUserItemEmailTemplate;$jarResourceCms/structure-view/structure_ClickAndCollectEmailTemplate.vm
+;;ClickAndCollectToShopItemEmailTemplate;$jarResourceCms/structure-view/structure_ClickAndCollectEmailTemplate.vm
+;;ProductPageEmailTemplate;$jarResourceCms/structure-view/structure_productPageEmailTemplate.vm
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='CustomerRegistrationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ForgottenPasswordEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='OrderConfirmationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='SendWishlistEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ShopClosingNotificationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='BackorderedOrderItemEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='OrderDespatchEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='PartialOrderDespatchEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='DeliverToShopOrderDespatchEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ZeroPickEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='SuggestReviewEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='OrderNotFulfilledEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='OrderCancellationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='PaymentFailedEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='UnsuccessfulOrderCancellationEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+INSERT_UPDATE ContentSlotName;name[unique=true];template(uid,$contentCV)[unique=true][default='ProductPageEmailTemplate'];validComponentTypes(code)
+;SiteLogo;;CMSImageComponent,BannerComponent
+;TopContent;;$wideContent;
+;BottomContent;;$wideContent;
+
+# Create Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active
+;;EmailTopSlot;Default Email Top Slot;true
+;;EmailBottomSlot;Default Email Bottom Slot;true
+
+# Bind Content Slots to Email Page Templates
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='CustomerRegistrationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-CustomerRegistrationEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-CustomerRegistrationEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-CustomerRegistrationEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ForgottenPasswordEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-ForgottenPasswordEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-ForgottenPasswordEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-ForgottenPasswordEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='OrderConfirmationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-OrderConfirmationEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-OrderConfirmationEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-OrderConfirmationEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='SendWishlistEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-SendWishlistEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-SendWishlistEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-SendWishlistEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ShopClosingNotificationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-ShopClosingNotificationlistEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-ShopClosingNotificationlistEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-ShopClosingNotificationlistEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='BackorderedOrderItemEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-BackorderedOrderItemEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-BackorderedOrderItemEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-BackorderedOrderItemEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='OrderDespatchEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-OrderDespatchEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-OrderDespatchEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-OrderDespatchEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='PartialOrderDespatchEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-PartialOrderDespatchEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-PartialOrderDespatchEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-PartialOrderDespatchEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='DeliverToShopOrderDespatchEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-DeliverToShopOrderDespatchEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-DeliverToShopOrderDespatchEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-DeliverToShopOrderDespatchEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ZeroPickEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-ZeroPickEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-ZeroPickEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-ZeroPickEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='SuggestReviewEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-SuggestReviewEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-SuggestReviewEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-SuggestReviewEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='OrderNotFulfilledEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-OrderNotFulfilledEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-OrderNotFulfilledEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-OrderNotFulfilledEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='OrderCancellationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-OrderCancellationEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-OrderCancellationEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-OrderCancellationEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='PaymentFailedEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-PaymentFailedEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-PaymentFailedEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-PaymentFailedEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='UnsuccessfulOrderCancellationEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-UnsuccessfulOrderCancellationEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-UnsuccessfulOrderCancellationEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-UnsuccessfulOrderCancellationEmail;BottomContent;;EmailBottomSlot;true
+
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ClickAndCollectToUserItemEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-CNCUserEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-CNCUserEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-CNCUserEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ClickAndCollectToShopItemEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-CNCShopEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-CNCShopEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-CNCShopEmail;BottomContent;;EmailBottomSlot;true
+
+INSERT_UPDATE ContentSlotForTemplate;$contentCV;uid[unique=true];position[unique=true];pageTemplate(uid,$contentCV)[unique=true][default='ProductPageEmailTemplate'];contentSlot(uid,$contentCV)[unique=true];allowOverwrite
+;;SiteLogo-ProductPageEmail;SiteLogo;;SiteLogoSlot;true
+;;TopContent-ProductPageEmail;TopContent;;EmailTopSlot;true
+;;BottomContent-ProductPageEmail;BottomContent;;EmailBottomSlot;true
+
+
+# Email Pages
+INSERT_UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);defaultPage;approvalStatus(code)[default='approved']
+;;CustomerRegistrationEmail;Customer Registration Email;CustomerRegistrationEmailTemplate;true;
+;;ForgottenPasswordEmail;Forgotten Password Email;ForgottenPasswordEmailTemplate;true;
+;;OrderConfirmationEmail;Order Confirmation Email;OrderConfirmationEmailTemplate;true;
+;;SendWishlistEmail;Send Wishlist Email;SendWishlistEmailTemplate;true;
+;;ShopClosingNotificationEmail;Shop Closing Notification Email;ShopClosingNotificationEmailTemplate;true;
+;;BackorderedOrderItemEmail;Backordered Order Item Email;BackorderedOrderItemEmailTemplate;true;
+;;OrderDespatchEmail;Order Despatch Email;OrderDespatchEmailTemplate;true;
+;;PartialOrderDespatchEmail;Partial Order Despatch Email;PartialOrderDespatchEmailTemplate;true;
+;;DeliverToShopOrderDespatchEmail;Deliver to shop Order Despatch Email;DeliverToShopOrderDespatchEmailTemplate;true;
+;;ZeroPickEmail;Zero pick Email;ZeroPickEmailTemplate;true;
+;;SuggestReviewEmail;SuggestReview Email;SuggestReviewEmailTemplate;true;
+;;OrderNotFulfilledEmail;Order not fulfilled Email;OrderNotFulfilledEmailTemplate;true;
+;;OrderCancellationEmail;Order cancellation Email;OrderCancellationEmailTemplate;true;
+;;PaymentFailedEmail;Payment Failed Email;PaymentFailedEmailTemplate;true;
+;;UnsuccessfulOrderCancellationEmail;Unsuccessful Order cancellation Email;UnsuccessfulOrderCancellationEmailTemplate;true;
+;;ClickAndCollectToUserEmail;Click and collect to user Email;ClickAndCollectToUserItemEmailTemplate;true;
+;;ClickAndCollectToShopEmail;Click and collect to shop Email;ClickAndCollectToShopItemEmailTemplate;true;
+;;ProductPageEmail;Product Page Email;ProductPageEmailTemplate;true;
+
+# CMS components velocity templates
+INSERT_UPDATE RendererTemplate;code[unique=true];contextClass;rendererType(code)[default='velocity']
+;waterstones-CMSImageComponent-template;java.util.Map
+;waterstones-BannerComponent-template;java.util.Map
+;waterstones-CMSLinkComponent-template;java.util.Map
+;waterstones-CMSParagraphComponent-template;java.util.Map
+
+# Email velocity templates
+INSERT_UPDATE RendererTemplate;code[unique=true];contextClass;rendererType(code)[default='velocity']
+;waterstones_Email_Customer_Registration_HTML;uk.co.eclipsegroup.facades.process.email.context.WaterstonesCustomerEmailContext
+;waterstones_Email_Forgotten_Password_HTML;uk.co.eclipsegroup.facades.process.email.context.ForgottenPasswordEmailContext
+;waterstones_Email_Order_Confirmation_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Send_Wishlist_HTML;uk.co.eclipsegroup.facades.process.email.context.SendWishlistEmailContext
+;waterstones_Email_ShopClosing_Notification_HTML;uk.co.eclipsegroup.facades.process.email.context.ShopClosingNotificationEmailContext
+;waterstones_Email_Backordered_Order_Item_HTML;uk.co.eclipsegroup.facades.process.email.context.BackorderNotificationEmailContext
+;waterstones_Email_Order_Despatch_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Partial_Order_Despatch_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Deliver_To_Shop_Order_Despatch_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Zero_Pick_HTML;uk.co.eclipsegroup.facades.process.email.context.ZeroPickOrderNotificationEmailContext
+;waterstones_Email_Suggest_Review_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Order_Not_Fulfilled_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Order_Cancellation_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Payment_Failed_HTML;uk.co.eclipsegroup.facades.process.email.context.PaymentFailedEmailContext
+;waterstones_Email_Unsuccessful_Order_Cancellation_HTML;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Click_And_Collect_User_HTML;uk.co.eclipsegroup.facades.process.email.context.ClickAndCollectNotificationEmailContext
+;waterstones_Email_Click_And_Collect_Shop_HTML;uk.co.eclipsegroup.facades.process.email.context.ClickAndCollectShopNotificationEmailContext
+;waterstones_Email_Product_Page_HTML;uk.co.eclipsegroup.facades.process.email.context.ProductPageNotificationEmailContext
+;waterstones_Email_Customer_Registration_Subject;uk.co.eclipsegroup.facades.process.email.context.WaterstonesCustomerEmailContext
+;waterstones_Email_Forgotten_Password_Subject;uk.co.eclipsegroup.facades.process.email.context.ForgottenPasswordEmailContext
+;waterstones_Email_Order_Confirmation_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Send_Wishlist_Subject;uk.co.eclipsegroup.facades.process.email.context.SendWishlistEmailContext
+;waterstones_Email_ShopClosing_Notification_Subject;uk.co.eclipsegroup.facades.process.email.context.ShopClosingNotificationEmailContext
+;waterstones_Backordered_Order_Item_Subject;uk.co.eclipsegroup.facades.process.email.context.BackorderNotificationEmailContext
+;waterstones_Email_Order_Despatch_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Partial_Order_Despatch_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Deliver_To_Shop_Order_Despatch_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderDespatchNotificationEmailContext
+;waterstones_Email_Zero_Pick_Subject;uk.co.eclipsegroup.facades.process.email.context.ZeroPickOrderNotificationEmailContext
+;waterstones_Email_Suggest_Review_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Order_Not_Fulfilled_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Order_Cancellation_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Payment_Failed_Subject;uk.co.eclipsegroup.facades.process.email.context.PaymentFailedEmailContext
+;waterstones_Email_Unsuccessful_Order_Cancellation_Subject;uk.co.eclipsegroup.facades.process.email.context.OrderNotificationEmailContext
+;waterstones_Email_Click_And_Collect_User_Subject;uk.co.eclipsegroup.facades.process.email.context.ClickAndCollectNotificationEmailContext
+;waterstones_Email_Click_And_Collect_Shop_Subject;uk.co.eclipsegroup.facades.process.email.context.ClickAndCollectShopNotificationEmailContext
+;waterstones_Email_Product_Page_Subject;uk.co.eclipsegroup.facades.process.email.context.ProductPageNotificationEmailContext
+
+# Preview Image for use in the CMS Cockpit
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+;;EmailPageModel_preview;text/gif;EmailPageModel_preview.gif;$jarResourceCms/preview-images/EmailPageModel_preview.gif
+
+UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;CustomerRegistrationEmail;EmailPageModel_preview
+;;ForgottenPasswordEmail;EmailPageModel_preview
+;;OrderConfirmationEmail;EmailPageModel_preview
+;;SendWishlistEmail;EmailPageModel_preview
+;;ShopClosingNotificationEmail;EmailPageModel_preview
+;;BackorderedOrderItemEmail;EmailPageModel_preview
+;;OrderDespatchEmail;EmailPageModel_preview
+;;PartialOrderDespatchEmail;EmailPageModel_preview
+;;DeliverToShopOrderDespatchEmail;EmailPageModel_preview
+;;ZeroPickEmail;EmailPageModel_preview
+;;SuggestReviewEmail;EmailPageModel_preview
+;;OrderNotFulfilledEmail;EmailPageModel_preview
+;;OrderCancellationEmail;EmailPageModel_preview
+;;PaymentFailedEmail;EmailPageModel_preview
+;;UnsuccessfulOrderCancellationEmail;EmailPageModel_preview
+;;ClickAndCollectToUserEmail;EmailPageModel_preview
+;;ClickAndCollectToShopEmail;EmailPageModel_preview
+;;ProductPageEmail;EmailPageModel_preview

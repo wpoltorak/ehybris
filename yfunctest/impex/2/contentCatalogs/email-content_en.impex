@@ -1,0 +1,80 @@
+#
+# Import the CMS content for the Waterstones site emails
+#
+# ENGLISH LOCALIZATION
+#
+$contentCatalog=waterstonesContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$emailResource=jar:uk.co.eclipsegroup.core.setup.CoreSystemSetup&/waterstonescore/import/contentCatalogs/$contentCatalog/emails
+
+# Language
+$lang=en
+
+# CMS components velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;waterstones-CMSImageComponent-template;CMSImageComponent Template;$emailResource/email-cmsImageComponentTemplate.vm
+;waterstones-BannerComponent-template;CMSBannerComponent Template;$emailResource/email-bannerComponentTemplate.vm
+;waterstones-CMSLinkComponent-template;CMSLinkComponent Template;$emailResource/email-cmsLinkComponentTemplate.vm
+;waterstones-CMSParagraphComponent-template;CMSParagraphComponent Template;$emailResource/email-cmsParagraphComponentTemplate.vm
+
+# Email velocity templates
+UPDATE RendererTemplate;code[unique=true];description[lang=$lang];templateScript[lang=$lang,translator=de.hybris.platform.commerceservices.impex.impl.FileLoaderValueTranslator]
+;waterstones_Email_Customer_Registration_HTML;Customer Registration HTML Email;$emailResource/email-customerRegistrationHTML_en.vm
+;waterstones_Email_Forgotten_Password_HTML;Forgotten Password HTML Email;$emailResource/email-forgottenPasswordHTML_en.vm
+;waterstones_Email_Order_Confirmation_HTML;Order Confirmation HTML Email;$emailResource/email-orderConfirmationHTML_en.vm
+;waterstones_Email_Send_Wishlist_HTML;Send Wishlist HTML Email;$emailResource/email-sendWishlistHTML_en.vm
+;waterstones_Email_ShopClosing_Notification_HTML;Shop Closing Notification HTML Email;$emailResource/email-shopClosingNotificationHTML_en.vm
+;waterstones_Email_Backordered_Order_Item_HTML;Backorder order item HTML Email;$emailResource/email-backorderedOrderLineHTML_en.vm
+;waterstones_Email_Order_Despatch_HTML;Order despatch HTML Email;$emailResource/email-OrderDespatchHTML_en.vm
+;waterstones_Email_Partial_Order_Despatch_HTML;Order despatch HTML Email;$emailResource/email-PartialOrderDespatchHTML_en.vm
+;waterstones_Email_Deliver_To_Shop_Order_Despatch_HTML;Order despatch HTML Email;$emailResource/email-DeliverToShopOrderDespatchHTML_en.vm
+;waterstones_Email_Zero_Pick_HTML;Zero pick HTML Email;$emailResource/email-ZeroPickHTML_en.vm
+;waterstones_Email_Suggest_Review_HTML;Suggest review HTML Email;$emailResource/email-SuggestReviewHTML_en.vm
+;waterstones_Email_Order_Not_Fulfilled_HTML;Order not fulfilled HTML Email;$emailResource/email-OrderNotFulfilledHTML_en.vm
+;waterstones_Email_Order_Cancellation_HTML;Order cancellation HTML Email;$emailResource/email-OrderCancellationHTML_en.vm
+;waterstones_Email_Payment_Failed_HTML;Payment Failed HTML Email;$emailResource/email-OrderCancellationHTML_en.vm
+;waterstones_Email_Unsuccessful_Order_Cancellation_HTML;Unsuccessful Order cancellation HTML Email;$emailResource/email-UnsuccessfulOrderCancellationHTML_en.vm
+;waterstones_Email_Click_And_Collect_User_HTML;Click and collect to user Email Subject;$emailResource/email-ClickAndCollectToUserHTML_en.vm
+;waterstones_Email_Click_And_Collect_Shop_HTML;Click and collect to shop Email Subject;$emailResource/email-ClickAndCollectToShopHTML_en.vm
+;waterstones_Email_Product_Page_HTML;Product Page Email Subject;$emailResource/email-ProductPageHTML_en.vm
+
+;waterstones_Email_Customer_Registration_Subject;Customer Registration Email Subject;$emailResource/email-customerRegistrationSubject_en.vm
+;waterstones_Email_Forgotten_Password_Subject;Forgotten Password Email Subject;$emailResource/email-forgottenPasswordSubject_en.vm
+;waterstones_Email_Order_Confirmation_Subject;Order Confirmation Email Subject;$emailResource/email-orderConfirmationSubject_en.vm
+;waterstones_Email_Send_Wishlist_Subject;Send Wishlist Email Subject;$emailResource/email-sendWishlistSubject_en.vm
+;waterstones_Email_ShopClosing_Notification_Subject;Shop Closing Notification Email Subject;$emailResource/email-shopClosingNotificationSubject_en.vm
+;waterstones_Backordered_Order_Item_Subject;Send Backordered Order Item Email Notification Subject;$emailResource/email-backorderedOrderItemSubject_en.vm
+;waterstones_Email_Order_Despatch_Subject;Order despatch Email Subject;$emailResource/email-OrderDespatchSubject_en.vm
+;waterstones_Email_Partial_Order_Despatch_Subject;Order despatch Email Subject;$emailResource/email-PartialOrderDespatchSubject_en.vm
+;waterstones_Email_Deliver_To_Shop_Order_Despatch_Subject;Order despatch Email Subject;$emailResource/email-DeliverToShopOrderDespatchSubject_en.vm
+;waterstones_Email_Zero_Pick_Subject;Zero pick Email Subject;$emailResource/email-ZeroPickSubject_en.vm
+;waterstones_Email_Suggest_Review_Subject;Suggest review  Email Subject;$emailResource/email-SuggestReviewSubject_en.vm
+;waterstones_Email_Order_Not_Fulfilled_Subject;Order not fulfilled Email Subject;$emailResource/email-OrderNotFulfilledSubject_en.vm
+;waterstones_Email_Order_Cancellation_Subject;Order Cancellation Email Subject;$emailResource/email-OrderCancellationSubject_en.vm
+;waterstones_Email_Payment_Failed_Subject;Payment Failed Email Subject;$emailResource/email-PaymentFailedSubject_en.vm
+;waterstones_Email_Unsuccessful_Order_Cancellation_Subject;Unsuccessful Order cancellation Email Subject;$emailResource/email-UnsuccessfulOrderCancellationSubject_en.vm
+;waterstones_Email_Click_And_Collect_User_Subject;Click and collect to user Email Subject;$emailResource/email-ClickAndCollectToUserSubject_en.vm
+;waterstones_Email_Click_And_Collect_Shop_Subject;Click and collect to shop Email Subject;$emailResource/email-ClickAndCollectToShopSubject_en.vm
+;waterstones_Email_Product_Page_Subject;Product Page Email Subject;$emailResource/email-ProductPageSubject_en.vm
+
+# Email Pages
+UPDATE EmailPage;$contentCV[unique=true];uid[unique=true];fromEmail[lang=$lang];fromName[lang=$lang]
+;;CustomerRegistrationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ForgottenPasswordEmail;"noreply@waterstones.com";"Customer Services Team"
+;;OrderConfirmationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;SendWishlistEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ShopClosingNotificationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;BackorderedOrderItemEmail;"noreply@waterstones.com";"Customer Services Team"
+;;OrderDespatchEmail;"noreply@waterstones.com";"Customer Services Team"
+;;PartialOrderDespatchEmail;"noreply@waterstones.com";"Customer Services Team"
+;;DeliverToShopOrderDespatchEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ZeroPickEmail;"noreply@waterstones.com";"Customer Services Team"
+;;SuggestReviewEmail;"noreply@waterstones.com";"Customer Services Team"
+;;OrderNotFulfilledEmail;"noreply@waterstones.com";"Customer Services Team"
+;;OrderCancellationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;PaymentFailedEmail;"noreply@waterstones.com";"Customer Services Team"
+;;OrderCancellationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;UnsuccessfulOrderCancellationEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ClickAndCollectToUserEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ClickAndCollectToShopEmail;"noreply@waterstones.com";"Customer Services Team"
+;;ProductPageEmail;"noreply@waterstones.com";"Customer Services Team"

@@ -1,0 +1,14 @@
+# 
+# Import the Product Catalog and Classification Catalog
+#
+# ENGLISH LOCALIZATION
+#
+
+$lang=en
+
+$productCatalog=waterstonesProductCatalog
+$waterstonesWebCatalog=web
+
+UPDATE Catalog;id[unique=true];name[lang=$lang]
+;$productCatalog;"Waterstones Product Catalog"
+;$waterstonesWebCatalog;"Waterstones Web Product Catalog"

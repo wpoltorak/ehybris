@@ -1,0 +1,10 @@
+#
+# Import Sample Product Cockpit User
+# 
+
+INSERT_UPDATE Employee;UID[unique=true];password;description;name;groups(uid);sessionLanguage(isocode);sessionCurrency(isocode)
+;productmanager;1234;Product manager;Product Manager;productmanagergroup;en;EUR
+
+INSERT_UPDATE CatalogVersion;catalog(id)[unique=true];version[unique=true];writePrincipals(uid);
+;web;Online;productmanagergroup,productmanager;
+;web;Staged;productmanagergroup,productmanager;

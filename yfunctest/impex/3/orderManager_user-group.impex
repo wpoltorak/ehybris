@@ -1,0 +1,40 @@
+#
+# Import Shop Managers group
+#
+
+$ordermanagergroup=ordermanagergroup
+$employeegroup=employeegroup
+
+# Create Shop Manager Group and set hMC configuration 
+INSERT_UPDATE UserGroup;UID[unique=true];locname[lang=en];groups(uid);
+;$ordermanagergroup;Order Managers Group;$employeegroup;
+
+UPDATE UserGroup;UID[unique=true];hmcXML
+;$ordermanagergroup;"<?xml version=""1.0"" encoding=""ISO-8859-1""?>
+<configuration
+   xmlns=""hybris.de/schemas/hmc/generic"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+   xsi:schemaLocation=""hybris.de/schemas/hmc/generic hmc.xsd"">
+ 
+   <explorertree mode=""replace"">
+		<group name=""fraudrulesgroup"">
+			<typeref type=""OrderThresholdFraudRule"" />
+			<typeref type=""WhiteListFraudRule"" />
+			<typeref type=""BlackListFraudRule"" />
+		</group>
+	</explorertree>
+</configuration>"
+
+$START_USERRIGHTS
+Type;UID;MemberOfGroups;Password;Target;read;change;create;delete;change_perm
+UserGroup;$ordermanagergroup;;
+;;;;WhiteListFraudRule;+;+;-;-;-
+;;;;BlackListFraudRule;+;+;-;-;-
+;;;;OrderThresholdFraudRule;+;+;-;-;-
+;;;;StringFraudRule;+;+;+;+;-
+;;;;Category;-;-;-;-;-
+;;;;Customer;-;-;-;-;-
+;;;;Employee;-;-;-;-;-
+;;;;Product;-;-;-;-;-
+;;;;Catalog;-;-;-;-;-
+Employee;om1;$ordermanagergroup;1234;
+$END_USERRIGHTS

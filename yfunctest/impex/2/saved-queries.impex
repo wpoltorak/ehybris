@@ -1,0 +1,4 @@
+insert_update SavedQuery;code[unique=true];name;description;query;params(key,value(code))[map-delimiter=|][key2value-delimiter=->];resultType(code)
+
+;CSPlacedOrders;Orders placed by CS;Order that were placed by CS Agent on behalf of the Customer;SELECT {o:PK} FROM {Order AS o} WHERE ( {o:placedByCustomer} IS NULL OR {o:placedByCustomer} = false ) AND ( {modifiedtime} >= ?startDate AND {modifiedtime} <=?endDate ) ORDER BY {modifiedtime} DESC;startDate->java.util.Date|endDate->java.util.Date;Order
+;FreeOfChargeOrders;Free Of Charge Orders;Order with Total Price of Zero;SELECT {o:PK} FROM {Order AS o} WHERE ( {o:totalPrice} = 0 ) AND ( {modifiedtime} >= ?startDate AND {modifiedtime} <=?endDate ) ORDER BY {modifiedtime} DESC;startDate->java.util.Date|endDate->java.util.Date;Order

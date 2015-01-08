@@ -1,0 +1,592 @@
+$contentCatalog=waterstonesContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+$webproductCatalog=web
+$webproductCV=catalogVersion(catalog(id[default=$webproductCatalog]),version[default='Staged'])[unique=true,default=$webproductCatalog:Staged]
+
+$siteResource=jar:uk.co.eclipsegroup.initialdata.constants.WaterstonesInitialDataConstants&/waterstonesinitialdata/import/contentCatalogs/$contentCatalog
+$productResource=jar:uk.co.eclipsegroup.initialdata.constants.WaterstonesInitialDataConstants&/waterstonesinitialdata/import/productCatalogs/$webproductCatalog
+$jarResourceCms=jar:uk.co.eclipsegroup.initialdata.constants.WaterstonesInitialDataConstants&/waterstonesinitialdata/import/cockpits/cmscockpit
+
+# Site Logo
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText
+;;/images/theme/logo-hybris.png;logo-hybris.png;$siteResource/images/theme/logo-hybris.png;image/png;hybris Accelerator
+
+# Site Logo Component
+INSERT_UPDATE CMSImageComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SiteLogoImage;Site Logo Image;SiteLogoImage
+
+# CMS Link Components
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;&componentRef;target(code)[default='sameWindow']
+;;HomepageNavLink;Home Page Nav Link;;HomepageNavLink;HomepageNavLink
+;;DocumentationLink;Documentation Link;"https://wiki.hybris.com/display/release4/Home";DocumentationLink;DocumentationLink;newWindow
+;;ContactUsLink;Contact Us Link;"http://www.hybris.com/contact";ContactUsLink;ContactUsLink;newWindow
+;;FacebookLink;Facebook Link;"http://www.facebook.com/hybrissoftware";FacebookLink;FacebookLink;newWindow
+;;TwitterLink;Twitter Link;"http://twitter.com/#!/hybris_software";TwitterLink;TwitterLink;newWindow
+;;AgileCommerceBlogLink;Agile Commerce Blog Link;"http://www.agile-commerce.com/";AgileCommerceBlogLink;AgileCommerceBlogLink;newWindow
+;;LinkedInLink;Linked In Link;"http://www.linkedin.com/company/97435";LinkedInLink;LinkedInLink;newWindow
+;;WaterstonesEventsLink;Waterstones Events Link;"/events";WaterstonesEventsLink;WaterstonesEventsLink;
+;;WaterstonesHomeLink;Waterstones Home Link;"/";WaterstonesHomeLink;WaterstonesHomeLink;
+;;WaterstonesHelpLink;Waterstones Help Link;"/help";WaterstonesHelpLink;WaterstonesHelpLink;newWindow
+
+#Waterstones card
+;;WaterstonesCardsLink;Waterstones Card Link;;WaterstonesCardsLink;WaterstonesCardsLink;
+;;WaterstonesCardsCardHomeLink;Card home;"/waterstones-card-home";WaterstonesCardsCardHomeLink;WaterstonesCardsCardHomeLink
+;;WaterstonesCardsPointsOffersAccountLink;Points offers;"/waterstones-card-points-offers";WaterstonesCardsPointsOffersAccountLink;WaterstonesCardsPointsOffersAccountLink
+;;WaterstonesCardsMyCardAccountLink;My Card account;"/my-account/waterstones-card";WaterstonesCardsMyCardAccountLink;WaterstonesCardsMyCardAccountLink
+;;WaterstonesCardsCompetitionsLink;Card competitions;"/waterstones-card-competitions";WaterstonesCardsCompetitionsLink;WaterstonesCardsCompetitionsLink
+;;WaterstonesCardsReadAndReviewLink;Read and review;"/waterstones-card-read-review";WaterstonesCardsReadAndReviewLink;WaterstonesCardsReadAndReviewLink
+;;WaterstonesCardsExclusiveExtrasLink;Exclusive extras;"/waterstones-card-exclusive-extras";WaterstonesCardsExclusiveExtrasLink;WaterstonesCardsExclusiveExtrasLink
+;;WaterstonesCardsCardNewsLink;Card news;"/waterstones-card-news";WaterstonesCardsCardNewsLink;WaterstonesCardsCardNewsLink
+;;WaterstonesCardsReadingGuidesLink;Reading guides;"/waterstones-card-reading-guides";WaterstonesCardsReadingGuidesLink;WaterstonesCardsReadingGuidesLink
+;;WaterstonesCardsRecipeCardsLink;Recipe cards;"/waterstones-card-recipe-cards";WaterstonesCardsRecipeCardsLink;WaterstonesCardsRecipeCardsLink
+;;WaterstonesCardsYourReviewsLink;Your reviews;"/waterstones-card-your-review";WaterstonesCardsYourReviewsLink;WaterstonesCardsYourReviewsLink
+
+;;WaterstonesOffersLink;Waterstones Offers Link;"/offers";WaterstonesOffersLink;WaterstonesOffersLink;
+#eReaders
+;;WaterstonesKindleLink;Waterstones Kindle Link;"/";WaterstonesKindleLink;WaterstonesKindleLink;
+;;WaterstonesKindleKindleLink;Kindle;"/";WaterstonesKindleKindleLink;WaterstonesKindleKindleLink
+;;WaterstonesKindleAccessoriesLink;Kindle Accessories;"/";WaterstonesKindleAccessoriesLink;WaterstonesKindleAccessoriesLink
+;;WaterstonesKindleFireLink;Kindle Fire;"/";WaterstonesKindleFireLink;WaterstonesKindleFireLink
+;;WaterstonesKindleEBooksLink;Kindle eBooks;"/";WaterstonesKindleEBooksLink;WaterstonesKindleEBooksLink
+
+;;WaterstonesStationeryLink;Waterstones Stationery Link;"/Stationery-%26-Gifts/c/4";WaterstonesStationeryLink;WaterstonesStationeryLink;
+;;WaterstonesStationeryGiftIdeasLink;Gift Ideas;"/Stationery-%26-Gifts/Gift-Ideas/c/92";WaterstonesStationeryGiftIdeasLink;WaterstonesStationeryGiftIdeasLink
+;;WaterstonesStationeryToysGamesLink;Toys & Games;"/Stationery-%26-Gifts/Toys-%26-Games/c/93";WaterstonesStationeryToysGamesLink;WaterstonesStationeryToysGamesLink
+;;WaterstonesStationeryGeneralStationeryLink;General Stationery;"/Stationery-%26-Gifts/General-Stationery/c/91";WaterstonesStationeryGeneralStationeryLink;WaterstonesStationeryGeneralStationeryLink
+
+;;WaterstonesChildrensLink;Waterstones Childrens Link;"/Childrens/c/16";WaterstonesChildrensLink;WaterstonesChildrensLink;
+;;WaterstonesNewTitlesLink;Waterstones New Titles Link;"/new-titles";WaterstonesNewTitlesLink;WaterstonesNewTitlesLink;
+;;WaterstonesUsedBooksLink;Waterstones Used Books Link;"http://waterstonesmarketplace.com";WaterstonesUsedBooksLink;WaterstonesUsedBooksLink;
+
+
+#Example books categories links
+;;WaterstonesBooksSupercategoryLink;Books;"/";WaterstonesBooksSupercategoryLink;WaterstonesBooksSupercategoryLink;
+;;WaterstonesBooks10017CategoryLink;Academic, Professional & Study;/Academic%2C-professional-%26-study/c/11?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10017CategoryLink;WaterstonesBooks10017CategoryLink;
+;;WaterstonesBooks10002CategoryLink;Art and Photography;/Art-%26-photography/c/12?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10002CategoryLink;WaterstonesBooks10002CategoryLink;
+;;WaterstonesBooks10024CategoryLink;Audiobooks & Spoken word;/Audiobooks-%26-Spoken-word/c/13?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10024CategoryLink;WaterstonesBooks10024CategoryLink;
+;;WaterstonesBooks10000CategoryLink;Biography;/Biography/c/14?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10000CategoryLink;WaterstonesBooks10000CategoryLink;
+;;WaterstonesBooks10028CategoryLink;Business, finance & law;/Business%2C-finance-%26-law/c/15?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10028CategoryLink;WaterstonesBooks10028CategoryLink;
+;;WaterstonesBooks10006CategoryLink;Children's;/Childrens/c/16?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10006CategoryLink;WaterstonesBooks10006CategoryLink;
+;;WaterstonesBooks10021CategoryLink;Crime;/Crime/c/17?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10021CategoryLink;WaterstonesBooks10021CategoryLink;
+;;WaterstonesBooks10007CategoryLink;Entertainment;/Entertainment/c/18?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10007CategoryLink;WaterstonesBooks10007CategoryLink;
+;;WaterstonesBooks10015CategoryLink;Fiction;/Fiction/c/19?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10015CategoryLink;WaterstonesBooks10015CategoryLink;
+;;WaterstonesBooks10008CategoryLink;Food & drink;/Food-%26-drink/c/20?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10008CategoryLink;WaterstonesBooks10008CategoryLink;
+;;WaterstonesBooks10029CategoryLink;Graphic novels & manga;/Graphic-novels-%26-manga/c/21?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10029CategoryLink;WaterstonesBooks10029CategoryLink;
+;;WaterstonesBooks10005CategoryLink;Health;/Health/c/22?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10005CategoryLink;WaterstonesBooks10005CategoryLink;
+;;WaterstonesBooks10016CategoryLink;History & Politics;/History-%26-politics/c/23?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10016CategoryLink;WaterstonesBooks10016CategoryLink;
+;;WaterstonesBooks10014CategoryLink;Hobbies;/Hobbies/c/24?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10014CategoryLink;WaterstonesBooks10014CategoryLink;
+;;WaterstonesBooks10009CategoryLink;Home & Garden;/Home-%26-garden/c/25?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10009CategoryLink;WaterstonesBooks10009CategoryLink;
+;;WaterstonesBooks10011CategoryLink;Humour & Gift;/Humour-%26-Gift/c/26?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10011CategoryLink;WaterstonesBooks10011CategoryLink;
+;;WaterstonesBooks10025CategoryLink;Personal Development & Relationships;/Personal-development-%26-relationships/c/27?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10025CategoryLink;WaterstonesBooks10025CategoryLink;
+;;WaterstonesBooks10004CategoryLink;Poetry & Drama;/Poetry-%26-drama/c/28?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10004CategoryLink;WaterstonesBooks10004CategoryLink;
+;;WaterstonesBooks10010CategoryLink;Popular Science & Nature;/Popular-science-%26-nature/c/29?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10010CategoryLink;WaterstonesBooks10010CategoryLink;
+;;WaterstonesBooks10003CategoryLink;Reference;/Reference/c/30?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10003CategoryLink;WaterstonesBooks10003CategoryLink;
+;;WaterstonesBooks10018CategoryLink;Religion & Beliefs;/Religion-%26-beliefs/c/31?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10018CategoryLink;WaterstonesBooks10018CategoryLink;
+;;WaterstonesBooks10027CategoryLink;Romance;/Romance/c/32?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10027CategoryLink;WaterstonesBooks10027CategoryLink;
+;;WaterstonesBooks10026CategoryLink;Science Fiction, Fantasy & Horror;/books/c/33?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10026CategoryLink;WaterstonesBooks10026CategoryLink;
+;;WaterstonesBooks10012CategoryLink;Scientific, Technical & Medical;/Science-fiction%2C-fantasy-%26-horror/c/34?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10012CategoryLink;WaterstonesBooks10012CategoryLink;
+;;WaterstonesBooks10020CategoryLink;Sports & Games;/Sports-%26-games/c/35?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10020CategoryLink;WaterstonesBooks10020CategoryLink;
+;;WaterstonesBooks10023CategoryLink;Travel & Maps;/Travel-%26-maps/c/36?q=R::bestsellersRanking:productType:Book;WaterstonesBooks10023CategoryLink;WaterstonesBooks10023CategoryLink;
+
+#Example Ebooks categories links
+;;WaterstonesEbooksLink;Waterstones Ebooks Link;"/";WaterstonesEbooksLink;WaterstonesEbooksLink;
+;;WaterstonesEbooksSupercategoryLink;Books;/ebooks/c/0?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooksSupercategoryLink;WaterstonesEbooksSupercategoryLink;
+;;WaterstonesEbooks10017CategoryLink;Academic, Professional & Study;/Academic%2C-professional-%26-study/c/11?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10017CategoryLink;WaterstonesEbooks10017CategoryLink;
+;;WaterstonesEbooks10002CategoryLink;Art and Photography;/Art-%26-photography/c/12?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10002CategoryLink;WaterstonesEbooks10002CategoryLink;
+;;WaterstonesEbooks10024CategoryLink;Audiobooks & Spoken word;/Audiobooks-%26-Spoken-word/c/13?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10024CategoryLink;WaterstonesEbooks10024CategoryLink;
+;;WaterstonesEbooks10000CategoryLink;Biography;/Biography/c/14?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10000CategoryLink;WaterstonesEbooks10000CategoryLink;
+;;WaterstonesEbooks10028CategoryLink;Business, finance & law;/Business%2C-finance-%26-law/c/15?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10028CategoryLink;WaterstonesEbooks10028CategoryLink;
+;;WaterstonesEbooks10006CategoryLink;Children's;/Childrens/c/16?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10006CategoryLink;WaterstonesEbooks10006CategoryLink;
+;;WaterstonesEbooks10021CategoryLink;Crime;/Crime/c/17?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10021CategoryLink;WaterstonesEbooks10021CategoryLink;
+;;WaterstonesEbooks10007CategoryLink;Entertainment;/Entertainment/c/18?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10007CategoryLink;WaterstonesEbooks10007CategoryLink;
+;;WaterstonesEbooks10015CategoryLink;Fiction;/Fiction/c/19?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10015CategoryLink;WaterstonesEbooks10015CategoryLink;
+;;WaterstonesEbooks10008CategoryLink;Food & drink;/Food-%26-drink/c/20?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10008CategoryLink;WaterstonesEbooks10008CategoryLink;
+;;WaterstonesEbooks10029CategoryLink;Graphic novels & manga;/Graphic-novels-%26-manga/c/21?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10029CategoryLink;WaterstonesEbooks10029CategoryLink;
+;;WaterstonesEbooks10005CategoryLink;Health;/Health/c/22?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10005CategoryLink;WaterstonesEbooks10005CategoryLink;
+;;WaterstonesEbooks10016CategoryLink;History & Politics;/History-%26-politics/c/23?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10016CategoryLink;WaterstonesEbooks10016CategoryLink;
+;;WaterstonesEbooks10014CategoryLink;Hobbies;/Hobbies/c/24?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10014CategoryLink;WaterstonesEbooks10014CategoryLink;
+;;WaterstonesEbooks10009CategoryLink;Home & Garden;/Home-%26-garden/c/25?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10009CategoryLink;WaterstonesEbooks10009CategoryLink;
+;;WaterstonesEbooks10011CategoryLink;Humour & Gift;/Humour-%26-Gift/c/26?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10011CategoryLink;WaterstonesEbooks10011CategoryLink;
+;;WaterstonesEbooks10025CategoryLink;Personal Development & Relationships;/Personal-development-%26-relationships/c/27?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10025CategoryLink;WaterstonesEbooks10025CategoryLink;
+;;WaterstonesEbooks10004CategoryLink;Poetry & Drama;/Poetry-%26-drama/c/28?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10004CategoryLink;WaterstonesEbooks10004CategoryLink;
+;;WaterstonesEbooks10010CategoryLink;Popular Science & Nature;/Popular-science-%26-nature/c/29?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10010CategoryLink;WaterstonesEbooks10010CategoryLink;
+;;WaterstonesEbooks10003CategoryLink;Reference;/Reference/c/30?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10003CategoryLink;WaterstonesEbooks10003CategoryLink;
+;;WaterstonesEbooks10018CategoryLink;Religion & Beliefs;/Religion-%26-beliefs/c/31?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10018CategoryLink;WaterstonesEbooks10018CategoryLink;
+;;WaterstonesEbooks10027CategoryLink;Romance;/Romance/c/32?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10027CategoryLink;WaterstonesEbooks10027CategoryLink;
+;;WaterstonesEbooks10026CategoryLink;Science Fiction, Fantasy & Horror;/Science-fiction%2C-fantasy-%26-horror/c/33?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10026CategoryLink;WaterstonesEbooks10026CategoryLink;
+;;WaterstonesEbooks10012CategoryLink;Scientific, Technical & Medical;/ebooks/c/34?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10012CategoryLink;WaterstonesEbooks10012CategoryLink;
+;;WaterstonesEbooks10020CategoryLink;Sports & Games;/Sports-%26-games/c/35?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10020CategoryLink;WaterstonesEbooks10020CategoryLink;
+;;WaterstonesEbooks10023CategoryLink;Travel & Maps;/Travel-%26-maps/c/36?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10023CategoryLink;WaterstonesEbooks10023CategoryLink;
+;;WaterstonesEbooks10037CategoryLink;Audio Downloads;/Audio-Downloads/c/37?q=R::bestsellersRanking:productType:EBook;WaterstonesEbooks10037CategoryLink;WaterstonesEbooks10037CategoryLink;
+
+#end of example categories links
+;;WaterstonesBestsellersLink;Waterstones Bestsellers Link;"/bestsellers";WaterstonesBestsellersLink;WaterstonesBestsellersLink;
+;;WaterstonesComingSoonLink;Waterstones Coming Soon Link;"/comingSoon";WaterstonesComingSoonLink;WaterstonesComingSoonLink;
+#footer links
+;;TrackingYourOrderLink;Tracking your order Link;"/tracking-orders";TrackingYourOrderLink;TrackingYourOrderLink;
+;;ReturningItemsLink;Returning items Link;"/returning-items";ReturningItemsLink;ReturningItemsLink;
+;;ContactUsLink;Contact us Link;"/contact-us";ContactUsLink;ContactUsLink;
+;;EReaderSupportLink;eReader support Link;"/ereader-support";EReaderSupportLink;EReaderSupportLink;
+;;FreeDeliveryOffersLink;Free delivery offers Link;"/free-delivery-offers";FreeDeliveryOffersLink;FreeDeliveryOffersLink;
+;;EBooksHelpLink;eBooks help Link;"/ebook-help";EBooksHelpLink;EBooksHelpLink;
+;;PrivacyPolicyLink;Privacy policy Link;"/privacy-policy";PrivacyPolicyLink;PrivacyPolicyLink;
+;;AccessibilityLink;Accessibility Link;"/accessibility";AccessibilityLink;AccessibilityLink;
+;;AboutUsLink;About us Link;"/about-us";AboutUsLink;AboutUsLink;
+;;CareersLink;Careers Link;"/carrers";CareersLink;CareersLink;
+;;WaterstonesMarketplaceLink;Waterstones Marketplace Link;"http://www.waterstonesmarketplace.com";WaterstonesMarketplaceLink;WaterstonesMarketplaceLink;blankWindow
+;;AffiliatesLink;Affiliates Link;"/affiliates";AffiliatesLink;AffiliatesLink;
+;;OurShopsLink;Our Shops Link;"/our-shops";OurShopsLink;OurShopsLink;
+;;IndependentPublishersLink;Independent publishers Link;"/intependent-publishers";IndependentPublishersLink;IndependentPublishersLink;
+;;WorldBookNightLink;World book night Link;"/world-book-night";WorldBookNightLink;WorldBookNightLink;blankWindow
+;;WaterstonesChildrenLaureateLink;Waterstones Children's Laureate Link;"/childrens-laureate";WaterstonesChildrenLaureateLink;WaterstonesChildrenLaureateLink;
+;;WaterstonesLocalNostalgiaLink;Waterstones Local Nostalgia Link;"/local-nostalgia";WaterstonesLocalNostalgiaLink;WaterstonesLocalNostalgiaLink;blankWindow
+;;CompetitionsLink;Competitions Link;"/competitions";CompetitionsLink;CompetitionsLink;
+;;HatchardsLink;Hatchards Link;"http://www.hatchards.co.uk/";HatchardsLink;HatchardsLink;blankWindow
+;;BrowsealoudLink;Browsealoud Link;"/browseloud";BrowsealoudLink;BrowsealoudLink;
+#header links
+;;NewsletterLink;Newsletter Link;"/newsletter";NewsletterLink;NewsletterLink;
+;;HelpLink;HelpLink;"/help";HelpLink;HelpLink;
+;;SecurityHelpPageLink;Security Help Page Link;"/";SecurityHelpPageLink;SecurityHelpPageLink;newWindow
+
+
+# Horizontal footer links with images displayed in horizontal way (one line) 
+INSERT_UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];name;url;&linkRef;target(code)[default='newWindow'];cssClass
+;;footerVeriSignLink;Footer VeriSign Link;http://www.verisign.com/;footerVeriSignLink;;footerVeriSignLink
+;;footerTwitterLink;Footer Twitter Link;http://twitter.com/waterstones;footerTwitterLink;;footerTwitterLink
+;;footerFacebookLink;Footer Facebook Link;http://www.facebook.com/waterstones;footerFacebookLink;;footerFacebookLink
+;;footerYouTubeLink;Footer YouTube Link;http://www.youtube.com/waterstonescom;footerYouTubeLink;;footerYouTubeLink
+;;footerWaterstonesAppsLink;Footer Waterstones Apps Link;http://www.waterstones.com/waterstonesweb/pages/mobile-apps/200001273/;footerWaterstonesAppsLink;;footerWaterstonesAppsLink
+;;footerWaterstonesLink;Footer Waterstones Link;http://www.waterstones.com;footerWaterstonesLink;;footerWaterstonesLink
+
+
+# Lightbox Banner for Mini Cart
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink
+;;LightboxHomeDeliveryBannerComponent;Lightbox Home Delivery Banner Component;LightboxHomeDeliveryBannerComponent;
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;totalDisplay(code);shownProductCount;lightboxBannerComponent(&componentRef)
+;;MiniCart;Mini Cart;MiniCart;SUBTOTAL;3;LightboxHomeDeliveryBannerComponent
+
+# Navigation Bar Component
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];name;wrapAfter;link(uid, $contentCV);styleClass;&componentRef;dropdownlayout(code)
+#;;CamerasBarComponent;Cameras Bar Component;10;CamerasCategoryLink;;CamerasBarComponent
+#;;ComponentsBarComponent;Components Bar Component;10;ComponentsCategoryLink;;ComponentsBarComponent
+#;;DigitalCamerasBarComponent;Digital Cameras Bar Component;10;DigitalCamerasCategoryLink;;DigitalCamerasBarComponent
+#;;FilmCamerasBarComponent;Film Cameras Bar Component;10;FilmCamerasCategoryLink;;FilmCamerasBarComponent
+#;;CameraAccessoriesBarComponent;Camera Accessories BarComponent;10;CameraAccessoriesCategoryLink;;CameraAccessoriesBarComponent
+#;;PowerSuppliesBarComponent;Power Supplies Bar Component;10;PowerSuppliesCategoryLink;;PowerSuppliesBarComponent
+#;;FlashMemoryBarComponent;Flash Memory Bar Component;10;FlashMemoryCategoryLink;;FlashMemoryBarComponent
+#;;HandheldCamcordersBarComponent;Handheld Camcorders Bar Component;10;HandheldCamcordersCategoryLink;;HandheldCamcordersBarComponent
+#;;SpecialOffersBarComponent;Special Offers Bar Component;10;SpecialOffersLink;special_offer;SpecialOffersBarComponent
+;;WaterstonesEventsBarComponent;Waterstones Events Bar Component;10;WaterstonesEventsLink;;WaterstonesEventsBarComponent
+;;WaterstonesChildrensBarComponent;Waterstones Childrens Bar Component;10;WaterstonesChildrensLink;;WaterstonesChildrensBarComponent
+;;WaterstonesNewTitlesBarComponent;Waterstones New Titles Bar Component;10;WaterstonesNewTitlesLink;;WaterstonesNewTitlesBarComponent
+;;WaterstonesUsedBooksBarComponent;Waterstones Used Books Bar Component;10;WaterstonesUsedBooksLink;;WaterstonesUsedBooksBarComponent
+;;WaterstonesCardsBarComponent;Waterstones Cards Bar Component;16;WaterstonesCardsLink;;WaterstonesCardsBarComponent
+;;WaterstonesOffersBarComponent;Waterstones Offers Bar Component;10;WaterstonesOffersLink;;WaterstonesOffersBarComponent
+;;WaterstonesBooksBarComponent ;Waterstones Books BarComponent  ;16;WaterstonesBooksSupercategoryLink	;;WaterstonesBooksBarComponent
+;;WaterstonesEbooksBarComponent;Waterstones Ebooks Bar Component;16;WaterstonesEbooksSupercategoryLink	;;WaterstonesEbooksBarComponent
+;;WaterstonesKindleBarComponent;Waterstones Ereaders Bar Component;16;WaterstonesKindleLink;;WaterstonesKindleBarComponent
+;;WaterstonesStationeryBarComponent;Waterstones Stationery Bar Component;16;WaterstonesStationeryLink;;WaterstonesStationeryBarComponent
+;;WaterstonesBestsellersBarComponent;Waterstones Bestsellers Bar Component;10;WaterstonesBestsellersLink;;WaterstonesBestsellersBarComponent
+;;WaterstonesHelpBarComponent;Waterstones Help Bar Component;10;WaterstonesHelpLink;;WaterstonesHelpBarComponent;RIGHT_EDGE
+
+# CMS tabs components
+INSERT_UPDATE CMSTabParagraphComponent;$contentCV[unique=true];uid[unique=true];name;visible;&componentRef
+;;deliveryTab;Delivery tab;true;deliveryTab
+
+INSERT_UPDATE CMSTabParagraphContainer;$contentCV[unique=true];uid[unique=true];name;visible;simpleCMSComponents(uid, $contentCV);&componentRef
+;;TabPanelContainer;Tab container;true;deliveryTab;TabPanelContainer
+
+
+
+
+# CMS Footer Component
+INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];wrapAfter;&componentRef
+;;FooterComponent;4;FooterComponent
+
+# CMS Footer Component
+INSERT_UPDATE FooterCheckoutComponent;$contentCV[unique=true];uid[unique=true];secureInfoLink(&linkRef);&componentRef
+;;FooterCheckoutComponent;SecurityHelpPageLink;FooterCheckoutComponent
+
+# CMS Paragraph Component (Contact information)
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;eventHeaderParagraph;Events Page Header H1;eventHeaderParagraph
+;;eventFirstParagraph;Event First Paragraph;eventFirstParagraph
+;;eventSecondParagraph;Event Second Paragraph;eventSecondParagraph
+;;eventHeader2Paragraph;Events Page Header H2;eventHeader2Paragraph
+;;searchEventFirstParagraph;Event search results first paragraph;searchEventFirstParagraph
+;;searchEventSecondParagraph;Event search results second paragraph;searchEventSecondParagraph
+;;searchEventThirdParagraph;Event search results third paragraph;searchEventThirdParagraph
+
+;;storeFinderIntroTextParagraph;Store Finder Intro Text Paragraph;storeFinderIntroTextParagraph
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;TopContent-WaterstonesEventsSlot;eventHeaderParagraph,eventFirstParagraph,eventSecondParagraph,eventHeader2Paragraph
+;;TopContent-WaterstonesEventsSearchResultsSlot;searchEventFirstParagraph,searchEventSecondParagraph,searchEventThirdParagraph
+
+# CMS ProductReferences Components
+INSERT_UPDATE ProductReferencesComponent;$contentCV[unique=true];uid[unique=true];name;productReferenceType(code);maximumNumberProducts;&componentRef
+;;accessories;Accessories;ACCESSORIES;5;accessories
+;;CrossSelling;Cross Selling;CROSSELLING;5;CrossSelling
+;;Others;Others;OTHERS;5;Others
+;;Similar;Similar;SIMILAR;5;Similar
+
+
+# Content Slots
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;SiteLogoSlot;SiteLogoImage
+;;HomepageNavLinkSlot;HomepageNavLink
+;;MiniCartSlot;MiniCart
+;;NavigationBarSlot;WaterstonesBooksBarComponent,WaterstonesEbooksBarComponent,WaterstonesKindleBarComponent,WaterstonesStationeryBarComponent,WaterstonesChildrensBarComponent,WaterstonesNewTitlesBarComponent,WaterstonesBestsellersBarComponent,WaterstonesOffersBarComponent,WaterstonesEventsBarComponent,WaterstonesUsedBooksBarComponent,WaterstonesCardsBarComponent
+;;NavigationBarCheckoutSlot;WaterstonesHelpBarComponent
+;;TabsSlot;TabPanelContainer
+;;FooterSlot;FooterComponent,SiteTaggerComponent
+;;FooterCheckoutSlot;FooterCheckoutComponent,SiteTaggerComponent
+#;;HeaderLinksSlot;contactInfo, 
+;;AccessoriesSlot;Others
+;;CrossSellingSlot;Similar
+;;RecentlyViewedProductsContentSlot;RecentlyViewedProductCarousel
+;;TopContent-StoreFinderPageSlot;booksellersRecommendabilityCarousel
+
+INSERT_UPDATE RecentlyViewedProductsComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;RecentlyViewedProductCarousel;Recently viewed products by user;RecentlyViewedProductCarousel
+
+INSERT_UPDATE SiteTaggerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;SiteTaggerComponent;Site tagger component;SiteTaggerComponent
+
+INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;scroll(code);&componentRef
+;;booksellersRecommendabilityCarousel;Booksellers recommendability product carousel;allVisible;booksellersRecommendabilityCarousel
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+#;;CamerasPagePreview;text/png;CamerasPage.png;$jarResourceCms/preview-images/waterstones/CamerasPage.png
+#;;DigitalCamerasPagePreview;text/png;DigitalCamerasPage.png;$jarResourceCms/preview-images/waterstones/DigitalCamerasPage.png
+#;;CameraAccessoriesPagePreview;text/png;CameraAccessoriesPage.png;$jarResourceCms/preview-images/waterstones/CameraAccessoriesPage.png
+
+# Category Pages
+INSERT_UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];name;masterTemplate(uid,$contentCV);defaultPage;approvalStatus(code)[default='approved'];previewImage(code, $contentCV)
+#;;Cameras;Cameras;ProductListPageTemplate;false;;CamerasPagePreview
+#;;DigitalCameras;Digital Cameras;ProductListPageTemplate;false;;DigitalCamerasPagePreview
+
+
+# CMS Navigation Nodes
+INSERT_UPDATE CMSNavigationNode;uid[unique=true];$contentCV[unique=true];name;parent(uid, $contentCV);links(&linkRef);&nodeRef;
+;SiteRootNode;;SiteRootNode;;;SiteRootNode
+;WaterstonesNavNode;;Waterstones Site;SiteRootNode;HomepageNavLink;WaterstonesNavNode
+#;CamerasNavNode;;Cameras Category;WaterstonesNavNode;DigitalCamerasCategoryLink,FilmCamerasCategoryLink;CamerasNavNode
+#;DigitalCamerasNavNode;;Digital Cameras Category;CamerasNavNode;DigitalCamerasCategoryLink;DigitalCamerasNavNode
+#;FilmCamerasNavNode;;Film Cameras Category;CamerasNavNode;FilmCamerasCategoryLink;FilmCamerasNavNode
+#;WebcamsNavNode;;Webcams Category;CamerasNavNode;;WebcamsNavNode
+#;CameraAccessoriesNavNode;;Camera Accessories Category;CamerasNavNode;CameraAccessoriesCategoryLink;CameraAccessoriesNavNode
+#;HandheldCamcordersNavNode;;Hand-held Camcorders Category;CamerasNavNode;HandheldCamcordersCategoryLink;HandheldCamcordersNavNode
+#;PowerSuppliesNavNode;;Power Supplies Category;WaterstonesNavNode;PowerSuppliesCategoryLink;PowerSuppliesNavNode
+#;FlashMemoryNavNode;;Flash Memory Category;WaterstonesNavNode;FlashMemoryCategoryLink;FlashMemoryNavNode
+#;AccessoriesNavNode;;Accessories Links;CameraAccessoriesNavNode;CamerasFlashesCategoryLink,TripodsCategoryLink,CameraLensesCategoryLink;AccessoriesNavNode
+#;SuppliesNavNode;;Supplies Links;CameraAccessoriesNavNode;ColourFilmsCategoryLink,BlackAndWhiteFilmsCategoryLink,BlankVideotapesCategoryLink;SuppliesNavNode
+#;AcceleratorNavNode;;Accelerator Pages;WaterstonesNavNode;AboutAcceleratorLink,DocumentationLink;AcceleratorNavNode
+#;HybrisNavNode;;Hybris Pages;WaterstonesNavNode;AboutHybrisLink,ContactUsLink;HybrisNavNode
+;FollowUsNavNode;;Follow Us Pages;WaterstonesNavNode;AgileCommerceBlogLink,LinkedInLink,FacebookLink,TwitterLink;FollowUsNavNode
+#waterstones books navigation node
+;WaterstonesBooksNavNode			;;Books supercategory navigation node	;WaterstonesNavNode			;WaterstonesBooksSupercategoryLink;WaterstonesBooksNavNode
+;WaterstonesBooksCategoriesNavNode	;;Books categories navigation node		;WaterstonesBooksNavNode	;WaterstonesBooks10017CategoryLink,WaterstonesBooks10002CategoryLink,WaterstonesBooks10024CategoryLink,WaterstonesBooks10000CategoryLink,WaterstonesBooks10028CategoryLink,WaterstonesBooks10006CategoryLink,WaterstonesBooks10021CategoryLink,WaterstonesBooks10007CategoryLink,WaterstonesBooks10015CategoryLink,WaterstonesBooks10008CategoryLink,WaterstonesBooks10029CategoryLink,WaterstonesBooks10005CategoryLink,WaterstonesBooks10016CategoryLink,WaterstonesBooks10014CategoryLink,WaterstonesBooks10009CategoryLink,WaterstonesBooks10011CategoryLink,WaterstonesBooks10025CategoryLink,WaterstonesBooks10004CategoryLink,WaterstonesBooks10010CategoryLink,WaterstonesBooks10003CategoryLink,WaterstonesBooks10018CategoryLink,WaterstonesBooks10027CategoryLink,WaterstonesBooks10026CategoryLink,WaterstonesBooks10012CategoryLink,WaterstonesBooks10020CategoryLink,WaterstonesBooks10023CategoryLink;WaterstonesBooksCategoriesNavNode
+;WaterstonesEbooksNavNode			;;eBooks supercategory navigation node	;WaterstonesNavNode			;WaterstonesEbooksSupercategoryLink;WaterstonesEbooksNavNode
+;WaterstonesEbooksCategoriesNavNode	;;eBooks categories navigation node		;WaterstonesEbooksNavNode	;WaterstonesEbooks10017CategoryLink,WaterstonesEbooks10002CategoryLink,WaterstonesEbooks10024CategoryLink,WaterstonesEbooks10000CategoryLink,WaterstonesEbooks10028CategoryLink,WaterstonesEbooks10006CategoryLink,WaterstonesEbooks10021CategoryLink,WaterstonesEbooks10007CategoryLink,WaterstonesEbooks10015CategoryLink,WaterstonesEbooks10008CategoryLink,WaterstonesEbooks10029CategoryLink,WaterstonesEbooks10005CategoryLink,WaterstonesEbooks10016CategoryLink,WaterstonesEbooks10014CategoryLink,WaterstonesEbooks10009CategoryLink,WaterstonesEbooks10011CategoryLink,WaterstonesEbooks10025CategoryLink,WaterstonesEbooks10004CategoryLink,WaterstonesEbooks10010CategoryLink,WaterstonesEbooks10003CategoryLink,WaterstonesEbooks10018CategoryLink,WaterstonesEbooks10027CategoryLink,WaterstonesEbooks10026CategoryLink,WaterstonesEbooks10012CategoryLink,WaterstonesEbooks10020CategoryLink,WaterstonesEbooks10023CategoryLink,WaterstonesEbooks10037CategoryLink;WaterstonesEbooksCategoriesNavNode
+;WaterstonesKindleNavNode			;;eReaders supercategories nav node		;WaterstonesNavNode			;WaterstonesKindleLink;WaterstonesKindleNavNode
+;WaterstonesKindleCategoriesNavNode;;eReaders categories navigation node	;WaterstonesKindleNavNode ;WaterstonesKindleKindleLink,WaterstonesKindleFireLink,WaterstonesKindleAccessoriesLink,WaterstonesKindleEBooksLink;WaterstonesKindleCategoriesNavNode
+;WaterstonesStationeryNavNode		;;Stationery and gifts supercategories	;WaterstonesNavNode			;WaterstonesStationeryLink;WaterstonesStationeryNavNode
+;WaterstonesStationeryCategoriesNavNode	;;Stationery and gifts rcategories	;WaterstonesStationeryNavNode;WaterstonesStationeryGiftIdeasLink,WaterstonesStationeryToysGamesLink,WaterstonesStationeryGeneralStationeryLink;WaterstonesStationeryCategoriesNavNode
+;WaterstonesStationeryCategoriesNavNode	;;Stationery and gifts rcategories	;WaterstonesStationeryNavNode;WaterstonesStationeryGiftIdeasLink,WaterstonesStationeryToysGamesLink,WaterstonesStationeryGeneralStationeryLink;WaterstonesStationeryCategoriesNavNode
+;WaterstonesCardNavNode				;;Waterstones Card supercategories		;WaterstonesNavNode			;WaterstonesCardsLink;WaterstonesCardNavNode
+;WaterstonesCategoriesCardNavNode	;;Waterstones Card categories			;WaterstonesCardNavNode		;WaterstonesCardsCardHomeLink,WaterstonesCardsMyCardAccountLink,WaterstonesCardsPointsOffersAccountLink,WaterstonesCardsCompetitionsLink,WaterstonesCardsReadAndReviewLink,WaterstonesCardsExclusiveExtrasLink,WaterstonesCardsCardNewsLink,WaterstonesCardsReadingGuidesLink,WaterstonesCardsRecipeCardsLink,WaterstonesCardsYourReviewsLink;WaterstonesCategoriesCardNavNode
+#footer navigation node
+;WaterstonesFooterNavNode			;;Footer Navigation node				;WaterstonesNavNode			;;WaterstonesFooterNavNode
+;WaterstonesCustomerServiceNavNode	;;Customer Service Navigation node		;WaterstonesFooterNavNode	;TrackingYourOrderLink,ReturningItemsLink,ContactUsLink,EReaderSupportLink,FreeDeliveryOffersLink,EBooksHelpLink,PrivacyPolicyLink,AccessibilityLink;WaterstonesCustomerServiceNavNode
+;WaterstonesAboutWaterstonesNavNode	;;About Waterstones Navigation node		;WaterstonesFooterNavNode	;AboutUsLink,CareersLink,WaterstonesMarketplaceLink,AffiliatesLink,OurShopsLink,IndependentPublishersLink,WorldBookNightLink,WaterstonesChildrenLaureateLink,WaterstonesLocalNostalgiaLink,CompetitionsLink,HatchardsLink,BrowsealoudLink;WaterstonesAboutWaterstonesNavNode
+;WaterstonesHomeFooterNavNode		;;Waterstones Home Navigation Node		;WaterstonesFooterNavNode	;footerWaterstonesLink;WaterstonesHomeFooterNavNode
+#horizontal footer navigation node
+;WaterstonesFooterHorizontalNavNode	;;Footer Horizontal Navigation node		;WaterstonesNavNode			;footerVeriSignLink,footerTwitterLink,footerFacebookLink,footerYouTubeLink,footerWaterstonesAppsLink;WaterstonesFooterHorizontalNavNode
+
+#header navigation node
+;WaterstonesHeaderNavNode			;;Header Navigation node				;WaterstonesNavNode			;NewsletterLink,HelpLink;WaterstonesHeaderNavNode
+
+# Navigation Bar Component
+INSERT_UPDATE NavigationBarComponent;$contentCV[unique=true];uid[unique=true];navigationNode(&nodeRef);dropDownLayout(code);styleClass
+#waterstones book navigation bar component
+;;WaterstonesBooksBarComponent;WaterstonesBooksNavNode;AUTO;categoriesStyle
+;;WaterstonesEbooksBarComponent;WaterstonesEbooksNavNode;AUTO;
+;;WaterstonesKindleBarComponent;WaterstonesKindleNavNode;AUTO
+;;WaterstonesStationeryBarComponent;WaterstonesStationeryNavNode;AUTO
+;;WaterstonesCardsBarComponent;WaterstonesCardNavNode;AUTO
+
+# Update CMS Footer Component with Nav Nodes
+INSERT_UPDATE FooterComponent;$contentCV[unique=true];uid[unique=true];navigationNodes(&nodeRef);horizontalNavigationNode(&nodeRef);waterstonesHomeNavigationNode(&nodeRef)
+#;;FooterComponent;WaterstonesAboutWaterstonesNavNode;WaterstonesFooterHorizontalNavNode;
+;;FooterComponent;WaterstonesCustomerServiceNavNode,WaterstonesAboutWaterstonesNavNode;WaterstonesFooterHorizontalNavNode;WaterstonesHomeFooterNavNode
+
+# Preview Image for use in the CMS Cockpit for special ContentPages
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];mime;realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite=true]
+;;accountPagePreview;text/png;AccountPage.png;$jarResourceCms/preview-images/waterstones/AccountPage.png
+;;addEditAddressPagePreview;text/png;AddEditAddressPage.png;$jarResourceCms/preview-images/waterstones/AddEditAddressPage.png
+;;addressBookPagePreview;text/png;AddressBook.png;$jarResourceCms/preview-images/waterstones/AddressBookPage.png
+;;cartPagePreview;text/png;CartPage.png;$jarResourceCms/preview-images/waterstones/CartPage.png
+;;checkoutLoginPagePreview;text/png;CheckoutLoginPage.png;$jarResourceCms/preview-images/waterstones/CheckoutLoginPage.png
+;;checkoutSummaryPagePreview;text/png;CheckoutSummaryPage.png;$jarResourceCms/preview-images/waterstones/CheckoutSummaryPage.png
+;;forgottenPasswordPagePreview;text/png;ForgottenPasswordPage.png;$jarResourceCms/preview-images/waterstones/ForgottenPasswordPage.png
+;;homepagePreview;text/png;Homepage.png;$jarResourceCms/preview-images/waterstones/Homepage.png
+;;loginPagePreview;text/png;LoginPage.png;$jarResourceCms/preview-images/waterstones/LoginPage.png
+;;notFoundPagePreview;text/png;NotFoundPage.png;$jarResourceCms/preview-images/waterstones/NotFoundPage.png
+;;orderConfirmationPagePreview;text/png;OrderConfirmationPage.png;$jarResourceCms/preview-images/waterstones/OrderConfirmationPage.png
+;;orderDetailsPagePreview;text/png;OrderDetailsPage.png;$jarResourceCms/preview-images/waterstones/OrderDetailsPage.png
+;;orderHistoryPagePreview;text/png;OrderHistoryPage.png;$jarResourceCms/preview-images/waterstones/OrderHistoryPage.png
+;;paymentDetailsPagePreview;text/png;PaymentDetailsPage.png;$jarResourceCms/preview-images/waterstones/PaymentDetailsPage.png
+;;productDetailsPagePreview;text/png;ProductDetailsPage.png;$jarResourceCms/preview-images/waterstones/ProductDetailsPage.png
+;;productListPagePreview;text/png;ProductListPage.png;$jarResourceCms/preview-images/waterstones/ProductListPage.png
+;;profilePagePreview;text/png;ProfilePage.png;$jarResourceCms/preview-images/waterstones/ProfilePage.png
+;;searchResultsEmptyPagePreview;text/png;SearchResultsEmptyPage.png;$jarResourceCms/preview-images/waterstones/SearchResultsEmptyPage.png
+;;searchResultsPagePreview;text/png;SearchResultsPage.png;$jarResourceCms/preview-images/waterstones/SearchResultsPage.png
+;;storefinderPagePreview;text/png;StoreFinderPage.png;$jarResourceCms/preview-images/waterstones/StoreFinderPage.png
+;;updateForgottenPasswordPagePreview;text/png;UpdateForgottenPasswordPage.png;$jarResourceCms/preview-images/waterstones/UpdateForgottenPasswordPage.png
+;;productGridPagePreview;text/png;ProductGridPage.png;$jarResourceCms/preview-images/waterstones/ProductGridPage.png
+;;defaultCategoryPagePreview;text/png;DefaultCategoryPage.png;$jarResourceCms/preview-images/waterstones/DefaultCategoryPage.png
+
+# Site-wide Homepage
+UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;homepage;homepagePreview
+
+# Functional Content Pages
+UPDATE ContentPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;checkoutSummaryPage;checkoutSummaryPagePreview
+;;orderConfirmationPage;orderConfirmationPagePreview
+;;cartPage;cartPagePreview
+;;search;searchResultsPagePreview
+;;account;accountPagePreview
+;;profile;profilePagePreview
+;;address-book;addressBookPagePreview
+;;add-edit-address;addEditAddressPagePreview
+;;payment-details;paymentDetailsPagePreview
+;;order;orderDetailsPagePreview
+;;orders;orderHistoryPagePreview
+;;storefinderPage;storefinderPagePreview
+;;checkout-login;checkoutLoginPagePreview
+;;login;loginPagePreview
+;;notFound;notFoundPagePreview
+;;searchEmpty;searchResultsEmptyPagePreview
+;;forgottenPassword;forgottenPasswordPagePreview
+;;updatePassword;updateForgottenPasswordPagePreview
+
+# Product Details Page
+UPDATE ProductPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;productDetails;productDetailsPagePreview
+
+# Category Pages
+UPDATE CategoryPage;$contentCV[unique=true];uid[unique=true];previewImage(code, $contentCV)
+;;productList;productListPagePreview
+;;productGrid;productGridPagePreview
+;;category;defaultCategoryPagePreview
+
+###### Waterstones Homepage ######
+
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText;&imageRef
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink
+;;NextDayDeliveryBanner;Next Day Delivery Banner;NextDayDeliveryBanner
+;;DebutNovels;Debut Novels 2011;DebutNovelsBanner
+
+INSERT_UPDATE BannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink
+
+INSERT_UPDATE RotatingImagesComponent;$contentCV[unique=true];uid[unique=true];name;banners(&componentRef);&componentRef
+;;WaterstonesHomepageCarouselComponent;Waterstones Homepage Carousel;;WaterstonesHomepageCarouselComponent
+
+INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$webproductCV);scroll(code);&componentRef
+;;WaterstonesHomepageProductCarouselComponent;Waterstones Homepage Product Carousel;;allVisible;WaterstonesHomepageProductCarouselComponent
+;;WaterstonesHomepagePromotionsCarouselComponent;Waterstones Homepage Promotions Carousel;;allVisible;WaterstonesHomepagePromotionsCarouselComponent
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section1Slot-Homepage;Section1 Slot for Homepage;true;
+;;Section2ASlot-Homepage;Section2A Slot for Homepage;true;
+;;Section2BSlot-Homepage;Section2B Slot for Homepage;true;
+;;Section2CSlot-Homepage;Section2C Slot for Homepage;true;WaterstonesHomepageCarouselComponent
+;;Section3Slot-Homepage;Section3 Slot for Homepage;true;DebutNovelsBanner
+;;Section4Slot-Homepage;Section4 Slot for Homepage;true;
+;;Section5Slot-Homepage;Section5 Slot for Homepage;true;NextDayDeliveryBanner
+;;WaterstonesPromotionsSlot				    ;Homepage Promotions Slot	;true;WaterstonesHomepageProductCarouselComponent,WaterstonesHomepagePromotionsCarouselComponent
+;;WaterstonesHomepageTopContentSlot         ;Homepage Banners Slot      ;true;DebutNovelsBanner
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='homepage'];contentSlot(uid,$contentCV)[unique=true]
+;;Section1-Homepage;Section1;;Section1Slot-Homepage
+;;Section2A-Homepage;Section2A;;Section2ASlot-Homepage
+;;Section2B-Homepage;Section2B;;Section2BSlot-Homepage
+;;Section2C-Homepage;Section2C;;Section2CSlot-Homepage
+;;Section3-Homepage;Section3;;WaterstonesPromotionsSlot
+;;Section4-Homepage;Section4;;Section4Slot-Homepage
+;;Section5-Homepage;Section5;;Section5Slot-Homepage
+;;TopContent-Homepage;TopContent;;WaterstonesHomepageTopContentSlot
+;;PromotedProducts-Homepage;PromotedProducts;;WaterstonesPromotedProductsSlot
+
+
+###### Waterstones Camera Accessories and Supplies Category Landing Page ######
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;BuyOnlineBanner;Buy Online Banner;BuyOnlineBanner
+
+
+
+###### Waterstones Search Results Page ######
+
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;Section2Slot-search;Section2 Slot for search;true;
+;;Section4Slot-search;Section4 Slot for search;true;
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='search'];contentSlot(uid,$contentCV)[unique=true]
+;;Section2-search;Section2;;Section2Slot-search
+;;Section4-search;Section4;;Section4Slot-search
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;NoSearchResultsParagraphComponent;No Search Results Paragraph Component;NoSearchResultsParagraphComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopContent-searchEmpty;Top Slot for searchEmpty;true;
+;;SideContent-searchEmpty;Side Slot for searchEmpty;true;
+;;MiddleContent-searchEmpty;Middle Slot for searchEmpty;true;NoSearchResultsParagraphComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='searchEmpty'];contentSlot(uid,$contentCV)[unique=true]
+;;Top-searchEmpty;TopContent;;TopContent-searchEmpty
+;;Side-searchEmpty;SideContent;;SideContent-searchEmpty
+;;Middle-searchEmpty;MiddleContent;;MiddleContent-searchEmpty
+
+###### Waterstones Cart Page ######
+
+INSERT_UPDATE SimpleBannerComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef;urlLink
+;;NextDayDeliveryBanner120;Next Day Delivery Banner (120);NextDayDeliveryBanner120;#
+;;HelpBanner;Help Banner;HelpBanner;#
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;EmptyCartParagraphComponent;Empty Cart Paragraph Component;EmptyCartParagraphComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TopContent-cartPage;Top Slot for cartPage;true;NextDayDeliveryBanner120
+;;SideContent-cartPage;Side Slot for cartPage;true;HelpBanner
+;;MiddleContent-cartPage;Middle Slot for cartPage;true;EmptyCartParagraphComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='cartPage'];contentSlot(uid,$contentCV)[unique=true]
+;;Top-cartPage;TopContent;;TopContent-cartPage
+;;Side-cartPage;SideContent;;SideContent-cartPage
+;;Middle-cartPage;MiddleContent;;MiddleContent-cartPage
+
+###### Waterstones Static Help Pages ######
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;TermsAndConditionsComponent;Terms And Conditions Component;TermsAndConditionsComponent
+;;ReturningItemsComponent;Returning Items Component;ReturningItemsComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;TermsAndConditionsSlot;Terms And Conditions Slot;true;TermsAndConditionsComponent
+;;ReturningItemsSlot;Returning Items Slot;true;ReturningItemsComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true];contentSlot(uid,$contentCV)[unique=true]
+;;TermsAndConditions-Homepage;Section2A;TermsAndConditionsPage;TermsAndConditionsSlot
+;;ReturningItemsSlot-Homepage;Section2A;ReturningItemsPage;ReturningItemsSlot
+
+###### Waterstones Checkout Login Page ######
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;SideContent-checkoutLogin;Side Slot for Checkout Login Page;true;HelpBanner
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='checkout-login'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-checkoutLogin;SideContent;;SideContent-checkoutLogin
+
+###### Waterstones Checkout Summary / Proceed to Checkout Page ######
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;SideContent-checkoutSummaryPage;Side Slot for checkoutSummaryPage;true;HelpBanner
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='checkoutSummaryPage'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-checkoutSummaryPage;SideContent;;SideContent-checkoutSummaryPage
+
+###### Waterstones Store Finder Page ######
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;SideContent-StoreFinderPage	;Side Slot for Store Finder Page;true;storeFinderIntroTextParagraph
+;;ForthcomingShopEventsSlot		;Forthcoming events	slot			;true;EventsCarouselForShopComponent
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='storefinderPage'];contentSlot(uid,$contentCV)[unique=true]
+;;Side-StoreFinderPage				;SideContent  		;;SideContent-StoreFinderPage
+
+INSERT_UPDATE ContentSlotForPage;$contentCV[unique=true];uid[unique=true];position[unique=true];page(uid,$contentCV)[unique=true][default='storedetails'];contentSlot(uid,$contentCV)[unique=true]
+;;ForthcomingEvents-StoreFinderPage ;ForthcomingEvents  ;;ForthcomingShopEventsSlot
+;;StoreDetailsPage					;TopContent-StoreFinderPage	;;TopContent-StoreDetailsPageSlot
+
+###### Waterstones Offers Page ######
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;offersFirstParagraph;Offers First Paragraph;offersFirstParagraph
+;;offersSecondParagraph;Offers Second Paragraph;offersSecondParagraph
+
+INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$webproductCV);scroll(code);&componentRef
+;;offersFirstCarouselComponent;Watersones Offers First Carousel;;allVisible;offersFirstCarouselComponent
+;;offersSecondCarouselComponent;Watersones Offers Second Carousel;;allVisible;offersSecondCarouselComponent
+;;offersThirdCarouselComponent;Watersones Offers Second Carousel;;allVisible;offersThirdCarouselComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;TopContent-WaterstonesOffersSlot;offersFirstParagraph,offersSecondParagraph,offersFirstCarouselComponent,offersSecondCarouselComponent,offersThirdCarouselComponent
+
+###### Waterstones Bestsellers Page ######
+###### empty 						######
+
+###### Waterstones Coming Soon Page ######
+
+INSERT_UPDATE CMSParagraphComponent;$contentCV[unique=true];uid[unique=true];name;&componentRef
+;;comingSoonIntroParagraph;Coming Soon Intro Paragraph;comingSoonIntroParagraph
+
+INSERT_UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;products(code,$webproductCV);scroll(code);&componentRef
+;;comingSoonFirstCarouselComponent;Waterstones Coming Soon First Carousel;;allVisible;comingSoonFirstCarouselComponent
+;;comingSoonSecondCarouselComponent;Waterstones Coming Soon Second Carousel;;allVisible;comingSoonSecondCarouselComponent
+
+INSERT_UPDATE FeaturedProductsComponent;$contentCV[unique=true];uid[unique=true];featuredProducts(code,$webproductCV);&componentRef
+;;comingSoonFeaturedProducts;;comingSoonFeaturedProducts
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];cmsComponents(&componentRef)
+;;TopContent-WaterstonesComingSoonSlot;comingSoonIntroParagraph,comingSoonFeaturedProducts,comingSoonFirstCarouselComponent,comingSoonSecondCarouselComponent
+
+
+
+#bestsellers and coming soon component 
+INSERT_UPDATE OrderedRankingListComponent;$contentCV[unique=true];uid[unique=true];name;numberOfItemsToDisplay;&componentRef
+;;BestsellersAndComingSoonComponent;Bestsellers and coming soon component;20;BestsellersAndComingSoonComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;WaterstonesChartsSlot;Waterstones Charts Slot;true;BestsellersAndComingSoonComponent
+
+INSERT_UPDATE ContextAwareProductCarouselComponent;$contentCV[unique=true];uid[unique=true];name;carouselType(code);numberOfItemsToDisplay;numberOfItemsForDrawing;&componentRef
+;;BestsellersContextAwareCarousel;Bestsellers product carousel;BESTSELLERS;10;20;BestsellersContextAwareCarousel
+;;ComingSoonContextAwareCarousel ;Coming soon product carousel;COMING_SOON;10;20;ComingSoonContextAwareCarousel
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;WaterstonesPromotedProductsSlot;Waterstones Promoted Products Slot;true;BestsellersContextAwareCarousel,ComingSoonContextAwareCarousel
+
+INSERT_UPDATE EventsCarouselComponent;$contentCV[unique=true];uid[unique=true];name;title;context(code);&componentRef
+;;EventsCarouselForProductComponent;Events Carousel for product details page;Events;PRODUCT;EventsCarouselForProductComponent
+;;EventsCarouselForShopComponent;Events Carousel for shop details page;Events;SHOP;EventsCarouselForShopComponent
+
+INSERT_UPDATE ContentSlot;$contentCV[unique=true];uid[unique=true];name;active;cmsComponents(&componentRef)
+;;EventsCarouselComponentSlot;Waterstones Events Carousel for product details page slot;true;EventsCarouselForProductComponent
+
+
+# Role T1
+UPDATE CMSLinkComponent;$contentCV[unique=true];uid[unique=true];userGroup(UserGroup.uid)
+;;WaterstonesEbooksSupercategoryLink;t1
+;;WaterstonesEbooksLink;t1  
+;;FreeDeliveryOffersLink;t1
+;;TrackingYourOrderLink;t1
+;;WaterstonesCardsMyCardAccountLink;t1
+;;WaterstonesCardsCardHomeLink;t1
+;;WaterstonesBooks10024CategoryLink;t1
+;;WaterstonesKindleEBooksLink;t1
+;;EBooksHelpLink;t1
+ 
+
+UPDATE ProductCarouselComponent;$contentCV[unique=true];uid[unique=true];userGroup(UserGroup.uid)
+;;booksellersRecommendabilityCarousel;t1

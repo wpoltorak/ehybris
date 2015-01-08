@@ -1,0 +1,16 @@
+# ImpEx for Events
+
+$customergroup=customergroup
+
+INSERT_UPDATE EventType;code[unique=true];
+;Talk;
+;Signing;
+;ReadingGroup;
+;ChildrenActivity;
+;Themed;
+;Exhibition;
+;LitLunchDinner;
+
+INSERT_UPDATE SearchRestriction;"code[unique=true,allownull=true]";"name";"active";"query";"restrictedType(code)";"principal(uid)";"generate"
+;"customer_events";"customer_events";"true";"{catalogVersion} IN ( ?session.catalogversions )";"Event";customergroup;"false"
+;"customer_author";"customer_author";"true";"{catalogVersion} IN ( ?session.catalogversions )";"Author";customergroup;"false"

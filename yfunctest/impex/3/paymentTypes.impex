@@ -1,0 +1,6 @@
+INSERT_UPDATE PaymentTypeInfo;type(code)[unique=true];enabled[default=true];currencies(isocode)
+;LOYALTYCARD;;
+;GIFTCARD;;GBP
+;EWALLET;;
+;VOUCHER;;
+;CREDITCARD;;

@@ -1,0 +1,12 @@
+# 
+# Import the Waterstones BaseStore
+#
+# ENGLISH LOCALIZATION
+#
+
+$lang=en
+
+$storeUid=waterstones
+
+UPDATE BaseStore;uid[unique=true];name[lang=$lang]
+;$storeUid;"Waterstones Store"

@@ -1,0 +1,26 @@
+#
+# Import Sample Customers
+# 
+$regulargroup=regulargroup
+$customergroup=customergroup
+$contentCatalog=apparel-deContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+
+# Media
+INSERT_UPDATE Media;$contentCV[unique=true];code[unique=true];realfilename;@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator];mime[default='image/jpg'];altText;folder(qualifier)[default='images']
+;;/images/theme/logo-hybris.png;logo-hybris.png;$siteResource/images/theme/logo-hybris.png;image/png;hybris Accelerator
+
+# CMS Mini Cart Component
+INSERT_UPDATE MiniCartComponent;$contentCV[unique=true];uid[unique=true];name;title[lang=de];&componentRef;totalDisplay(code);shownProductCount
+;;MiniCart;Mini Cart;Ihre Einkaufstasche;MiniCart;SUBTOTAL;3
+
+# Create Customer Group
+INSERT_UPDATE Usergroup;uid[unique=true];groups(uid)[mode=append]
+;$regulargroup;customergroup
+
+UPDATE Customer; uid[unique=true];defaultPaymentAddress( &addrID ); defaultShipmentAddress( &addrID )
+; customer; addr1 ; addr2
+ 
+INSERT Address; &addrID ; Town; owner( Customer.uid );
+; addr1 ; Singapore ; customer ;
+; addr2 ; "New York"; customer ;

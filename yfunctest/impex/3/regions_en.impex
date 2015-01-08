@@ -1,0 +1,43 @@
+$lang=en
+
+UPDATE MarketingRegion;isocode[unique=true];name[lang=$lang]
+;1;Northern Ireland;
+;2;North & West Scotland;
+;3;North East & Edinburgh;
+;4;North West & North Wales;
+;5;Yorkshire & Lincolnshire;
+;6;Greater Manchester & East Midlands;
+;7;West Midlands;
+;8;Southern Counties;
+;9;Wales & Cotswolds;
+;10;South West;
+;11;South Central;
+;12;West London;
+;13;Central London;
+;14;South East;
+;15;East Anglia;
+;16;The Home Counties & North London;
+;17;Republic of Ireland;
+;18;Europe;
+;19;Online;
+
+UPDATE OperationalRegion;isocode[unique=true];name[lang=$lang]
+;1;Northern Ireland;
+;2;North & West Scotland;
+;3;North East & Edinburgh;
+;4;North West & North Wales;
+;5;Yorkshire & Lincolnshire;
+;6;Greater Manchester & East Midlands;
+;7;West Midlands;
+;8;Southern Counties;
+;9;Wales & Cotswolds;
+;10;South West;
+;11;South Central;
+;12;West London;
+;13;Central London;
+;14;South East;
+;15;East Anglia;
+;16;The Home Counties & North London;
+;17;Republic of Ireland;
+;18;Europe;
+;19;Online;

@@ -1,0 +1,77 @@
+# ImpEx for Importing Media into Waterstones Store
+
+# Macros / Replacement Parameter definitions
+$catalogVersion=catalogversion(catalog(id[default=media]),version[default='Online'])[unique=true,default=media:Online]
+$media=@media[translator=de.hybris.platform.impex.jalo.media.MediaDataTranslator]
+$siteResource=jar:uk.co.eclipsegroup.initialdata.constants.WaterstonesInitialDataConstants&/waterstonesinitialdata/import/stores
+$medias=medias(code, $catalogVersion)
+
+INSERT_UPDATE MediaFormat;qualifier[unique=true]
+;300Wx300H;
+;100Wx100H;
+
+# Create medias
+INSERT_UPDATE Media;mediaFormat(qualifier);code[unique=true];$media;mime[default='image/jpg'];$catalogVersion;folder(qualifier)
+;300Wx300H;/300Wx300H_055;$siteResource/images/055_m.jpg;;;images
+;100Wx100H;/100Wx100H_055;$siteResource/images/055_s.jpg;;;images
+;300Wx300H;/300Wx300H_077;$siteResource/images/077_m.jpg;;;images
+;100Wx100H;/100Wx100H_077;$siteResource/images/077_s.jpg;;;images
+;300Wx300H;/300Wx300H_098;$siteResource/images/098_m.jpg;;;images
+;100Wx100H;/100Wx100H_098;$siteResource/images/098_s.jpg;;;images
+;300Wx300H;/300Wx300H_111;$siteResource/images/111_m.jpg;;;images
+;100Wx100H;/100Wx100H_111;$siteResource/images/111_s.jpg;;;images
+;300Wx300H;/300Wx300H_206;$siteResource/images/206_m.jpg;;;images
+;100Wx100H;/100Wx100H_206;$siteResource/images/206_s.jpg;;;images
+;300Wx300H;/300Wx300H_290;$siteResource/images/290_m.jpg;;;images
+;100Wx100H;/100Wx100H_290;$siteResource/images/290_s.jpg;;;images
+;300Wx300H;/300Wx300H_293;$siteResource/images/293_m.jpg;;;images
+;100Wx100H;/100Wx100H_293;$siteResource/images/293_s.jpg;;;images
+;300Wx300H;/300Wx300H_358;$siteResource/images/358_m.jpg;;;images
+;100Wx100H;/100Wx100H_358;$siteResource/images/358_s.jpg;;;images
+;300Wx300H;/300Wx300H_366;$siteResource/images/366_m.jpg;;;images
+;100Wx100H;/100Wx100H_366;$siteResource/images/366_s.jpg;;;images
+;300Wx300H;/300Wx300H_426;$siteResource/images/426_m.jpg;;;images
+;100Wx100H;/100Wx100H_426;$siteResource/images/426_s.jpg;;;images
+;300Wx300H;/300Wx300H_685;$siteResource/images/685_m.jpg;;;images
+;100Wx100H;/100Wx100H_685;$siteResource/images/685_s.jpg;;;images
+;300Wx300H;/300Wx300H_698;$siteResource/images/698_m.jpg;;;images
+;100Wx100H;/100Wx100H_698;$siteResource/images/698_s.jpg;;;images
+;300Wx300H;/300Wx300H_783;$siteResource/images/783_m.jpg;;;images
+;100Wx100H;/100Wx100H_783;$siteResource/images/783_s.jpg;;;images
+
+INSERT_UPDATE MediaContainer;qualifier[unique=true];$medias;$catalogVersion
+;shop_055;/300Wx300H_055,/100Wx100H_055;
+;shop_077;/300Wx300H_077,/100Wx100H_077;
+;shop_098;/300Wx300H_098,/100Wx100H_098;
+;shop_111;/300Wx300H_111,/100Wx100H_111;
+;shop_206;/300Wx300H_206,/100Wx100H_206;
+;shop_290;/300Wx300H_290,/100Wx100H_290;
+;shop_293;/300Wx300H_293,/100Wx100H_293;
+;shop_358;/300Wx300H_358,/100Wx100H_358;
+;shop_366;/300Wx300H_366,/100Wx100H_366;
+;shop_426;/300Wx300H_426,/100Wx100H_426;
+;shop_685;/300Wx300H_685,/100Wx100H_685;
+;shop_698;/300Wx300H_698,/100Wx100H_698;
+;shop_783;/300Wx300H_783,/100Wx100H_783;
+
+$catalogVersion=catalogversion(catalog(id[default=media]),version[default='Online'])[unique=true,default=media:Online]
+$storeImage=storeImage(qualifier, $catalogVersion)
+
+
+
+INSERT_UPDATE PointOfService;name[unique=true];shopName;machineName;type(code);$storeImage
+;55;Waterstone's Stirling Thistle Centre;STORE2;STORE;shop_055
+;77;Waterstone's Aberdeen Langstane;STORE1;STORE;shop_077
+;98;Waterstone's Trafalgar Square;STORE2;STORE;shop_098
+;111;Waterstone's Sutton;STORE2;STORE;shop_111
+;206;Waterstone's Stockport Merseyway;STORE2;STORE;shop_206
+;290;Waterstone's Telford;STORE1;STORE;shop_290
+;293;Waterstone's Southampton West Quay;STORE1;STORE;shop_293
+;358;Waterstone's Preston;STORE1;STORE;shop_358
+;366;Waterstone's Stratford-Upon-Avon;STORE2;STORE;shop_366
+;426;Waterstone's Thanet;STORE1;STORE;shop_426
+;685;Waterstone's Tenterden;STORE1;STORE;shop_685
+;698;Waterstone's St Albans;STORE2;STORE;shop_698
+;783;Waterstone's Oxford Street Plaza;STORE1;STORE;shop_783
+
+

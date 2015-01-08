@@ -1,0 +1,5 @@
+#
+# Import Sample CS Cockpit User
+# 
+INSERT_UPDATE Employee;UID[unique=true];password;description;name;groups(uid);sessionLanguage(isocode);sessionCurrency(isocode)
+;csagent;1234;"Customer service agent. Can edit order and customer data. Can read product data.";"Customer Service Agent";csagentgroup;en;EUR
