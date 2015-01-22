@@ -6,12 +6,9 @@ import java.util.regex.Pattern;
 
 public class DefaultColumnDescription implements ColumnDescription {
 
-    //    private final TypeDescription type;
     private final TypeDescription owner;
     private final ColumnDescription parent;
     private String documentID;
-    private boolean documentIDReference;
-    private boolean documentIDDefinition;
 
     private String refRegex;
     private final List<ColumnDescription> children = new ArrayList<>();
@@ -69,22 +66,6 @@ public class DefaultColumnDescription implements ColumnDescription {
 
     public boolean isEmpty() {
         return owner == null;
-    }
-
-    public boolean isDocumentIDReferrence() {
-        return documentIDReference;
-    }
-
-    public void setDocumentIDReference(final boolean documentIDReference) {
-        this.documentIDReference = documentIDReference;
-    }
-
-    public boolean isDocumentIDDefinition() {
-        return documentIDDefinition;
-    }
-
-    public void setDocumentIDDefinition(final boolean documentIDDefinition) {
-        this.documentIDDefinition = documentIDDefinition;
     }
 
     private Pattern getRegex() {

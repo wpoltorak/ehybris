@@ -117,7 +117,7 @@ public class DefaultImpexModel implements ImpexModel {
             for (final Entry<Token, TypeDescription> reftype : entry.getValue().entrySet()) {
                 if (type == null) {
                     addProblem(reftype.getKey(), Type.InvalidDocumentID);
-                } else if (!type.equals(reftype.getValue()) && !reftype.getValue().isParentOf(type.getName())) {
+                } else if (!type.equals(reftype.getValue()) && !type.isChildOf(reftype.getValue().getName())) {
                     addProblem(reftype.getKey(), Type.InvalidDocumentIDTypeHierarchy);
                 }
             }

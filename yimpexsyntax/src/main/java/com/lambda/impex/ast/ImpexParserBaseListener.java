@@ -238,6 +238,19 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMacrorefAttribute(@NotNull ImpexParser.MacrorefAttributeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMacrorefAttribute(@NotNull ImpexParser.MacrorefAttributeContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAttributeModifier(@NotNull ImpexParser.AttributeModifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -303,19 +316,6 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAttributeName(@NotNull ImpexParser.AttributeNameContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAttributeName(@NotNull ImpexParser.AttributeNameContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterRecord(@NotNull ImpexParser.RecordContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -375,19 +375,6 @@ public class ImpexParserBaseListener implements ImpexParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSpecialAttribute(@NotNull ImpexParser.SpecialAttributeContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAttributeSubtype(@NotNull ImpexParser.AttributeSubtypeContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAttributeSubtype(@NotNull ImpexParser.AttributeSubtypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

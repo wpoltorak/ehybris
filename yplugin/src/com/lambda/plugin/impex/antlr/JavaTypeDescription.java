@@ -1,8 +1,6 @@
 package com.lambda.plugin.impex.antlr;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,12 +21,12 @@ public class JavaTypeDescription implements TypeDescription {
     private boolean eCommerce;
     private boolean exists;
     private String name;
-    private Object target;
+    private IType target;
 
-    private final List<String> children = new ArrayList<>();
+    private final List<String> parents = new ArrayList<>();
 
     private final Map<String, String> fields = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    private static final Pattern eCommercePattern = Pattern.compile("de\\.hybris\\.platform.*\\.jalo.*");
+    private static final Pattern eCommercePattern = Pattern.compile("de\\.hybris\\.platform.*\\.model.*");
 
     @Override
     public boolean isAbstract() {
@@ -46,8 +44,8 @@ public class JavaTypeDescription implements TypeDescription {
     }
 
     @Override
-    public boolean isParentOf(String subtype) {
-        return children.contains(subtype);
+    public boolean isChildOf(String supertype) {
+        return parents.contains(supertype);
     }
 
     @Override
@@ -77,7 +75,7 @@ public class JavaTypeDescription implements TypeDescription {
 
     @Override
     public boolean sameAs(String name) {
-        return name.equals(getName());
+        return name.equalsIgnoreCase(getName());
     }
 
     @Override
@@ -93,37 +91,16 @@ public class JavaTypeDescription implements TypeDescription {
         return name.hashCode();
     }
 
+    void addParent(String typename) {
+        parents.add(typename);
+    }
+
     void addField(String name, String type) {
         fields.put(name, type);
     }
 
     void addFields(Map<String, String> fields) {
         this.fields.putAll(fields);
-    }
-
-    /**
-     * Creates type description based on the given type hierarchy This method assumes that base type is the first
-     * element in the given collection
-     * 
-     * @param typehierarchy
-     * @param fieldCollector
-     * @param b
-     * @return
-     */
-    public static final JavaTypeDescription fromTypeHierarchy(Collection<IType> typehierarchy, boolean isCollection,
-            JavaFieldCollector fieldCollector) {
-        if (typehierarchy.isEmpty()) {
-            return fromType(null, isCollection, fieldCollector);
-        }
-
-        Iterator<IType> iterator = typehierarchy.iterator();
-        JavaTypeDescription desc = fromType(iterator.next(), isCollection, fieldCollector);
-
-        while (iterator.hasNext()) {
-            IType subtype = iterator.next();
-            desc.children.add(subtype.getElementName());
-        }
-        return desc;
     }
 
     /**
@@ -147,7 +124,7 @@ public class JavaTypeDescription implements TypeDescription {
         desc.name = type.getElementName();
         desc.target = type;
         if (desc.eCommerce) {
-            fieldCollector.addFields(desc, type);
+            fieldCollector.addFieldsAndSupertypes(desc, type);
         }
         return desc;
     }

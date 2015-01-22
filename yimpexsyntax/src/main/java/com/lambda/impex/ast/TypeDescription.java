@@ -10,7 +10,7 @@ public interface TypeDescription {
 
     boolean exists();
 
-    boolean isParentOf(String subtype);
+    boolean isChildOf(String supertype);
 
     boolean containsField(String fieldName);
 

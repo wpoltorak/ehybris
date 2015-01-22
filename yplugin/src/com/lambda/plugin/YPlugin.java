@@ -305,8 +305,8 @@ public class YPlugin extends AbstractUIPlugin {
             try {
                 String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
                 IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-                IType type = project.findType("de.hybris.platform.jalo.Item");
-                scope = SearchEngine.createStrictHierarchyScope(null, type, true, true, null);
+                IType type = project.findType("de.hybris.platform.core.model.ItemModel");
+                scope = SearchEngine.createStrictHierarchyScope(project, type, true, true, null);
             } finally {
                 millis = System.currentTimeMillis() - millis;
                 // int seconds = (int) (millis / 1000) % 60 ;

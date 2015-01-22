@@ -20,39 +20,42 @@ public class JavaFieldCollector {
     JavaFieldCollector() {
     }
 
-    private static String returnType(IMethod method) {
-        try {
-            String signature = method.getReturnType();
-            return Signature.getSignatureQualifier(signature) + "." + Signature.getSignatureSimpleName(signature);
-        } catch (JavaModelException e) {
-            // ok
-        }
-        return null;
+    private static String type(IMethod method) {
+        String signature = method.getParameterTypes()[0];
+        return Signature.toString(signature);
     }
+
+    // TODO load AbstractItemModel & ItemModel to cache at startup and don't load all supertypes but just
 
     private static IType[] getSupertypes(final IType type) throws CoreException {
         return type.newSupertypeHierarchy(new NullProgressMonitor()).getAllSuperclasses(type);
     }
 
-    public void addFields(JavaTypeDescription desc, IType type) {
+    public void addFieldsAndSupertypes(JavaTypeDescription desc, IType type) {
         try {
             String typename = type.getElementName();
+            desc.addParent(typename);
             if (cache.containsKey(typename)) {
                 desc.addFields(cache.get(typename));
             }
-
-            IType[] supertypeOf = getSupertypes(type);
             Map<String, String> cachemap = new HashMap<>();
+            cachemap.putAll(addFieldsInternal(desc, type));
+            IType[] supertypeOf = getSupertypes(type);
             for (IType supertype : supertypeOf) {
-                if (supertype.getElementName().startsWith("Generated") || supertype.getElementName().equals("Item")) {
-                    cachemap.putAll(addFieldsInternal(desc, supertype));
+                if (skip(supertype)) {
+                    continue;
                 }
+                cachemap.putAll(addFieldsInternal(desc, supertype));
             }
             cache.put(typename, cachemap);
         } catch (CoreException e) {
             // ok, we don't care
             YPlugin.logError(e);
         }
+    }
+
+    private boolean skip(IType supertype) {
+        return "java.lang.Object".equals(supertype.getFullyQualifiedName());
     }
 
     private Map<String, String> addFieldsInternal(JavaTypeDescription desc, IType type) throws JavaModelException {
@@ -67,13 +70,12 @@ public class JavaFieldCollector {
         try {
             IMethod[] allMethods = type.getMethods();
             for (IMethod method : allMethods) {
-                if (method.getParameterTypes().length == 0 && isPublic(method)
-                        && (method.getElementName().startsWith("get") || method.getElementName().startsWith("is"))) {
+                if (isPublic(method) && method.getElementName().startsWith("set")
+                        && method.getParameterTypes().length == 1) {
                     String name = method.getElementName();
-                    // getXxx or isXxx
-                    int prefix = name.startsWith("get") ? 3 : 2;
-                    name = (Character.toLowerCase(name.charAt(prefix)) + name.substring(prefix + 1)).intern();
-                    String returntypename = returnType(method);
+                    // setXxx
+                    name = (Character.toLowerCase(name.charAt(3)) + name.substring(4)).intern();
+                    String returntypename = type(method);
                     if (returntypename != null) {
                         desc.addField(name, returntypename);
                         cachemap.put(name, returntypename);

@@ -18,7 +18,7 @@ public class TypeSepcificationTest {
 
     /**
      * Error if base type couldn't be found
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -41,7 +41,7 @@ public class TypeSepcificationTest {
 
     /**
      * If type is not abstract there is no error reported for rows without type specification
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -54,7 +54,6 @@ public class TypeSepcificationTest {
         when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.FALSE);
-        when(desc.isParentOf("Customer")).thenReturn(Boolean.TRUE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
         when(desc.getReturnType("uid")).thenReturn("ChildType");
 
@@ -64,7 +63,7 @@ public class TypeSepcificationTest {
 
     /**
      * If type is abstract there is an error reported for each row without type specification
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -77,7 +76,6 @@ public class TypeSepcificationTest {
         when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.TRUE);
-        when(desc.isParentOf("Customer")).thenReturn(Boolean.TRUE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
         when(desc.getReturnType("uid")).thenReturn("ChildType");
 
@@ -88,7 +86,7 @@ public class TypeSepcificationTest {
 
     /**
      * For each subtype that is not a child of the base type an error is reported
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -101,7 +99,6 @@ public class TypeSepcificationTest {
         when(finder.findType("ChildType")).thenReturn(childdesc);
         when(desc.exists()).thenReturn(Boolean.TRUE);
         when(desc.isAbstract()).thenReturn(Boolean.FALSE);
-        when(desc.isParentOf("Customer")).thenReturn(Boolean.FALSE);
         when(desc.containsField("uid")).thenReturn(Boolean.TRUE);
         when(desc.getReturnType("uid")).thenReturn("ChildType");
 

@@ -19,7 +19,7 @@ public class AttributeTest {
 
     /**
      * Error if attribute couldn't be found
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -126,7 +126,6 @@ public class AttributeTest {
         when(ownerType.exists()).thenReturn(true);
         when(codeType.exists()).thenReturn(true);
         when(abstractOrderType.exists()).thenReturn(true);
-        when(ownerType.isParentOf("AbstractOrder")).thenReturn(true);
 
         final DefaultImpexModel model = init("/attribute/AttributeTest2.impex", finder);
 

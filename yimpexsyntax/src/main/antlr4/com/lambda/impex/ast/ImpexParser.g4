@@ -48,15 +48,24 @@ documentIdRefField
 ////////////////////// ATTRIBUTES ////////////////////////////////
 
 attribute
-        : specialAttribute | subtypeAttribute | documentIdReference | documentIdDefinition | simpleAttribute | emptyAttribute
-        ;
-
-documentIdReference
-        : simpleAttributeName LParenthesis DocumentID RParenthesis attributeModifierAssignment*
+        : documentIdReference 
+        | documentIdDefinition 
+        | simpleAttribute 
+        | specialAttribute 
+        | macrorefAttribute 
+        | emptyAttribute
         ;
 
 documentIdDefinition
         : DocumentID
+        ;
+        
+documentIdReference
+        : simpleAttributeName LParenthesis DocumentID RParenthesis attributeModifierAssignment*
+        ;
+
+macrorefAttribute
+        : macroref attributeModifierAssignment*
         ;
         
 emptyAttribute
@@ -66,37 +75,35 @@ specialAttribute
         : SpecialAttribute attributeModifierAssignment+
         ;
 
-attributeSubtype
-        : attributeName Dot
-        ;
-
-subtypeAttributeName
-        : attributeSubtype attributeName (Or attributeSubtype attributeName)*
-        ;
-
-attributeName
-        : macroref | Identifier
+simpleAttribute
+        : simpleAttributeName (LParenthesis  subtypeAttribute ((Comma | Or) subtypeAttribute)* RParenthesis )? attributeModifierAssignment*
         ;
 
 simpleAttributeName
-        : attributeName
+        : Identifier
         ;
 
 subtypeAttribute
-        : simpleAttributeName LParenthesis subtypeAttributeName RParenthesis attributeModifierAssignment*
+        : macroref attributeModifierAssignment*
+        | subtypeAttributeName (LParenthesis  subtypeAttribute ((Comma | Or) subtypeAttribute)* RParenthesis )? attributeModifierAssignment*
         ;
 
-simpleAttribute
-        : simpleAttributeName (LParenthesis  simpleAttribute (Comma simpleAttribute)* RParenthesis )? attributeModifierAssignment*
+subtypeAttributeName
+        : (type=Identifier Dot)? name=Identifier
         ;
 
 attributeModifierAssignment
-        : (attributeModifier Equals modifierValue?) | (unknownModifier Equals? modifierValue?)
+        : (attributeModifier Equals modifierValue?)
+        | (unknownModifier Equals? modifierValue?)
         ;
 
 attributeModifier
-        : BooleanAttributeModifier | IntAttributeModifier | DateFormatAttributeModifier | NumberFormatAttributeModifier 
-        | ClassAttributeModifier | TextAttributeModifier;
+        : BooleanAttributeModifier 
+        | IntAttributeModifier 
+        | DateFormatAttributeModifier 
+        | NumberFormatAttributeModifier 
+        | ClassAttributeModifier 
+        | TextAttributeModifier;
 
 unknownModifier
         : (UnknownModifier | macroref)+
@@ -107,7 +114,8 @@ modifierValue
         ;
 
 headerTypeName
-        : Type | macroref
+        : Type 
+        | macroref
         ;
 
 macro

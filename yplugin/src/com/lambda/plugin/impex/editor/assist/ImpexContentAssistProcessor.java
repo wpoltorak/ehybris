@@ -70,7 +70,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
                     @Override
                     public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        if (!match.getSimpleTypeName().startsWith("Generated")) {
+                        if (!match.getSimpleTypeName().startsWith("Mock")) {
                             result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
                         }
                     }
@@ -81,10 +81,11 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 // during plugin startup?
                 IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
                 if (scope != null) {
-                    engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
-                            qualifier.toCharArray(), SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH,
-                            IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
-                            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
+                    engine.searchAllTypeNames("de.hybris.platform*.model*".toCharArray(),
+                            SearchPattern.R_PATTERN_MATCH, qualifier.toCharArray(), SearchPattern.R_PREFIX_MATCH
+                                    | SearchPattern.R_CAMELCASE_MATCH, IJavaSearchConstants.CLASS, scope,
+                            nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+                            new NullProgressMonitor());
                 }
                 break;
             }

@@ -161,9 +161,6 @@
          name="%extension.name.0"
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="com.lambda.plugin.preferences.PreferenceInitializer">
-      </initializer>
-      <initializer
             class="com.lambda.plugin.impex.preferences.PreferenceInitializer">
       </initializer>
    </extension>

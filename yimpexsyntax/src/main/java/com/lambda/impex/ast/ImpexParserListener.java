@@ -196,6 +196,17 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitDocumentIdDefinition(@NotNull ImpexParser.DocumentIdDefinitionContext ctx);
 
 	/**
+	 * Enter a parse tree produced by {@link ImpexParser#macrorefAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void enterMacrorefAttribute(@NotNull ImpexParser.MacrorefAttributeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ImpexParser#macrorefAttribute}.
+	 * @param ctx the parse tree
+	 */
+	void exitMacrorefAttribute(@NotNull ImpexParser.MacrorefAttributeContext ctx);
+
+	/**
 	 * Enter a parse tree produced by {@link ImpexParser#attributeModifier}.
 	 * @param ctx the parse tree
 	 */
@@ -251,17 +262,6 @@ public interface ImpexParserListener extends ParseTreeListener {
 	void exitField(@NotNull ImpexParser.FieldContext ctx);
 
 	/**
-	 * Enter a parse tree produced by {@link ImpexParser#attributeName}.
-	 * @param ctx the parse tree
-	 */
-	void enterAttributeName(@NotNull ImpexParser.AttributeNameContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ImpexParser#attributeName}.
-	 * @param ctx the parse tree
-	 */
-	void exitAttributeName(@NotNull ImpexParser.AttributeNameContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link ImpexParser#record}.
 	 * @param ctx the parse tree
 	 */
@@ -315,15 +315,4 @@ public interface ImpexParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSpecialAttribute(@NotNull ImpexParser.SpecialAttributeContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link ImpexParser#attributeSubtype}.
-	 * @param ctx the parse tree
-	 */
-	void enterAttributeSubtype(@NotNull ImpexParser.AttributeSubtypeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ImpexParser#attributeSubtype}.
-	 * @param ctx the parse tree
-	 */
-	void exitAttributeSubtype(@NotNull ImpexParser.AttributeSubtypeContext ctx);
 }

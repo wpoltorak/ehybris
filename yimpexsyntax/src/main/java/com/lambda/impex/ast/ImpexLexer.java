@@ -87,7 +87,7 @@ public class ImpexLexer extends Lexer {
 		/* last type from non Token.HIDDEN_CHANNEL token */
 	    private int lastTokenType = 0;
 	    private boolean insideQuotedAttribute = false;
-	    private List<Integer> columnTypes = null;
+	    private List<Integer> columnTypes = new ArrayList<>();
 	    private int columnIndex = -1;
 	    private boolean isDocumentIdReference;
 	    
@@ -117,7 +117,7 @@ public class ImpexLexer extends Lexer {
 	    @Override
 	    public void pushMode(int m) {
 	        if (m == type) {
-	        	columnTypes = new ArrayList<>();
+	        	columnTypes.clear();
 	        } else if (m == record){
 	    		columnIndex = -1;
 	    	} else if (m == field){
