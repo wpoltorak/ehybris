@@ -11,12 +11,11 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.MacroContext;
 import com.lambda.impex.ast.ImpexParser.MacrorefContext;
-import com.lambda.plugin.impex.editor.ImpexDocument;
 
 public class MacroOccurrencesFinder extends AbstractOccurrencesFinderAdapter implements OccurrencesFinder {
 
-    public MacroOccurrencesFinder(ImpexDocument document, int offset) {
-        super(document, offset);
+    public MacroOccurrencesFinder(int offset) {
+        super(offset);
     }
 
     private final Map<Token, List<Token>> macrodef2Macrorefs = new HashMap<>();

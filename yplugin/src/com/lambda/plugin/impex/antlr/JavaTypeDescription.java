@@ -13,12 +13,14 @@ import org.eclipse.jdt.core.JavaModelException;
 
 import com.lambda.impex.ast.TypeDescription;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.antlr.JavaFieldCollector.Collected;
 
 public class JavaTypeDescription implements TypeDescription {
 
     private boolean isAbstract;
     private boolean isCollection;
-    private boolean eCommerce;
+    private boolean isEnum;
+    private boolean isDataModel;
     private boolean exists;
     private String name;
     private IType target;
@@ -27,6 +29,7 @@ public class JavaTypeDescription implements TypeDescription {
 
     private final Map<String, String> fields = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     private static final Pattern eCommercePattern = Pattern.compile("de\\.hybris\\.platform.*\\.model.*");
+    private static final Pattern eCommerceEnumPattern = Pattern.compile("de\\.hybris\\.platform.*\\.enums.*");
 
     @Override
     public boolean isAbstract() {
@@ -41,6 +44,16 @@ public class JavaTypeDescription implements TypeDescription {
     @Override
     public boolean isCollection() {
         return isCollection;
+    }
+
+    @Override
+    public boolean isEnum() {
+        return isEnum;
+    }
+
+    @Override
+    public boolean isDataModel() {
+        return isDataModel;
     }
 
     @Override
@@ -69,11 +82,6 @@ public class JavaTypeDescription implements TypeDescription {
     }
 
     @Override
-    public boolean iseCommerce() {
-        return eCommerce;
-    }
-
-    @Override
     public boolean sameAs(String name) {
         return name.equalsIgnoreCase(getName());
     }
@@ -99,8 +107,9 @@ public class JavaTypeDescription implements TypeDescription {
         fields.put(name, type);
     }
 
-    void addFields(Map<String, String> fields) {
-        this.fields.putAll(fields);
+    void addElements(Collected collected) {
+        parents.addAll(collected.superClasses);
+        fields.putAll(collected.fields);
     }
 
     /**
@@ -120,10 +129,12 @@ public class JavaTypeDescription implements TypeDescription {
         desc.exists = true;
         desc.isAbstract = isAbstract(type);
         desc.isCollection = isCollection;
-        desc.eCommerce = iseCommerceType(type);
+        desc.isDataModel = isDataModel(type);
+        // desc.isJaloModel = isJaloModel(type);
+        desc.isEnum = isEnum(type);
         desc.name = type.getElementName();
         desc.target = type;
-        if (desc.eCommerce) {
+        if (desc.isDataModel) {
             fieldCollector.addFieldsAndSupertypes(desc, type);
         }
         return desc;
@@ -145,7 +156,8 @@ public class JavaTypeDescription implements TypeDescription {
         desc.exists = true;
         desc.isAbstract = false;
         desc.isCollection = isCollection;
-        desc.eCommerce = iseCommerceType(fullTypeName);
+        desc.isDataModel = isDataModel(fullTypeName);
+        desc.isEnum = isEnum(fullTypeName);
         desc.name = fullTypeName;
         return desc;
     }
@@ -160,12 +172,27 @@ public class JavaTypeDescription implements TypeDescription {
         return false;
     }
 
-    public static boolean iseCommerceType(IType type) {
-        return iseCommerceType(type.getFullyQualifiedName());
+    public static boolean isDataModel(IType type) {
+        return isDataModel(type.getFullyQualifiedName());
     }
 
-    public static boolean iseCommerceType(String typename) {
+    public static boolean isDataModel(String typename) {
+        if (typename == null) {
+            return false;
+        }
         Matcher m = eCommercePattern.matcher(typename);
+        return m.matches();
+    }
+
+    public static boolean isEnum(IType type) {
+        return isEnum(type.getFullyQualifiedName());
+    }
+
+    public static boolean isEnum(String typename) {
+        if (typename == null) {
+            return false;
+        }
+        Matcher m = eCommerceEnumPattern.matcher(typename);
         return m.matches();
     }
 }

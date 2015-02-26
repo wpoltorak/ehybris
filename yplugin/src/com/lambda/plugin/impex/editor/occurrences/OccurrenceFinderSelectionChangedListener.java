@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -119,11 +120,16 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         if (selection == null || model == null || sourceViewer == null) {
             return;
         }
+
         ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
+
+        ParseTree parseTree = document.getParseTree();
+        if (parseTree == null) {
+            return;
+        }
         OccurrencesFinder finder = new OccurrencesFinderFactory(document, selection.getOffset())
                 .createOccurrencesFinder();
-
-        List<Position> positions = finder.findOccurrences();
+        List<Position> positions = finder.findOccurrences(parseTree);
         if (positions.isEmpty()) {
             if (!editor.isStickyOccurrences()) {
                 removeOccurrenceAnnotations();

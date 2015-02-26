@@ -8,12 +8,11 @@ import java.util.Map;
 import org.antlr.v4.runtime.Token;
 
 import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
-import com.lambda.plugin.impex.editor.ImpexDocument;
 
 public class TypeOccurrencesFinder extends AbstractOccurrencesFinderAdapter implements OccurrencesFinder {
 
-    public TypeOccurrencesFinder(ImpexDocument document, int offset) {
-        super(document, offset);
+    public TypeOccurrencesFinder(int offset) {
+        super(offset);
     }
 
     private final Map<String, List<Token>> name2Tokens = new HashMap<>();

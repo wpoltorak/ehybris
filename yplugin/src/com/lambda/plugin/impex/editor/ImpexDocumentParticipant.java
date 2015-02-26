@@ -68,9 +68,10 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
         @Override
         public IRegion documentChanged2(DocumentEvent e) {
             ensureCorrectDocument(e);
-            IRegion updateStructure = updateStructure(e);
+            System.out.println("ImpexPartitioner documentChanged2 - reparse tokens");
+            // IRegion updateStructure = updateStructure(e);
             IRegion region = super.documentChanged2(e);
-            // printPartitions(fDocument, e.getOffset(), e.getLength());
+            printPartitions(fDocument, e.getOffset(), e.getLength());
             return region;
         }
 

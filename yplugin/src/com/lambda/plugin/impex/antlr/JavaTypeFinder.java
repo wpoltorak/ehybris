@@ -29,14 +29,26 @@ import com.lambda.plugin.core.IPlatformInstallation;
 
 public class JavaTypeFinder implements TypeFinder {
 
+    private static final Pattern GENERIC_CLASS = Pattern.compile(".*<(([a-zA-Z0-9\\.\\$]+))>$");
     private final Map<String, IType> typeCache = new HashMap<>();
     private final JavaFieldCollector fieldCollector = new JavaFieldCollector();
+    private IJavaSearchScope platformScope;
+    private IJavaSearchScope workspaceScope;
+    private IJavaProject project;
+    private final Map<String, String> jaloClasses = new HashMap<>();
+    {
+        jaloClasses.put("GenericItem", "de.hybris.platform.jalo");
+    }
 
     public JavaTypeFinder() {
     }
 
     @Override
     public TypeDescription findBySimpleName(String typename) {
+        if (jaloClasses.containsKey(typename)) {
+            IType type = getType(typename, jaloClasses.get(typename), true);
+            return JavaTypeDescription.fromType(type, false, fieldCollector);
+        }
         IType type = getType(typename + "Model");
         return JavaTypeDescription.fromType(type, false, fieldCollector);
     }
@@ -44,17 +56,14 @@ public class JavaTypeFinder implements TypeFinder {
     @Override
     public TypeDescription findType(final String name) {
 
-        if (isEmptyOrJavaType(name)) {
-            if (isCollection(name)) {
-                String collectionTypeName = getCollectionTypeName(name);
-                if (isEmptyOrJavaType(collectionTypeName)) {
-                    return JavaTypeDescription.fromTypeName(name, true);
-                }
-
-                IType type = getType(name);
-                return JavaTypeDescription.fromType(type, true, fieldCollector);
-
+        if (isCollection(name)) {
+            String collectionTypeName = getCollectionTypeName(name);
+            if (isEmptyOrJavaType(collectionTypeName)) {
+                return JavaTypeDescription.fromTypeName(name, true);
             }
+            IType type = getType(collectionTypeName);
+            return JavaTypeDescription.fromType(type, true, fieldCollector);
+        } else if (isEmptyOrJavaType(name)) {
             return JavaTypeDescription.fromTypeName(name, false);
         }
 
@@ -63,94 +72,169 @@ public class JavaTypeFinder implements TypeFinder {
     }
 
     private String getCollectionTypeName(String typename) {
-        Pattern pattern = Pattern.compile(".*<(([a-zA-Z0-9\\.\\$]+))>$");
-        Matcher matcher = pattern.matcher(typename);
+        Matcher matcher = GENERIC_CLASS.matcher(typename);
         if (matcher.find()) {
             return matcher.group(1);
         }
         return typename;
     }
 
-    private boolean isEmptyOrJavaType(final String typename) {
-        return typename == null || typename.startsWith("java.");
-    }
-
-    private static String simpleName(String name) {
+    private static String[] toNameAndPackage(String name) {
         int index = name.lastIndexOf('.');
         if (index < 0) {
-            return name;
+            return new String[] { name };
         }
-        String simpleTypeName = name.substring(index + 1);
-        return simpleTypeName;
-    }
 
-    private IJavaProject getPlatformProject() {
-        IPlatformInstallation platform = YPlugin.getDefault().getDefaultPlatform();
-        String name = platform != null ? platform.getPlatformLocation().lastSegment().toString() : "platform";
-        IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-        return project;
+        return new String[] { name.substring(index + 1), name.substring(0, index) };
     }
 
     private IType getType(final String typename) {
-        // may be a full name including path
-        String simplename = simpleName(typename);
+        return getType(typename, false);
+    }
 
-        if (typeCache.containsKey(simplename)) {
-            return typeCache.get(simplename);
+    private IType getType(final String typename, boolean isJalo) {
+        // may be a full name including path
+        String[] arr = toNameAndPackage(typename);
+        String classname = arr[0];
+        String packagename = arr.length > 1 ? arr[1] : null;
+        return getType(classname, packagename, isJalo);
+    }
+
+    private IType getType(final String typename, final String packagename, boolean isJalo) {
+        if (typeCache.containsKey(typename)) {
+            return typeCache.get(typename);
         }
-        IType type = searchType(simplename);
-        typeCache.put(simplename, type);
+        IType type = isJalo ? searchJaloType(typename, packagename) : searchModelType(typename, packagename);
+        typeCache.put(typename, type);
         return type;
     }
 
-    private IType searchType(final String typename) {
+    private IType searchModelType(final String typename, final String packagename) {
         SearchEngine engine = new SearchEngine();
         try {
-            IJavaProject project = getPlatformProject();
-            if (!project.exists()) {
+            if (!getPlatformProject().exists()) {
                 return null;
             }
 
             final Set<IType> types = new LinkedHashSet<>();
-            IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] { project }, false);
-            if (scope != null) {
-                System.err.println("entered searchTypeHierarchy - find '" + typename + "'");
-                long millis = System.currentTimeMillis();
-                try {
-                    TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                        @Override
-                        public void acceptTypeNameMatch(final TypeNameMatch match) {
-                            // TODO thread that feeds the list which is immediately returned
-                            types.add(match.getType());
-                        }
-                    };
-                    engine.searchAllTypeNames("de.hybris.platform*.model*".toCharArray(),
-                            SearchPattern.R_PATTERN_MATCH, typename.toCharArray(), SearchPattern.R_EXACT_MATCH,
-                            IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
-                            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
-                    if (!types.isEmpty()) {
-                        return types.iterator().next();
+            System.err.println("entered searchModelType - find '" + typename + "'");
+            long millis = System.currentTimeMillis();
+            try {
+                TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        // TODO thread that feeds the list which is immediately returned
+                        System.out.println("found: " + match.getType().getElementName());
+                        types.add(match.getType());
                     }
-                } finally {
-                    millis = System.currentTimeMillis() - millis;
-                    // int seconds = (int) (millis / 1000) % 60 ;
-                    // int minutes = (int) ((millis / (1000*60)) % 60);
-                    // millis = millis % 60;
-                    // System.err.println("Took " + " millis (" + + ")");
-                    System.err.println(String.format(
-                            "Took %d:%d:%d",
-                            TimeUnit.MILLISECONDS.toMinutes(millis),
-                            TimeUnit.MILLISECONDS.toSeconds(millis)
-                                    - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
-                            TimeUnit.MILLISECONDS.toMillis(millis)
-                                    - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
-
+                };
+                char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.model*"
+                        .toCharArray();
+                int pattern = packagename != null ? SearchPattern.R_EXACT_MATCH : SearchPattern.R_PATTERN_MATCH;
+                boolean isEnum = JavaTypeDescription.isEnum(packagename);
+                int searchFor = isEnum ? IJavaSearchConstants.CLASS_AND_ENUM : IJavaSearchConstants.CLASS;
+                IJavaSearchScope scope = getPlatformScope();
+                engine.searchAllTypeNames(pkgName, pattern, typename.toCharArray(), SearchPattern.R_EXACT_MATCH,
+                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+                        new NullProgressMonitor());
+                if (!types.isEmpty()) {
+                    return types.iterator().next();
                 }
+            } finally {
+                millis = System.currentTimeMillis() - millis;
+                System.err.println(String.format(
+                        "Took %d:%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                        TimeUnit.MILLISECONDS.toSeconds(millis)
+                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                        TimeUnit.MILLISECONDS.toMillis(millis)
+                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
+
             }
         } catch (JavaModelException e) {
             YPlugin.logError(e);
         }
         return null;
+    }
+
+    private IType searchJaloType(final String typename, final String packagename) {
+        SearchEngine engine = new SearchEngine();
+        try {
+            if (!getPlatformProject().exists()) {
+                return null;
+            }
+
+            final Set<IType> types = new LinkedHashSet<>();
+            System.err.println("entered searchJaloType - find '" + typename + "'");
+            long millis = System.currentTimeMillis();
+            try {
+                TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    @Override
+                    public void acceptTypeNameMatch(final TypeNameMatch match) {
+                        // TODO thread that feeds the list which is immediately returned
+                        System.out.println("found: " + match.getType().getElementName());
+                        types.add(match.getType());
+                    }
+                };
+                char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.jalo*"
+                        .toCharArray();
+                int pattern = packagename != null ? SearchPattern.R_EXACT_MATCH : SearchPattern.R_PATTERN_MATCH;
+                int searchFor = IJavaSearchConstants.CLASS;
+                IJavaSearchScope scope = getPlatformScope();
+                engine.searchAllTypeNames(pkgName, pattern, typename.toCharArray(), SearchPattern.R_EXACT_MATCH,
+                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+                        new NullProgressMonitor());
+                if (!types.isEmpty()) {
+                    return types.iterator().next();
+                }
+            } finally {
+                millis = System.currentTimeMillis() - millis;
+                System.err.println(String.format(
+                        "Took %d:%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                        TimeUnit.MILLISECONDS.toSeconds(millis)
+                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                        TimeUnit.MILLISECONDS.toMillis(millis)
+                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
+
+            }
+        } catch (JavaModelException e) {
+            YPlugin.logError(e);
+        }
+        return null;
+    }
+
+    private IJavaSearchScope getWorkspaceScope() {
+        if (workspaceScope == null) {
+            workspaceScope = SearchEngine.createWorkspaceScope();
+        }
+        return workspaceScope;
+    }
+
+    private IJavaSearchScope getPlatformScope() {
+        if (platformScope == null) {
+            platformScope = SearchEngine.createJavaSearchScope(new IJavaElement[] { getPlatformProject() }, false);
+        }
+        return platformScope;
+    }
+
+    private IJavaProject getPlatformProject() {
+        if (project == null) {
+            IPlatformInstallation platform = YPlugin.getDefault().getDefaultPlatform();
+            String name = platform != null ? platform.getPlatformLocation().lastSegment().toString() : "platform";
+            project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+        }
+        return project;
+    }
+
+    private boolean isEmptyOrJavaType(final String typename) {
+        return typename == null || typename.startsWith("java.") || isPrimitive(typename);
+    }
+
+    private boolean isPrimitive(String typename) {
+        return "int".equals(typename) | "long".equals(typename) | "byte".equals(typename) | "short".equals(typename)
+                | "boolean".equals(typename) | "char".equals(typename) | "float".equals(typename)
+                | "double".equals(typename);
     }
 
     private static boolean isCollection(String fullTypeName) {

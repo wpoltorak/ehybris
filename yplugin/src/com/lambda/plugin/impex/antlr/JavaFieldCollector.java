@@ -1,13 +1,16 @@
 package com.lambda.plugin.impex.antlr;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 
@@ -15,77 +18,104 @@ import com.lambda.plugin.YPlugin;
 
 public class JavaFieldCollector {
 
-    private final Map<String, Map<String, String>> cache = new HashMap<>();
+    private final Map<String, Collected> cache = new HashMap<>();
+    private final Map<String, String> parameterTypeCache = new HashMap<>();
 
     JavaFieldCollector() {
     }
 
-    private static String type(IMethod method) {
+    private String type(IMethod method, IType type) {
         String signature = method.getParameterTypes()[0];
-        return Signature.toString(signature);
+        if (parameterTypeCache.containsKey(signature)) {
+            return parameterTypeCache.get(signature);
+        }
+
+        final String packagename = Signature.getSignatureQualifier(signature);
+        final String typename = Signature.getSignatureSimpleName(signature);
+        if (!"".equals(packagename)) {
+            String fullname = packagename + "." + typename;
+            parameterTypeCache.put(signature, fullname);
+            return fullname;
+        } else if (isPrimitive(typename)) {
+            parameterTypeCache.put(signature, typename);
+            return typename;
+        }
+
+        try {
+            String[][] resolved = type.resolveType(typename);
+            if (resolved != null && resolved.length > 0) {
+                String[] result = resolved[0];
+                if (result.length == 2) {
+                    String fullname = result[0] + "." + typename;
+                    parameterTypeCache.put(signature, fullname);
+                    return fullname;
+                }
+            }
+        } catch (Exception e) {
+            YPlugin.logError(e);
+        }
+        parameterTypeCache.put(signature, typename);
+        return typename;
     }
 
     // TODO load AbstractItemModel & ItemModel to cache at startup and don't load all supertypes but just
 
     private static IType[] getSupertypes(final IType type) throws CoreException {
-        return type.newSupertypeHierarchy(new NullProgressMonitor()).getAllSuperclasses(type);
+        ITypeHierarchy supertypeHierarchy = type.newSupertypeHierarchy(new NullProgressMonitor());
+        return supertypeHierarchy.getAllSuperclasses(type);
     }
 
     public void addFieldsAndSupertypes(JavaTypeDescription desc, IType type) {
         try {
             String typename = type.getElementName();
-            desc.addParent(typename);
+
             if (cache.containsKey(typename)) {
-                desc.addFields(cache.get(typename));
+                desc.addElements(cache.get(typename));
+                return;
             }
-            Map<String, String> cachemap = new HashMap<>();
-            cachemap.putAll(addFieldsInternal(desc, type));
+            Collected incremental = new Collected();
             IType[] supertypeOf = getSupertypes(type);
-            for (IType supertype : supertypeOf) {
-                if (skip(supertype)) {
-                    continue;
-                }
-                cachemap.putAll(addFieldsInternal(desc, supertype));
+            int length = supertypeOf.length - 2; // skip Object
+            for (int i = length; i >= 0; i--) {
+                IType supertype = supertypeOf[i];
+                Collected collected = addFieldsInternal(desc, supertype);
+                incremental.include(collected);
+                cache.put(supertype.getElementName(), new Collected(incremental));
             }
-            cache.put(typename, cachemap);
+
+            incremental.include(addFieldsInternal(desc, type));
+            cache.put(typename, incremental);
         } catch (CoreException e) {
             // ok, we don't care
             YPlugin.logError(e);
         }
     }
 
-    private boolean skip(IType supertype) {
-        return "java.lang.Object".equals(supertype.getFullyQualifiedName());
-    }
-
-    private Map<String, String> addFieldsInternal(JavaTypeDescription desc, IType type) throws JavaModelException {
+    private Collected addFieldsInternal(JavaTypeDescription desc, IType type) throws JavaModelException {
         String typename = type.getElementName();
         if (cache.containsKey(typename)) {
-            Map<String, String> fields = cache.get(typename);
-            desc.addFields(fields);
-            return fields;
+            Collected collected = cache.get(typename);
+            desc.addElements(collected);
+            return collected;
         }
 
-        Map<String, String> cachemap = new HashMap<>();
-        try {
-            IMethod[] allMethods = type.getMethods();
-            for (IMethod method : allMethods) {
-                if (isPublic(method) && method.getElementName().startsWith("set")
-                        && method.getParameterTypes().length == 1) {
-                    String name = method.getElementName();
-                    // setXxx
-                    name = (Character.toLowerCase(name.charAt(3)) + name.substring(4)).intern();
-                    String returntypename = type(method);
-                    if (returntypename != null) {
-                        desc.addField(name, returntypename);
-                        cachemap.put(name, returntypename);
-                    }
+        Collected collected = new Collected();
+        desc.addParent(typename);
+        collected.superClasses.add(typename);
+        IMethod[] allMethods = type.getMethods();
+        for (IMethod method : allMethods) {
+            if (isPublic(method) && method.getElementName().startsWith("set") && method.getParameterTypes().length == 1) {
+                String name = method.getElementName();
+                // setXxx
+                name = (Character.toLowerCase(name.charAt(3)) + name.substring(4)).intern();
+                String returntypename = type(method, type);
+                if (returntypename != null) {
+                    desc.addField(name, returntypename);
+                    collected.fields.put(name, returntypename);
                 }
             }
-        } finally {
-            cache.put(typename, cachemap);
         }
-        return cachemap;
+        return collected;
     }
 
     private static boolean isPublic(IMethod method) {
@@ -97,4 +127,37 @@ public class JavaFieldCollector {
         }
         return false;
     }
+
+    class Collected {
+        Map<String, String> fields = new HashMap<>();
+        Set<String> superClasses = new HashSet<>();
+
+        public Collected() {
+        }
+
+        public Collected(Collected collected) {
+            superClasses.addAll(collected.superClasses);
+            fields.putAll(collected.fields);
+        }
+
+        void include(Collected collected) {
+            fields.putAll(collected.fields);
+            superClasses.addAll(collected.superClasses);
+        }
+    }
+
+    private static boolean isCollection(String fullTypeName) {
+        if (fullTypeName == null) {
+            return false;
+        }
+        return fullTypeName.startsWith("java.util.Collection") || fullTypeName.startsWith("java.util.List")
+                || fullTypeName.startsWith("java.util.Set");
+    }
+
+    private boolean isPrimitive(String typename) {
+        return "int".equals(typename) | "long".equals(typename) | "byte".equals(typename) | "short".equals(typename)
+                | "boolean".equals(typename) | "char".equals(typename) | "float".equals(typename)
+                | "double".equals(typename);
+    }
+
 }

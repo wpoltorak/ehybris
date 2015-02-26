@@ -52,8 +52,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
                 return;
             }
             ImpexDocument impexDocument = (ImpexDocument) document;
-            impexDocument.validate();
-            List<ImpexProblem> problems = impexDocument.getModel().getProblems();
+            List<ImpexProblem> problems = impexDocument.validate();
             final IImpexModel model = editor.getImpexModel();
             model.updateMarkers(problems);
             // final char[] source = document.get().toCharArray();
@@ -98,6 +97,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      */
     @Override
     public void reconcile(final IRegion partition) {
+        System.out.println("start reconcile");
         internalReconcile();
     }
 
@@ -110,7 +110,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
      */
     @Override
     public void reconcile(final DirtyRegion dirtyRegion, final IRegion subRegion) {
-        internalReconcile();
+        throw new UnsupportedOperationException();
     }
 
     /*

@@ -3,6 +3,7 @@ package com.lambda.plugin.impex.editor.occurrences;
 import java.util.Collections;
 import java.util.List;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Position;
 
@@ -25,22 +26,21 @@ public class OccurrencesFinderFactory {
             ILexerTokenRegion token = document.getToken(offset);
             switch (token.getTokenType()) {
             case ImpexLexer.Type:
-                return new TypeOccurrencesFinder(document, token.getOffset());
+                return new TypeOccurrencesFinder(token.getOffset());
             case ImpexLexer.Macrodef:
             case ImpexLexer.Macroref:
-                return new MacroOccurrencesFinder(document, token.getOffset());
+                return new MacroOccurrencesFinder(token.getOffset());
             case ImpexLexer.DocumentIdField:
             case ImpexLexer.DocumentIdRefField:
-                return new DocumentIdQualifierOccurrencesFinder(document, token.getOffset());
+                return new DocumentIdQualifierOccurrencesFinder(token.getOffset());
             }
         } catch (BadLocationException e) {
             YPlugin.logError(e);
         }
 
         return new OccurrencesFinder() {
-
             @Override
-            public List<Position> findOccurrences() {
+            public List<Position> findOccurrences(ParseTree parseTree) {
                 return Collections.emptyList();
             }
         };

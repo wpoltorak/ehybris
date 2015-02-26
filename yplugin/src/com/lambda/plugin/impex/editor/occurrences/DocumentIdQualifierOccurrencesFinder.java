@@ -18,7 +18,6 @@ import com.lambda.impex.ast.ImpexParser.FieldContext;
 import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.RecordContext;
 import com.lambda.impex.ast.TypeDescription;
-import com.lambda.plugin.impex.editor.ImpexDocument;
 
 public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFinderAdapter implements OccurrencesFinder {
 
@@ -30,8 +29,8 @@ public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFin
     private final Map<Integer, DocumentIDDescription> offset2DocumentID = new HashMap<>();
     private final Map<DocumentIDDescription, TypeDescription> docIDDef2Type = new HashMap<>();
 
-    public DocumentIdQualifierOccurrencesFinder(ImpexDocument document, int offset) {
-        super(document, offset);
+    public DocumentIdQualifierOccurrencesFinder(int offset) {
+        super(offset);
     }
 
     @Override

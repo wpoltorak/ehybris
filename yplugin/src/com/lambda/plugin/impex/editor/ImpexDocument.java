@@ -1,17 +1,17 @@
 package com.lambda.plugin.impex.editor;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonToken;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPartitioningException;
 import org.eclipse.jface.text.BadPositionCategoryException;
@@ -35,10 +35,8 @@ import org.eclipse.jface.text.Region;
 
 import com.lambda.impex.ast.DefaultImpexModel;
 import com.lambda.impex.ast.ImpexModel;
-import com.lambda.impex.ast.ImpexParser;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
-import com.lambda.impex.ast.ImpexParserDefaultListener;
-import com.lambda.plugin.impex.antlr.JavaTypeFinder;
+import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 import com.lambda.plugin.impex.model.LexerTokenRegion;
@@ -59,7 +57,7 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         setTokens(createTokens(text));
     }
 
-    private void setTokens(TreeMap<Integer, ILexerTokenRegion> tokens) {
+    private void setTokens(NavigableMap<Integer, ILexerTokenRegion> tokens) {
         this.tokens = tokens;
     }
 
@@ -86,19 +84,23 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         return tokens.get(tokens.floorKey(offset));
     }
 
-    public void validate() {
+    public List<ImpexProblem> validate() {
         long nanoTime = System.nanoTime();
         try {
             System.err.println("===> VALIDATE BEGIN");
-            lexer.reset();
-            impexModel.reset();
-            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
-            parseTree = parser.impex();
-
-            final ParseTreeWalker walker = new ParseTreeWalker();
-            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
-            listener.setTypeFinder(new JavaTypeFinder());
-            walker.walk(listener, parseTree);
+            // char[] source = get().toCharArray();
+            // final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
+            // ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
+            // parseTree = parser.impex();
+            //
+            // final ParseTreeWalker walker = new ParseTreeWalker();
+            // ImpexModel impexModel = new DefaultImpexModel();
+            // ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
+            // listener.setTypeFinder(new JavaTypeFinder());
+            // walker.walk(listener, parseTree);
+            // this.impexModel = impexModel;
+            // return impexModel.getProblems();
+            return Collections.<ImpexProblem> emptyList();
         } finally {
             System.err.println("===> VALIDATE END: took "
                     + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");
@@ -121,12 +123,17 @@ public class ImpexDocument implements IDocument, IDocumentExtension, IDocumentEx
         }
 
         // previously empty -> full document dirty
-        // if (tokens.isEmpty()) {
+        if (tokens.isEmpty()) {
+            setTokens(createTokens(e.fDocument.get()));
+            return new Region(0, e.getDocument().getLength());
+        }
+
+        // TODO handle case for partitions - rewind to last block start and parse until end of the file
+        NavigableMap<Integer, ILexerTokenRegion> tempTokens = new TreeMap<>(tokens);
+
         setTokens(createTokens(e.fDocument.get()));
         return new Region(0, e.getDocument().getLength());
-        // }
-        // TODO handle case for partitions - rewind to last block start and parse until end of the file
-        // List<ILexerTokenRegion> tempTokens = new ArrayList<ILexerTokenRegion>(tokens);
+
         // try {
         // int tokenStartsAt = 0;
         // int tokenInfoIdx = 0;
