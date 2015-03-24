@@ -1,4 +1,4 @@
-package com.lambda.plugin.impex.editor;
+package com.lambda.plugin.impex.editor.syntaxcoloring;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -11,6 +11,7 @@ import org.eclipse.jface.text.rules.ITokenScanner;
 import org.eclipse.jface.text.rules.Token;
 
 import com.lambda.plugin.impex.antlr.AntlrTypeToStyleTokenMapper;
+import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
 public class ImpexTokenScanner implements ITokenScanner {

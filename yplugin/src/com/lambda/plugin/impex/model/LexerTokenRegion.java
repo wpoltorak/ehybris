@@ -1,5 +1,6 @@
 package com.lambda.plugin.impex.model;
 
+import org.antlr.v4.runtime.Token;
 import org.eclipse.jface.text.Region;
 
 import com.lambda.impex.ast.ImpexLexer;
@@ -37,11 +38,21 @@ public class LexerTokenRegion extends Region implements ILexerTokenRegion {
         return super.toString() + ", type: " + readType(tokenType); //$NON-NLS-2$;
     }
 
+    public boolean isBlockStart() {
+        return tokenType == ImpexLexer.Mode;
+    }
+
+    public boolean isEndOfFile() {
+        return tokenType == Token.EOF;
+    }
+
     // TODO remove at some point
     private static String readType(final int type) {
         switch (type) {
         case ImpexLexer.Mode:
             return "Mode                         ";
+        case ImpexLexer.Type:
+            return "Type                         ";
         case ImpexLexer.Separator:
             return "Separator                    ";
         case ImpexLexer.Macroref:
@@ -106,6 +117,16 @@ public class LexerTokenRegion extends Region implements ILexerTokenRegion {
             return "FieldQuoted                  ";
         case ImpexLexer.Field:
             return "Field                        ";
+        case ImpexLexer.FieldMulti:
+            return "FieldMulti                   ";
+        case ImpexLexer.FieldCommaSkipped:
+            return "FieldCommaSkipped            ";
+        case ImpexLexer.SkippedField:
+            return "SkippedField                 ";
+        case ImpexLexer.DocumentIdField:
+            return "DocumentIdField              ";
+        case ImpexLexer.DocumentIdRefField:
+            return "DocumentIdRefField           ";
         case ImpexLexer.Macroval:
             return "Macroval                     ";
         case ImpexLexer.LBracket:
@@ -120,7 +141,8 @@ public class LexerTokenRegion extends Region implements ILexerTokenRegion {
             return "ModifiervalBracket           ";
         case ImpexLexer.Modifierval:
             return "Modifierval                  ";
-
+        case ImpexLexer.EOF:
+            return "EOF                          ";
         }
         return "?                            ";
     }

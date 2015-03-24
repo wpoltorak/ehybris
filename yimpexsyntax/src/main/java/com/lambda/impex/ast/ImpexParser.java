@@ -1,4 +1,4 @@
-// Generated from com/lambda/impex/ast/ImpexParser.g4 by ANTLR 4.3
+// Generated from com/lambda/impex/ast/ImpexParser.g4 by ANTLR 4.5
 package com.lambda.impex.ast;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -11,33 +11,23 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class ImpexParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		FieldCommaSkipped=39, FieldQuoted=35, Field=41, DocumentIdField=37, IntAttributeModifier=7, 
-		UserRights=29, UnknownModifier=15, Ws=33, Type=2, ADocumentID=45, ClassHeaderModifier=13, 
-		ModifierBracket=46, BooleanAttributeModifier=6, NumberFormatAttributeModifier=9, 
-		Quote=19, LParenthesis=20, Lb=32, Identifier=27, LineSeparator=24, Separator=3, 
-		RParenthesis=21, DocumentID=25, TextAttributeModifier=11, ModifiervalBracket=47, 
-		BooleanHeaderModifier=12, Macroref=4, TextHeaderModifier=14, SpecialAttribute=26, 
-		Comment=31, ClassAttributeModifier=10, Macrodef=28, Mode=1, DoubleQuote=18, 
-		Error=34, Dot=17, Modifierval=48, ABracket=44, DateFormatAttributeModifier=8, 
-		FieldMulti=40, DocumentIdRefField=38, Macroval=42, LBracket=43, Or=23, 
-		BeanShell=30, Comma=16, Equals=22, FieldLb=36, SkippedField=5;
-	public static final String[] tokenNames = {
-		"<INVALID>", "Mode", "Type", "';'", "Macroref", "SkippedField", "BooleanAttributeModifier", 
-		"IntAttributeModifier", "DateFormatAttributeModifier", "NumberFormatAttributeModifier", 
-		"ClassAttributeModifier", "TextAttributeModifier", "BooleanHeaderModifier", 
-		"ClassHeaderModifier", "TextHeaderModifier", "UnknownModifier", "','", 
-		"'.'", "'\"'", "'''", "'('", "')'", "'='", "'|'", "LineSeparator", "DocumentID", 
-		"SpecialAttribute", "Identifier", "Macrodef", "UserRights", "BeanShell", 
-		"Comment", "Lb", "Ws", "Error", "FieldQuoted", "FieldLb", "DocumentIdField", 
-		"DocumentIdRefField", "FieldCommaSkipped", "FieldMulti", "Field", "Macroval", 
-		"LBracket", "ABracket", "ADocumentID", "']'", "ModifiervalBracket", "Modifierval"
-	};
+		Mode=1, Type=2, Separator=3, Macroref=4, SkippedField=5, BooleanAttributeModifier=6, 
+		IntAttributeModifier=7, DateFormatAttributeModifier=8, NumberFormatAttributeModifier=9, 
+		ClassAttributeModifier=10, TextAttributeModifier=11, BooleanHeaderModifier=12, 
+		ClassHeaderModifier=13, TextHeaderModifier=14, UnknownModifier=15, Comma=16, 
+		Dot=17, DoubleQuote=18, Quote=19, LParenthesis=20, RParenthesis=21, Equals=22, 
+		Or=23, LineSeparator=24, DocumentID=25, SpecialAttribute=26, Identifier=27, 
+		Macrodef=28, UserRights=29, BeanShell=30, Comment=31, Lb=32, Ws=33, Error=34, 
+		FieldQuoted=35, FieldLb=36, DocumentIdField=37, DocumentIdRefField=38, 
+		FieldCommaSkipped=39, FieldMulti=40, Field=41, Macroval=42, LBracket=43, 
+		ABracket=44, ADocumentID=45, ModifierBracket=46, ModifiervalBracket=47, 
+		Modifierval=48;
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
 		RULE_headerModifier = 5, RULE_record = 6, RULE_field = 7, RULE_documentIdField = 8, 
@@ -57,11 +47,59 @@ public class ImpexParser extends Parser {
 		"macroref"
 	};
 
-	@Override
-	public String getGrammarFileName() { return "ImpexParser.g4"; }
+	private static final String[] _LITERAL_NAMES = {
+		null, null, null, "';'", null, null, null, null, null, null, null, null, 
+		null, null, null, null, "','", "'.'", "'\"'", "'''", "'('", "')'", "'='", 
+		"'|'", null, null, null, null, null, null, null, null, null, null, null, 
+		null, null, null, null, null, null, null, null, null, null, null, "']'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "Mode", "Type", "Separator", "Macroref", "SkippedField", "BooleanAttributeModifier", 
+		"IntAttributeModifier", "DateFormatAttributeModifier", "NumberFormatAttributeModifier", 
+		"ClassAttributeModifier", "TextAttributeModifier", "BooleanHeaderModifier", 
+		"ClassHeaderModifier", "TextHeaderModifier", "UnknownModifier", "Comma", 
+		"Dot", "DoubleQuote", "Quote", "LParenthesis", "RParenthesis", "Equals", 
+		"Or", "LineSeparator", "DocumentID", "SpecialAttribute", "Identifier", 
+		"Macrodef", "UserRights", "BeanShell", "Comment", "Lb", "Ws", "Error", 
+		"FieldQuoted", "FieldLb", "DocumentIdField", "DocumentIdRefField", "FieldCommaSkipped", 
+		"FieldMulti", "Field", "Macroval", "LBracket", "ABracket", "ADocumentID", 
+		"ModifierBracket", "ModifiervalBracket", "Modifierval"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
+	@Override
+	public String getGrammarFileName() { return "ImpexParser.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -78,29 +116,29 @@ public class ImpexParser extends Parser {
 	}
 	public static class ImpexContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ImpexParser.EOF, 0); }
+		public List<TerminalNode> UserRights() { return getTokens(ImpexParser.UserRights); }
 		public TerminalNode UserRights(int i) {
 			return getToken(ImpexParser.UserRights, i);
 		}
-		public TerminalNode Comment(int i) {
-			return getToken(ImpexParser.Comment, i);
-		}
-		public BlockContext block(int i) {
-			return getRuleContext(BlockContext.class,i);
-		}
-		public List<MacroContext> macro() {
-			return getRuleContexts(MacroContext.class);
-		}
+		public List<TerminalNode> BeanShell() { return getTokens(ImpexParser.BeanShell); }
 		public TerminalNode BeanShell(int i) {
 			return getToken(ImpexParser.BeanShell, i);
 		}
 		public List<TerminalNode> Comment() { return getTokens(ImpexParser.Comment); }
-		public List<TerminalNode> BeanShell() { return getTokens(ImpexParser.BeanShell); }
+		public TerminalNode Comment(int i) {
+			return getToken(ImpexParser.Comment, i);
+		}
+		public List<MacroContext> macro() {
+			return getRuleContexts(MacroContext.class);
+		}
+		public MacroContext macro(int i) {
+			return getRuleContext(MacroContext.class,i);
+		}
 		public List<BlockContext> block() {
 			return getRuleContexts(BlockContext.class);
 		}
-		public List<TerminalNode> UserRights() { return getTokens(ImpexParser.UserRights); }
-		public MacroContext macro(int i) {
-			return getRuleContext(MacroContext.class,i);
+		public BlockContext block(int i) {
+			return getRuleContext(BlockContext.class,i);
 		}
 		public ImpexContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -134,22 +172,26 @@ public class ImpexParser extends Parser {
 					switch (_input.LA(1)) {
 					case UserRights:
 						{
-						setState(56); match(UserRights);
+						setState(56);
+						match(UserRights);
 						}
 						break;
 					case BeanShell:
 						{
-						setState(57); match(BeanShell);
+						setState(57);
+						match(BeanShell);
 						}
 						break;
 					case Comment:
 						{
-						setState(58); match(Comment);
+						setState(58);
+						match(Comment);
 						}
 						break;
 					case Macrodef:
 						{
-						setState(59); macro();
+						setState(59);
+						macro();
 						}
 						break;
 					default:
@@ -170,12 +212,14 @@ public class ImpexParser extends Parser {
 				switch (_input.LA(1)) {
 				case Mode:
 					{
-					setState(65); block();
+					setState(65);
+					block();
 					}
 					break;
 				case UserRights:
 					{
-					setState(66); match(UserRights);
+					setState(66);
+					match(UserRights);
 					}
 					break;
 				default:
@@ -186,7 +230,8 @@ public class ImpexParser extends Parser {
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(72); match(EOF);
+			setState(72);
+			match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -201,28 +246,28 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class BlockContext extends ParserRuleContext {
+		public HeaderContext header() {
+			return getRuleContext(HeaderContext.class,0);
+		}
+		public List<TerminalNode> BeanShell() { return getTokens(ImpexParser.BeanShell); }
+		public TerminalNode BeanShell(int i) {
+			return getToken(ImpexParser.BeanShell, i);
+		}
+		public List<TerminalNode> Comment() { return getTokens(ImpexParser.Comment); }
 		public TerminalNode Comment(int i) {
 			return getToken(ImpexParser.Comment, i);
 		}
 		public List<MacroContext> macro() {
 			return getRuleContexts(MacroContext.class);
 		}
-		public TerminalNode BeanShell(int i) {
-			return getToken(ImpexParser.BeanShell, i);
-		}
-		public List<TerminalNode> Comment() { return getTokens(ImpexParser.Comment); }
-		public List<TerminalNode> BeanShell() { return getTokens(ImpexParser.BeanShell); }
-		public HeaderContext header() {
-			return getRuleContext(HeaderContext.class,0);
+		public MacroContext macro(int i) {
+			return getRuleContext(MacroContext.class,i);
 		}
 		public List<RecordContext> record() {
 			return getRuleContexts(RecordContext.class);
 		}
 		public RecordContext record(int i) {
 			return getRuleContext(RecordContext.class,i);
-		}
-		public MacroContext macro(int i) {
-			return getRuleContext(MacroContext.class,i);
 		}
 		public BlockContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -245,7 +290,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74); header();
+			setState(74);
+			header();
 			setState(81);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -255,23 +301,27 @@ public class ImpexParser extends Parser {
 				switch (_input.LA(1)) {
 				case BeanShell:
 					{
-					setState(75); match(BeanShell);
+					setState(75);
+					match(BeanShell);
 					}
 					break;
 				case Comment:
 					{
-					setState(76); match(Comment);
+					setState(76);
+					match(Comment);
 					}
 					break;
 				case Macrodef:
 					{
-					setState(77); macro();
+					setState(77);
+					macro();
 					}
 					break;
 				case Type:
 				case Separator:
 					{
-					setState(78); record();
+					setState(78);
+					record();
 					}
 					break;
 				default:
@@ -296,27 +346,27 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class HeaderContext extends ParserRuleContext {
+		public TerminalNode Mode() { return getToken(ImpexParser.Mode, 0); }
+		public HeaderTypeNameContext headerTypeName() {
+			return getRuleContext(HeaderTypeNameContext.class,0);
+		}
 		public List<HeaderModifierAssignmentContext> headerModifierAssignment() {
 			return getRuleContexts(HeaderModifierAssignmentContext.class);
+		}
+		public HeaderModifierAssignmentContext headerModifierAssignment(int i) {
+			return getRuleContext(HeaderModifierAssignmentContext.class,i);
+		}
+		public List<TerminalNode> Separator() { return getTokens(ImpexParser.Separator); }
+		public TerminalNode Separator(int i) {
+			return getToken(ImpexParser.Separator, i);
 		}
 		public List<AttributeContext> attribute() {
 			return getRuleContexts(AttributeContext.class);
 		}
-		public List<TerminalNode> Separator() { return getTokens(ImpexParser.Separator); }
-		public HeaderModifierAssignmentContext headerModifierAssignment(int i) {
-			return getRuleContext(HeaderModifierAssignmentContext.class,i);
-		}
-		public HeaderTypeNameContext headerTypeName() {
-			return getRuleContext(HeaderTypeNameContext.class,0);
-		}
-		public TerminalNode Lb() { return getToken(ImpexParser.Lb, 0); }
 		public AttributeContext attribute(int i) {
 			return getRuleContext(AttributeContext.class,i);
 		}
-		public TerminalNode Separator(int i) {
-			return getToken(ImpexParser.Separator, i);
-		}
-		public TerminalNode Mode() { return getToken(ImpexParser.Mode, 0); }
+		public TerminalNode Lb() { return getToken(ImpexParser.Lb, 0); }
 		public HeaderContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -339,15 +389,18 @@ public class ImpexParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84); match(Mode);
-			setState(85); headerTypeName();
+			setState(84);
+			match(Mode);
+			setState(85);
+			headerTypeName();
 			setState(89);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanHeaderModifier) | (1L << ClassHeaderModifier) | (1L << TextHeaderModifier))) != 0)) {
 				{
 				{
-				setState(86); headerModifierAssignment();
+				setState(86);
+				headerModifierAssignment();
 				}
 				}
 				setState(91);
@@ -361,8 +414,10 @@ public class ImpexParser extends Parser {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(92); match(Separator);
-					setState(93); attribute();
+					setState(92);
+					match(Separator);
+					setState(93);
+					attribute();
 					}
 					} 
 				}
@@ -374,7 +429,8 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==Lb) {
 				{
-				setState(99); match(Lb);
+				setState(99);
+				match(Lb);
 				}
 			}
 
@@ -392,8 +448,8 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class QuoteContext extends ParserRuleContext {
-		public TerminalNode Quote() { return getToken(ImpexParser.Quote, 0); }
 		public TerminalNode DoubleQuote() { return getToken(ImpexParser.DoubleQuote, 0); }
+		public TerminalNode Quote() { return getToken(ImpexParser.Quote, 0); }
 		public QuoteContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -419,8 +475,9 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==DoubleQuote || _la==Quote) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -438,10 +495,10 @@ public class ImpexParser extends Parser {
 		public HeaderModifierContext headerModifier() {
 			return getRuleContext(HeaderModifierContext.class,0);
 		}
+		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public ModifierValueContext modifierValue() {
 			return getRuleContext(ModifierValueContext.class,0);
 		}
-		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public HeaderModifierAssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -462,9 +519,12 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(104); headerModifier();
-			setState(105); match(Equals);
-			setState(106); modifierValue();
+			setState(104);
+			headerModifier();
+			setState(105);
+			match(Equals);
+			setState(106);
+			modifierValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -507,8 +567,9 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanHeaderModifier) | (1L << ClassHeaderModifier) | (1L << TextHeaderModifier))) != 0)) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -523,18 +584,18 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class RecordContext extends ParserRuleContext {
+		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public List<TerminalNode> Separator() { return getTokens(ImpexParser.Separator); }
+		public TerminalNode Separator(int i) {
+			return getToken(ImpexParser.Separator, i);
+		}
+		public List<FieldContext> field() {
+			return getRuleContexts(FieldContext.class);
+		}
 		public FieldContext field(int i) {
 			return getRuleContext(FieldContext.class,i);
 		}
 		public TerminalNode Lb() { return getToken(ImpexParser.Lb, 0); }
-		public List<FieldContext> field() {
-			return getRuleContexts(FieldContext.class);
-		}
-		public TerminalNode Separator(int i) {
-			return getToken(ImpexParser.Separator, i);
-		}
-		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public RecordContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -561,7 +622,8 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==Type) {
 				{
-				setState(110); match(Type);
+				setState(110);
+				match(Type);
 				}
 			}
 
@@ -573,8 +635,10 @@ public class ImpexParser extends Parser {
 				case 1:
 					{
 					{
-					setState(113); match(Separator);
-					setState(114); field();
+					setState(113);
+					match(Separator);
+					setState(114);
+					field();
 					}
 					}
 					break;
@@ -589,7 +653,8 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if (_la==Lb) {
 				{
-				setState(119); match(Lb);
+				setState(119);
+				match(Lb);
 				}
 			}
 
@@ -607,32 +672,32 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class FieldContext extends ParserRuleContext {
-		public TerminalNode SkippedField(int i) {
-			return getToken(ImpexParser.SkippedField, i);
-		}
-		public DocumentIdRefFieldContext documentIdRefField(int i) {
-			return getRuleContext(DocumentIdRefFieldContext.class,i);
-		}
-		public MacrorefContext macroref(int i) {
-			return getRuleContext(MacrorefContext.class,i);
-		}
 		public List<TerminalNode> FieldQuoted() { return getTokens(ImpexParser.FieldQuoted); }
+		public TerminalNode FieldQuoted(int i) {
+			return getToken(ImpexParser.FieldQuoted, i);
+		}
+		public List<TerminalNode> Field() { return getTokens(ImpexParser.Field); }
 		public TerminalNode Field(int i) {
 			return getToken(ImpexParser.Field, i);
-		}
-		public DocumentIdFieldContext documentIdField() {
-			return getRuleContext(DocumentIdFieldContext.class,0);
-		}
-		public List<DocumentIdRefFieldContext> documentIdRefField() {
-			return getRuleContexts(DocumentIdRefFieldContext.class);
 		}
 		public List<MacrorefContext> macroref() {
 			return getRuleContexts(MacrorefContext.class);
 		}
-		public List<TerminalNode> Field() { return getTokens(ImpexParser.Field); }
+		public MacrorefContext macroref(int i) {
+			return getRuleContext(MacrorefContext.class,i);
+		}
 		public List<TerminalNode> SkippedField() { return getTokens(ImpexParser.SkippedField); }
-		public TerminalNode FieldQuoted(int i) {
-			return getToken(ImpexParser.FieldQuoted, i);
+		public TerminalNode SkippedField(int i) {
+			return getToken(ImpexParser.SkippedField, i);
+		}
+		public List<DocumentIdRefFieldContext> documentIdRefField() {
+			return getRuleContexts(DocumentIdRefFieldContext.class);
+		}
+		public DocumentIdRefFieldContext documentIdRefField(int i) {
+			return getRuleContext(DocumentIdRefFieldContext.class,i);
+		}
+		public DocumentIdFieldContext documentIdField() {
+			return getRuleContext(DocumentIdFieldContext.class,0);
 		}
 		public FieldContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -680,27 +745,32 @@ public class ImpexParser extends Parser {
 					switch (_input.LA(1)) {
 					case FieldQuoted:
 						{
-						setState(122); match(FieldQuoted);
+						setState(122);
+						match(FieldQuoted);
 						}
 						break;
 					case Field:
 						{
-						setState(123); match(Field);
+						setState(123);
+						match(Field);
 						}
 						break;
 					case Macroref:
 						{
-						setState(124); macroref();
+						setState(124);
+						macroref();
 						}
 						break;
 					case SkippedField:
 						{
-						setState(125); match(SkippedField);
+						setState(125);
+						match(SkippedField);
 						}
 						break;
 					case DocumentIdRefField:
 						{
-						setState(126); documentIdRefField();
+						setState(126);
+						documentIdRefField();
 						}
 						break;
 					default:
@@ -716,7 +786,8 @@ public class ImpexParser extends Parser {
 			case DocumentIdField:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(132); documentIdField();
+				setState(132);
+				documentIdField();
 				}
 				break;
 			default:
@@ -756,7 +827,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(135); match(DocumentIdField);
+			setState(135);
+			match(DocumentIdField);
 			}
 		}
 		catch (RecognitionException re) {
@@ -792,7 +864,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(137); match(DocumentIdRefField);
+			setState(137);
+			match(DocumentIdRefField);
 			}
 		}
 		catch (RecognitionException re) {
@@ -807,14 +880,8 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class AttributeContext extends ParserRuleContext {
-		public EmptyAttributeContext emptyAttribute() {
-			return getRuleContext(EmptyAttributeContext.class,0);
-		}
 		public DocumentIdReferenceContext documentIdReference() {
 			return getRuleContext(DocumentIdReferenceContext.class,0);
-		}
-		public MacrorefAttributeContext macrorefAttribute() {
-			return getRuleContext(MacrorefAttributeContext.class,0);
 		}
 		public DocumentIdDefinitionContext documentIdDefinition() {
 			return getRuleContext(DocumentIdDefinitionContext.class,0);
@@ -824,6 +891,12 @@ public class ImpexParser extends Parser {
 		}
 		public SpecialAttributeContext specialAttribute() {
 			return getRuleContext(SpecialAttributeContext.class,0);
+		}
+		public MacrorefAttributeContext macrorefAttribute() {
+			return getRuleContext(MacrorefAttributeContext.class,0);
+		}
+		public EmptyAttributeContext emptyAttribute() {
+			return getRuleContext(EmptyAttributeContext.class,0);
 		}
 		public AttributeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -848,42 +921,43 @@ public class ImpexParser extends Parser {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(139); documentIdReference();
+				setState(139);
+				documentIdReference();
 				}
 				break;
-
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(140); documentIdDefinition();
+				setState(140);
+				documentIdDefinition();
 				}
 				break;
-
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(141); simpleAttribute();
+				setState(141);
+				simpleAttribute();
 				}
 				break;
-
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(142); specialAttribute();
+				setState(142);
+				specialAttribute();
 				}
 				break;
-
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(143); macrorefAttribute();
+				setState(143);
+				macrorefAttribute();
 				}
 				break;
-
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(144); emptyAttribute();
+				setState(144);
+				emptyAttribute();
 				}
 				break;
 			}
@@ -921,7 +995,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(147); match(DocumentID);
+			setState(147);
+			match(DocumentID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -936,17 +1011,17 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class DocumentIdReferenceContext extends ParserRuleContext {
-		public TerminalNode LParenthesis() { return getToken(ImpexParser.LParenthesis, 0); }
-		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
-		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
-			return getRuleContext(AttributeModifierAssignmentContext.class,i);
+		public SimpleAttributeNameContext simpleAttributeName() {
+			return getRuleContext(SimpleAttributeNameContext.class,0);
 		}
+		public TerminalNode LParenthesis() { return getToken(ImpexParser.LParenthesis, 0); }
+		public TerminalNode DocumentID() { return getToken(ImpexParser.DocumentID, 0); }
+		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
 		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
 			return getRuleContexts(AttributeModifierAssignmentContext.class);
 		}
-		public TerminalNode DocumentID() { return getToken(ImpexParser.DocumentID, 0); }
-		public SimpleAttributeNameContext simpleAttributeName() {
-			return getRuleContext(SimpleAttributeNameContext.class,0);
+		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
+			return getRuleContext(AttributeModifierAssignmentContext.class,i);
 		}
 		public DocumentIdReferenceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -969,17 +1044,22 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(149); simpleAttributeName();
-			setState(150); match(LParenthesis);
-			setState(151); match(DocumentID);
-			setState(152); match(RParenthesis);
+			setState(149);
+			simpleAttributeName();
+			setState(150);
+			match(LParenthesis);
+			setState(151);
+			match(DocumentID);
+			setState(152);
+			match(RParenthesis);
 			setState(156);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macroref) | (1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier) | (1L << UnknownModifier))) != 0)) {
 				{
 				{
-				setState(153); attributeModifierAssignment();
+				setState(153);
+				attributeModifierAssignment();
 				}
 				}
 				setState(158);
@@ -1000,14 +1080,14 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class MacrorefAttributeContext extends ParserRuleContext {
-		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
-			return getRuleContext(AttributeModifierAssignmentContext.class,i);
+		public MacrorefContext macroref() {
+			return getRuleContext(MacrorefContext.class,0);
 		}
 		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
 			return getRuleContexts(AttributeModifierAssignmentContext.class);
 		}
-		public MacrorefContext macroref() {
-			return getRuleContext(MacrorefContext.class,0);
+		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
+			return getRuleContext(AttributeModifierAssignmentContext.class,i);
 		}
 		public MacrorefAttributeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1030,14 +1110,16 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(159); macroref();
+			setState(159);
+			macroref();
 			setState(163);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macroref) | (1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier) | (1L << UnknownModifier))) != 0)) {
 				{
 				{
-				setState(160); attributeModifierAssignment();
+				setState(160);
+				attributeModifierAssignment();
 				}
 				}
 				setState(165);
@@ -1092,12 +1174,12 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class SpecialAttributeContext extends ParserRuleContext {
-		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
-			return getRuleContext(AttributeModifierAssignmentContext.class,i);
-		}
 		public TerminalNode SpecialAttribute() { return getToken(ImpexParser.SpecialAttribute, 0); }
 		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
 			return getRuleContexts(AttributeModifierAssignmentContext.class);
+		}
+		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
+			return getRuleContext(AttributeModifierAssignmentContext.class,i);
 		}
 		public SpecialAttributeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1120,14 +1202,16 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(168); match(SpecialAttribute);
+			setState(168);
+			match(SpecialAttribute);
 			setState(170); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(169); attributeModifierAssignment();
+				setState(169);
+				attributeModifierAssignment();
 				}
 				}
 				setState(172); 
@@ -1148,31 +1232,31 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class SimpleAttributeContext extends ParserRuleContext {
-		public TerminalNode Or(int i) {
-			return getToken(ImpexParser.Or, i);
-		}
-		public List<SubtypeAttributeContext> subtypeAttribute() {
-			return getRuleContexts(SubtypeAttributeContext.class);
+		public SimpleAttributeNameContext simpleAttributeName() {
+			return getRuleContext(SimpleAttributeNameContext.class,0);
 		}
 		public TerminalNode LParenthesis() { return getToken(ImpexParser.LParenthesis, 0); }
-		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
-		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
-			return getRuleContext(AttributeModifierAssignmentContext.class,i);
+		public List<SubtypeAttributeContext> subtypeAttribute() {
+			return getRuleContexts(SubtypeAttributeContext.class);
 		}
 		public SubtypeAttributeContext subtypeAttribute(int i) {
 			return getRuleContext(SubtypeAttributeContext.class,i);
 		}
-		public List<TerminalNode> Or() { return getTokens(ImpexParser.Or); }
+		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
 		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
 			return getRuleContexts(AttributeModifierAssignmentContext.class);
 		}
+		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
+			return getRuleContext(AttributeModifierAssignmentContext.class,i);
+		}
+		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public TerminalNode Comma(int i) {
 			return getToken(ImpexParser.Comma, i);
 		}
-		public SimpleAttributeNameContext simpleAttributeName() {
-			return getRuleContext(SimpleAttributeNameContext.class,0);
+		public List<TerminalNode> Or() { return getTokens(ImpexParser.Or); }
+		public TerminalNode Or(int i) {
+			return getToken(ImpexParser.Or, i);
 		}
-		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public SimpleAttributeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1194,13 +1278,16 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(174); simpleAttributeName();
+			setState(174);
+			simpleAttributeName();
 			setState(186);
 			_la = _input.LA(1);
 			if (_la==LParenthesis) {
 				{
-				setState(175); match(LParenthesis);
-				setState(176); subtypeAttribute();
+				setState(175);
+				match(LParenthesis);
+				setState(176);
+				subtypeAttribute();
 				setState(181);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -1211,16 +1298,19 @@ public class ImpexParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==Comma || _la==Or) ) {
 					_errHandler.recoverInline(this);
+					} else {
+						consume();
 					}
-					consume();
-					setState(178); subtypeAttribute();
+					setState(178);
+					subtypeAttribute();
 					}
 					}
 					setState(183);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(184); match(RParenthesis);
+				setState(184);
+				match(RParenthesis);
 				}
 			}
 
@@ -1230,7 +1320,8 @@ public class ImpexParser extends Parser {
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macroref) | (1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier) | (1L << UnknownModifier))) != 0)) {
 				{
 				{
-				setState(188); attributeModifierAssignment();
+				setState(188);
+				attributeModifierAssignment();
 				}
 				}
 				setState(193);
@@ -1272,7 +1363,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(194); match(Identifier);
+			setState(194);
+			match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1287,34 +1379,34 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class SubtypeAttributeContext extends ParserRuleContext {
-		public TerminalNode Or(int i) {
-			return getToken(ImpexParser.Or, i);
+		public MacrorefContext macroref() {
+			return getRuleContext(MacrorefContext.class,0);
 		}
-		public List<SubtypeAttributeContext> subtypeAttribute() {
-			return getRuleContexts(SubtypeAttributeContext.class);
-		}
-		public TerminalNode LParenthesis() { return getToken(ImpexParser.LParenthesis, 0); }
-		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
-		public SubtypeAttributeNameContext subtypeAttributeName() {
-			return getRuleContext(SubtypeAttributeNameContext.class,0);
+		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
+			return getRuleContexts(AttributeModifierAssignmentContext.class);
 		}
 		public AttributeModifierAssignmentContext attributeModifierAssignment(int i) {
 			return getRuleContext(AttributeModifierAssignmentContext.class,i);
 		}
+		public SubtypeAttributeNameContext subtypeAttributeName() {
+			return getRuleContext(SubtypeAttributeNameContext.class,0);
+		}
+		public TerminalNode LParenthesis() { return getToken(ImpexParser.LParenthesis, 0); }
+		public List<SubtypeAttributeContext> subtypeAttribute() {
+			return getRuleContexts(SubtypeAttributeContext.class);
+		}
 		public SubtypeAttributeContext subtypeAttribute(int i) {
 			return getRuleContext(SubtypeAttributeContext.class,i);
 		}
-		public List<TerminalNode> Or() { return getTokens(ImpexParser.Or); }
-		public List<AttributeModifierAssignmentContext> attributeModifierAssignment() {
-			return getRuleContexts(AttributeModifierAssignmentContext.class);
-		}
+		public TerminalNode RParenthesis() { return getToken(ImpexParser.RParenthesis, 0); }
+		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public TerminalNode Comma(int i) {
 			return getToken(ImpexParser.Comma, i);
 		}
-		public MacrorefContext macroref() {
-			return getRuleContext(MacrorefContext.class,0);
+		public List<TerminalNode> Or() { return getTokens(ImpexParser.Or); }
+		public TerminalNode Or(int i) {
+			return getToken(ImpexParser.Or, i);
 		}
-		public List<TerminalNode> Comma() { return getTokens(ImpexParser.Comma); }
 		public SubtypeAttributeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1339,14 +1431,16 @@ public class ImpexParser extends Parser {
 			case Macroref:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(196); macroref();
+				setState(196);
+				macroref();
 				setState(200);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macroref) | (1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier) | (1L << UnknownModifier))) != 0)) {
 					{
 					{
-					setState(197); attributeModifierAssignment();
+					setState(197);
+					attributeModifierAssignment();
 					}
 					}
 					setState(202);
@@ -1358,13 +1452,16 @@ public class ImpexParser extends Parser {
 			case Identifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(203); subtypeAttributeName();
+				setState(203);
+				subtypeAttributeName();
 				setState(215);
 				_la = _input.LA(1);
 				if (_la==LParenthesis) {
 					{
-					setState(204); match(LParenthesis);
-					setState(205); subtypeAttribute();
+					setState(204);
+					match(LParenthesis);
+					setState(205);
+					subtypeAttribute();
 					setState(210);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
@@ -1375,16 +1472,19 @@ public class ImpexParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==Comma || _la==Or) ) {
 						_errHandler.recoverInline(this);
+						} else {
+							consume();
 						}
-						consume();
-						setState(207); subtypeAttribute();
+						setState(207);
+						subtypeAttribute();
 						}
 						}
 						setState(212);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(213); match(RParenthesis);
+					setState(213);
+					match(RParenthesis);
 					}
 				}
 
@@ -1394,7 +1494,8 @@ public class ImpexParser extends Parser {
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macroref) | (1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier) | (1L << UnknownModifier))) != 0)) {
 					{
 					{
-					setState(217); attributeModifierAssignment();
+					setState(217);
+					attributeModifierAssignment();
 					}
 					}
 					setState(222);
@@ -1421,11 +1522,11 @@ public class ImpexParser extends Parser {
 	public static class SubtypeAttributeNameContext extends ParserRuleContext {
 		public Token type;
 		public Token name;
-		public TerminalNode Dot() { return getToken(ImpexParser.Dot, 0); }
+		public List<TerminalNode> Identifier() { return getTokens(ImpexParser.Identifier); }
 		public TerminalNode Identifier(int i) {
 			return getToken(ImpexParser.Identifier, i);
 		}
-		public List<TerminalNode> Identifier() { return getTokens(ImpexParser.Identifier); }
+		public TerminalNode Dot() { return getToken(ImpexParser.Dot, 0); }
 		public SubtypeAttributeNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1450,12 +1551,15 @@ public class ImpexParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,27,_ctx) ) {
 			case 1:
 				{
-				setState(225); ((SubtypeAttributeNameContext)_localctx).type = match(Identifier);
-				setState(226); match(Dot);
+				setState(225);
+				((SubtypeAttributeNameContext)_localctx).type = match(Identifier);
+				setState(226);
+				match(Dot);
 				}
 				break;
 			}
-			setState(229); ((SubtypeAttributeNameContext)_localctx).name = match(Identifier);
+			setState(229);
+			((SubtypeAttributeNameContext)_localctx).name = match(Identifier);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1473,13 +1577,13 @@ public class ImpexParser extends Parser {
 		public AttributeModifierContext attributeModifier() {
 			return getRuleContext(AttributeModifierContext.class,0);
 		}
+		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public ModifierValueContext modifierValue() {
 			return getRuleContext(ModifierValueContext.class,0);
 		}
 		public UnknownModifierContext unknownModifier() {
 			return getRuleContext(UnknownModifierContext.class,0);
 		}
-		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public AttributeModifierAssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1510,13 +1614,16 @@ public class ImpexParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				{
-				setState(231); attributeModifier();
-				setState(232); match(Equals);
+				setState(231);
+				attributeModifier();
+				setState(232);
+				match(Equals);
 				setState(234);
 				switch ( getInterpreter().adaptivePredict(_input,28,_ctx) ) {
 				case 1:
 					{
-					setState(233); modifierValue();
+					setState(233);
+					modifierValue();
 					}
 					break;
 				}
@@ -1528,12 +1635,14 @@ public class ImpexParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				{
-				setState(236); unknownModifier();
+				setState(236);
+				unknownModifier();
 				setState(238);
 				_la = _input.LA(1);
 				if (_la==Equals) {
 					{
-					setState(237); match(Equals);
+					setState(237);
+					match(Equals);
 					}
 				}
 
@@ -1541,7 +1650,8 @@ public class ImpexParser extends Parser {
 				switch ( getInterpreter().adaptivePredict(_input,30,_ctx) ) {
 				case 1:
 					{
-					setState(240); modifierValue();
+					setState(240);
+					modifierValue();
 					}
 					break;
 				}
@@ -1564,12 +1674,12 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class AttributeModifierContext extends ParserRuleContext {
-		public TerminalNode TextAttributeModifier() { return getToken(ImpexParser.TextAttributeModifier, 0); }
-		public TerminalNode ClassAttributeModifier() { return getToken(ImpexParser.ClassAttributeModifier, 0); }
 		public TerminalNode BooleanAttributeModifier() { return getToken(ImpexParser.BooleanAttributeModifier, 0); }
+		public TerminalNode IntAttributeModifier() { return getToken(ImpexParser.IntAttributeModifier, 0); }
 		public TerminalNode DateFormatAttributeModifier() { return getToken(ImpexParser.DateFormatAttributeModifier, 0); }
 		public TerminalNode NumberFormatAttributeModifier() { return getToken(ImpexParser.NumberFormatAttributeModifier, 0); }
-		public TerminalNode IntAttributeModifier() { return getToken(ImpexParser.IntAttributeModifier, 0); }
+		public TerminalNode ClassAttributeModifier() { return getToken(ImpexParser.ClassAttributeModifier, 0); }
+		public TerminalNode TextAttributeModifier() { return getToken(ImpexParser.TextAttributeModifier, 0); }
 		public AttributeModifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1595,8 +1705,9 @@ public class ImpexParser extends Parser {
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BooleanAttributeModifier) | (1L << IntAttributeModifier) | (1L << DateFormatAttributeModifier) | (1L << NumberFormatAttributeModifier) | (1L << ClassAttributeModifier) | (1L << TextAttributeModifier))) != 0)) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1611,15 +1722,15 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class UnknownModifierContext extends ParserRuleContext {
+		public List<TerminalNode> UnknownModifier() { return getTokens(ImpexParser.UnknownModifier); }
 		public TerminalNode UnknownModifier(int i) {
 			return getToken(ImpexParser.UnknownModifier, i);
 		}
-		public List<TerminalNode> UnknownModifier() { return getTokens(ImpexParser.UnknownModifier); }
-		public MacrorefContext macroref(int i) {
-			return getRuleContext(MacrorefContext.class,i);
-		}
 		public List<MacrorefContext> macroref() {
 			return getRuleContexts(MacrorefContext.class);
+		}
+		public MacrorefContext macroref(int i) {
+			return getRuleContext(MacrorefContext.class,i);
 		}
 		public UnknownModifierContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1653,12 +1764,14 @@ public class ImpexParser extends Parser {
 					switch (_input.LA(1)) {
 					case UnknownModifier:
 						{
-						setState(247); match(UnknownModifier);
+						setState(247);
+						match(UnknownModifier);
 						}
 						break;
 					case Macroref:
 						{
-						setState(248); macroref();
+						setState(248);
+						macroref();
 						}
 						break;
 					default:
@@ -1687,15 +1800,15 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class ModifierValueContext extends ParserRuleContext {
+		public List<TerminalNode> Modifierval() { return getTokens(ImpexParser.Modifierval); }
 		public TerminalNode Modifierval(int i) {
 			return getToken(ImpexParser.Modifierval, i);
 		}
-		public MacrorefContext macroref(int i) {
-			return getRuleContext(MacrorefContext.class,i);
-		}
-		public List<TerminalNode> Modifierval() { return getTokens(ImpexParser.Modifierval); }
 		public List<MacrorefContext> macroref() {
 			return getRuleContexts(MacrorefContext.class);
+		}
+		public MacrorefContext macroref(int i) {
+			return getRuleContext(MacrorefContext.class,i);
 		}
 		public ModifierValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1729,12 +1842,14 @@ public class ImpexParser extends Parser {
 					switch (_input.LA(1)) {
 					case Modifierval:
 						{
-						setState(253); match(Modifierval);
+						setState(253);
+						match(Modifierval);
 						}
 						break;
 					case Macroref:
 						{
-						setState(254); macroref();
+						setState(254);
+						macroref();
 						}
 						break;
 					default:
@@ -1763,10 +1878,10 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class HeaderTypeNameContext extends ParserRuleContext {
+		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public MacrorefContext macroref() {
 			return getRuleContext(MacrorefContext.class,0);
 		}
-		public TerminalNode Type() { return getToken(ImpexParser.Type, 0); }
 		public HeaderTypeNameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1790,13 +1905,15 @@ public class ImpexParser extends Parser {
 			case Type:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(259); match(Type);
+				setState(259);
+				match(Type);
 				}
 				break;
 			case Macroref:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(260); macroref();
+				setState(260);
+				macroref();
 				}
 				break;
 			default:
@@ -1815,11 +1932,11 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class MacroContext extends ParserRuleContext {
+		public TerminalNode Macrodef() { return getToken(ImpexParser.Macrodef, 0); }
+		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public MacroValueContext macroValue() {
 			return getRuleContext(MacroValueContext.class,0);
 		}
-		public TerminalNode Macrodef() { return getToken(ImpexParser.Macrodef, 0); }
-		public TerminalNode Equals() { return getToken(ImpexParser.Equals, 0); }
 		public MacroContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1840,9 +1957,12 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(263); match(Macrodef);
-			setState(264); match(Equals);
-			setState(265); macroValue();
+			setState(263);
+			match(Macrodef);
+			setState(264);
+			match(Equals);
+			setState(265);
+			macroValue();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1857,16 +1977,16 @@ public class ImpexParser extends Parser {
 	}
 
 	public static class MacroValueContext extends ParserRuleContext {
-		public MacrorefContext macroref(int i) {
-			return getRuleContext(MacrorefContext.class,i);
+		public List<TerminalNode> Macroval() { return getTokens(ImpexParser.Macroval); }
+		public TerminalNode Macroval(int i) {
+			return getToken(ImpexParser.Macroval, i);
 		}
 		public List<MacrorefContext> macroref() {
 			return getRuleContexts(MacrorefContext.class);
 		}
-		public TerminalNode Macroval(int i) {
-			return getToken(ImpexParser.Macroval, i);
+		public MacrorefContext macroref(int i) {
+			return getRuleContext(MacrorefContext.class,i);
 		}
-		public List<TerminalNode> Macroval() { return getTokens(ImpexParser.Macroval); }
 		public MacroValueContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1897,12 +2017,14 @@ public class ImpexParser extends Parser {
 				switch (_input.LA(1)) {
 				case Macroval:
 					{
-					setState(267); match(Macroval);
+					setState(267);
+					match(Macroval);
 					}
 					break;
 				case Macroref:
 					{
-					setState(268); macroref();
+					setState(268);
+					macroref();
 					}
 					break;
 				default:
@@ -1948,7 +2070,8 @@ public class ImpexParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(274); match(Macroref);
+			setState(274);
+			match(Macroref);
 			}
 		}
 		catch (RecognitionException re) {

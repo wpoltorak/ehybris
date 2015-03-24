@@ -1,4 +1,4 @@
-// Generated from com/lambda/impex/ast/ImpexLexer.g4 by ANTLR 4.3
+// Generated from com/lambda/impex/ast/ImpexLexer.g4 by ANTLR 4.5
 package com.lambda.impex.ast;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class ImpexLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -44,15 +44,6 @@ public class ImpexLexer extends Lexer {
 		"modifier", "modifierval"
 	};
 
-	public static final String[] tokenNames = {
-		"'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'", "'\\u0005'", 
-		"'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", 
-		"'\r'", "'\\u000E'", "'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", 
-		"'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'", "'\\u0017'", "'\\u0018'", 
-		"'\\u0019'", "'\\u001A'", "'\\u001B'", "'\\u001C'", "'\\u001D'", "'\\u001E'", 
-		"'\\u001F'", "' '", "'!'", "'\"'", "'#'", "'$'", "'%'", "'&'", "'''", 
-		"'('", "')'", "'*'", "'+'", "','", "'-'", "'.'", "'/'", "'0'"
-	};
 	public static final String[] ruleNames = {
 		"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
 		"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "DASH", "UNDERSCORE", 
@@ -83,7 +74,63 @@ public class ImpexLexer extends Lexer {
 		"Modifierval"
 	};
 
+	private static final String[] _LITERAL_NAMES = {
+		null, null, null, "';'", null, null, null, null, null, null, null, null, 
+		null, null, null, null, "','", "'.'", "'\"'", "'''", "'('", "')'", "'='", 
+		"'|'", null, null, null, null, null, null, null, null, null, null, null, 
+		null, null, null, null, null, null, null, null, null, null, null, "']'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "Mode", "Type", "Separator", "Macroref", "SkippedField", "BooleanAttributeModifier", 
+		"IntAttributeModifier", "DateFormatAttributeModifier", "NumberFormatAttributeModifier", 
+		"ClassAttributeModifier", "TextAttributeModifier", "BooleanHeaderModifier", 
+		"ClassHeaderModifier", "TextHeaderModifier", "UnknownModifier", "Comma", 
+		"Dot", "DoubleQuote", "Quote", "LParenthesis", "RParenthesis", "Equals", 
+		"Or", "LineSeparator", "DocumentID", "SpecialAttribute", "Identifier", 
+		"Macrodef", "UserRights", "BeanShell", "Comment", "Lb", "Ws", "Error", 
+		"FieldQuoted", "FieldLb", "DocumentIdField", "DocumentIdRefField", "FieldCommaSkipped", 
+		"FieldMulti", "Field", "Macroval", "LBracket", "ABracket", "ADocumentID", 
+		"ModifierBracket", "ModifiervalBracket", "Modifierval"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
+
+		private static final int FIELD_SKIPPED = 0;
+		private static final int FIELD_DEFAULT = 1;
+		private static final int FIELD_DOCUMENTID = 2;
+		private static final int FIELD_DOCUMENTIDREF = 3;
+		
 		/* last type from non Token.HIDDEN_CHANNEL token */
 	    private int lastTokenType = 0;
 	    private boolean insideQuotedAttribute = false;
@@ -132,16 +179,16 @@ public class ImpexLexer extends Lexer {
 	    public int popMode() {
 	        if (_mode == attribute) {
 	        	if (lastTokenType == Separator){
-	        		columnTypes.add(0); // empty attribute
+	        		columnTypes.add(FIELD_SKIPPED); // empty attribute
 	        		if ( LexerATNSimulator.debug ) System.out.println("empty attribute");
 	        	} else if (lastTokenType == DocumentID){
-	        		columnTypes.add(1); // docid
+	        		columnTypes.add(FIELD_DOCUMENTID); // docid
 	        		if ( LexerATNSimulator.debug ) System.out.println("docid def attribute");
 	        	} else if (isDocumentIdReference) {
-	        		columnTypes.add(2); // docid ref
+	        		columnTypes.add(FIELD_DOCUMENTIDREF); // docid ref
 	        		if ( LexerATNSimulator.debug ) System.out.println("docid ref attribute");
 	        	} else {
-	        		columnTypes.add(3); // default
+	        		columnTypes.add(FIELD_DEFAULT); // default
 	        		if ( LexerATNSimulator.debug ) System.out.println("default attribute");
 	        	}
 	        }
@@ -156,18 +203,18 @@ public class ImpexLexer extends Lexer {
 				return;
 			}
 			switch (columnTypes.get(columnIndex)) { 
-				case 0: 
+				case FIELD_SKIPPED: 
 					if ( LexerATNSimulator.debug ) System.out.println("handle field - skipped");
 					setType(SkippedField); 
 					break; 
-	//			case 1: 
-	//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
-	//				setType(DocumentIdField); 
-	//				break;
-	//			case 2:
-	//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
-	//				setType(DocumentIdRefField); 
-	//				break;
+				case FIELD_DOCUMENTID: 
+					if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
+					setType(DocumentIdField); 
+					break;
+				case FIELD_DOCUMENTIDREF:
+					if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
+					setType(DocumentIdRefField); 
+					break;
 				default: 
 					if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
 					setType(Field);
@@ -300,9 +347,6 @@ public class ImpexLexer extends Lexer {
 	public String getGrammarFileName() { return "ImpexLexer.g4"; }
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
-
-	@Override
 	public String[] getRuleNames() { return ruleNames; }
 
 	@Override
@@ -317,133 +361,159 @@ public class ImpexLexer extends Lexer {
 	@Override
 	public void action(RuleContext _localctx, int ruleIndex, int actionIndex) {
 		switch (ruleIndex) {
-		case 71: FieldLb_action((RuleContext)_localctx, actionIndex); break;
-
-		case 75: FieldMulti_action((RuleContext)_localctx, actionIndex); break;
-
-		case 76: Field_action((RuleContext)_localctx, actionIndex); break;
-
-		case 111: ADocumentID_action((RuleContext)_localctx, actionIndex); break;
-		}
-	}
-	private void FieldMulti_action(RuleContext _localctx, int actionIndex) {
-		switch (actionIndex) {
-		case 1:  handleField(); break;
-		}
-	}
-	private void Field_action(RuleContext _localctx, int actionIndex) {
-		switch (actionIndex) {
-		case 2:  handleField(); break;
-		}
-	}
-	private void ADocumentID_action(RuleContext _localctx, int actionIndex) {
-		switch (actionIndex) {
-		case 3: handleDocumentId(); break;
+		case 71:
+			FieldLb_action((RuleContext)_localctx, actionIndex);
+			break;
+		case 75:
+			FieldMulti_action((RuleContext)_localctx, actionIndex);
+			break;
+		case 76:
+			Field_action((RuleContext)_localctx, actionIndex);
+			break;
+		case 111:
+			ADocumentID_action((RuleContext)_localctx, actionIndex);
+			break;
 		}
 	}
 	private void FieldLb_action(RuleContext _localctx, int actionIndex) {
 		switch (actionIndex) {
-		case 0: handleFieldLb(); break;
+		case 0:
+			handleFieldLb();
+			break;
+		}
+	}
+	private void FieldMulti_action(RuleContext _localctx, int actionIndex) {
+		switch (actionIndex) {
+		case 1:
+			 handleField();
+			break;
+		}
+	}
+	private void Field_action(RuleContext _localctx, int actionIndex) {
+		switch (actionIndex) {
+		case 2:
+			 handleField();
+			break;
+		}
+	}
+	private void ADocumentID_action(RuleContext _localctx, int actionIndex) {
+		switch (actionIndex) {
+		case 3:
+			handleDocumentId();
+			break;
 		}
 	}
 	@Override
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 72: return DocumentIdField_sempred((RuleContext)_localctx, predIndex);
-
-		case 73: return DocumentIdRefField_sempred((RuleContext)_localctx, predIndex);
-
-		case 74: return FieldCommaSkipped_sempred((RuleContext)_localctx, predIndex);
-
-		case 75: return FieldMulti_sempred((RuleContext)_localctx, predIndex);
-
-		case 80: return MacrovalWs_sempred((RuleContext)_localctx, predIndex);
-
-		case 106: return AHiddenLb_sempred((RuleContext)_localctx, predIndex);
-
-		case 137: return ModifierLb_sempred((RuleContext)_localctx, predIndex);
-
-		case 143: return ModifiervalLb_sempred((RuleContext)_localctx, predIndex);
-
-		case 144: return ModifiervalWs_sempred((RuleContext)_localctx, predIndex);
-
-		case 146: return ModifiervalSingleComma_sempred((RuleContext)_localctx, predIndex);
-
-		case 150: return ModifiervalDQuotes_sempred((RuleContext)_localctx, predIndex);
-
-		case 151: return ModifiervalDQuote_sempred((RuleContext)_localctx, predIndex);
-		}
-		return true;
-	}
-	private boolean ModifiervalDQuote_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 11: return !insideQuotedAttribute;
-		}
-		return true;
-	}
-	private boolean ModifiervalSingleComma_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 9: return _input.LA(1) == ']';
-		}
-		return true;
-	}
-	private boolean FieldMulti_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 3: return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) < 1;
-		}
-		return true;
-	}
-	private boolean FieldCommaSkipped_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 2: return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2;
-		}
-		return true;
-	}
-	private boolean ModifiervalWs_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 8: return lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']');
-		}
-		return true;
-	}
-	private boolean DocumentIdRefField_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 1: return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2;
+		case 72:
+			return DocumentIdField_sempred((RuleContext)_localctx, predIndex);
+		case 73:
+			return DocumentIdRefField_sempred((RuleContext)_localctx, predIndex);
+		case 74:
+			return FieldCommaSkipped_sempred((RuleContext)_localctx, predIndex);
+		case 75:
+			return FieldMulti_sempred((RuleContext)_localctx, predIndex);
+		case 80:
+			return MacrovalWs_sempred((RuleContext)_localctx, predIndex);
+		case 106:
+			return AHiddenLb_sempred((RuleContext)_localctx, predIndex);
+		case 137:
+			return ModifierLb_sempred((RuleContext)_localctx, predIndex);
+		case 143:
+			return ModifiervalLb_sempred((RuleContext)_localctx, predIndex);
+		case 144:
+			return ModifiervalWs_sempred((RuleContext)_localctx, predIndex);
+		case 146:
+			return ModifiervalSingleComma_sempred((RuleContext)_localctx, predIndex);
+		case 150:
+			return ModifiervalDQuotes_sempred((RuleContext)_localctx, predIndex);
+		case 151:
+			return ModifiervalDQuote_sempred((RuleContext)_localctx, predIndex);
 		}
 		return true;
 	}
 	private boolean DocumentIdField_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 1;
+		case 0:
+			return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTID;
 		}
 		return true;
 	}
-	private boolean ModifiervalLb_sempred(RuleContext _localctx, int predIndex) {
+	private boolean DocumentIdRefField_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 7: return insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'));
+		case 1:
+			return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF;
 		}
 		return true;
 	}
-	private boolean ModifierLb_sempred(RuleContext _localctx, int predIndex) {
+	private boolean FieldCommaSkipped_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 6: return insideQuotedAttribute;
+		case 2:
+			return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF;
 		}
 		return true;
 	}
-	private boolean ModifiervalDQuotes_sempred(RuleContext _localctx, int predIndex) {
+	private boolean FieldMulti_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 10: return insideQuotedAttribute;
-		}
-		return true;
-	}
-	private boolean AHiddenLb_sempred(RuleContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 5: return insideQuotedAttribute;
+		case 3:
+			return columnIndex >= columnTypes.size() || columnTypes.get(columnIndex) <= FIELD_DEFAULT;
 		}
 		return true;
 	}
 	private boolean MacrovalWs_sempred(RuleContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 4: return lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n';
+		case 4:
+			return lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n';
+		}
+		return true;
+	}
+	private boolean AHiddenLb_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 5:
+			return insideQuotedAttribute;
+		}
+		return true;
+	}
+	private boolean ModifierLb_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 6:
+			return insideQuotedAttribute;
+		}
+		return true;
+	}
+	private boolean ModifiervalLb_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 7:
+			return insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'));
+		}
+		return true;
+	}
+	private boolean ModifiervalWs_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 8:
+			return lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']');
+		}
+		return true;
+	}
+	private boolean ModifiervalSingleComma_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 9:
+			return _input.LA(1) == ']';
+		}
+		return true;
+	}
+	private boolean ModifiervalDQuotes_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 10:
+			return insideQuotedAttribute;
+		}
+		return true;
+	}
+	private boolean ModifiervalDQuote_sempred(RuleContext _localctx, int predIndex) {
+		switch (predIndex) {
+		case 11:
+			return !insideQuotedAttribute;
 		}
 		return true;
 	}

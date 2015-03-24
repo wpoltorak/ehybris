@@ -21,6 +21,11 @@ tokens {
 import java.util.*;
 }
 @members{
+	private static final int FIELD_SKIPPED = 0;
+	private static final int FIELD_DEFAULT = 1;
+	private static final int FIELD_DOCUMENTID = 2;
+	private static final int FIELD_DOCUMENTIDREF = 3;
+	
 	/* last type from non Token.HIDDEN_CHANNEL token */
     private int lastTokenType = 0;
     private boolean insideQuotedAttribute = false;
@@ -69,16 +74,16 @@ import java.util.*;
     public int popMode() {
         if (_mode == attribute) {
         	if (lastTokenType == Separator){
-        		columnTypes.add(0); // empty attribute
+        		columnTypes.add(FIELD_SKIPPED); // empty attribute
         		if ( LexerATNSimulator.debug ) System.out.println("empty attribute");
         	} else if (lastTokenType == DocumentID){
-        		columnTypes.add(1); // docid
+        		columnTypes.add(FIELD_DOCUMENTID); // docid
         		if ( LexerATNSimulator.debug ) System.out.println("docid def attribute");
         	} else if (isDocumentIdReference) {
-        		columnTypes.add(2); // docid ref
+        		columnTypes.add(FIELD_DOCUMENTIDREF); // docid ref
         		if ( LexerATNSimulator.debug ) System.out.println("docid ref attribute");
         	} else {
-        		columnTypes.add(3); // default
+        		columnTypes.add(FIELD_DEFAULT); // default
         		if ( LexerATNSimulator.debug ) System.out.println("default attribute");
         	}
         }
@@ -93,18 +98,18 @@ import java.util.*;
 			return;
 		}
 		switch (columnTypes.get(columnIndex)) { 
-			case 0: 
+			case FIELD_SKIPPED: 
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - skipped");
 				setType(SkippedField); 
 				break; 
-//			case 1: 
-//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
-//				setType(DocumentIdField); 
-//				break;
-//			case 2:
-//				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
-//				setType(DocumentIdRefField); 
-//				break;
+			case FIELD_DOCUMENTID: 
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid");
+				setType(DocumentIdField); 
+				break;
+			case FIELD_DOCUMENTIDREF:
+				if ( LexerATNSimulator.debug ) System.out.println("handle field - docid ref");
+				setType(DocumentIdRefField); 
+				break;
 			default: 
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
 				setType(Field);
@@ -310,10 +315,10 @@ FieldSeparator          : Ws* Separator Ws* -> type(Separator), popMode, pushMod
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
 FieldMacroref           : Macrodef -> type(Macroref);
 FieldLb                 : Lb {handleFieldLb();};
-DocumentIdField         : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 1}?; 
-DocumentIdRefField      : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2}?;
-FieldCommaSkipped       : Ws* Comma Ws* {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == 2}? -> channel(HIDDEN);
-FieldMulti              : ~[\r\n";\t\\ $&] ~[\r\n";$&]* ~[\r\n";\t\\ $&] {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) < 1}? { handleField();};
+DocumentIdField         : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTID}?; 
+DocumentIdRefField      : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF}?;
+FieldCommaSkipped       : Ws* Comma Ws* {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF}? -> channel(HIDDEN);
+FieldMulti              : ~[\r\n";\t\\ $&] ~[\r\n";$&]* ~[\r\n";\t\\ $&] {columnIndex >= columnTypes.size() || columnTypes.get(columnIndex) <= FIELD_DEFAULT}? { handleField();};
 Field                   : ~[\r\n";] { handleField();};
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?

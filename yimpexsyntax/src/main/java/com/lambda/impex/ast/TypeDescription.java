@@ -4,9 +4,11 @@ public interface TypeDescription {
 
     boolean isAbstract();
 
-    boolean iseCommerce();
+    boolean isDataModel();
 
     boolean isCollection();
+
+    boolean isEnum();
 
     boolean exists();
 

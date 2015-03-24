@@ -179,7 +179,11 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, attribute);
         if (model.hasProblems()) {
-            System.out.println();
+            for (final ImpexProblem problem : model.getProblems()) {
+                context.addProblem(problem(ctx.macroref(), ImpexProblem.Type.InvalidMacroEvaluation, getText(ctx.macroref())));
+                System.out.println();
+            }
+
         }
         currentColumnDescription = listener.getColumnDescription();
     }

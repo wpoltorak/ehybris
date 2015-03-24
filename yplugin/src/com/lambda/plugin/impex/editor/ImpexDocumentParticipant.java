@@ -17,8 +17,6 @@ import com.lambda.plugin.impex.antlr.AntlrTypeToPartitionTokenMapper;
 public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
 
     private final AntlrTypeToPartitionTokenMapper tokenMapper;
-    private DocumentEvent previousEvent;
-    private IRegion previousRegion;
 
     public ImpexDocumentParticipant() {
         this.tokenMapper = new AntlrTypeToPartitionTokenMapper();
@@ -58,7 +56,7 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
          */
         @Override
         public void documentAboutToBeChanged(DocumentEvent e) {
-            ensureCorrectDocument(e);
+            ((ImpexDocument) fDocument).ensureCorrectDocument(e);
             super.documentAboutToBeChanged(e);
         }
 
@@ -67,30 +65,12 @@ public class ImpexDocumentParticipant implements IDocumentSetupParticipant {
          */
         @Override
         public IRegion documentChanged2(DocumentEvent e) {
-            ensureCorrectDocument(e);
+            ((ImpexDocument) fDocument).ensureCorrectDocument(e);
             System.out.println("ImpexPartitioner documentChanged2 - reparse tokens");
-            // IRegion updateStructure = updateStructure(e);
             IRegion region = super.documentChanged2(e);
-            printPartitions(fDocument, e.getOffset(), e.getLength());
+            // printPartitions(fDocument, e.getOffset(), e.getLength());
+            // printPartitions(fDocument, 0, fDocument.getLength());
             return region;
-        }
-
-        public IRegion updateStructure(final DocumentEvent e) {
-            try {
-                if (previousEvent == e && previousRegion != null) {
-                    return previousRegion;
-                }
-                previousRegion = ((ImpexDocument) fDocument).computeDamageRegion(e);
-                return previousRegion;
-            } finally {
-                previousEvent = e;
-            }
-        }
-
-        private void ensureCorrectDocument(DocumentEvent e) {
-            if (e.getDocument() == ((ImpexDocument) fDocument).getDelegate()) {
-                e.fDocument = fDocument;
-            }
         }
 
         private void printPartitions(final IDocument document, int offset, int length) {

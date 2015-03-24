@@ -1,20 +1,31 @@
-package com.lambda.plugin.impex.editor;
+package com.lambda.plugin.impex.editor.syntaxcoloring;
 
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.presentation.IPresentationDamager;
 
-//TODO change DefaultDamagerRepairer into ImpexDamager when doing performance improvements with token rescanning 
+import com.lambda.plugin.impex.editor.ImpexDocument;
+
 public class ImpexDamager implements IPresentationDamager {
+
+    private ImpexDocument document;
 
     @Override
     public void setDocument(IDocument document) {
+        if (document instanceof ImpexDocument) {
+            this.document = (ImpexDocument) document;
+        }
     }
 
     @Override
     public IRegion getDamageRegion(ITypedRegion partition, DocumentEvent e, boolean documentPartitioningChanged) {
+        if (document == null) {
+            return new Region(0, 0);
+        }
+        return document.getDamageRegion(e);
         // if (!(e.getDocument() instanceof ImpexDocument)) {
         // return new Region(0, 0);
         // }
@@ -37,8 +48,6 @@ public class ImpexDamager implements IPresentationDamager {
         // partition.getOffset() + partition.getLength());
         //
         // IRegion result = new Region(offset, endOffset - offset);
-        IRegion result = null;
-        return result;
     }
 
     /**

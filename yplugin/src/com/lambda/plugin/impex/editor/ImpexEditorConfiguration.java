@@ -14,10 +14,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposalSorter;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
-import org.eclipse.jface.text.presentation.PresentationReconciler;
 import org.eclipse.jface.text.reconciler.IReconciler;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
-import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
@@ -25,6 +23,9 @@ import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import com.lambda.plugin.impex.antlr.AntlrTypeToPartitionTokenMapper;
 import com.lambda.plugin.impex.antlr.AntlrTypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.assist.ImpexContentAssistProcessor;
+import com.lambda.plugin.impex.editor.syntaxcoloring.ImpexDamagerRepairer;
+import com.lambda.plugin.impex.editor.syntaxcoloring.ImpexPresentationReconciler;
+import com.lambda.plugin.impex.editor.syntaxcoloring.ImpexTokenScanner;
 
 public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
@@ -122,14 +123,18 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
 
     @Override
     public IPresentationReconciler getPresentationReconciler(final ISourceViewer sourceViewer) {
-        final PresentationReconciler reconciler = new PresentationReconciler();
+        final ImpexPresentationReconciler reconciler = new ImpexPresentationReconciler();
         reconciler.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
-        DefaultDamagerRepairer dr = new DefaultDamagerRepairer(getImpexScanner());
-        String[] configuredContentTypes = getConfiguredContentTypes(sourceViewer);
-        for (String contentType : configuredContentTypes) {
-            reconciler.setDamager(dr, contentType);
-            reconciler.setRepairer(dr, contentType);
-        }
+        ImpexDamagerRepairer dr = new ImpexDamagerRepairer(getImpexScanner());
+
+        reconciler.setDamager(dr);
+        reconciler.setRepairer(dr);
+
+        // String[] configuredContentTypes = getConfiguredContentTypes(sourceViewer);
+        // for (String contentType : configuredContentTypes) {
+        // reconciler.setDamager(damager, contentType);
+        // reconciler.setRepairer(dr, contentType);
+        // }
         return reconciler;
     }
 
