@@ -22,9 +22,10 @@ public class AntlrTypeToPartitionTokenMapper {
     private static final Map<String, String[]> defaultPrefixesMap = new HashMap<>();
     static {
         defaultPrefixesMap.put(COMMENT, new String[] { "#" });
-        // defaultPrefixesMap.put(IDocument.DEFAULT_CONTENT_TYPE, new String[] { "#" });
-        // defaultPrefixesMap.put(BEANSHELL, new String[] { "#" });
-        // defaultPrefixesMap.put(MACRO, new String[] { "#" });
+        defaultPrefixesMap.put(IDocument.DEFAULT_CONTENT_TYPE, new String[] { "#" });
+        defaultPrefixesMap.put(BEANSHELL, new String[] { "#" });
+        defaultPrefixesMap.put(MACRO, new String[] { "#" });
+        defaultPrefixesMap.put(MODE, new String[] { "#" });
         // map.put(ImpexLexer.Insert, MODE);
         // map.put(ImpexLexer.InsertUpdate, MODE);
         // map.put(ImpexLexer.Update, MODE);

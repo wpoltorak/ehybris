@@ -104,6 +104,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
         private final int selectionEndLine;
 
         /** the display, so that it can be updated during a long operation */
+        @SuppressWarnings("unused")
         private final Display display;
 
         private final ImpexEditor editor;
@@ -152,6 +153,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
         }
 
         private Iterable<ILexerTokenRegion>[] getLines(final ImpexDocument document) throws BadLocationException {
+            @SuppressWarnings("unchecked")
             Iterable<ILexerTokenRegion>[] lines = new Iterable[selectionEndLine - selectionStartLine + 1];
             for (int i = selectionStartLine, j = 0; i <= selectionEndLine; i++, j++) {
                 lines[j] = document.getLineTokens(i);
@@ -190,41 +192,6 @@ public class ToggleLineCommentAction extends AbstractHandler {
                 }
             }
             return false;
-        }
-
-        private void toggleComment(final ImpexDocument document, boolean comment, LineInformation[] lineInformation,
-                IProgressMonitor monitor) throws BadLocationException {
-            // toggle each line so long as task not canceled
-            for (int i = selectionEndLine, j = lineInformation.length - 1; i >= selectionStartLine
-                    && !monitor.isCanceled(); i--, j--) {
-                // allow the user to be able to click the cancel button
-                readAndDispatch(this.display);
-                if (comment) {
-                    document.replace(lineInformation[j].lineOffset, 0, "#");
-                } else {
-                    document.replace(lineInformation[j].prefixOffset, 1, "");
-                }
-                monitor.worked(1);
-            }
-        }
-
-        private void readAndDispatch(final Display display) {
-            try {
-                display.readAndDispatch();
-            } catch (final Exception e) {
-                YPlugin.logWarning("Exception caused by readAndDispatch, not caused by or fatal to caller", e);
-            } catch (final LinkageError e) {
-                YPlugin.logWarning("LinkageError caused by readAndDispatch, not caused by or fatal to caller", e);
-            } catch (final VirtualMachineError e) {
-                // re-throw these
-                throw e;
-            } catch (final ThreadDeath e) {
-                // re-throw these
-                throw e;
-            } catch (final Error e) {
-                // catch every error, except for a few that we don't want to handle
-                YPlugin.logWarning("Error caused by readAndDispatch, not caused by or fatal to caller", e);
-            }
         }
     }
 

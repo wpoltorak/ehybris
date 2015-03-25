@@ -14,6 +14,7 @@ import com.lambda.plugin.impex.antlr.AntlrTypeToStyleTokenMapper;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
+//TODO improve token scanner  - do not iterate always from the beginning of the tokens
 public class ImpexTokenScanner implements ITokenScanner {
 
     private ILexerTokenRegion nextToken;
