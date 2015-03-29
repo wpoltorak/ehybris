@@ -2,18 +2,10 @@ package com.lambda.plugin.impex.editor.assist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.TypeNameMatch;
 import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
@@ -29,7 +21,9 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
+import com.lambda.impex.ast.TypeDescription;
 import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.impex.antlr.JavaTypeFinder;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
@@ -39,6 +33,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     private final ImpexCompletionProposalFactory completionProposalFactory = new ImpexCompletionProposalFactory();
     private final ITextEditor editor;
     private IType type;
+    private final JavaTypeFinder typeFinder = new JavaTypeFinder();
 
     public ImpexContentAssistProcessor(ITextEditor editor) {
         this.editor = editor;
@@ -52,85 +47,57 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 ImpexLexer.Dot, ImpexLexer.DoubleQuote);
         final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
         try {
-            Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensForOffset(offset);
+            Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensOfOffset(offset, true);
             ActivationTokenInspector inspector = new ActivationTokenInspector(lineTokens, offset, skipped);
             // the beginning of the line - suggest mode
             if (inspector.getLastToken() == null) {
                 return computeModeProposals(document, offset);
             }
 
-            switch (inspector.getLastToken().getTokenType()) {
-            case ImpexLexer.Mode: {
-                // JavaTypeCompletionProposalComputer javaTypeCompletionProposalComputer = new
-                // JavaTypeCompletionProposalComputer();
-                // JavaContentAssistInvocationContext context = new JavaContentAssistInvocationContext(viewer, offset,
-                // editor);
-                // javaTypeCompletionProposalComputer.computeCompletionProposals(context, new NullProgressMonitor());
-                final String qualifier = getQualifier(document, offset);
-                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                    @Override
-                    public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        if (!match.getSimpleTypeName().startsWith("Mock")) {
-                            result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
+            // header content assist
+            if (inspector.getFirstToken().getTokenType() == ImpexLexer.Mode) {
+                switch (inspector.getLastToken().getTokenType()) {
+                case ImpexLexer.Mode: {
+                    final String qualifier = getQualifier(document, offset);
+                    final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                        @Override
+                        public void acceptTypeNameMatch(final TypeNameMatch match) {
+                            if (match.getSimpleTypeName().endsWith("Model")) {
+                                result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
+                            }
                         }
-                    }
-                };
-                SearchEngine engine = new SearchEngine();
-
-                // TODO performance of the popup is slow. should it be loaded in a background thread for the first time
-                // during plugin startup?
-                IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
-                if (scope != null) {
-                    engine.searchAllTypeNames("de.hybris.platform*.model*".toCharArray(),
-                            SearchPattern.R_PATTERN_MATCH, qualifier.toCharArray(), SearchPattern.R_PREFIX_MATCH
-                                    | SearchPattern.R_CAMELCASE_MATCH, IJavaSearchConstants.CLASS, scope,
-                            nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                            new NullProgressMonitor());
-                }
-                break;
-            }
-            case ImpexLexer.Separator: {
-                final String qualifier = getQualifier(document, offset);
-                final String typename = "User";
-                final Set<IType> types = new HashSet<>();
-                final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                    @Override
-                    public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        if (match.getSimpleTypeName().equals("Generated" + typename)) {
-                            types.add(match.getType());
-                        }
-                    }
-                };
-                SearchEngine engine = new SearchEngine();
-                IJavaSearchScope scope = YPlugin.getDefault().extensibleItemHierarchyScope();
-                if (scope != null) {
-                    engine.searchAllTypeNames("de.hybris.platform*.jalo*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
-                            ("Generated" + typename).toCharArray(), SearchPattern.R_EXACT_MATCH,
-                            IJavaSearchConstants.CLASS, scope, nameMatchRequestor,
-                            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH, new NullProgressMonitor());
-                }
-                if (types.isEmpty()) {
+                    };
+                    // TODO performance of the popup is slow. should it be loaded in a background thread for the first
+                    // time
+                    // during plugin startup?
+                    typeFinder.searchModelType(qualifier, null, SearchPattern.R_PREFIX_MATCH
+                            | SearchPattern.R_CAMELCASE_MATCH, nameMatchRequestor);
                     break;
                 }
+                case ImpexLexer.Separator: {
+                    final String qualifier = getQualifier(document, offset);
+                    final String typename = "User";
+                    TypeDescription type = typeFinder.findBySimpleName(typename);
 
-                // TODO open type ctrl+shift+T & open resource ctrl+shift+R does not work in impex editor
-                // TODO open type with ctrl + click on type in impex editor - show menu to choose Type or Generated
-                // type. provide option to save choice as default action
-
-                IType type = types.iterator().next();
-                IField[] fields = type.getFields();
-                for (IField field : fields) {
-                    if (field.getElementName().startsWith(qualifier)) {
-                        result.add(completionProposalFactory.newAttributeProposal(qualifier, offset, field));
+                    // TODO open type with ctrl + click on type in impex editor - show menu to choose Type or Generated
+                    // type. provide option to save choice as default action
+                    if (type == null) {
+                        break;
                     }
-                }
-                break;
-            }
-            }
 
-        } catch (BadLocationException | JavaModelException e) {
+                    for (String field : type.getFields()) {
+                        if (field.startsWith(qualifier)) {
+                            result.add(completionProposalFactory.newAttributeProposal(qualifier, offset, field));
+                        }
+                    }
+                    break;
+                }
+                }
+            }
+        } catch (BadLocationException e) {
             YPlugin.logError(e);
         }
+
         final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);
         System.err.println("took: " + (System.currentTimeMillis() - millis));
         return cproposals;
@@ -184,7 +151,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 // Read character backwards
                 final char c = doc.getChar(--documentOffset);
                 // Whitespace. Return qualifier
-                if (Character.isWhitespace(c)) {
+                if (Character.isWhitespace(c) || c == ';') {
                     return buf.reverse().toString();
                 }
                 // Collect character
@@ -220,6 +187,10 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 
         public ILexerTokenRegion getLastToken() {
             return previousToken;
+        }
+
+        public ILexerTokenRegion getFirstToken() {
+            return firstToken;
         }
 
         public ILexerTokenRegion getNextToken() {

@@ -1,5 +1,7 @@
 package com.lambda.impex.ast;
 
+import java.util.Set;
+
 public interface TypeDescription {
 
     boolean isAbstract();
@@ -13,6 +15,8 @@ public interface TypeDescription {
     boolean exists();
 
     boolean isChildOf(String supertype);
+
+    Set<String> getFields();
 
     boolean containsField(String fieldName);
 

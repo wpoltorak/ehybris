@@ -45,12 +45,15 @@ public class JavaTypeFinder implements TypeFinder {
 
     @Override
     public TypeDescription findBySimpleName(String typename) {
-        if (jaloClasses.containsKey(typename)) {
-            IType type = getType(typename, jaloClasses.get(typename), true);
-            return JavaTypeDescription.fromType(type, false, fieldCollector);
-        }
-        IType type = getType(typename + "Model");
+        IType type = findTypeBySimpleName(typename);
         return JavaTypeDescription.fromType(type, false, fieldCollector);
+    }
+
+    private IType findTypeBySimpleName(String typename) {
+        if (jaloClasses.containsKey(typename)) {
+            return getType(typename, jaloClasses.get(typename), true);
+        }
+        return getType(typename + "Model");
     }
 
     @Override
@@ -89,119 +92,99 @@ public class JavaTypeFinder implements TypeFinder {
     }
 
     private IType getType(final String typename) {
-        return getType(typename, false);
-    }
-
-    private IType getType(final String typename, boolean isJalo) {
         // may be a full name including path
         String[] arr = toNameAndPackage(typename);
         String classname = arr[0];
         String packagename = arr.length > 1 ? arr[1] : null;
-        return getType(classname, packagename, isJalo);
+        return getType(classname, packagename, false);
     }
 
     private IType getType(final String typename, final String packagename, boolean isJalo) {
         if (typeCache.containsKey(typename)) {
             return typeCache.get(typename);
         }
-        IType type = isJalo ? searchJaloType(typename, packagename) : searchModelType(typename, packagename);
+        final Set<IType> types = new LinkedHashSet<>();
+        getType(typename, packagename, isJalo, types);
+        IType type = types.isEmpty() ? null : types.iterator().next();
         typeCache.put(typename, type);
         return type;
     }
 
-    private IType searchModelType(final String typename, final String packagename) {
-        SearchEngine engine = new SearchEngine();
+    private void getType(final String typename, final String packagename, boolean isJalo, final Set<IType> result) {
+        TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+            @Override
+            public void acceptTypeNameMatch(final TypeNameMatch match) {
+                // TODO thread that feeds the list which is immediately returned
+                System.out.println("found: " + match.getType().getElementName());
+                result.add(match.getType());
+            }
+        };
+
+        System.err.println("entered search" + (isJalo ? "Jalo" : "Model") + "Type - find '" + typename + "'");
+        long millis = System.currentTimeMillis();
         try {
-            if (!getPlatformProject().exists()) {
-                return null;
+            if (isJalo) {
+                searchJaloType(typename, packagename, SearchPattern.R_EXACT_MATCH, nameMatchRequestor);
+            } else {
+                searchModelType(typename, packagename, SearchPattern.R_EXACT_MATCH, nameMatchRequestor);
             }
-
-            final Set<IType> types = new LinkedHashSet<>();
-            System.err.println("entered searchModelType - find '" + typename + "'");
-            long millis = System.currentTimeMillis();
-            try {
-                TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                    @Override
-                    public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        // TODO thread that feeds the list which is immediately returned
-                        System.out.println("found: " + match.getType().getElementName());
-                        types.add(match.getType());
-                    }
-                };
-                char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.model*"
-                        .toCharArray();
-                int pattern = packagename != null ? SearchPattern.R_EXACT_MATCH : SearchPattern.R_PATTERN_MATCH;
-                boolean isEnum = JavaTypeDescription.isEnum(packagename);
-                int searchFor = isEnum ? IJavaSearchConstants.CLASS_AND_ENUM : IJavaSearchConstants.CLASS;
-                IJavaSearchScope scope = getPlatformScope();
-                engine.searchAllTypeNames(pkgName, pattern, typename.toCharArray(), SearchPattern.R_EXACT_MATCH,
-                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                        new NullProgressMonitor());
-                if (!types.isEmpty()) {
-                    return types.iterator().next();
-                }
-            } finally {
-                millis = System.currentTimeMillis() - millis;
-                System.err.println(String.format(
-                        "Took %d:%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis)
-                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
-                        TimeUnit.MILLISECONDS.toMillis(millis)
-                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
-
-            }
-        } catch (JavaModelException e) {
-            YPlugin.logError(e);
+        } finally {
+            millis = System.currentTimeMillis() - millis;
+            System.err.println(String.format(
+                    "Took %d:%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(millis),
+                    TimeUnit.MILLISECONDS.toSeconds(millis)
+                            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                    TimeUnit.MILLISECONDS.toMillis(millis)
+                            - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
         }
-        return null;
+
     }
 
-    private IType searchJaloType(final String typename, final String packagename) {
-        SearchEngine engine = new SearchEngine();
+    public void searchModelType(final String typename, final String packagename, int nameSearchPattern,
+            TypeNameMatchRequestor nameMatchRequestor) {
+        if (!getPlatformProject().exists()) {
+            return;
+        }
+
         try {
-            if (!getPlatformProject().exists()) {
-                return null;
-            }
+            SearchEngine engine = new SearchEngine();
+            char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.model*"
+                    .toCharArray();
+            int packageSearchPattern = packagename != null ? SearchPattern.R_EXACT_MATCH
+                    : SearchPattern.R_PATTERN_MATCH;
+            boolean isEnum = JavaTypeDescription.isEnum(packagename);
+            int searchFor = isEnum ? IJavaSearchConstants.CLASS_AND_ENUM : IJavaSearchConstants.CLASS;
+            IJavaSearchScope scope = getPlatformScope();
+            engine.searchAllTypeNames(pkgName, packageSearchPattern, typename.toCharArray(), nameSearchPattern,
+                    searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+                    new NullProgressMonitor());
 
-            final Set<IType> types = new LinkedHashSet<>();
-            System.err.println("entered searchJaloType - find '" + typename + "'");
-            long millis = System.currentTimeMillis();
-            try {
-                TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
-                    @Override
-                    public void acceptTypeNameMatch(final TypeNameMatch match) {
-                        // TODO thread that feeds the list which is immediately returned
-                        System.out.println("found: " + match.getType().getElementName());
-                        types.add(match.getType());
-                    }
-                };
-                char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.jalo*"
-                        .toCharArray();
-                int pattern = packagename != null ? SearchPattern.R_EXACT_MATCH : SearchPattern.R_PATTERN_MATCH;
-                int searchFor = IJavaSearchConstants.CLASS;
-                IJavaSearchScope scope = getPlatformScope();
-                engine.searchAllTypeNames(pkgName, pattern, typename.toCharArray(), SearchPattern.R_EXACT_MATCH,
-                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                        new NullProgressMonitor());
-                if (!types.isEmpty()) {
-                    return types.iterator().next();
-                }
-            } finally {
-                millis = System.currentTimeMillis() - millis;
-                System.err.println(String.format(
-                        "Took %d:%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis)
-                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
-                        TimeUnit.MILLISECONDS.toMillis(millis)
-                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
-
-            }
         } catch (JavaModelException e) {
             YPlugin.logError(e);
         }
-        return null;
+    }
+
+    private void searchJaloType(final String typename, final String packagename, int nameSearchPattern,
+            TypeNameMatchRequestor nameMatchRequestor) {
+        if (!getPlatformProject().exists()) {
+            return;
+        }
+
+        try {
+            SearchEngine engine = new SearchEngine();
+            char[] pkgName = packagename != null ? packagename.toCharArray() : "de.hybris.platform*.jalo*"
+                    .toCharArray();
+            int packageSearchPattern = packagename != null ? SearchPattern.R_EXACT_MATCH
+                    : SearchPattern.R_PATTERN_MATCH;
+            int searchFor = IJavaSearchConstants.CLASS;
+            IJavaSearchScope scope = getPlatformScope();
+            engine.searchAllTypeNames(pkgName, packageSearchPattern, typename.toCharArray(), nameSearchPattern,
+                    searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+                    new NullProgressMonitor());
+        } catch (JavaModelException e) {
+            YPlugin.logError(e);
+        }
     }
 
     private IJavaSearchScope getWorkspaceScope() {

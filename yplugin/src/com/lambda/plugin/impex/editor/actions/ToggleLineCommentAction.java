@@ -156,7 +156,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
             @SuppressWarnings("unchecked")
             Iterable<ILexerTokenRegion>[] lines = new Iterable[selectionEndLine - selectionStartLine + 1];
             for (int i = selectionStartLine, j = 0; i <= selectionEndLine; i++, j++) {
-                lines[j] = document.getLineTokens(i);
+                lines[j] = document.getLineTokens(i, false);
             }
             return lines;
         }

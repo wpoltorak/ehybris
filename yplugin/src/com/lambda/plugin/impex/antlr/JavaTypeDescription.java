@@ -3,7 +3,9 @@ package com.lambda.plugin.impex.antlr;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,6 +61,11 @@ public class JavaTypeDescription implements TypeDescription {
     @Override
     public boolean isChildOf(String supertype) {
         return parents.contains(supertype);
+    }
+
+    @Override
+    public Set<String> getFields() {
+        return fields.keySet();
     }
 
     @Override
@@ -126,16 +133,30 @@ public class JavaTypeDescription implements TypeDescription {
             return desc;
         }
 
-        desc.exists = true;
-        desc.isAbstract = isAbstract(type);
-        desc.isCollection = isCollection;
-        desc.isDataModel = isDataModel(type);
-        // desc.isJaloModel = isJaloModel(type);
-        desc.isEnum = isEnum(type);
-        desc.name = type.getElementName();
-        desc.target = type;
-        if (desc.isDataModel) {
-            fieldCollector.addFieldsAndSupertypes(desc, type);
+        System.err.println("entered fromType - map '" + type.getElementName() + "'");
+        long millis = System.currentTimeMillis();
+        try {
+            desc.exists = true;
+            desc.isAbstract = isAbstract(type);
+            desc.isCollection = isCollection;
+            desc.isDataModel = isDataModel(type);
+            // desc.isJaloModel = isJaloModel(type);
+            desc.isEnum = isEnum(type);
+            desc.name = type.getElementName();
+            desc.target = type;
+            if (desc.isDataModel) {
+                fieldCollector.addFieldsAndSupertypes(desc, type);
+            }
+        } finally {
+            millis = System.currentTimeMillis() - millis;
+            System.err.println(String.format(
+                    "Took %d:%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(millis),
+                    TimeUnit.MILLISECONDS.toSeconds(millis)
+                            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
+                    TimeUnit.MILLISECONDS.toMillis(millis)
+                            - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
+
         }
         return desc;
     }

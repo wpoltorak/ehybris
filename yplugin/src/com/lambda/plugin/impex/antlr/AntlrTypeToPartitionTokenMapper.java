@@ -26,10 +26,6 @@ public class AntlrTypeToPartitionTokenMapper {
         defaultPrefixesMap.put(BEANSHELL, new String[] { "#" });
         defaultPrefixesMap.put(MACRO, new String[] { "#" });
         defaultPrefixesMap.put(MODE, new String[] { "#" });
-        // map.put(ImpexLexer.Insert, MODE);
-        // map.put(ImpexLexer.InsertUpdate, MODE);
-        // map.put(ImpexLexer.Update, MODE);
-        // map.put(ImpexLexer.Remove, MODE);
         map.put(ImpexLexer.Mode, MODE);
         map.put(ImpexLexer.Macrodef, MACRO);
         map.put(ImpexLexer.Macroref, MACRO);

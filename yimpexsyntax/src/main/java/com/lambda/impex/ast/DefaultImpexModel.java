@@ -177,7 +177,7 @@ public class DefaultImpexModel implements ImpexModel {
         switch (tokenType) {
             case ImpexLexer.Type:
                 final TypeDescription type = offset2Type.get(offset);
-                return type.getTarget();
+                return type != null ? type.getTarget() : null;
             default:
                 return null;
         }

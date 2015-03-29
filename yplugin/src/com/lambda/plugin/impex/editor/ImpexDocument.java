@@ -20,6 +20,7 @@ import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
 import com.lambda.impex.ast.DefaultImpexModel;
+import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.impex.ast.ImpexModel;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
 import com.lambda.impex.ast.ImpexProblem;
@@ -80,14 +81,46 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return tokens.values();
     }
 
-    public Iterable<ILexerTokenRegion> getLineTokensForOffset(int offset) throws BadLocationException {
-        IRegion line = getLineInformationOfOffset(offset);
-        return tokens.subMap(tokens.floorKey(line.getOffset()), tokens.floorKey(line.getOffset() + line.getLength()))
+    public IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
+        int lineOffset = 0;
+        int lineLength = 0;
+        do {
+            IRegion line = getLineInformationOfOffset(offset);
+            lineOffset = line.getOffset();
+            lineLength += line.getLength();
+            offset = lineOffset - 1;
+        } while (includeSeparatedLines && offset > 0 && getToken(offset).getTokenType() != ImpexLexer.Lb);
+
+        ILexerTokenRegion last = getToken(lineOffset + lineLength);
+        while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
+            IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
+            lineLength += line.getLength();
+            last = getToken(lineOffset + lineLength);
+        }
+        return new Region(lineOffset, lineLength);
+    }
+
+    /**
+     * Returns all the line tokens. <br>
+     * Takes into account LineSeparator
+     * 
+     * @param offset
+     * @return
+     * @throws BadLocationException
+     */
+    public Iterable<ILexerTokenRegion> getLineTokensOfOffset(int offset, boolean includeSeparatedLines)
+            throws BadLocationException {
+        IRegion line = getLineInformationOfOffset(offset, true);
+        return tokens.subMap(tokens.floorKey(line.getOffset()), tokens.floorKey(line.getLength() + line.getLength()))
                 .values();
     }
 
-    public Iterable<ILexerTokenRegion> getLineTokens(int line) throws BadLocationException {
+    public Iterable<ILexerTokenRegion> getLineTokens(int line, boolean includeSeparatedLines)
+            throws BadLocationException {
         IRegion lineinfo = getLineInformation(line);
+        if (includeSeparatedLines) {
+            lineinfo = getLineInformationOfOffset(lineinfo.getOffset(), includeSeparatedLines);
+        }
         return tokens.subMap(tokens.floorKey(lineinfo.getOffset()),
                 tokens.floorKey(lineinfo.getOffset() + lineinfo.getLength())).values();
     }
@@ -145,16 +178,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             return new Region(0, e.getDocument().getLength());
         }
 
-        // if (true) {
-        // setTokens(createTokens(e.fDocument.get()));
-        // return new Region(0, e.getDocument().getLength());
-        // }
-        // TODO handle case for partitions - rewind to last block start and parse until end of the file
         try {
-            // if (true) {
-            // setTokens(createTokens(e.fDocument.get()));
-            // return new Region(0, e.getDocument().getLength());
-            // }
             int lengthDelta = e.getText().length() - e.getLength();
             IRegion changeRegion = computeDamageRegion(e, lengthDelta);
             NavigableMap<Integer, IRegion> blocks = getUnchangedBlocks(changeRegion);
@@ -178,20 +202,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
                 tempTokens.put(newToken.getOffset(), newToken);
             }
 
-            // ILexerTokenRegion last = null;
-            // for (ILexerTokenRegion elem : tempTokens.values()) {
-            // if (last != null) {
-            // if (last.getOffset() + last.getLength() != elem.getOffset()) {
-            // System.err.println("#################");
-            // System.err.println(last);
-            // System.err.println(elem);
-            // System.err.println("#################");
-            // }
-            //
-            // }
-            // last = elem;
-            //
-            // }
+            // verifyTokens(tempTokens);
             setTokens(tempTokens);
             setBlocks(blocks);
             return changeRegion;
@@ -200,111 +211,21 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             setTokens(createTokens(e.fDocument.get(), blocks));
             return new Region(0, e.getDocument().getLength());
         }
-        // try {
-        // int tokenStartsAt = 0;
-        // int tokenInfoIdx = 0;
-        // for (tokenInfoIdx = 0; tokenInfoIdx < tempTokens.size(); ++tokenInfoIdx) {
-        // ILexerTokenRegion oldToken = tempTokens.get(tokenInfoIdx);
-        // if (tokenStartsAt <= e.getOffset() && tokenStartsAt + oldToken.getLength() >= e.getOffset())
-        // break;
-        // tokenStartsAt += oldToken.getLength();
-        // }
-        // final TokenSource delegate = createTokenSource(e.fDocument.get(tokenStartsAt, e.fDocument.getLength()
-        // - tokenStartsAt));
-        // final int offset = tokenStartsAt;
-        // TokenSource source = new TokenSource() {
-        // @Override
-        // public Token nextToken() {
-        // CommonToken commonToken = (CommonToken) delegate.nextToken();
-        // commonToken.setText(commonToken.getText());
-        // commonToken.setStartIndex(commonToken.getStartIndex() + offset);
-        // commonToken.setStopIndex(commonToken.getStopIndex() + offset);
-        // return commonToken;
-        // }
-        //
-        // @Override
-        // public String getSourceName() {
-        // return delegate.getSourceName();
-        // }
-        //
-        // @Override
-        // public int getCharPositionInLine() {
-        // return delegate.getCharPositionInLine();
-        // }
-        //
-        // @Override
-        // public CharStream getInputStream() {
-        // return delegate.getInputStream();
-        // }
-        //
-        // @Override
-        // public int getLine() {
-        // return delegate.getLine();
-        // }
-        //
-        // @Override
-        // public TokenFactory<?> getTokenFactory() {
-        // return delegate.getTokenFactory();
-        // }
-        //
-        // @Override
-        // public void setTokenFactory(TokenFactory<?> arg0) {
-        // delegate.setTokenFactory(arg0);
-        //
-        // }
-        // };
-        // CommonToken token = (CommonToken) source.nextToken();
-        //
-        // if (token.getType() == Token.EOF)
-        // tempTokens.subList(tokenInfoIdx, tempTokens.size()).clear();
-        // int regionOffset = offset;
-        // int regionLength = e.fDocument.getLength() - offset;
-        //
-        // int lengthDiff = e.fText.length() - e.fLength;
-        // // compute region length
-        // while (true) {
-        // if (token.getType() == Token.EOF || tokenInfoIdx >= tempTokens.size()) {
-        // break;
-        // }
-        // while (true) {
-        // if (tokenInfoIdx >= tempTokens.size()) {
-        // break;
-        // }
-        // ILexerTokenRegion tokenInfo = tempTokens.get(tokenInfoIdx);
-        // if (token.getStartIndex() >= e.fOffset + e.fText.length()) {
-        // if (tokenStartsAt + lengthDiff == token.getStartIndex()
-        // && tokenInfo.getTokenType() == token.getType()
-        // && token.getStopIndex() - token.getStartIndex() + 1 == tokenInfo.getLength()) {
-        // return new Region(regionOffset, token.getStartIndex() - regionOffset);
-        // }
-        // }
-        // if (tokenStartsAt + lengthDiff + tokenInfo.getLength() > token.getStopIndex() + 1) {
-        // break;
-        // }
-        // tempTokens.remove(tokenInfoIdx);
-        // tokenStartsAt += tokenInfo.getLength();
-        // if (tokenStartsAt + lengthDiff > token.getStartIndex())
-        // break;
-        // }
-        // tempTokens.add(tokenInfoIdx++, createTokenInfo(token));
-        // token = (CommonToken) source.nextToken();
-        // }
-        // tempTokens.subList(tokenInfoIdx, tempTokens.size()).clear();
-        // // add subsequent tokens
-        // if (tokenInfoIdx >= tempTokens.size()) {
-        // while (token.getType() != Token.EOF) {
-        // tempTokens.add(createTokenInfo(token));
-        // token = (CommonToken) source.nextToken();
-        // }
-        // }
-        // return new Region(regionOffset, regionLength);
-        // } catch (Exception exc) {
-        // YPlugin.logError("Error computing damaged region", exc);
-        // tempTokens = createTokens(e.fDocument.get());
-        // return new Region(0, e.fDocument.getLength());
-        // } finally {
-        // setTokens(tempTokens);
-        // }
+    }
+
+    private void verifyTokens(NavigableMap<Integer, ILexerTokenRegion> tempTokens) {
+        ILexerTokenRegion last = null;
+        for (ILexerTokenRegion elem : tempTokens.values()) {
+            if (last != null) {
+                if (last.getOffset() + last.getLength() != elem.getOffset()) {
+                    System.err.println("#################");
+                    System.err.println(last);
+                    System.err.println(elem);
+                    System.err.println("#################");
+                }
+            }
+            last = elem;
+        }
     }
 
     private NavigableMap<Integer, ILexerTokenRegion> getUnchangedTokens(IRegion changeRegion) {
@@ -377,15 +298,15 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return tokens;
     }
 
-    private IRegion getBlockOrLine(int offset) throws BadLocationException {
+    public IRegion getBlockOrLine(int offset) throws BadLocationException {
         IRegion region = getBlock(offset);
         if (region == null) {
-            return getLineInformationOfOffset(offset);
+            return getLineInformationOfOffset(offset, true);
         }
         return region;
     }
 
-    private IRegion getBlock(int offset) {
+    public IRegion getBlock(int offset) {
         Integer key = blocks.floorKey(offset);
         if (key == null) {
             return null;

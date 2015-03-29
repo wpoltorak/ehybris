@@ -18,12 +18,10 @@ import org.eclipse.jface.text.ITextInputListener;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.ITextViewerExtension5;
-import org.eclipse.jface.text.ITypedRegion;
+import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextPresentation;
-import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.jface.text.TypedPosition;
 import org.eclipse.jface.text.TypedRegion;
 import org.eclipse.jface.text.presentation.IPresentationDamager;
 import org.eclipse.jface.text.presentation.IPresentationReconciler;
@@ -44,7 +42,7 @@ public class ImpexPresentationReconciler implements IPresentationReconciler, IPr
     /** The position updated for the damage regions' position category. */
     private final IPositionUpdater fPositionUpdater;
     /** The positions representing the damage regions. */
-    private TypedPosition fRememberedPosition;
+    private Position fRememberedPosition;
 
     private IPresentationDamager damager;
     private IPresentationRepairer repairer;
@@ -199,8 +197,8 @@ public class ImpexPresentationReconciler implements IPresentationReconciler, IPr
             if (fCachedRedrawState) {
                 try {
                     int offset = e.getOffset() + e.getLength();
-                    ITypedRegion region = getPartition(e.getDocument(), offset);
-                    fRememberedPosition = new TypedPosition(region);
+                    IRegion region = getBlockOrLine(e.getDocument(), offset);
+                    fRememberedPosition = new Position(region.getOffset(), region.getLength());
                     e.getDocument().addPosition(fPositionCategory, fRememberedPosition);
                 } catch (BadLocationException x) {
                     // can not happen
@@ -364,8 +362,8 @@ public class ImpexPresentationReconciler implements IPresentationReconciler, IPr
      * @throws BadLocationException if offset is invalid in the given document
      * @since 3.0
      */
-    private ITypedRegion getPartition(IDocument document, int offset) throws BadLocationException {
-        return TextUtilities.getPartition(document, getDocumentPartitioning(), offset, false);
+    private IRegion getBlockOrLine(IDocument document, int offset) throws BadLocationException {
+        return ((ImpexDocument) document).getBlockOrLine(offset);
     }
 
     public void setRepairer(IPresentationRepairer repairer, String contentType) {
