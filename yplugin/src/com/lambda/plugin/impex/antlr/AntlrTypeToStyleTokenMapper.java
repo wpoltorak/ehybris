@@ -76,7 +76,6 @@ public class AntlrTypeToStyleTokenMapper {
         map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
         map.put(ImpexLexer.BeanShell, PreferenceConstants.COLOR_BEANSHELL);
         map.put(ImpexLexer.UserRights, PreferenceConstants.COLOR_USERRIGHTS);
-        map.put(ImpexLexer.SkippedField, PreferenceConstants.COLOR_SKIPPED_FIELD);
         return map;
     }
 
