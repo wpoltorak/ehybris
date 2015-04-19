@@ -88,18 +88,21 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     public IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
         int lineOffset = 0;
         int lineLength = 0;
+        int first = offset;
+        // rewind to first line of all the 'line separated' lines and calculate offset & line lengths
         do {
-            IRegion line = getLineInformationOfOffset(offset);
+            IRegion line = getLineInformationOfOffset(first);
             lineOffset = line.getOffset();
-            lineLength += line.getLength();
-            offset = lineOffset - 1;
-        } while (includeSeparatedLines && offset > 0 && getToken(offset).getTokenType() != ImpexLexer.Lb);
-
-        ILexerTokenRegion last = getToken(lineOffset + lineLength);
+            lineLength += line.getLength() + 1;
+            first = lineOffset - 1;
+        } while (includeSeparatedLines && first > 0 && getToken(first).getTokenType() != ImpexLexer.Lb);
+        // select last token of current line
+        ILexerTokenRegion last = getToken(lineOffset + lineLength - 1);
+        // forward to all the next 'line separated' lines and calculate their lengths
         while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
             IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
-            lineLength += line.getLength();
-            last = getToken(lineOffset + lineLength);
+            lineLength += line.getLength() + 1;
+            last = getToken(lineOffset + lineLength - 1);
         }
         return new Region(lineOffset, lineLength);
     }
