@@ -105,9 +105,15 @@ public class PlatformContainer {
         if (!installLocation.isDirectory()) {
             return null;
         }
+        IPath location = new Path(installLocation.getAbsolutePath());
+        IPath platformLocation = platformLocation((IPath) location.clone());
+        // if passed platform root location
+        if (platformLocation.toFile().exists()) {
+            location = platformLocation;
+        }
 
         // TODO wojtek walidacja zawartości foldera bin/platform i/lub load nowego projektu do worklspacea
-        Properties properties = loadBuildNumber(new Path(installLocation.getAbsolutePath()));
+        Properties properties = loadBuildNumber(location);
         if (properties == null) {
             return null;
         }
@@ -115,7 +121,7 @@ public class PlatformContainer {
         String version = properties.getProperty(ATTRIB_VERSION);
         String description = properties.getProperty(ATTRIB_DESCRIPTION);
         String name = properties.getProperty(ATTRIB_NAME);
-        if (StringUtils.isEmpty(version) || StringUtils.isEmpty(description) || StringUtils.isEmpty(name)) {
+        if (StringUtils.isEmpty(version)) {
             return null;
         }
 

@@ -322,6 +322,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         // TODO sprawdzic czy nazwa configa jest taka sama jak nazwa project eclipsowego configa
         String configProjectName = getProjectName(platform.getConfigLocation().append(".project"));
+        if (configProjectName == null) {
+            setPageComplete(false);
+            setErrorMessage(YMessages.ImportPlatformPage_error_MissingPlatformConfig);
+            return;
+        }
+
         root.addExtension(new PlatformConfig(platform.getConfigLocation(), configProjectName, configProjectName));
 
         IRunnableWithProgress runnable = new IRunnableWithProgress() {
@@ -563,7 +569,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         private final String version;
 
         public PlatformRoot(IPlatformInstallation platform, String projectName) {
-            super(platform.getPlatformLocation(), platform.getName(), projectName, true);
+            super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
+                    .getName(), projectName, true);
             description = platform.getDescription();
             version = platform.getVersion();
         }

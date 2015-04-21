@@ -273,6 +273,7 @@ public final class YMessages extends NLS {
     public static String ImportPlatformPage_error_PlatformAlreadyImported;
     public static String ImportPlatformPage_error_PlatformConfigAlreadyImported;
     public static String ImportPlatformPage_error_InvalidPlatformDirectory;
+    public static String ImportPlatformPage_error_MissingPlatformConfig;
     public static String ImportPlatformProject_title;
 
     // new eCommerce Extension wizard

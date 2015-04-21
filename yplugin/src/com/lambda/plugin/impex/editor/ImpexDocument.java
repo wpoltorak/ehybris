@@ -118,7 +118,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     public Iterable<ILexerTokenRegion> getLineTokensOfOffset(int offset, boolean includeSeparatedLines)
             throws BadLocationException {
         IRegion line = getLineInformationOfOffset(offset, true);
-        return tokens.subMap(tokens.floorKey(line.getOffset()), tokens.floorKey(line.getLength() + line.getLength()))
+        return tokens.subMap(tokens.floorKey(line.getOffset()), tokens.floorKey(line.getOffset() + line.getLength()))
                 .values();
     }
 
