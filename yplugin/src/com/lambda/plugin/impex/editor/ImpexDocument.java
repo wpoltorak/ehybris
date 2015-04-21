@@ -34,6 +34,7 @@ import com.lambda.plugin.impex.model.LexerTokenRegion;
 
 public class ImpexDocument extends DocumentWrapper implements IDocumentListener {
 
+    private static JavaTypeFinder typeFinder = new JavaTypeFinder();
     private NavigableMap<Integer, ILexerTokenRegion> tokens = null;
     private NavigableMap<Integer, IRegion> blocks = null;
     private ImpexModel impexModel;
@@ -151,7 +152,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             final ParseTreeWalker walker = new ParseTreeWalker();
             ImpexModel impexModel = new DefaultImpexModel();
             ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
-            listener.setTypeFinder(new JavaTypeFinder());
+            listener.setTypeFinder(typeFinder);
             walker.walk(listener, parseTree);
             this.impexModel = impexModel;
             return impexModel.getProblems();

@@ -27,6 +27,7 @@ import com.lambda.impex.ast.TypeFinder;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.core.IPlatformInstallation;
 
+//TODO add synchor
 public class JavaTypeFinder implements TypeFinder {
 
     private static final Pattern GENERIC_CLASS = Pattern.compile(".*<(([a-zA-Z0-9\\.\\$]+))>$");
