@@ -10,6 +10,7 @@ public class StandardPlatformType implements IPlatformInstallation {
 
     private final long id;
     private String name;
+    private String vendor;
     private IPath rootLocation;
     private IPath tempLocation;
     private IPath configLocation;
@@ -26,18 +27,31 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.id = id;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    @Override
+    public String getVendor() {
+        return vendor;
+    }
+
+    @Override
     public IPath getRootLocation() {
         return rootLocation;
     }
@@ -46,6 +60,7 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.rootLocation = rootLocation;
     }
 
+    @Override
     public IPath getPlatformLocation() {
         return platformLocation;
     }
@@ -54,22 +69,27 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.platformLocation = platformLocation;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public String getVersion() {
         return version;
     }
 
+    @Override
     public void setVersion(String version) {
         this.version = version;
     }
 
+    @Override
     public IPath getCustomExtensionLocation() {
         return customExtensionLocation;
     }
@@ -78,6 +98,7 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.customExtensionLocation = customExtensionLocation;
     }
 
+    @Override
     public Properties getProperties() {
         return properties;
     }
@@ -86,6 +107,7 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.properties = properties;
     }
 
+    @Override
     public IStatus validateInstallLocation(File installLocation) {
         return null;
     }
@@ -106,18 +128,22 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.binLocation = binLocation;
     }
 
+    @Override
     public IPath getTempLocation() {
         return tempLocation;
     }
 
+    @Override
     public IPath getDataLocation() {
         return dataLocation;
     }
 
+    @Override
     public IPath getConfigLocation() {
         return configLocation;
     }
 
+    @Override
     public IPath getBinLocation() {
         return binLocation;
     }

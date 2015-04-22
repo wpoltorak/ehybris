@@ -29,11 +29,15 @@ public class YImages {
     private static final String T_EVIEW = "eview16"; //$NON-NLS-1$
     private static final String T_DEC = "dec8"; //$NON-NLS-1$
 
+    public static final String Y_IMAGE = "y_dec.png";
+
     // /////////// FUNCTEST ICONS ///////////////////////
 
     public static final String FUNCTEST_WIZARD_IMAGE = "newfunctestprj_wiz.png";
     public static final String FUNCTEST_PROJECT_IMAGE = "functestprj_obj.png";
     private static final String FUNCTEST_IMAGE = "functest.png";
+
+    public static final ImageDescriptor DESC_YPROJECT_DEC = createImageDescriptor(T_DEC, Y_IMAGE);
 
     public static final ImageDescriptor DESC_NEW_FUNCTEST_PRJ_WIZ = createImageDescriptor(T_WIZBAN,
             FUNCTEST_WIZARD_IMAGE);

@@ -24,6 +24,12 @@ public interface IPlatformInstallation {
     String getName();
 
     /**
+     * 
+     * @return
+     */
+    String getVendor();
+
+    /**
      * Sets the display name of this Platform. The Platform name is intended to be presented to users.
      * 
      * @param name the display name of this Platform

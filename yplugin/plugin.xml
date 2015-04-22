@@ -20,7 +20,7 @@
       <wizard
             category="com.lambda.plugin.importWizard"
             class="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
-            icon="icons/obj16/hybris.gif"
+            icon="icons/obj16/hybris.png"
             id="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             name="%wizard.name">
       </wizard>
@@ -97,11 +97,10 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="true"
-            icon="icons/dec8/functestprj_dec.png"
+            class="com.lambda.plugin.ui.ProjectLabelDecorator"
             id="com.lambda.plugin.yunit.decorator"
             label="%decorator.label"
             lightweight="true"
-            location="TOP_LEFT"
             state="true">
          <enablement>
             <and>

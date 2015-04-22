@@ -27,6 +27,7 @@ public class PlatformContainer {
     private static final String ATTRIB_DESCRIPTION = "description";
     private static final String ATTRIB_VERSION = "version";
     private static final String ATTRIB_NAME = "name";
+    private static final String ATTRIB_VENDOR = "vendor";
 
     private IPlatformInstallation defaultPlatform;
     private PropertiesLoader propertiesLoader;
@@ -55,8 +56,10 @@ public class PlatformContainer {
         }
     }
 
-    StandardPlatformType createPlatform(String name, long longid, String description, String version, String installPath) {
+    StandardPlatformType createPlatform(String name, long longid, String description, String vendor, String version,
+            String installPath) {
         StandardPlatformType platform = new StandardPlatformType(longid);
+        platform.setVendor(vendor);
         platform.setName(name);
         platform.setDescription(description);
         platform.setVersion(version);
@@ -121,11 +124,12 @@ public class PlatformContainer {
         String version = properties.getProperty(ATTRIB_VERSION);
         String description = properties.getProperty(ATTRIB_DESCRIPTION);
         String name = properties.getProperty(ATTRIB_NAME);
+        String vendor = properties.getProperty(ATTRIB_VENDOR);
         if (StringUtils.isEmpty(version)) {
             return null;
         }
 
-        StandardPlatformType platform = createPlatform(name, System.currentTimeMillis(), description, version,
+        StandardPlatformType platform = createPlatform(name, System.currentTimeMillis(), description, vendor, version,
                 installLocation.getAbsolutePath());
         return platform;
     }
