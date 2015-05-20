@@ -90,20 +90,24 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         int lineOffset = 0;
         int lineLength = 0;
         int first = offset;
+        // get last EOF token of length 0
+        int length = getToken(tokens.lastKey().intValue()).getOffset();
         // rewind to first line of all the 'line separated' lines and calculate offset & line lengths
         do {
             IRegion line = getLineInformationOfOffset(first);
+            boolean isLast = line.getOffset() + line.getLength() == length;
             lineOffset = line.getOffset();
-            lineLength += line.getLength() + 1;
+            lineLength += line.getLength() + (isLast ? 0 : 1);
             first = lineOffset - 1;
         } while (includeSeparatedLines && first > 0 && getToken(first).getTokenType() != ImpexLexer.Lb);
         // select last token of current line
-        ILexerTokenRegion last = getToken(lineOffset + lineLength - 1);
+        ILexerTokenRegion last = getToken(lineOffset + lineLength);
         // forward to all the next 'line separated' lines and calculate their lengths
         while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
             IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
+            boolean isLast = line.getOffset() + line.getLength() == length;
             lineLength += line.getLength() + 1;
-            last = getToken(lineOffset + lineLength - 1);
+            last = getToken(lineOffset + lineLength - (isLast ? 0 : 1));
         }
         return new Region(lineOffset, lineLength);
     }
@@ -134,7 +138,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     }
 
     public ILexerTokenRegion getToken(int offset) throws BadLocationException {
-        if ((0 > offset) || (offset > getLength())) {
+        if (0 > offset) {
             throw new BadLocationException();
         }
         return tokens.get(tokens.floorKey(offset));
@@ -190,7 +194,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             IRegion changeRegion = computeDamageRegion(e, lengthDelta);
             NavigableMap<Integer, IRegion> blocks = getUnchangedBlocks(changeRegion);
             String text = get(changeRegion.getOffset(), changeRegion.getLength());
-            // System.out.println("Text: '" + text + "'");
+            System.out.println("Text: '" + text + "'");
             NavigableMap<Integer, ILexerTokenRegion> tempTokens = getUnchangedTokens(changeRegion);
             SortedMap<Integer, ILexerTokenRegion> tempTokens2 = tokens.subMap(
                     tokens.floorKey(changeRegion.getOffset() + changeRegion.getLength() - lengthDelta), true,
@@ -209,7 +213,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
                 tempTokens.put(newToken.getOffset(), newToken);
             }
 
-            // verifyTokens(tempTokens);
+            verifyTokens(tempTokens);
             setTokens(tempTokens);
             setBlocks(blocks);
             return changeRegion;
@@ -319,7 +323,12 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         if (key == null) {
             return null;
         }
-        return blocks.get(key);
+        IRegion block = blocks.get(key);
+        // not a last block
+        if (offset > block.getOffset() + block.getLength()) {
+            return null;
+        }
+        return block;
     }
 
     private LexerTokenRegion createTokenInfo(Token token, int shift) {

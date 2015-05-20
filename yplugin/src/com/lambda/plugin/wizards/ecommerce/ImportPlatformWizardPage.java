@@ -565,13 +565,13 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
     private class PlatformRoot extends PlatformExtension {
 
-        private final String description;
+        private final String vendor;
         private final String version;
 
         public PlatformRoot(IPlatformInstallation platform, String projectName) {
             super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
                     .getName(), projectName, true);
-            description = platform.getDescription();
+            vendor = platform.getVendor();
             version = platform.getVersion();
         }
 
@@ -580,7 +580,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             StyledString ss = new StyledString();
             ss.append(name);
             ss.append(" - "); //$NON-NLS-1$
-            ss.append(description + " (" + version + ")", StyledString.DECORATIONS_STYLER); //$NON-NLS-2$ //$NON-NLS-3$
+            ss.append(vendor + " " + version, StyledString.DECORATIONS_STYLER); //$NON-NLS-2$ //$NON-NLS-3$
             return ss;
         }
     }

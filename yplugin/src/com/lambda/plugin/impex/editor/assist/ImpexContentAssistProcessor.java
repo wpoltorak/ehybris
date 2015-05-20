@@ -51,6 +51,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
             ActivationTokenInspector inspector = new ActivationTokenInspector(lineTokens, offset, skipped);
             // the beginning of the line - suggest mode
             if (inspector.getLastToken() == null) {
+                System.out.println("mode");
                 return computeModeProposals(document, offset);
             }
 
@@ -93,28 +94,6 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                     break;
                 }
                 }
-                switch (inspector.getToken().getTokenType()) {
-                case ImpexLexer.Separator: {
-                    final String qualifier = getQualifier(document, offset);
-                    final String typename = "User";
-                    TypeDescription type = typeFinder.findBySimpleName(typename);
-
-                    // TODO open type with ctrl + click on type in impex editor - show menu to choose Type or Generated
-                    // type. provide option to save choice as default action
-                    if (type == null) {
-                        break;
-                    }
-
-                    for (String field : type.getFields()) {
-                        if (field.startsWith(qualifier)) {
-                            result.add(completionProposalFactory.newAttributeProposal(qualifier, offset, field));
-                        }
-                    }
-                    break;
-                }
-
-                }
-
             }
         } catch (BadLocationException e) {
             YPlugin.logError(e);
@@ -230,7 +209,11 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 ILexerTokenRegion candidate = delegate.next();
 
                 if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
-                    token = candidate;
+                    if (candidate.getOffset() + candidate.getLength() == offset) {
+                        previousToken = candidate;
+                    } else {
+                        token = candidate;
+                    }
                     seekNext = true;
                     if (firstToken == null) {
                         firstToken = candidate;
