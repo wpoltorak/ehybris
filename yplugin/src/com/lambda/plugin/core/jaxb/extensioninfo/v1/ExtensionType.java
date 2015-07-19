@@ -6,7 +6,7 @@
 //
 
 
-package com.lambda.plugin.core.model.extensioninfo;
+package com.lambda.plugin.core.jaxb.extensioninfo.v1;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -40,9 +40,9 @@ public interface IPlatformInstallation {
 
     void setDescription(String description);
 
-    String getVersion();
+    Version getVersion();
 
-    void setVersion(String version);
+    void setVersion(Version version);
 
     /**
      * Returns absolute path of the root directory of the install location of this Platform.

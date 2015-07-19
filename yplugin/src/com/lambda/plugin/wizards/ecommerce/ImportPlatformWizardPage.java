@@ -1,7 +1,6 @@
 package com.lambda.plugin.wizards.ecommerce;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -59,9 +58,8 @@ import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
 import com.lambda.plugin.YPlugin;
 import com.lambda.plugin.core.IPlatformInstallation;
-import com.lambda.plugin.core.model.extensioninfo.Extensioninfo;
-import com.lambda.plugin.core.model.extensions.ExtensionType;
-import com.lambda.plugin.core.model.extensions.Hybrisconfig;
+import com.lambda.plugin.core.jaxb.extensions.ExtensionsConf;
+import com.lambda.plugin.utils.FileUtils;
 import com.lambda.plugin.utils.StringUtils;
 
 public class ImportPlatformWizardPage extends AbstractWizardPage {
@@ -335,20 +333,17 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 try {
                     monitor.beginTask("Searching for extensions", IProgressMonitor.UNKNOWN);
-                    Hybrisconfig config = YPlugin.getDefault().getPlatformContainer().loadExtensions(platform);
-                    List<ExtensionType> linkedExtensions = config == null ? Collections.<ExtensionType> emptyList()
-                            : config.getExtensions().getExtension();
+                    ExtensionsConf config = ExtensionsConf.loadExtensions(platform);
                     List<String> visitedFolders = new ArrayList<String>();
-                    scanDirectory(monitor, linkedExtensions, visitedFolders, platform.getBinLocation(), platform);
+                    scanDirectory(monitor, config, visitedFolders, platform.getBinLocation(), platform);
 
                 } finally {
                     monitor.done();
                 }
             }
 
-            private void scanDirectory(IProgressMonitor monitor, List<ExtensionType> linkedExtensions,
-                    List<String> visitedFolders, IPath path, IPlatformInstallation platform)
-                    throws InterruptedException {
+            private void scanDirectory(IProgressMonitor monitor, ExtensionsConf config, List<String> visitedFolders,
+                    IPath path, IPlatformInstallation platform) throws InterruptedException {
                 try {
                     if (monitor.isCanceled()) {
                         throw new InterruptedException("User cancelled extension scanning");
@@ -361,30 +356,14 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     IPath projectDescriptionPath = path.append(".project");
                     File extInfo = path.append("extensioninfo.xml").toFile();
                     if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
-                        Extensioninfo info = YPlugin.getDefault().getPlatformContainer().loadExtensionInfo(extInfo);
-                        // TODO provide convertion between jaxb model and internal model - use map<Ipath,Info> here
-                        // TODO support autoload attribute + v5 features
-                        boolean referenced = false;
-                        for (ExtensionType extensionType : linkedExtensions) {
-                            if (new Path(new File(extensionType.getDir()).getAbsolutePath()).equals(path)) {
-                                referenced = true;
-                                break;
-                            }
-                        }
-                        String extName = info.getExtension().getName();
+                        String extName = path.lastSegment().toString();
                         String projectName = getProjectName(projectDescriptionPath);
-                        root.addExtension(new PlatformExtension(path, extName, projectName, referenced));
+                        root.addExtension(new PlatformExtension(path, extName, projectName, config
+                                .isReferenced(extName)));
                     } else if (!platform.getPlatformLocation().equals(path)) {
-                        File[] files = path.toFile().listFiles(new FileFilter() {
-                            @Override
-                            public boolean accept(File pathname) {
-                                return pathname.isDirectory();
-                            }
-                        });
-                        for (int i = 0; i < files.length; i++) {
-                            File file = files[i];
-                            scanDirectory(monitor, linkedExtensions, visitedFolders, new Path(file.getAbsolutePath()),
-                                    platform);
+                        File[] folders = FileUtils.listFolders(path.toFile());
+                        for (File folder : folders) {
+                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()), platform);
                         }
                     }
                 } catch (IOException e) {
@@ -572,7 +551,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
                     .getName(), projectName, true);
             vendor = platform.getVendor();
-            version = platform.getVersion();
+            version = platform.getVersion().get();
         }
 
         @Override

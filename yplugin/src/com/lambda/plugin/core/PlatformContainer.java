@@ -1,12 +1,7 @@
 package com.lambda.plugin.core;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBIntrospector;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
@@ -15,12 +10,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
-import com.lambda.plugin.YPlugin;
-import com.lambda.plugin.core.model.extensioninfo.Extensioninfo;
-import com.lambda.plugin.core.model.extensions.ExtensionType;
-import com.lambda.plugin.core.model.extensions.Hybrisconfig;
-import com.lambda.plugin.utils.StringUtils;
 
 public class PlatformContainer {
 
@@ -56,7 +45,7 @@ public class PlatformContainer {
         }
     }
 
-    StandardPlatformType createPlatform(String name, long longid, String description, String vendor, String version,
+    StandardPlatformType createPlatform(String name, long longid, String description, String vendor, Version version,
             String installPath) {
         StandardPlatformType platform = new StandardPlatformType(longid);
         platform.setVendor(vendor);
@@ -121,13 +110,10 @@ public class PlatformContainer {
             return null;
         }
 
-        String version = properties.getProperty(ATTRIB_VERSION);
+        Version version = new Version(properties.getProperty(ATTRIB_VERSION));
         String description = properties.getProperty(ATTRIB_DESCRIPTION);
         String name = properties.getProperty(ATTRIB_NAME);
         String vendor = properties.getProperty(ATTRIB_VENDOR);
-        if (StringUtils.isEmpty(version)) {
-            return null;
-        }
 
         StandardPlatformType platform = createPlatform(name, System.currentTimeMillis(), description, vendor, version,
                 installLocation.getAbsolutePath());
@@ -182,45 +168,10 @@ public class PlatformContainer {
         return true;
     }
 
-    public Hybrisconfig loadExtensions(IPlatformInstallation platform) {
-        if (platform == null) {
-            return null;
-        }
-        try {
-            File extensions = platform.getConfigLocation().append("localextensions.xml").toFile();
-            if (!extensions.exists()) {
-                extensions = platform.getPlatformLocation().append("extensions.xml").toFile();
-            }
-
-            JAXBContext jc = JAXBContext.newInstance(Hybrisconfig.class);
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
-            Hybrisconfig config = (Hybrisconfig) JAXBIntrospector.getValue(unmarshaller.unmarshal(extensions));
-            List<ExtensionType> extension = config.getExtensions().getExtension();
-            for (ExtensionType extensionType : extension) {
-                extensionType.setDir(PropertiesSubstitution.evaluate(platform.getProperties(), extensionType.getDir()));
-            }
-            return config;
-        } catch (Exception e) {
-            YPlugin.logError(e);
-            return null;
-        }
-    }
-
     public void dispose() {
     }
 
     void setPropertiesLoader(PropertiesLoader propertiesLoader) {
         this.propertiesLoader = propertiesLoader;
-    }
-
-    public Extensioninfo loadExtensionInfo(File extInfo) {
-        try {
-            JAXBContext jc = JAXBContext.newInstance(Extensioninfo.class);
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
-            return (Extensioninfo) JAXBIntrospector.getValue(unmarshaller.unmarshal(extInfo));
-        } catch (Exception e) {
-            YPlugin.logError(e);
-            return null;
-        }
     }
 }

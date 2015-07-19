@@ -6,7 +6,7 @@
 //
 
 
-package com.lambda.plugin.core.model.extensions;
+package com.lambda.plugin.core.jaxb.extensions.v1;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

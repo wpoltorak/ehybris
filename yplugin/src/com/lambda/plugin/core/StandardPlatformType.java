@@ -19,7 +19,7 @@ public class StandardPlatformType implements IPlatformInstallation {
     private IPath platformLocation;
 
     private String description;
-    private String version;
+    private Version version;
     private Properties properties;
     private IPath binLocation;
 
@@ -80,12 +80,12 @@ public class StandardPlatformType implements IPlatformInstallation {
     }
 
     @Override
-    public String getVersion() {
+    public Version getVersion() {
         return version;
     }
 
     @Override
-    public void setVersion(String version) {
+    public void setVersion(Version version) {
         this.version = version;
     }
 

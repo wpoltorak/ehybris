@@ -5,7 +5,7 @@
 	<artifactId>impexast</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
-		<antlr4.version>4.5</antlr4.version>
+		<antlr4.version>4.5.1</antlr4.version>
 	</properties>
 	<build>
 		<plugins>
