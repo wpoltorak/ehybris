@@ -28,7 +28,7 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMenuCreator {
 
@@ -64,7 +64,7 @@ public class YActionsMenu implements IObjectActionDelegate, IActionDelegate, IMe
                                     .createExecutableExtension("class");
                             creators.add(creator);
                         } catch (final CoreException ex) {
-                            Logger.getLogger(YPlugin.LOGGER_NAME).log(Level.WARNING, ex.getMessage());
+                            Logger.getLogger(YCore.LOGGER_NAME).log(Level.WARNING, ex.getMessage());
                         }
                     }
                 }

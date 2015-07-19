@@ -3,12 +3,12 @@ package com.lambda.plugin.ui;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class YUIStatus extends Status {
 
     private YUIStatus(int severity, int code, String message, Throwable throwable) {
-        super(severity, YPlugin.PLUGIN_ID, code, message, throwable);
+        super(severity, YCore.PLUGIN_ID, code, message, throwable);
     }
 
     public static IStatus createWarning(int code, String message, Throwable throwable) {

@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.Bundle;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class TemplateManager implements ITemplateManager {
 
@@ -76,7 +76,7 @@ public class TemplateManager implements ITemplateManager {
                 input.close();
             }
         } catch (final IOException ex) {
-            throw new CoreException(new Status(IStatus.WARNING, YPlugin.PLUGIN_ID, "'" + aFile + "' file content couldn't be retrieved."));
+            throw new CoreException(new Status(IStatus.WARNING, YCore.PLUGIN_ID, "'" + aFile + "' file content couldn't be retrieved."));
         }
 
         return contents.toString();
@@ -116,7 +116,7 @@ public class TemplateManager implements ITemplateManager {
             final String path = new Path(foundPath).toOSString();
             return new Template(path);
         } catch (final IOException e) {
-            YPlugin.logWarning("Template for url ' " + url + "' not found.", e);
+            YCore.logWarning("Template for url ' " + url + "' not found.", e);
             return null;
         }
     }

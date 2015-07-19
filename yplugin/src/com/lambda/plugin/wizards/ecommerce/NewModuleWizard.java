@@ -38,7 +38,7 @@ import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YImages;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
 public class NewModuleWizard extends Wizard implements IExecutableExtension, INewWizard {
@@ -56,7 +56,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
 
     public NewModuleWizard(final NewJavaProjectWizardPageOne pageOne, final NewJavaProjectWizardPageTwo pageTwo) {
         setDefaultPageImageDescriptor(YImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
-        setDialogSettings(YPlugin.getDefault().getDialogSettings());
+        setDialogSettings(YCore.getDefault().getDialogSettings());
         setWindowTitle("New Functest Project");
         setNeedsProgressMonitor(true);
 
@@ -65,7 +65,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
     }
 
     protected void openResource(final IFile resource) {
-        final IWorkbenchPage activePage = YPlugin.getActivePage();
+        final IWorkbenchPage activePage = YCore.getActivePage();
         if (activePage != null) {
             final Display display = getShell().getDisplay();
             if (display != null) {
@@ -75,7 +75,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
                         try {
                             IDE.openEditor(activePage, resource, true);
                         } catch (PartInitException e) {
-                            YPlugin.logError(e);
+                            YCore.logError(e);
                         }
                     }
                 });
@@ -111,7 +111,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
         }
         addPage(fSecondPage);
 
-        fFirstPage.init(getSelection(), YPlugin.getActivePart());
+        fFirstPage.init(getSelection(), YCore.getActivePart());
     }
 
     /*
@@ -126,7 +126,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
             final IJavaProject javaProject = getCreatedElement();
             if (javaProject != null) {
                 final IProject project = javaProject.getProject();
-                YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+                YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
             }
         } catch (final CoreException e) {
             ExceptionHandler.handle(e, getShell(), "Error", "Couldn't set eCommerce Module Nature");
@@ -156,7 +156,7 @@ public class NewModuleWizard extends Wizard implements IExecutableExtension, INe
             Display.getDefault().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    final IWorkbenchPart activePart = YPlugin.getActivePart();
+                    final IWorkbenchPart activePart = YCore.getActivePart();
                     if (activePart instanceof IPackagesViewPart) {
                         // (new ShowInPackageViewAction(activePart.getSite())).run(newElement);
                     }

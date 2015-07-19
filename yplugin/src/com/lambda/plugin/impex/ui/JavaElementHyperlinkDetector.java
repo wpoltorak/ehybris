@@ -14,7 +14,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 
 import com.lambda.impex.ast.ImpexModel;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
@@ -34,7 +34,7 @@ public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
             return null;
         }
 
-        IAction openAction = new OpenAction(YPlugin.getActivePart().getSite());
+        IAction openAction = new OpenAction(YCore.getActivePart().getSite());
         if (!(openAction instanceof SelectionDispatchAction))
             return null;
 

@@ -10,7 +10,7 @@ import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.model.IImpexModel;
 import com.lambda.plugin.impex.model.ImpexModel;
@@ -21,7 +21,7 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
     private final TokenSourceProvider tokenSource = new TokenSourceProvider();
 
     public ImpexDocumentProvider() {
-        YPlugin.logInfo("ImpexDocumentProvider contructor called", null);
+        YCore.logInfo("ImpexDocumentProvider contructor called", null);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ImpexDocumentProvider extends TextFileDocumentProvider {
         if (impexDocument == null) {
             IDocument document = super.getDocument(element);
             impexDocument = new ImpexDocument(document, tokenSource);
-            YPlugin.logInfo("ImpexDocument created", null);
+            YCore.logInfo("ImpexDocument created", null);
             impexDocumentMap.put(element, impexDocument);
         }
         return impexDocument;

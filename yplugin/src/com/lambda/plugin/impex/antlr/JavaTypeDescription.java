@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.lambda.impex.ast.TypeDescription;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.JavaFieldCollector.Collected;
 
 public class JavaTypeDescription implements TypeDescription {
@@ -188,7 +188,7 @@ public class JavaTypeDescription implements TypeDescription {
             return Flags.isAbstract(type.getFlags());
         } catch (JavaModelException e) {
             // ok, we don't care
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
         return false;
     }

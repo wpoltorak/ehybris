@@ -13,7 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.eclipse.core.runtime.IPath;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.PropertiesSubstitution;
 import com.lambda.plugin.core.Version;
@@ -157,7 +157,7 @@ public class ExtensionsConf {
             }
             return conf;
         } catch (Exception e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
             return null;
         }
     }

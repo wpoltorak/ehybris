@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class JavaFieldCollector {
 
@@ -52,7 +52,7 @@ public class JavaFieldCollector {
                 }
             }
         } catch (Exception e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
         parameterTypeCache.put(signature, typename);
         return typename;
@@ -87,7 +87,7 @@ public class JavaFieldCollector {
             cache.put(typename, incremental);
         } catch (CoreException e) {
             // ok, we don't care
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 
@@ -123,7 +123,7 @@ public class JavaFieldCollector {
             return Flags.isPublic(method.getFlags());
         } catch (JavaModelException e) {
             // ok, we don't care
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
         return false;
     }

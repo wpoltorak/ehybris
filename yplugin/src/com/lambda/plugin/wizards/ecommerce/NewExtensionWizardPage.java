@@ -66,7 +66,7 @@ import org.eclipse.ui.dialogs.WorkingSetGroup;
 import com.lambda.plugin.ExceptionHandler;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.ui.SwtUtil;
 import com.lambda.plugin.ui.YUIStatus;
@@ -96,8 +96,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         setPageComplete(false);
         setTitle(YMessages.NewExtensionPage_title);
         setDescription(YMessages.NewExtensionPage_description);
-        platform = YPlugin.getDefault().getDefaultPlatform();
-        fProperties = platform == null ? null : YPlugin.getDefault().getPlatformContainer()
+        platform = YCore.getDefault().getDefaultPlatform();
+        fProperties = platform == null ? null : YCore.getDefault().getPlatformContainer()
                 .loadExtgenProjectProperties(platform);
         fNamePackageGroup = new NamePackageGroup();
         fLocationGroup = new LocationGroup();
@@ -369,8 +369,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 project.open(monitor);
             }
 
-            YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-            YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+            YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+            YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
 
             IJavaProject jproject = JavaCore.create(project);
             return jproject;
@@ -386,7 +386,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             String templatePathKey = EXTGEN_TEMPLATE_PATH + templateName;
             String templatePath = fProperties.getProperty(templatePathKey);
 
-            Project antProject = YPlugin.getDefault().getPlatformContainer().loadExtgenProject(platform);
+            Project antProject = YCore.getDefault().getPlatformContainer().loadExtgenProject(platform);
 
             if (monitor.isCanceled()) {
                 throw new OperationCanceledException();
@@ -595,7 +595,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         private Button fButton;
         private boolean fSelection;
 
-        private static final String DIALOGSTORE_LAST_EXTERNAL_LOC = YPlugin.PLUGIN_ID + ".last.external.extension"; //$NON-NLS-1$
+        private static final String DIALOGSTORE_LAST_EXTERNAL_LOC = YCore.PLUGIN_ID + ".last.external.extension"; //$NON-NLS-1$
 
         public LocationGroup() {
             fText = "";
@@ -819,7 +819,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             dialog.setMessage(YMessages.NewExtensionPage_directory_message);
             String directoryName = fText.trim();
             if (directoryName.length() == 0) {
-                String prevLocation = YPlugin.getDefault().getDialogSettings().get(DIALOGSTORE_LAST_EXTERNAL_LOC);
+                String prevLocation = YCore.getDefault().getDialogSettings().get(DIALOGSTORE_LAST_EXTERNAL_LOC);
                 if (prevLocation != null) {
                     directoryName = prevLocation;
                 }
@@ -840,7 +840,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                                 oldDirectory))) {
                     fNamePackageGroup.setName(lastSegment);
                 }
-                YPlugin.getDefault().getDialogSettings().put(DIALOGSTORE_LAST_EXTERNAL_LOC, selectedDirectory);
+                YCore.getDefault().getDialogSettings().put(DIALOGSTORE_LAST_EXTERNAL_LOC, selectedDirectory);
             }
         }
 

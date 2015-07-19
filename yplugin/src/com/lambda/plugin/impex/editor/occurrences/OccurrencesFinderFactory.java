@@ -8,7 +8,7 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
 
@@ -35,7 +35,7 @@ public class OccurrencesFinderFactory {
                 return new DocumentIdQualifierOccurrencesFinder(token.getOffset());
             }
         } catch (BadLocationException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
 
         return new OccurrencesFinder() {

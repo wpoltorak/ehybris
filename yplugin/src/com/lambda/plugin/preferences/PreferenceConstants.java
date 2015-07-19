@@ -1,13 +1,13 @@
 package com.lambda.plugin.preferences;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 /**
  * Constant definitions for plug-in preferences
  */
 public class PreferenceConstants {
 
-    private static final String PREFIX = YPlugin.PLUGIN_ID + ".";
+    private static final String PREFIX = YCore.PLUGIN_ID + ".";
 
     // Platform preferences
     public static final String PLATFORMS_PREFERENCE_PAGE = PREFIX + "platforms_preference_page_context"; //$NON-NLS-1$

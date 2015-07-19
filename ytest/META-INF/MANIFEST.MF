@@ -7,6 +7,6 @@ Bundle-Activator: com.lambda.test.YTest
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit;bundle-version="4.10.0",
- com.lambda.yplugin;bundle-version="0.0.1"
+ com.lambda.ycore;bundle-version="0.0.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

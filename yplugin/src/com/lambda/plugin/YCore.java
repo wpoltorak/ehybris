@@ -44,16 +44,16 @@ import com.lambda.plugin.template.TemplateManager;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class YPlugin extends AbstractUIPlugin {
+public class YCore extends AbstractUIPlugin {
 
     private static final String HISTORY_DIR_NAME = "history";
     // The plug-in ID
-    public static final String PLUGIN_ID = "com.lambda.yplugin";
+    public static final String PLUGIN_ID = "com.lambda.ycore";
 
     public static final String LOGGER_NAME = "lambda";
 
     // The shared instance
-    private static YPlugin plugin;
+    private static YCore plugin;
     private static Object fPlatformTypeLock = new Object();
 
     // private ImageDescriptorRegistry imageDescriptorRegistry;
@@ -71,7 +71,7 @@ public class YPlugin extends AbstractUIPlugin {
     /**
      * The constructor
      */
-    public YPlugin() {
+    public YCore() {
     }
 
     /*
@@ -110,7 +110,7 @@ public class YPlugin extends AbstractUIPlugin {
      * 
      * @return the shared instance
      */
-    public static YPlugin getDefault() {
+    public static YCore getDefault() {
         return plugin;
     }
 
@@ -200,7 +200,7 @@ public class YPlugin extends AbstractUIPlugin {
     }
 
     public static IWorkbenchPart getActivePart() {
-        final IWorkbenchWindow activeWindow = YPlugin.getActiveWorkbenchWindow();
+        final IWorkbenchWindow activeWindow = YCore.getActiveWorkbenchWindow();
         if (activeWindow != null) {
             final IWorkbenchPage activePage = activeWindow.getActivePage();
             if (activePage != null) {
@@ -303,7 +303,7 @@ public class YPlugin extends AbstractUIPlugin {
             long millis = System.currentTimeMillis();
             System.err.println("entered extensibleItemHierarchyScope");
             try {
-                String name = YPlugin.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
+                String name = YCore.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
                 IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
                 IType type = project.findType("de.hybris.platform.core.model.ItemModel");
                 scope = SearchEngine.createStrictHierarchyScope(project, type, true, true, null);

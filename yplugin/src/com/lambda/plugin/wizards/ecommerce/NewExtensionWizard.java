@@ -23,7 +23,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
 import com.lambda.plugin.YImages;
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class NewExtensionWizard extends AbstractWizard implements IExecutableExtension, INewWizard {
 
@@ -35,7 +35,7 @@ public class NewExtensionWizard extends AbstractWizard implements IExecutableExt
 
     public NewExtensionWizard() {
         setDefaultPageImageDescriptor(YImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
-        setDialogSettings(YPlugin.getDefault().getDialogSettings());
+        setDialogSettings(YCore.getDefault().getDialogSettings());
         setWindowTitle(YMessages.NewExtensionProject_title);
         setNeedsProgressMonitor(true);
 
@@ -43,7 +43,7 @@ public class NewExtensionWizard extends AbstractWizard implements IExecutableExt
     }
 
     protected void openResource(final IFile resource) {
-        final IWorkbenchPage activePage = YPlugin.getActivePage();
+        final IWorkbenchPage activePage = YCore.getActivePage();
         if (activePage != null) {
             final Display display = getShell().getDisplay();
             if (display != null) {
@@ -52,7 +52,7 @@ public class NewExtensionWizard extends AbstractWizard implements IExecutableExt
                         try {
                             IDE.openEditor(activePage, resource, true);
                         } catch (PartInitException e) {
-                            YPlugin.logError(e);
+                            YCore.logError(e);
                         }
                     }
                 });
@@ -101,7 +101,7 @@ public class NewExtensionWizard extends AbstractWizard implements IExecutableExt
 
             Display.getDefault().asyncExec(new Runnable() {
                 public void run() {
-                    final IWorkbenchPart activePart = YPlugin.getActivePart();
+                    final IWorkbenchPart activePart = YCore.getActivePart();
                     if (activePart instanceof IPackagesViewPart) {
                         // (new ShowInPackageViewAction(activePart.getSite())).run(newElement);
                     }

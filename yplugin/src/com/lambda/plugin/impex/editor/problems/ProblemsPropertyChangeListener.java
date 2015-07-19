@@ -9,7 +9,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
 import com.lambda.impex.ast.ImpexProblem.Type;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.AntlrProblemTypeToSeverityMapper;
 import com.lambda.plugin.impex.model.ImpexModel;
 import com.lambda.plugin.impex.preferences.PreferenceConstants;
@@ -38,7 +38,7 @@ public class ProblemsPropertyChangeListener implements IPropertyChangeListener {
                     }
                 }
             } catch (CoreException e) {
-                YPlugin.logError(e);
+                YCore.logError(e);
             }
         }
     }

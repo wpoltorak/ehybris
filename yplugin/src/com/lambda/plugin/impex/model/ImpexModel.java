@@ -16,12 +16,12 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.impex.ast.ImpexProblem.Type;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.AntlrProblemTypeToSeverityMapper;
 
 public class ImpexModel implements IImpexModel {
 
-    public static final String IMPEXFILE_PROBLEM_MARKER = YPlugin.PLUGIN_ID + ".impexFileProblem"; //$NON-NLS-1$
+    public static final String IMPEXFILE_PROBLEM_MARKER = YCore.PLUGIN_ID + ".impexFileProblem"; //$NON-NLS-1$
 
     private final IFileEditorInput editorInput;
 
@@ -39,12 +39,12 @@ public class ImpexModel implements IImpexModel {
         try {
             editorInput.getFile().deleteMarkers(IMPEXFILE_PROBLEM_MARKER, true, 0);
         } catch (final CoreException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 
     private void createMarkers(final List<ImpexProblem> problems) {
-        final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
+        final IPreferenceStore store = YCore.getDefault().getPreferenceStore();
         final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
             @Override
             public void run(final IProgressMonitor monitor) throws CoreException {
@@ -71,7 +71,7 @@ public class ImpexModel implements IImpexModel {
         try {
             wr.run(new NullProgressMonitor());
         } catch (final CoreException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 }

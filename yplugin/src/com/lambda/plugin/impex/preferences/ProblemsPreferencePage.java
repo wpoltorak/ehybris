@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class ProblemsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -57,7 +57,7 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
 
     private void initPreferenceStore() {
         store = new PreferenceStore();
-        IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
+        IPreferenceStore target = YCore.getDefault().getPreferenceStore();
         new PreferenceInitializer().initializeDefaultProblemsPreferences(store);
         for (String[] problem : problems) {
             store.setValue(problem[1], target.getInt(problem[1]));

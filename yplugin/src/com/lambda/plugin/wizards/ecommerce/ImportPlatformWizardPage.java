@@ -56,7 +56,7 @@ import org.eclipse.ui.dialogs.WorkingSetGroup;
 
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.jaxb.extensions.ExtensionsConf;
 import com.lambda.plugin.utils.FileUtils;
@@ -273,7 +273,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 }
                 return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
             } else {
-                IPlatformInstallation existingPlatform = YPlugin.getDefault().getPlatformContainer()
+                IPlatformInstallation existingPlatform = YCore.getDefault().getPlatformContainer()
                         .getDefaultPlatform();
 
                 if (existingPlatform != null && project.getFullPath().equals(existingPlatform.getPlatformLocation())) {
@@ -292,7 +292,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 return description.getName();
             }
         } catch (CoreException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
         return null;
     }
@@ -307,7 +307,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             return;
         }
 
-        final IPlatformInstallation platform = YPlugin.getDefault().getPlatformContainer()
+        final IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
                 .verifyPlatformLocation(new File(text));
 
         if (platform == null) {
@@ -368,7 +368,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     }
                 } catch (IOException e) {
                     // TODO error handling + testing
-                    YPlugin.logError(e);
+                    YCore.logError(e);
                 } finally {
                     monitor.worked(1);
                 }
@@ -379,7 +379,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         try {
             getContainer().run(true, true, runnable);
         } catch (Exception e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
 
         projectTreeViewer.setInput(Collections.singletonList(root));
@@ -496,10 +496,10 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
     private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, IProgressMonitor monitor) throws CoreException {
         doCreateExtension(root, ext, monitor);
-        IPlatformInstallation platform = YPlugin.getDefault().getPlatformContainer()
+        IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
                 .verifyPlatformLocation(ext.path.toFile());
         if (platform != null) {
-            YPlugin.getDefault().getPlatformContainer().setDefaultPlatform(platform);
+            YCore.getDefault().getPlatformContainer().setDefaultPlatform(platform);
         }
     }
 
@@ -510,15 +510,15 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
     private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
         IProject project = createProject(root, ext, monitor);
-        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
         JavaCore.create(project);
     }
 
     private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
             throws CoreException {
         IProject project = createProject(root, ext, monitor);
-        YPlugin.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        YPlugin.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+        YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+        YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
         JavaCore.create(project);
     }
 

@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.IPath;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class PropertiesLoader {
 
@@ -25,10 +25,10 @@ public class PropertiesLoader {
             PropertiesSubstitution.evaluate(properties);
             return properties;
         } catch (FileNotFoundException e) {
-            YPlugin.logWarning("Unable to find Platform properties.", e);
+            YCore.logWarning("Unable to find Platform properties.", e);
             return null;
         } catch (IOException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
             return null;
         } finally {
             try {

@@ -22,7 +22,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.impex.ast.TypeDescription;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.JavaTypeFinder;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
@@ -96,7 +96,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 }
             }
         } catch (BadLocationException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
 
         final ICompletionProposal[] cproposals = result.toArray(new ICompletionProposal[result.size()]);

@@ -54,7 +54,7 @@ import org.eclipse.ui.model.WorkbenchViewerComparator;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant;
@@ -319,7 +319,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
         try {
             return readFile(getClass().getResourceAsStream("syntaxPreview.impex"), StandardCharsets.UTF_8);//$NON-NLS-1$
         } catch (IOException | URISyntaxException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
         return "";//$NON-NLS-1$
     }
@@ -353,7 +353,7 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
 
     private IPreferenceStore initPreferenceStore() {
         IPreferenceStore store = new PreferenceStore();
-        IPreferenceStore target = YPlugin.getDefault().getPreferenceStore();
+        IPreferenceStore target = YCore.getDefault().getPreferenceStore();
         PreferenceInitializer preferenceInitializer = new PreferenceInitializer();
         preferenceInitializer.initializeDefaultSyntaxColoringPreferences(store);
         for (String[] color : syntaxColorListModel) {

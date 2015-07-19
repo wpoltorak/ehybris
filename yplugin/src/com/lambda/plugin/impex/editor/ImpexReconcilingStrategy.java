@@ -11,7 +11,7 @@ import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
 
 import com.lambda.impex.ast.ImpexProblem;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.model.IImpexModel;
 
 public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcilingStrategyExtension {
@@ -34,7 +34,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
             reconcile();
 
         } catch (final Exception e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 
@@ -48,7 +48,7 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
         try {
             System.err.println("===> RECONCILE " + editor == null ? "" : editor.getEditorInput().getName()
                     + "##################");
-            if (YPlugin.getDefault().getDefaultPlatform() == null) {
+            if (YCore.getDefault().getDefaultPlatform() == null) {
                 return;
             }
             ImpexDocument impexDocument = (ImpexDocument) document;

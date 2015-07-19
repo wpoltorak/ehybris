@@ -71,7 +71,7 @@ public class YImages {
 
     public static ImageDescriptor createImageDescriptor(final String prefix, final String name, final boolean useMissing) {
         final IPath path = ICONS_PATH.append(prefix).append(name);
-        final Bundle bundle = YPlugin.getDefault().getBundle();
+        final Bundle bundle = YCore.getDefault().getBundle();
         final URL url = FileLocator.find(bundle, path, null);
         if (url != null) {
             return ImageDescriptor.createFromURL(url);
@@ -81,7 +81,7 @@ public class YImages {
 
     public static Image createImage(final String prefix, final String name) {
         final IPath path = ICONS_PATH.append(prefix).append(name);
-        final Bundle bundle = YPlugin.getDefault().getBundle();
+        final Bundle bundle = YCore.getDefault().getBundle();
         final URL url = FileLocator.find(bundle, path, null);
         if (url != null) {
             return ImageDescriptor.createFromURL(url).createImage();

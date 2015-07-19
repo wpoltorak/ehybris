@@ -8,7 +8,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.TextEditorAction;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.preferences.PreferenceConstants;
 
@@ -61,7 +61,7 @@ public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPr
         if (editor != null) {
 
             if (fStore == null) {
-                fStore = YPlugin.getDefault().getPreferenceStore();
+                fStore = YCore.getDefault().getPreferenceStore();
                 fStore.addPropertyChangeListener(this);
             }
 

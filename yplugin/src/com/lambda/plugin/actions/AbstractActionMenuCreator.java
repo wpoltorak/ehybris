@@ -15,7 +15,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public abstract class AbstractActionMenuCreator {
 
@@ -68,7 +68,7 @@ public abstract class AbstractActionMenuCreator {
      * A helper method to create IAction instance from given IActionDelegate.
      */
     protected IAction getAction(final IActionDelegate delegate, final String id, final String text, final String image) {
-        return getAction(delegate, id, text, YPlugin.getImageDescriptor(image));
+        return getAction(delegate, id, text, YCore.getImageDescriptor(image));
     }
 
     protected IAction getAction(final IActionDelegate delegate, final String id, final String text, final ImageDescriptor image) {

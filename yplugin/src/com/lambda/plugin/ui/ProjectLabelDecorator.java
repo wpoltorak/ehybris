@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
 import com.lambda.plugin.YImages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 
 public class ProjectLabelDecorator implements ILightweightLabelDecorator {
@@ -33,7 +33,7 @@ public class ProjectLabelDecorator implements ILightweightLabelDecorator {
     public void decorate(Object element, IDecoration decoration) {
         IProject project = (IProject) element;
         decoration.addOverlay(YImages.DESC_YPROJECT_DEC, IDecoration.TOP_RIGHT);
-        IPlatformInstallation platform = YPlugin.getDefault().getDefaultPlatform();
+        IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
         // TODO get rid of constatnt
         if (platform != null && project.getName().equals("platform")) {
             decoration.addSuffix(" - " + platform.getVendor() + " " + platform.getVersion());

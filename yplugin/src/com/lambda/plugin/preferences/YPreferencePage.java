@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class YPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -24,7 +24,7 @@ public class YPreferencePage extends PreferencePage implements IWorkbenchPrefere
 
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
-        return YPlugin.getDefault().getPreferenceStore();
+        return YCore.getDefault().getPreferenceStore();
     }
 
     public void init(final IWorkbench workbench) {

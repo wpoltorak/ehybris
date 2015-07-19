@@ -7,7 +7,7 @@ import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 /**
  * Initialize default preference values.
@@ -21,7 +21,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
      */
     @Override
     public void initializeDefaultPreferences() {
-        final IPreferenceStore store = YPlugin.getDefault().getPreferenceStore();
+        final IPreferenceStore store = YCore.getDefault().getPreferenceStore();
         initializeDefaultSyntaxColoringPreferences(store);
         initializeDefaultProblemsPreferences(store);
         initializeDefaultMarkOccurrencesPreferences(store);

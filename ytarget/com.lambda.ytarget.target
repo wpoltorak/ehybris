@@ -18,7 +18,7 @@
 <plugin id="com.ibm.icu.source" version="4.4.2.v20110823"/>
 <plugin id="com.jcraft.jsch"/>
 <plugin id="com.jcraft.jsch.source"/>
-<plugin id="com.lambda.yplugin"/>
+<plugin id="com.lambda.ycore"/>
 <plugin id="com.sun.el"/>
 <plugin id="com.sun.el.source"/>
 <plugin id="javax.annotation" version="1.0.0.v20101115-0725"/>

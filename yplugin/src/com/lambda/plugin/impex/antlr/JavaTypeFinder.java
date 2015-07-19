@@ -24,7 +24,7 @@ import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
 
 import com.lambda.impex.ast.TypeDescription;
 import com.lambda.impex.ast.TypeFinder;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 
 //TODO add synchor
@@ -162,7 +162,7 @@ public class JavaTypeFinder implements TypeFinder {
                     new NullProgressMonitor());
 
         } catch (JavaModelException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 
@@ -184,7 +184,7 @@ public class JavaTypeFinder implements TypeFinder {
                     searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
                     new NullProgressMonitor());
         } catch (JavaModelException e) {
-            YPlugin.logError(e);
+            YCore.logError(e);
         }
     }
 
@@ -204,7 +204,7 @@ public class JavaTypeFinder implements TypeFinder {
 
     private IJavaProject getPlatformProject() {
         if (project == null) {
-            IPlatformInstallation platform = YPlugin.getDefault().getDefaultPlatform();
+            IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
             String name = platform != null ? platform.getPlatformLocation().lastSegment().toString() : "platform";
             project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
         }

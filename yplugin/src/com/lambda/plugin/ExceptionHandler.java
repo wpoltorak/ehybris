@@ -18,11 +18,11 @@ public class ExceptionHandler {
 	private static ExceptionHandler fgInstance = new ExceptionHandler();
 
 	public static void log(Throwable t, String message) {
-		YPlugin.logError(message, t);
+		YCore.logError(message, t);
 	}
 
 	public static void handle(CoreException e, String title, String message) {
-		handle(e, YPlugin.getActiveWorkbenchShell(), title, message);
+		handle(e, YCore.getActiveWorkbenchShell(), title, message);
 	}
 
 	public static void handle(CoreException e, Shell parent, String title, String message) {
@@ -34,7 +34,7 @@ public class ExceptionHandler {
 	}
 
 	public static void handle(InvocationTargetException e, String title, String message) {
-		handle(e, YPlugin.getActiveWorkbenchShell(), title, message);
+		handle(e, YCore.getActiveWorkbenchShell(), title, message);
 	}
 
 	public static void handle(InvocationTargetException e, Shell parent, String title, String message) {
@@ -42,7 +42,7 @@ public class ExceptionHandler {
 	}
 
 	protected void perform(CoreException e, Shell shell, String title, String message) {
-		YPlugin.logError(e);
+		YCore.logError(e);
 		IStatus status = e.getStatus();
 		if (status != null) {
 			ErrorDialog.openError(shell, title, message, status);
@@ -52,7 +52,7 @@ public class ExceptionHandler {
 	}
 	
 	protected void perform(Exception e, Shell shell, String title, String message) {
-		YPlugin.logError(e);
+		YCore.logError(e);
 		displayMessageDialog(e.getMessage(), shell, title, message);
 	}
 
@@ -61,7 +61,7 @@ public class ExceptionHandler {
 		if (target instanceof CoreException) {
 			perform((CoreException) target, shell, title, message);
 		} else {
-			YPlugin.logError(e);
+			YCore.logError(e);
 			if (e.getMessage() != null && e.getMessage().length() > 0) {
 				displayMessageDialog(e.getMessage(), shell, title, message);
 			} else {

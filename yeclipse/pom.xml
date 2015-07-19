@@ -83,7 +83,7 @@
 	</build>
 	<modules>
 		<module>../yfeature</module>
-		<module>../yplugin</module>
+		<module>../ycore</module>
 		
 		<module>../yrepo</module>
 		<module>../ytest</module>

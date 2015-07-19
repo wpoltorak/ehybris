@@ -23,7 +23,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
@@ -146,7 +146,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
                     textOperationTarget.doOperation(operationCode);
                 }
             } catch (final BadLocationException e) {
-                YPlugin.logError("Bad location while toggling comments.", e); //$NON-NLS-1$
+                YCore.logError("Bad location while toggling comments.", e); //$NON-NLS-1$
             }
             // done work
             monitor.done();

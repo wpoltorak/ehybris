@@ -2,11 +2,11 @@ package com.lambda.plugin.impex.preferences;
 
 import org.eclipse.core.resources.IMarker;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class PreferenceConstants {
 
-    private static final String PREFIX = YPlugin.PLUGIN_ID + ".";
+    private static final String PREFIX = YCore.PLUGIN_ID + ".";
     // Impex Editor Preferences
 
     // public static final String DEFAULT_COLOR = IPreferenceStore.STRING_DEFAULT_DEFAULT;

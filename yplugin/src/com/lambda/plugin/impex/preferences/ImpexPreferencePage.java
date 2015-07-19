@@ -13,7 +13,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import com.lambda.plugin.YMessages;
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 
 public class ImpexPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -38,7 +38,7 @@ public class ImpexPreferencePage extends PreferencePage implements IWorkbenchPre
 
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
-        return YPlugin.getDefault().getPreferenceStore();
+        return YCore.getDefault().getPreferenceStore();
     }
 
     public void init(final IWorkbench workbench) {

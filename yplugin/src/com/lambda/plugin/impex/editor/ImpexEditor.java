@@ -25,7 +25,7 @@ import org.eclipse.ui.editors.text.ForwardingDocumentProvider;
 import org.eclipse.ui.editors.text.ITextEditorHelpContextIds;
 import org.eclipse.ui.editors.text.TextEditor;
 
-import com.lambda.plugin.YPlugin;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant.ImpexPartitioner;
 import com.lambda.plugin.impex.editor.occurrences.OccurrenceFinderSelectionChangedListener;
 import com.lambda.plugin.impex.editor.syntaxcoloring.SyntaxColoringPropertyChangeListener;
@@ -62,7 +62,7 @@ public class ImpexEditor extends TextEditor {
                 new ImpexDocumentParticipant(), new ImpexDocumentProvider()));
         // getVerticalRuler().getModel().addAnnotation(annotation, position);
 
-        setPreferenceStore(YPlugin.getDefault().getCombinedPreferenceStore());
+        setPreferenceStore(YCore.getDefault().getCombinedPreferenceStore());
         markingOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_MARK_OCCURRENCES);
         stickyOccurrences = getPreferenceStore().getBoolean(PreferenceConstants.IMPEX_EDITOR_STICKY_OCCURRENCES);
         setSourceViewerConfiguration(new ImpexEditorConfiguration(getPreferenceStore(), this));
