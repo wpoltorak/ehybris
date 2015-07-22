@@ -1,0 +1,96 @@
+
+
+INSERT_UPDATE ClothingCleatCompatibility;code[unique=true]
+;none
+;mtb_type
+;road_type
+;bolt
+;speedplay
+
+INSERT_UPDATE ClothingClosureType;code[unique=true]
+;laces
+;straps
+;buckle
+;boaType
+;velcroType
+;zip
+;fullZip
+;partialZip
+;none
+;other
+
+INSERT_UPDATE ClothingCut;code[unique=true]
+;relaxed
+;semi_form_fit
+;form_fit
+;other
+
+INSERT_UPDATE ClothingFabricType;code[unique=true]
+;synthetic
+;wool_merino
+;cotton
+;mix
+;other
+
+INSERT_UPDATE ClothingGender;code[unique=true]
+;male
+;female
+;kids
+;unisex
+;youth
+
+INSERT_UPDATE  ClothingHood;code[unique=true]
+;yes
+;no
+;optionalExtra
+
+INSERT_UPDATE ClothingLegLength;code[unique=true]
+;short
+;medium
+;long
+
+INSERT_UPDATE ClothingLensType;code[unique=true]
+;multipleLenses
+;clear
+;yellow
+;dark
+;polarised
+;photochromic
+
+INSERT_UPDATE ClothingPackable;code[unique=true]
+;yes
+;yes_in_pocket
+;yes_stuff_sack
+;no
+
+INSERT_UPDATE ClothingPalmPadding;code[unique=true]
+;foam
+;gel
+;none
+;padded
+;removable
+
+INSERT_UPDATE ClothingPockets;code[unique=true]
+;none
+;singleOpen
+;singleZipped
+;multipleOpen
+;multipleInclZipped
+
+INSERT_UPDATE ClothingSeason;code[unique=true]
+;summer
+;spring_autumn
+;winter
+;wet_weather
+;all_year
+
+INSERT_UPDATE  ClothingSole;code[unique=true]
+;plastic
+;composite
+;carbon
+;other
+
+INSERT_UPDATE ClothingVisibility;code[unique=true]
+;fluoColour
+;highlyReflective
+;slightNone
