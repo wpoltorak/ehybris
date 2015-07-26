@@ -12,8 +12,7 @@ public class ChangeLayout extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        IViewPart findView = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
-                .findView("de.vogella.zest.first.view");
+        IViewPart findView = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().findView(DependenciesView.ID);
         DependenciesView view = (DependenciesView) findView;
         view.setLayoutManager();
         return null;

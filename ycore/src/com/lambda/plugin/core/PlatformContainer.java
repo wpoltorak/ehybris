@@ -35,13 +35,10 @@ public class PlatformContainer {
 
     public void initializePlatform() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        for (IProject project : root.getProjects()) {
-            if (project.getProject().isOpen()) {
-                IPlatformInstallation platform = verifyPlatformLocation(project.getLocation().toFile());
-                if (platform != null) {
-                    setDefaultPlatform(platform);
-                }
-            }
+        IProject project = root.getProject("platform");
+        IPlatformInstallation platform = verifyPlatformLocation(project.getLocation().toFile());
+        if (platform != null) {
+            setDefaultPlatform(platform);
         }
     }
 
@@ -52,7 +49,7 @@ public class PlatformContainer {
         platform.setName(name);
         platform.setDescription(description);
         platform.setVersion(version);
-        Path root = new Path(installPath);
+        IPath root = new Path(installPath).removeLastSegments(2);
         platform.setRootLocation(root);
         platform.setCustomExtensionLocation(customExtensionLocation(root));
         platform.setBinLocation(binLocation(root));
@@ -97,15 +94,10 @@ public class PlatformContainer {
         if (!installLocation.isDirectory()) {
             return null;
         }
-        IPath location = new Path(installLocation.getAbsolutePath());
-        IPath platformLocation = platformLocation((IPath) location.clone());
-        // if passed platform root location
-        if (platformLocation.toFile().exists()) {
-            location = platformLocation;
-        }
+        IPath platformLocation = new Path(installLocation.getAbsolutePath());
 
         // TODO wojtek walidacja zawartości foldera bin/platform i/lub load nowego projektu do worklspacea
-        Properties properties = loadBuildNumber(location);
+        Properties properties = loadBuildNumber(platformLocation);
         if (properties == null) {
             return null;
         }
@@ -153,19 +145,6 @@ public class PlatformContainer {
         project.init();
         ProjectHelper.configureProject(project, buildFile.toFile());
         return project;
-    }
-
-    public boolean verifyPlatform(IPlatformInstallation platform) {
-        return platform != null && verifyPlatformLocation(platform.getPlatformLocation().toFile()) != null;
-    }
-
-    public boolean updatePlatformConfiguration(IPlatformInstallation defaultPlatform, IPlatformInstallation[] platforms) {
-        if (!verifyPlatform(defaultPlatform)) {
-            return false;
-        }
-
-        setDefaultPlatform(defaultPlatform);
-        return true;
     }
 
     public void dispose() {

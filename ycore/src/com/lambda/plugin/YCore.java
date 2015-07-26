@@ -82,6 +82,7 @@ public class YCore extends AbstractUIPlugin {
     @Override
     public void start(final BundleContext context) throws Exception {
         super.start(context);
+        initplatformInstallation();
         plugin = this;
         problemsPropertyChangeListener = new ProblemsPropertyChangeListener(getPreferenceStore());
         getPreferenceStore().addPropertyChangeListener(problemsPropertyChangeListener);
@@ -144,8 +145,8 @@ public class YCore extends AbstractUIPlugin {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    public List<IProject> getProjects(String natureId) throws CoreException, InvocationTargetException,
-            InterruptedException {
+    public List<IProject> getProjects(String natureId)
+            throws CoreException, InvocationTargetException, InterruptedException {
         final List<IProject> projects = new ArrayList<IProject>();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         for (IProject project : root.getProjects()) {
@@ -163,8 +164,8 @@ public class YCore extends AbstractUIPlugin {
      * @throws InvocationTargetException
      * @throws InterruptedException
      */
-    public List<IJavaProject> getFunctestProjects() throws CoreException, InvocationTargetException,
-            InterruptedException {
+    public List<IJavaProject> getFunctestProjects()
+            throws CoreException, InvocationTargetException, InterruptedException {
         final IJavaModel javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
         final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
         for (final IJavaProject project : javaModel.getJavaProjects()) {
@@ -261,8 +262,8 @@ public class YCore extends AbstractUIPlugin {
     public IPreferenceStore getCombinedPreferenceStore() {
         if (fCombinedPreferenceStore == null) {
             final IPreferenceStore generalTextStore = EditorsUI.getPreferenceStore();
-            fCombinedPreferenceStore = new ChainedPreferenceStore(new IPreferenceStore[] { getPreferenceStore(),
-                    generalTextStore });
+            fCombinedPreferenceStore = new ChainedPreferenceStore(
+                    new IPreferenceStore[] { getPreferenceStore(), generalTextStore });
         }
         return fCombinedPreferenceStore;
     }
@@ -272,14 +273,6 @@ public class YCore extends AbstractUIPlugin {
         return super.getPreferenceStore();
     }
 
-    @Deprecated
-    public IPlatformInstallation[] getPlatformInstallations() {
-        initplatformInstallation();
-        // List<IPlatformInstallation> platformInstallatons = getPlatformContainer().getPlatforms();
-        // return platformInstallatons.toArray(new IPlatformInstallation[platformInstallatons.size()]);
-        return new IPlatformInstallation[0];
-    }
-
     private void initplatformInstallation() {
         synchronized (fPlatformTypeLock) {
             getPlatformContainer().initializePlatform();
@@ -287,7 +280,6 @@ public class YCore extends AbstractUIPlugin {
     }
 
     public IPlatformInstallation getDefaultPlatform() {
-        initplatformInstallation();
         return getPlatformContainer().getDefaultPlatform();
     }
 
@@ -313,9 +305,7 @@ public class YCore extends AbstractUIPlugin {
                 // int minutes = (int) ((millis / (1000*60)) % 60);
                 // millis = millis % 60;
                 // System.err.println("Took " + " millis (" + + ")");
-                System.err.println(String.format(
-                        "Took %d:%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes(millis),
+                System.err.println(String.format("Took %d:%d:%d", TimeUnit.MILLISECONDS.toMinutes(millis),
                         TimeUnit.MILLISECONDS.toSeconds(millis)
                                 - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
                         TimeUnit.MILLISECONDS.toMillis(millis)

@@ -211,7 +211,11 @@
                description="%command.description.7"
                id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
                name="%command.name.7">
-         </command>  
+         </command>
+                  <command
+                        id="com.lambda.ycore.views.platform.ChangeLayout"
+                        name="Change  Layout">
+                  </command>  
        </extension>
       <extension
             point="org.eclipse.ui.commandImages">
@@ -231,6 +235,16 @@
                tooltip="%menu.tooltip">
          	</menu>
       	 </menuContribution>
+         <menuContribution
+               allPopups="false"
+               locationURI="toolbar:com.lambda.ycore.views.platform.DependenciesView">
+            <command
+                  commandId="com.lambda.ycore.views.platform.ChangeLayout"
+                  icon="icons/obj16/hybris.png"
+                  label="Change Layout"
+                  style="push">
+            </command>
+         </menuContribution>
       </extension>
       <extension
             point="org.eclipse.ui.handlers">
@@ -242,6 +256,10 @@
                      definitionId="inImpexEditor">
                </reference>
             </enabledWhen>
+         </handler>
+         <handler
+               class="com.lambda.ycore.views.platform.handler.ChangeLayout"
+               commandId="com.lambda.ycore.views.platform.ChangeLayout">
          </handler>
          
       </extension>
@@ -313,14 +331,14 @@
        point="org.eclipse.ui.views">
     <category
           id="com.lambda.ycore.dependencies"
-          name="Dependencies">
+          name="eCommerce">
     </category>
     <view
           category="com.lambda.ycore.dependencies"
           class="com.lambda.ycore.views.platform.DependenciesView"
-          icon="icons/sample.gif"
+          icon="icons/obj16/hybris.png"
           id="com.lambda.ycore.views.platform.DependenciesView"
-          name="Dependencies View">
+          name="Dependencies">
     </view>
  </extension>
  <extension

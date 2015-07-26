@@ -5,8 +5,8 @@ import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
 
-import com.lambda.plugin.YImages;
 import com.lambda.plugin.YCore;
+import com.lambda.plugin.YImages;
 import com.lambda.plugin.core.IPlatformInstallation;
 
 public class ProjectLabelDecorator implements ILightweightLabelDecorator {
@@ -36,7 +36,7 @@ public class ProjectLabelDecorator implements ILightweightLabelDecorator {
         IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
         // TODO get rid of constatnt
         if (platform != null && project.getName().equals("platform")) {
-            decoration.addSuffix(" - " + platform.getVendor() + " " + platform.getVersion());
+            decoration.addSuffix(" - " + platform.getVendor() + " " + platform.getVersion().get());
         }
     }
 }

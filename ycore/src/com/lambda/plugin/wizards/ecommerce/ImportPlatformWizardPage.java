@@ -54,9 +54,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.dialogs.WorkingSetGroup;
 
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.jaxb.extensions.ExtensionsConf;
 import com.lambda.plugin.utils.FileUtils;
@@ -245,8 +245,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             }
         });
 
-        fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
-                IWorkingSetIDs.RESOURCE });
+        fWorkingSetGroup = new WorkingSetGroup(composite, null,
+                new String[] { IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE });
     }
 
     /**
@@ -273,8 +273,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 }
                 return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
             } else {
-                IPlatformInstallation existingPlatform = YCore.getDefault().getPlatformContainer()
-                        .getDefaultPlatform();
+                IPlatformInstallation existingPlatform = YCore.getDefault().getPlatformContainer().getDefaultPlatform();
 
                 if (existingPlatform != null && project.getFullPath().equals(existingPlatform.getPlatformLocation())) {
                     return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
@@ -306,9 +305,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
             return;
         }
-
         final IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
-                .verifyPlatformLocation(new File(text));
+                .verifyPlatformLocation(lookupPlatform(text));
 
         if (platform == null) {
             setPageComplete(false);
@@ -358,12 +356,13 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
                         String extName = path.lastSegment().toString();
                         String projectName = getProjectName(projectDescriptionPath);
-                        root.addExtension(new PlatformExtension(path, extName, projectName, config
-                                .isReferenced(extName)));
+                        root.addExtension(
+                                new PlatformExtension(path, extName, projectName, config.isReferenced(extName)));
                     } else if (!platform.getPlatformLocation().equals(path)) {
                         File[] folders = FileUtils.listFolders(path.toFile());
                         for (File folder : folders) {
-                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()), platform);
+                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()),
+                                    platform);
                         }
                     }
                 } catch (IOException e) {
@@ -389,6 +388,36 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         setPageComplete();
         setErrorMessage(null);
         setMessage(null);
+    }
+
+    private File lookupPlatform(String pathString) {
+        File file = new File(pathString);
+        if (file.isFile()) {
+            file = file.getParentFile();
+        }
+        if (!file.isDirectory()) {
+            return null;
+        }
+
+        IPath path = Path.fromOSString(file.getAbsolutePath()).removeTrailingSeparator();
+
+        return lookupPlatform(path);
+    }
+
+    private File lookupPlatform(IPath path) {
+        switch (path.lastSegment()) {
+        case "platform":
+            return path.toFile();
+        case "bin":
+            return lookupPlatform(path.append("platform"));
+        case "hybris":
+            return lookupPlatform(path.append("bin").append("platform"));
+        default:
+            if (path.append("hybris").toFile().exists()) {
+                return lookupPlatform(path.append("hybris").append("bin").append("platform"));
+            }
+        }
+        return null;
     }
 
     private void setPageComplete() {
@@ -548,8 +577,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         private final String version;
 
         public PlatformRoot(IPlatformInstallation platform, String projectName) {
-            super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
-                    .getName(), projectName, true);
+            super(platform.getPlatformLocation(),
+                    StringUtils.isEmpty(platform.getName()) ? projectName : platform.getName(), projectName, true);
             vendor = platform.getVendor();
             version = platform.getVersion().get();
         }
@@ -559,7 +588,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             StyledString ss = new StyledString();
             ss.append(name);
             ss.append(" - "); //$NON-NLS-1$
-            ss.append(vendor + " " + version, StyledString.DECORATIONS_STYLER); //$NON-NLS-2$ //$NON-NLS-3$
+            ss.append(vendor + " " + version, StyledString.DECORATIONS_STYLER); // $NON-NLS-2$ //$NON-NLS-3$
             return ss;
         }
     }
@@ -574,7 +603,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         protected StyledString styledText() {
             StyledString ss = new StyledString();
             ss.append(name);
-            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.COUNTER_STYLER); //$NON-NLS-1$
+            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.COUNTER_STYLER); // $NON-NLS-1$
             return ss;
         }
     }
@@ -620,8 +649,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         }
     }
 
-    private class ExtensionLabelProvider extends LabelProvider implements IColorProvider,
-            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+    private class ExtensionLabelProvider extends LabelProvider
+            implements IColorProvider, DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
         @Override
         public String getText(Object element) {

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target includeMode="feature" name="eclipse42-compatibility-platform-sdk" sequenceNumber="7">
+<?pde version="3.8"?><target includeMode="feature" name="eclipse42-compatibility-platform-sdk" sequenceNumber="12">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.platform.sdk" version="4.2.1.M20120914-1800"/>
-<unit id="org.eclipse.pde.junit.runtime.addon.feature.group" version="1.0.100.v20120528-1648-7C7IEoAkHgAKgMm47GFHJ73701A1"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.2"/>
-</location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.lambda.yfeature.feature.group" version="0.0.1"/>
 <repository location="file:/work/projects/yeclipse/yrepo/target/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.platform.sdk" version="4.5.0.I20150603-2000"/>
+<repository location="http://download.eclipse.org/releases/mars"/>
 </location>
 </locations>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
