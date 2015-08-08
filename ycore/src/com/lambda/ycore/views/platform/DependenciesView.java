@@ -15,6 +15,9 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.DirectedGraphLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalShift;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
@@ -42,6 +45,7 @@ public class DependenciesView extends ViewPart {
 
     @Override
     public void createPartControl(Composite parent) {
+
         // Graph will hold all other objects
         graph = new Graph(parent, SWT.NONE);
         IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
@@ -74,7 +78,8 @@ public class DependenciesView extends ViewPart {
 
         // Selection listener on graphConnect or GraphNode is not supported
         // see https://bugs.eclipse.org/bugs/show_bug.cgi?id=236528
-        graph.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+        graph.setLayoutAlgorithm(new HorizontalTreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+
         // graph.addSelectionListener(new SelectionAdapter() {
         // @Override
         // public void widgetSelected(SelectionEvent e) {
@@ -120,13 +125,19 @@ public class DependenciesView extends ViewPart {
     }
 
     public void setLayoutManager() {
+        HorizontalShift shift = new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+        shift.setEntityAspectRatio(0.5);
         switch (layout) {
         case 1:
-            graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+            graph.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
             layout++;
             break;
         case 2:
-            graph.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+            graph.setLayoutAlgorithm(new DirectedGraphLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+            layout++;
+            break;
+        case 3:
+            graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
             layout = 1;
             break;
 
