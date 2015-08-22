@@ -34,7 +34,7 @@ public class ExtensionsConf {
     private final Map<String, Extension> loadedExtensions = new HashMap<>();
     private final Map<String, File> lazyLoadedExtensions = new HashMap<>();
 
-    public void lazyLoadExtensions(IPlatformInstallation platform, boolean customOnly) {
+    private void lazyLoadExtensions(IPlatformInstallation platform, boolean customOnly) {
         Collection<Extension> loadedExtensions = new ArrayList<>(this.loadedExtensions.values());
         for (Extension extension : loadedExtensions) {
             if (!customOnly || (customOnly && extension.isCustom())) {
@@ -74,11 +74,11 @@ public class ExtensionsConf {
         }
     }
 
-    public ExtensionInfo loadExtension(IPlatformInstallation platform, File folder) {
+    private ExtensionInfo loadExtension(IPlatformInstallation platform, File folder) {
         ExtensionInfo info = ExtensionInfo.loadExtensionInfo(folder, platform);
         if (info != null) {
-            loadedExtensions.put(info.getName(),
-                    new Extension(info.getName(), info.getDependencies(), isCustom(platform, folder)));
+            loadedExtensions.put(info.getName(), new Extension(info.getName(), info.getPath(), info.getDependencies(),
+                    info.isTemplate(), isCustom(platform, folder)));
             return info;
         }
         return null;
@@ -88,7 +88,7 @@ public class ExtensionsConf {
         return platform.getCustomExtensionLocation().isPrefixOf(Path.fromOSString(folder.getAbsolutePath()));
     }
 
-    public void lookupExtensions(IPlatformInstallation platform, File folder, int depth) {
+    private void lookupExtensions(IPlatformInstallation platform, File folder, int depth) {
         if (depth < 0) {
             return;
         }
@@ -116,6 +116,26 @@ public class ExtensionsConf {
             extensions = platform.getPlatformLocation().append(EXTENSIONS_XML).toFile();
         }
         return extensions;
+    }
+
+    public static ExtensionsConf loadExtensions(IPlatformInstallation platform, IPath... paths) {
+        if (platform == null) {
+            return null;
+        }
+        ExtensionsConf conf = new ExtensionsConf();
+        for (IPath path : paths) {
+            conf.loadExtensions(platform, path.toFile(), Integer.MAX_VALUE);
+        }
+        return conf;
+    }
+
+    public static ExtensionsConf loadAllExtensions(IPlatformInstallation platform) {
+        if (platform == null) {
+            return null;
+        }
+        ExtensionsConf conf = new ExtensionsConf();
+        conf.loadExtensions(platform, platform.getBinLocation().toFile(), Integer.MAX_VALUE);
+        return conf;
     }
 
     public static ExtensionsConf loadExtensions(IPlatformInstallation platform) {

@@ -3,7 +3,9 @@ package com.lambda.plugin.core;
 import java.io.File;
 import java.util.Properties;
 
+import org.apache.tools.ant.Project;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 
 public interface IPlatformInstallation {
@@ -23,26 +25,11 @@ public interface IPlatformInstallation {
      */
     String getName();
 
-    /**
-     * 
-     * @return
-     */
     String getVendor();
-
-    /**
-     * Sets the display name of this Platform. The Platform name is intended to be presented to users.
-     * 
-     * @param name the display name of this Platform
-     */
-    void setName(String name);
 
     String getDescription();
 
-    void setDescription(String description);
-
     Version getVersion();
-
-    void setVersion(Version version);
 
     /**
      * Returns absolute path of the root directory of the install location of this Platform.
@@ -88,4 +75,22 @@ public interface IPlatformInstallation {
     IPath getPlatformLocation();
 
     Properties getProperties();
+
+    /**
+     * 
+     * @param templateName
+     * @param projectName
+     * @param packageName
+     * @param location
+     * @param monitor
+     * @return
+     */
+    Project newExtension(String templateName, String projectName, String packageName, IPath location,
+            IProgressMonitor monitor);
+
+    String[] getTemplates();
+
+    String getDefaultTemplate();
+
+    File getTemplatePath(String template);
 }

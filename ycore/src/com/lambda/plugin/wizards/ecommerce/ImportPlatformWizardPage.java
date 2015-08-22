@@ -316,7 +316,6 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         String platformProjectName = getProjectName(platform.getPlatformLocation().append(".project"));
         final PlatformExtension root = new PlatformRoot(platform, platformProjectName);
 
-        // TODO sprawdzic czy nazwa configa jest taka sama jak nazwa project eclipsowego configa
         String configProjectName = getProjectName(platform.getConfigLocation().append(".project"));
         if (configProjectName == null) {
             setPageComplete(false);

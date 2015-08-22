@@ -7,11 +7,7 @@ import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.apache.tools.ant.Project;
 import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -64,17 +60,15 @@ import org.eclipse.ui.actions.WorkspaceModifyDelegatingOperation;
 import org.eclipse.ui.dialogs.WorkingSetGroup;
 
 import com.lambda.plugin.ExceptionHandler;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.ui.SwtUtil;
 import com.lambda.plugin.ui.YUIStatus;
 import com.lambda.plugin.utils.StringUtils;
 
 public class NewExtensionWizardPage extends AbstractWizardPage {
-
-    private static final String EXTGEN_TEMPLATE_PATH = "extgen.template.path.";
 
     private static final String PAGE_NAME = "NewExtensionWizardPage"; //$NON-NLS-1$
 
@@ -83,7 +77,6 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
     private final TemplateGroup fTemplateGroup;
     private final Validator fValidator;
     private WorkingSetGroup fWorkingSetGroup;
-    private final Properties fProperties;
     private IJavaProject fCurrProject;
 
     private final IPlatformInstallation platform;
@@ -97,11 +90,9 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         setTitle(YMessages.NewExtensionPage_title);
         setDescription(YMessages.NewExtensionPage_description);
         platform = YCore.getDefault().getDefaultPlatform();
-        fProperties = platform == null ? null : YCore.getDefault().getPlatformContainer()
-                .loadExtgenProjectProperties(platform);
         fNamePackageGroup = new NamePackageGroup();
         fLocationGroup = new LocationGroup();
-        fTemplateGroup = new TemplateGroup(fProperties);
+        fTemplateGroup = new TemplateGroup();
 
         // establish connections
         fNamePackageGroup.addObserver(fLocationGroup);
@@ -141,6 +132,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      * 
      * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     public void createControl(Composite parent) {
         initializeDialogUnits(parent);
 
@@ -159,8 +151,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         Control templateControl = fTemplateGroup.createControl(composite);
         templateControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
-                IWorkingSetIDs.RESOURCE });
+        fWorkingSetGroup = new WorkingSetGroup(composite, null,
+                new String[] { IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE });
         setControl(composite);
     }
 
@@ -211,7 +203,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      */
     public IClasspathEntry[] getSourceClasspathEntries() {
         IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
-        IPath srcPath = new Path(PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_SRCNAME));
+        IPath srcPath = new Path(
+                PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_SRCNAME));
         if (srcPath.segmentCount() > 0) {
             sourceFolderPath = sourceFolderPath.append(srcPath);
         }
@@ -225,7 +218,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      */
     public IPath getOutputLocation() {
         IPath outputLocationPath = new Path(getProjectName()).makeAbsolute();
-        IPath binPath = new Path(PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_BINNAME));
+        IPath binPath = new Path(
+                PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_BINNAME));
         if (binPath.segmentCount() > 0) {
             outputLocationPath = outputLocationPath.append(binPath);
         }
@@ -284,6 +278,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         }
 
         IRunnableWithProgress op = new IRunnableWithProgress() {
+            @Override
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 doRemoveProject(monitor);
             }
@@ -383,58 +378,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             String templateName, IProgressMonitor monitor) {
         try {
             monitor.subTask(YMessages.NewExtensionPage_operation_copytemplate);
-            String templatePathKey = EXTGEN_TEMPLATE_PATH + templateName;
-            String templatePath = fProperties.getProperty(templatePathKey);
-
-            Project antProject = YCore.getDefault().getPlatformContainer().loadExtgenProject(platform);
-
-            if (monitor.isCanceled()) {
-                throw new OperationCanceledException();
-            }
-
-            antProject.setProperty("extgen.extension.name", projectName);
-            antProject.setProperty("extgen.package", packageName);
-            antProject.setProperty("extgen.package.directory", packageName.replaceAll("\\.", "/"));
-            antProject.setProperty("extgen.directory.source", templatePath);
-
-            // TODO provide input in front end
-            // default if not specified in second page
-            String classprefix = StringUtils.capitalize(projectName);
-            antProject.setProperty("extension.classprefix", classprefix);
-            antProject.setProperty("extension.managername", classprefix + "Manager");
-            String managersuperclass = "de.hybris.platform.jalo.extension.Extension";
-            antProject.setProperty("extension.managersuperclass", managersuperclass);
-            Matcher m = Pattern.compile("^.*\\.([^\\.]*)$").matcher(managersuperclass);
-            if (m.find()) {
-                String managersuperclassname = m.group(1);
-                antProject.setProperty("extension.managersuperclassname", managersuperclassname);
-                antProject.setProperty("extension.managersuperclassimpl", managersuperclass + "."
-                        + managersuperclassname + "Impl");
-            }
-
-            m = Pattern.compile("^(.*\\.)jalo(\\..*)$$").matcher(managersuperclass);
-            if (m.find()) {
-                String prefix = m.group(1);
-                String suffix = m.group(2);
-                antProject.setProperty("extension.managersuperclassejbimpl", prefix + "jaloimpl" + suffix + "EJBImpl");
-                antProject.setProperty("extension.managersuperclassejb", prefix + "session" + suffix + "EJB");
-                antProject.setProperty("extension.managersuperclasshome", prefix + "session" + suffix + "Home");
-                antProject.setProperty("extension.managersuperclassremote", prefix + "session" + suffix + "Remote");
-            }
-
-            antProject.setProperty("extgen.directory.tmp", platform.getTempLocation().append("hybris").append("extgen")
-                    .toOSString());
-            antProject.setProperty("extension.directory.target", fLocationGroup.getLocation().toOSString());
-            //
-            // <!-- in generated extension, disable jspcompile as default value -->
-            // <replaceregexp file="${extgen.directory.tmp}/extensioninfo.xml"
-            // match='jspcompile="true"'
-            // replace='jspcompile="false"'
-            // byline="true"/>
-            antProject.createTask("clean_extgen_temp").perform();
-            antProject.createTask("prepare_extgen_temp").perform();
-            antProject.createTask("filter_extgen_files").perform();
-            antProject.createTask("extgen_copy_extension").perform();
+            platform.newExtension(templateName, projectName, packageName, fLocationGroup.getLocation(), monitor);
         } finally {
             monitor.done();
         }
@@ -464,6 +408,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             fText = "";
             fPackageText = "";
             fModifyListener = new ModifyListener() {
+                @Override
                 public void modifyText(ModifyEvent e) {
                     if (e.getSource() == fTextControl) {
                         fText = fTextControl.getText();
@@ -561,6 +506,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             Display display = getShell().getDisplay();
             if (display != null) {
                 display.asyncExec(new Runnable() {
+                    @Override
                     public void run() {
                         if (SwtUtil.isOkToUse(fTextControl)) {
                             fTextControl.setFocus();
@@ -601,6 +547,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             fText = "";
             fPreviousExternalLocation = ""; //$NON-NLS-1$
             fModifyListener = new ModifyListener() {
+                @Override
                 public void modifyText(ModifyEvent e) {
                     if (e.getSource() == fTextControl) {
                         fText = fTextControl.getText();
@@ -662,10 +609,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 fButton.setEnabled(true);
                 fButton.setSelection(true);
                 fButton.addSelectionListener(new SelectionListener() {
+                    @Override
                     public void widgetDefaultSelected(SelectionEvent e) {
                         doWidgetSelected(e);
                     }
 
+                    @Override
                     public void widgetSelected(SelectionEvent e) {
                         doWidgetSelected(e);
                     }
@@ -729,10 +678,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 fBrowseButton.setText(YMessages.NewExtensionPage_LocationGroup_browseButton_desc);
                 fBrowseButton.setEnabled(false);
                 fBrowseButton.addSelectionListener(new SelectionListener() {
+                    @Override
                     public void widgetDefaultSelected(SelectionEvent e) {
                         changeControlPressed();
                     }
 
+                    @Override
                     public void widgetSelected(SelectionEvent e) {
                         changeControlPressed();
                     }
@@ -767,6 +718,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
          * 
          * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
          */
+        @Override
         public void update(Observable o, Object arg) {
             if (isUseDefaultSelected()) {
                 if (SwtUtil.isOkToUse(fTextControl)) {
@@ -835,9 +787,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 String oldDirectory = new Path(fText.trim()).lastSegment();
                 setLocationText(selectedDirectory);
                 String lastSegment = new Path(selectedDirectory).lastSegment();
-                if (lastSegment != null
-                        && (fNamePackageGroup.getName().length() == 0 || fNamePackageGroup.getName().equals(
-                                oldDirectory))) {
+                if (lastSegment != null && (fNamePackageGroup.getName().length() == 0
+                        || fNamePackageGroup.getName().equals(oldDirectory))) {
                     fNamePackageGroup.setName(lastSegment);
                 }
                 YCore.getDefault().getDialogSettings().put(DIALOGSTORE_LAST_EXTERNAL_LOC, selectedDirectory);
@@ -859,7 +810,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
 
     private class TemplateGroup extends Observable {
 
-        private String[] fOptions;
+        private final String[] fOptions;
         private int fSelectedIndex;
         private final int fDefaultIndex;
         private int fPreviousSelectedIndex;
@@ -869,15 +820,10 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         private Button fButton;
         private boolean fSelection;
 
-        public TemplateGroup(Properties properties) {
-            if (properties != null) {
-                String[] options = properties.getProperty("extgen.template.list", "").split(",");
-                fDefaultOption = properties.getProperty("extgen.template.default", null);
-                fOptions = includeDefaultOption(options, fDefaultOption);
-            } else {
-                fOptions = new String[0];
-                fDefaultOption = null;
-            }
+        public TemplateGroup() {
+            String[] options = platform.getTemplates();
+            fDefaultOption = platform.getDefaultTemplate();
+            fOptions = includeDefaultOption(options, fDefaultOption);
             fDefaultIndex = findDefaultIndex();
             fSelection = true;
         }
@@ -950,10 +896,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 fButton.setEnabled(fOptions.length > 0);
                 fButton.setSelection(true);
                 fButton.addSelectionListener(new SelectionListener() {
+                    @Override
                     public void widgetDefaultSelected(SelectionEvent e) {
                         doWidgetSelected(e);
                     }
 
+                    @Override
                     public void widgetSelected(SelectionEvent e) {
                         doWidgetSelected(e);
                     }
@@ -1003,10 +951,12 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 fComboControl.select(fDefaultIndex);
                 fComboControl.addSelectionListener(new SelectionListener() {
 
+                    @Override
                     public void widgetSelected(SelectionEvent e) {
                         updateIndexes();
                     }
 
+                    @Override
                     public void widgetDefaultSelected(SelectionEvent e) {
                         updateIndexes();
                     }
@@ -1062,6 +1012,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      */
     private final class Validator implements Observer {
 
+        @Override
         public void update(Observable o, Object arg) {
             validateForm();
         }
@@ -1180,7 +1131,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             }
 
             // check whether extension template folder exists
-            File templatePath = new File(fProperties.getProperty(EXTGEN_TEMPLATE_PATH + fTemplateGroup.getTemplate()));
+            File templatePath = platform.getTemplatePath(fTemplateGroup.getTemplate());
             if (!templatePath.exists()) {
                 try {
                     setErrorMessage(MessageFormat.format(YMessages.NewExtensionPage_error_TemplateFolderDoesNotExist,

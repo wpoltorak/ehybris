@@ -13,13 +13,20 @@ import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
 import com.lambda.plugin.core.Version;
 import com.lambda.plugin.core.jaxb.extensioninfo.v1.Extensioninfo;
+import com.lambda.plugin.core.jaxb.extensioninfo.v3.MetaType;
 
 public class ExtensionInfo {
 
     public static final String EXTENSIONINFO_XML = "extensioninfo.xml";
 
     private String name;
+    private final File path;
+    private boolean template;
     private String[] dependencies;
+
+    public ExtensionInfo(File path) {
+        this.path = path;
+    }
 
     public static boolean isExtensionInfoFolder(File folder) {
         return appendExtensionInfo(folder).exists();
@@ -33,22 +40,24 @@ public class ExtensionInfo {
                 return null;
             }
             if (Version.VERSION_5_5.compareTo(platform.getVersion()) <= 0) {
-                Unmarshaller unmarshaller = JAXBContext.newInstance(
-                        com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo.class).createUnmarshaller();
+                Unmarshaller unmarshaller = JAXBContext
+                        .newInstance(com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo.class)
+                        .createUnmarshaller();
                 com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo extensioninfo = (com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo) JAXBIntrospector
                         .getValue(unmarshaller.unmarshal(extInfo));
-                return ExtensionInfo.fromExtensionInfo(extensioninfo);
+                return ExtensionInfo.fromExtensionInfo(extensioninfo, folder);
             } else if (Version.VERSION_5.compareTo(platform.getVersion()) <= 0) {
-                Unmarshaller unmarshaller = JAXBContext.newInstance(
-                        com.lambda.plugin.core.jaxb.extensioninfo.v2.Extensioninfo.class).createUnmarshaller();
+                Unmarshaller unmarshaller = JAXBContext
+                        .newInstance(com.lambda.plugin.core.jaxb.extensioninfo.v2.Extensioninfo.class)
+                        .createUnmarshaller();
                 return ExtensionInfo
                         .fromExtensionInfo((com.lambda.plugin.core.jaxb.extensioninfo.v2.Extensioninfo) JAXBIntrospector
-                                .getValue(unmarshaller.unmarshal(extInfo)));
+                                .getValue(unmarshaller.unmarshal(extInfo)), folder);
             } else {
                 Unmarshaller unmarshaller = JAXBContext.newInstance(Extensioninfo.class).createUnmarshaller();
                 return ExtensionInfo
                         .fromExtensionInfo((com.lambda.plugin.core.jaxb.extensioninfo.v1.Extensioninfo) JAXBIntrospector
-                                .getValue(unmarshaller.unmarshal(extInfo)));
+                                .getValue(unmarshaller.unmarshal(extInfo)), folder);
             }
         } catch (Exception e) {
             YCore.logError(e);
@@ -61,12 +70,19 @@ public class ExtensionInfo {
     }
 
     private static ExtensionInfo fromExtensionInfo(
-            com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo extensioninfo) {
-        ExtensionInfo info = new ExtensionInfo();
+            com.lambda.plugin.core.jaxb.extensioninfo.v3.Extensioninfo extensioninfo, File path) {
+        ExtensionInfo info = new ExtensionInfo(path);
         com.lambda.plugin.core.jaxb.extensioninfo.v3.ExtensionType extension = extensioninfo.getExtension();
         info.name = extension.getName();
         List<com.lambda.plugin.core.jaxb.extensioninfo.v3.RequiresExtensionType> requiresExtension = extension
                 .getRequiresExtension();
+        List<MetaType> metas = extension.getMeta();
+        for (MetaType meta : metas) {
+            if ("extgen-template-extension".equals(meta.getKey())) {
+                info.template = Boolean.parseBoolean(meta.getValue());
+                break;
+            }
+        }
         info.dependencies = new String[requiresExtension.size()];
         for (int i = 0; i < requiresExtension.size(); i++) {
             info.dependencies[i] = requiresExtension.get(i).getName();
@@ -75,8 +91,8 @@ public class ExtensionInfo {
     }
 
     private static ExtensionInfo fromExtensionInfo(
-            com.lambda.plugin.core.jaxb.extensioninfo.v2.Extensioninfo extensioninfo) {
-        ExtensionInfo info = new ExtensionInfo();
+            com.lambda.plugin.core.jaxb.extensioninfo.v2.Extensioninfo extensioninfo, File path) {
+        ExtensionInfo info = new ExtensionInfo(path);
         com.lambda.plugin.core.jaxb.extensioninfo.v2.ExtensionType extension = extensioninfo.getExtension();
         info.name = extension.getName();
         List<com.lambda.plugin.core.jaxb.extensioninfo.v2.RequiresExtensionType> requiresExtension = extension
@@ -89,8 +105,8 @@ public class ExtensionInfo {
     }
 
     private static ExtensionInfo fromExtensionInfo(
-            com.lambda.plugin.core.jaxb.extensioninfo.v1.Extensioninfo extensioninfo) {
-        ExtensionInfo info = new ExtensionInfo();
+            com.lambda.plugin.core.jaxb.extensioninfo.v1.Extensioninfo extensioninfo, File path) {
+        ExtensionInfo info = new ExtensionInfo(path);
         com.lambda.plugin.core.jaxb.extensioninfo.v1.ExtensionType extension = extensioninfo.getExtension();
         info.name = extension.getName();
         List<com.lambda.plugin.core.jaxb.extensioninfo.v1.RequiresExtensionType> requiresExtension = extension
@@ -108,5 +124,13 @@ public class ExtensionInfo {
 
     public String[] getDependencies() {
         return dependencies;
+    }
+
+    public boolean isTemplate() {
+        return template;
+    }
+
+    public File getPath() {
+        return path;
     }
 }

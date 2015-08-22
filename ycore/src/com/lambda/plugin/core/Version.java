@@ -3,6 +3,7 @@ package com.lambda.plugin.core;
 public class Version implements Comparable<Version> {
 
     public static final Version VERSION_5 = new Version("5.0");
+    public static final Version VERSION_5_1 = new Version("5.1");
     public static final Version VERSION_5_5 = new Version("5.5");
 
     private final String version;
