@@ -43,8 +43,8 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
         long millis = System.currentTimeMillis();
         final ImpexDocument document = (ImpexDocument) viewer.getDocument();
-        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.LineSeparator, ImpexLexer.Comma,
-                ImpexLexer.Dot, ImpexLexer.DoubleQuote);
+        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.LineSeparator, ImpexLexer.Comma, ImpexLexer.Dot,
+                ImpexLexer.DoubleQuote);
         final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
         try {
             Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensOfOffset(offset, true);
@@ -64,15 +64,17 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                         @Override
                         public void acceptTypeNameMatch(final TypeNameMatch match) {
                             if (match.getSimpleTypeName().endsWith("Model")) {
-                                result.add(completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
+                                result.add(
+                                        completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
                             }
                         }
                     };
                     // TODO performance of the popup is slow. should it be loaded in a background thread for the first
                     // time
                     // during plugin startup?
-                    typeFinder.searchModelType(qualifier, null, SearchPattern.R_PREFIX_MATCH
-                            | SearchPattern.R_CAMELCASE_MATCH, nameMatchRequestor);
+                    typeFinder.searchType(qualifier, null,
+                            SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH, nameMatchRequestor,
+                            JavaTypeFinder.MODEL_SEARCH | JavaTypeFinder.ENUM_SEARCH);
                     break;
                 }
                 case ImpexLexer.Separator: {

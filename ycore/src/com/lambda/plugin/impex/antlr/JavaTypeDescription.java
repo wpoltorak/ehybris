@@ -30,8 +30,8 @@ public class JavaTypeDescription implements TypeDescription {
     private final List<String> parents = new ArrayList<>();
 
     private final Map<String, String> fields = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-    private static final Pattern eCommercePattern = Pattern.compile("de\\.hybris\\.platform.*\\.model.*");
-    private static final Pattern eCommerceEnumPattern = Pattern.compile("de\\.hybris\\.platform.*\\.enums.*");
+    private static final Pattern eCommercePattern = Pattern.compile(".+\\.model.*");
+    private static final Pattern eCommerceEnumPattern = Pattern.compile(".+\\.enums.*");
 
     @Override
     public boolean isAbstract() {
@@ -126,7 +126,8 @@ public class JavaTypeDescription implements TypeDescription {
      * @param isCollection2
      * @return
      */
-    public static final JavaTypeDescription fromType(IType type, boolean isCollection, JavaFieldCollector fieldCollector) {
+    public static final JavaTypeDescription fromType(IType type, boolean isCollection,
+            JavaFieldCollector fieldCollector) {
         JavaTypeDescription desc = new JavaTypeDescription();
 
         if (type == null) {
@@ -144,14 +145,12 @@ public class JavaTypeDescription implements TypeDescription {
             desc.isEnum = isEnum(type);
             desc.name = type.getElementName();
             desc.target = type;
-            if (desc.isDataModel) {
+            if (desc.isDataModel || desc.isEnum) {
                 fieldCollector.addFieldsAndSupertypes(desc, type);
             }
         } finally {
             millis = System.currentTimeMillis() - millis;
-            System.err.println(String.format(
-                    "Took %d:%d:%d",
-                    TimeUnit.MILLISECONDS.toMinutes(millis),
+            System.err.println(String.format("Took %d:%d:%d", TimeUnit.MILLISECONDS.toMinutes(millis),
                     TimeUnit.MILLISECONDS.toSeconds(millis)
                             - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
                     TimeUnit.MILLISECONDS.toMillis(millis)

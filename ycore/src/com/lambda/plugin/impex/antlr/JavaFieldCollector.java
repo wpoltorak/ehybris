@@ -25,22 +25,37 @@ public class JavaFieldCollector {
     }
 
     private String type(IMethod method, IType type) {
-        String signature = method.getParameterTypes()[0];
-        if (parameterTypeCache.containsKey(signature)) {
-            return parameterTypeCache.get(signature);
-        }
+        if (method.getParameterTypes().length > 0) {
+            String signature = method.getParameterTypes()[0];
+            if (parameterTypeCache.containsKey(signature)) {
+                return parameterTypeCache.get(signature);
+            }
 
-        final String packagename = Signature.getSignatureQualifier(signature);
-        final String typename = Signature.getSignatureSimpleName(signature);
-        if (!"".equals(packagename)) {
-            String fullname = packagename + "." + typename;
-            parameterTypeCache.put(signature, fullname);
-            return fullname;
-        } else if (isPrimitive(typename)) {
-            parameterTypeCache.put(signature, typename);
-            return typename;
-        }
+            final String packagename = Signature.getSignatureQualifier(signature);
+            final String typename = Signature.getSignatureSimpleName(signature);
+            if (!"".equals(packagename)) {
+                String fullname = packagename + "." + typename;
+                parameterTypeCache.put(signature, fullname);
+                return fullname;
+            } else if (isPrimitive(typename)) {
+                parameterTypeCache.put(signature, typename);
+                return typename;
+            }
 
+            return resolveType(type, signature, typename);
+        }
+        // enums
+        try {
+            String signature = method.getReturnType();
+            final String typename = Signature.getSignatureSimpleName(signature);
+            return resolveType(type, signature, typename);
+        } catch (JavaModelException e) {
+            YCore.logError(e);
+        }
+        return null;
+    }
+
+    private String resolveType(IType type, String signature, final String typename) {
         try {
             String[][] resolved = type.resolveType(typename);
             if (resolved != null && resolved.length > 0) {
@@ -104,9 +119,9 @@ public class JavaFieldCollector {
         collected.superClasses.add(typename);
         IMethod[] allMethods = type.getMethods();
         for (IMethod method : allMethods) {
-            if (isPublic(method) && method.getElementName().startsWith("set") && method.getParameterTypes().length == 1) {
+            if (isPublic(method) && (isSetter(method) || isEnumGetter(desc, method))) {
                 String name = method.getElementName();
-                // setXxx
+                // setXxx / getXxx
                 name = (Character.toLowerCase(name.charAt(3)) + name.substring(4)).intern();
                 String returntypename = type(method, type);
                 if (returntypename != null) {
@@ -116,6 +131,14 @@ public class JavaFieldCollector {
             }
         }
         return collected;
+    }
+
+    private boolean isEnumGetter(JavaTypeDescription desc, IMethod method) {
+        return desc.isEnum() && method.getElementName().startsWith("get") && method.getParameterTypes().length == 0;
+    }
+
+    private boolean isSetter(IMethod method) {
+        return method.getElementName().startsWith("set") && method.getParameterTypes().length == 1;
     }
 
     private static boolean isPublic(IMethod method) {
