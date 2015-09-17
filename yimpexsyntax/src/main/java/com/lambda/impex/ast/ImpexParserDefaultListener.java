@@ -66,7 +66,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
     private final HashMap<String, String> currentMacros = new HashMap<>();
 
-    private final List<String> supportedModes = Arrays.asList("append", "remove");
+    private final List<String> supportedModes = Arrays.asList("append", "remove", "replace");
     private TypeFinder typeFinder;
     private TypeDescription typeDescription;
     private final List<ColumnDescription> columnDescriptions = new ArrayList<>();

@@ -285,7 +285,7 @@ fragment DocumentIDQualifier : [a-zA-Z0-9_\\-\\.](LineSeparator* [a-zA-Z0-9_\\-\
 DocumentID          : '&' LineSeparator* Identifier;
 SpecialAttribute    : '@' LineSeparator* Identifier;
 Identifier          : [a-zA-Z_](LineSeparator* [a-zA-Z0-9_])*;
-Macrodef            : '$' LineSeparator* Identifier -> pushMode(macro); 
+Macrodef            : '$' (LineSeparator* [a-zA-Z0-9_\\-])* -> pushMode(macro); 
 UserRights          :'$START_USERRIGHTS' .*? '$END_USERRIGHTS' (Separator | Ws)*;
 BeanShell           : '#%' ~[\r\n]* 
                     | '"#%' (~'"'|'"''"')* '"';
