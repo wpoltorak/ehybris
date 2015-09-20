@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.Token;
+import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.DocumentIDDescription;
 import com.lambda.impex.ast.ImpexParser.AttributeContext;
@@ -19,13 +20,14 @@ import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.RecordContext;
 import com.lambda.impex.ast.TypeDescription;
 
-public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFinderAdapter implements OccurrencesFinder {
+public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFinderAdapter
+        implements OccurrencesFinder {
 
     private final List<String> definitions = new ArrayList<>();
     private int columnIndex;
     private String definition;
 
-    private final Map<DocumentIDDescription, List<Token>> documentIDReferences = new HashMap<>();
+    private final Map<DocumentIDDescription, List<Position>> documentIDReferences = new HashMap<>();
     private final Map<Integer, DocumentIDDescription> offset2DocumentID = new HashMap<>();
     private final Map<DocumentIDDescription, TypeDescription> docIDDef2Type = new HashMap<>();
 
@@ -77,7 +79,7 @@ public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFin
         if (existing != null) {
             return;
         }
-        addListValue(documentIDReferences, documentIDDescription, token, 0);
+        addListValue(documentIDReferences, documentIDDescription, position(token), 0);
         offset2DocumentID.put(token.getStartIndex(), documentIDDescription);
     }
 
@@ -91,17 +93,17 @@ public class DocumentIdQualifierOccurrencesFinder extends AbstractOccurrencesFin
 
         DocumentIDDescription documentIDDescription = new DocumentIDDescription(definition, token.getText());
 
-        addListValue(documentIDReferences, documentIDDescription, token);
+        addListValue(documentIDReferences, documentIDDescription, position(token));
         offset2DocumentID.put(token.getStartIndex(), documentIDDescription);
     }
 
     @Override
-    protected List<Token> getOccurrences(int offset) {
+    protected List<Position> getOccurrences() {
         final DocumentIDDescription documentID = offset2DocumentID.get(offset);
         if (documentID == null) {
             return Collections.emptyList();
         }
-        final List<Token> result = documentIDReferences.get(documentID);
+        final List<Position> result = documentIDReferences.get(documentID);
         if (result == null) {
             Collections.emptyList();
         }

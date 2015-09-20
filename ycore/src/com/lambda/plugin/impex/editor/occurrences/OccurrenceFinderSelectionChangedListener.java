@@ -187,7 +187,8 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         private IProgressMonitor fProgressMonitor;
         private final List<Position> fPositions;
 
-        public OccurrencesFinderJob(IDocument document, List<Position> positions, ISelection selection, boolean forced) {
+        public OccurrencesFinderJob(IDocument document, List<Position> positions, ISelection selection,
+                boolean forced) {
             super("Occurrences Marker"); //$NON-NLS-1$
             fDocument = document;
             fSelection = selection;
@@ -209,8 +210,9 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         }
 
         private boolean isCanceled() {
-            return fCanceled || fProgressMonitor.isCanceled() || fPostSelectionValidator != null
-                    && !(fPostSelectionValidator.isValid(fSelection) || fForcedMarkOccurrencesSelection == fSelection)
+            return fCanceled || fProgressMonitor.isCanceled()
+                    || fPostSelectionValidator != null && !(fPostSelectionValidator.isValid(fSelection)
+                            || fForcedMarkOccurrencesSelection == fSelection)
                     || LinkedModeModel.hasInstalledModel(fDocument);
         }
 
@@ -267,7 +269,7 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
                 }
                 String annotationType = i == 0 ? "org.eclipse.jdt.ui.occurrences.write"
                         : "org.eclipse.jdt.ui.occurrences";
-                annotationMap.put(new Annotation(annotationType, false, message), //$NON-NLS-1$
+                annotationMap.put(new Annotation(annotationType, false, message), // $NON-NLS-1$
                         position);
             }
 

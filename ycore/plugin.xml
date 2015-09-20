@@ -359,4 +359,34 @@
           file="contexts.xml">
     </contexts>
  </extension>
+ <extension
+       point="org.eclipse.ui.editors.annotationTypes">
+    <type
+          name="com.lambda.plugin.fieldOccurrences">
+    </type>
+ </extension>
+ <extension
+       point="org.eclipse.ui.editors.markerAnnotationSpecification">
+    <specification
+          annotationType="com.lambda.plugin.fieldOccurrences"
+          colorPreferenceKey="fieldOccurrenceIndicationColor"
+          colorPreferenceValue="240,216,168"
+          contributesToHeader="false"
+          highlightPreferenceKey="fieldOccurrenceIndicationHighlight"
+          highlightPreferenceValue="true"
+          includeOnPreferencePage="true"
+          isGoToNextNavigationTarget="false"
+          isGoToPreviousNavigationTarget="false"
+          label="Impex Field Occurrences"
+          overviewRulerPreferenceKey="fieldOccurrenceIndicationOverviewRuler"
+          overviewRulerPreferenceValue="false"
+          presentationLayer="4"
+          showInNextPrevDropdownToolbarAction="false"
+          textPreferenceKey="fieldOccurrenceIndicationText"
+          textPreferenceValue="false"
+          textStylePreferenceKey="fieldOccurrenceIndicationTextStyle"
+          verticalRulerPreferenceKey="fieldOccurrenceIndicationVerticalRuler"
+          verticalRulerPreferenceValue="false">
+    </specification>
+ </extension>
 </plugin>

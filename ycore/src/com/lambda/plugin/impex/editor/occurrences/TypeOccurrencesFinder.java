@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.Token;
+import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.ImpexParser.HeaderTypeNameContext;
 
@@ -15,7 +16,7 @@ public class TypeOccurrencesFinder extends AbstractOccurrencesFinderAdapter impl
         super(offset);
     }
 
-    private final Map<String, List<Token>> name2Tokens = new HashMap<>();
+    private final Map<String, List<Position>> name2Positions = new HashMap<>();
     private final Map<Integer, String> offset2Name = new HashMap<>();
 
     @Override
@@ -24,14 +25,14 @@ public class TypeOccurrencesFinder extends AbstractOccurrencesFinderAdapter impl
             Token token = ctx.Type().getSymbol();
             String name = token.getText().toLowerCase();
             offset2Name.put(token.getStartIndex(), name);
-            addListValue(name2Tokens, name, token);
+            addListValue(name2Positions, name, position(token));
         }
     }
 
     @Override
-    public List<Token> getOccurrences(int offset) {
+    public List<Position> getOccurrences() {
         final String name = offset2Name.get(offset);
-        final List<Token> result = name2Tokens.get(name);
+        final List<Position> result = name2Positions.get(name);
         if (result != null) {
             return result;
         }

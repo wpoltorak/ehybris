@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.ImpexParser.MacroContext;
 import com.lambda.impex.ast.ImpexParser.MacrorefContext;
@@ -18,7 +19,7 @@ public class MacroOccurrencesFinder extends AbstractOccurrencesFinderAdapter imp
         super(offset);
     }
 
-    private final Map<Token, List<Token>> macrodef2Macrorefs = new HashMap<>();
+    private final Map<Token, List<Position>> macrodef2Positions = new HashMap<>();
     private final Map<Integer, Token> offset2Macrodef = new HashMap<>();
     private final Map<String, Token> name2Macrodef = new HashMap<>();
 
@@ -37,22 +38,24 @@ public class MacroOccurrencesFinder extends AbstractOccurrencesFinderAdapter imp
         final Token macrodefToken = name2Macrodef.get(macrorefToken.getText());
 
         offset2Macrodef.put(macrorefToken.getStartIndex(), macrodefToken);
-        addListValue(macrodef2Macrorefs, macrodefToken, macrorefToken);
+        addListValue(macrodef2Positions, macrodefToken, position(macrorefToken));
     }
 
     @Override
-    public List<Token> getOccurrences(int offset) {
+    public List<Position> getOccurrences() {
         final Token macrodef = offset2Macrodef.get(offset);
         if (macrodef == null) {
             return Collections.emptyList();
         }
 
-        final List<Token> result = new ArrayList<>();
-        result.add(macrodef);
-        final List<Token> refs = macrodef2Macrorefs.get(macrodef);
+        final List<Position> refs = macrodef2Positions.get(macrodef);
         if (refs != null) {
-            result.addAll(refs);
+            refs.add(0, position(macrodef));
+            return refs;
         }
+
+        final List<Position> result = new ArrayList<>();
+        result.add(position(macrodef));
         return result;
     }
 }
