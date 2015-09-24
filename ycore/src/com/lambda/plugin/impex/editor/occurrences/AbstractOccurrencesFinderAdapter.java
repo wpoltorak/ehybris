@@ -25,6 +25,16 @@ abstract class AbstractOccurrencesFinderAdapter extends ImpexParserBaseListener 
     protected abstract List<Position> getOccurrences();
 
     @Override
+    public String getAnnotationId() {
+        return OCCURRENCES_ANNOTATION;
+    }
+
+    @Override
+    public String getWriteAnnotationId() {
+        return OCCURRENCES_WRITE_ANNOTATION;
+    }
+
+    @Override
     public List<Position> findOccurrences(ParseTree parseTree) {
         final ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(this, parseTree);

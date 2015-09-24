@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -33,15 +34,15 @@ import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.model.IImpexModel;
 
 public class OccurrenceFinderSelectionChangedListener implements ISelectionChangedListener {
+    private enum OccType {
+        Occurrence, Highlight
+    }
 
     private OccurrencesFinderJob fOccurrencesFinderJob;
+    private OccurrencesFinderJob fHighlightingJob;
     private final ImpexEditor editor;
-    /**
-     * Holds the current occurrence annotations.
-     * 
-     * @since 3.1
-     */
-    private Annotation[] fOccurrenceAnnotations = null;
+
+    private final Map<OccType, Annotation[]> fOccurrenceAnnotations = new HashMap<>();
 
     public OccurrenceFinderSelectionChangedListener(ImpexEditor editor) {
         this.editor = editor;
@@ -89,12 +90,18 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         ISelection selection = event.getSelection();
         if (selection instanceof ITextSelection) {
             ITextSelection textSelection = (ITextSelection) selection;
-            updateOccurrenceAnnotations(textSelection, editor.getImpexModel());
+            IImpexModel model = editor.getImpexModel();
+            updateOccurrenceAnnotations(textSelection, model);
+            updateHighlighting(textSelection, model);
         }
     }
 
     protected void updateOccurrenceAnnotations(ITextSelection selection, IImpexModel model) {
         updateOccurrenceAnnotations(selection, model, false);
+    }
+
+    protected void updateHighlighting(ITextSelection selection, IImpexModel model) {
+        updateHighlighting(selection, model, false);
     }
 
     /**
@@ -112,7 +119,7 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         }
 
         if (!editor.isMarkingOccurrences()) {
-            removeOccurrenceAnnotations();
+            removeOccurrenceAnnotations(OccType.Occurrence);
             return;
         }
 
@@ -122,56 +129,95 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         }
 
         ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
-
-        ParseTree parseTree = document.getParseTree();
-        if (parseTree == null) {
-            return;
-        }
         OccurrencesFinder finder = new OccurrencesFinderFactory(document, selection.getOffset())
                 .createOccurrencesFinder();
-        List<Position> positions = finder.findOccurrences(parseTree);
-        if (positions.isEmpty()) {
-            if (!editor.isStickyOccurrences()) {
-                removeOccurrenceAnnotations();
-            }
+
+        if (finder == null) {
             return;
         }
 
-        fOccurrencesFinderJob = new OccurrencesFinderJob(document, positions, selection, force);
+        fOccurrencesFinderJob = new OccurrencesFinderJob(OccType.Occurrence, document, selection, finder, force);
         fOccurrencesFinderJob.run(new NullProgressMonitor());
     }
 
-    private void removeOccurrenceAnnotations() {
+    public void updateHighlighting(ITextSelection selection, IImpexModel model, boolean force) {
+
+        if (fHighlightingJob != null) {
+            fHighlightingJob.cancel();
+        }
+
+        // if (!editor.isMarkingOccurrences()) {
+        // removeOccurrenceAnnotations();
+        // return;
+        // }
+
+        ISourceViewer sourceViewer = (ISourceViewer) editor.getAdapter(ISourceViewer.class);
+        if (selection == null || model == null || sourceViewer == null) {
+            return;
+        }
+
+        ImpexDocument document = (ImpexDocument) sourceViewer.getDocument();
+
+        FieldOccurrencesFinder finder = new FieldOccurrencesFinder(selection.getOffset());
+        fHighlightingJob = new OccurrencesFinderJob(OccType.Highlight, document, selection, finder, force);
+        fHighlightingJob.run(new NullProgressMonitor());
+    }
+
+    private void removeOccurrenceAnnotations(OccType type) {
         IDocumentProvider documentProvider = editor.getDocumentProvider();
         if (documentProvider == null) {
             return;
         }
 
         IAnnotationModel annotationModel = documentProvider.getAnnotationModel(editor.getEditorInput());
-        if (annotationModel == null || fOccurrenceAnnotations == null) {
+        if (annotationModel == null || fOccurrenceAnnotations.get(type) == null) {
             return;
         }
 
         IDocument document = documentProvider.getDocument(editor.getEditorInput());
         Object lock = editor.getLockObject((ImpexDocument) document);
         if (lock == null) {
-            updateAnnotationModelForRemoves(annotationModel);
+            updateAnnotationModelForRemoves(annotationModel, type);
         } else {
             synchronized (lock) {
-                updateAnnotationModelForRemoves(annotationModel);
+                updateAnnotationModelForRemoves(annotationModel, type);
             }
         }
     }
 
-    private void updateAnnotationModelForRemoves(IAnnotationModel annotationModel) {
+    private void updateAnnotationModelForRemoves(IAnnotationModel annotationModel, OccType type) {
+        Annotation[] annotations = fOccurrenceAnnotations.remove(type);
         if (annotationModel instanceof IAnnotationModelExtension) {
-            ((IAnnotationModelExtension) annotationModel).replaceAnnotations(fOccurrenceAnnotations, null);
+            ((IAnnotationModelExtension) annotationModel).replaceAnnotations(annotations, null);
         } else {
-            for (int i = 0, length = fOccurrenceAnnotations.length; i < length; i++) {
-                annotationModel.removeAnnotation(fOccurrenceAnnotations[i]);
+            for (int i = 0, length = annotations.length; i < length; i++) {
+                annotationModel.removeAnnotation(annotations[i]);
             }
         }
-        fOccurrenceAnnotations = null;
+    }
+
+    private void updateAnnotations(IAnnotationModel annotationModel, Map<Annotation, Position> annotationMap,
+            OccType type) {
+        Annotation[] annotations = fOccurrenceAnnotations.remove(type);
+        if (annotationModel instanceof IAnnotationModelExtension) {
+            ((IAnnotationModelExtension) annotationModel).replaceAnnotations(annotations, annotationMap);
+        } else {
+            replaceOccurrenceAnnotations(annotationModel, annotationMap, annotations);
+        }
+        fOccurrenceAnnotations.put(type, annotationMap.keySet().toArray(new Annotation[annotationMap.keySet().size()]));
+    }
+
+    private void replaceOccurrenceAnnotations(IAnnotationModel annotationModel, Map<Annotation, Position> annotationMap,
+            Annotation[] currentAnnotations) {
+        for (Annotation annotation : currentAnnotations) {
+            annotationModel.removeAnnotation(annotation);
+        }
+
+        Iterator<Map.Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<Annotation, Position> mapEntry = iter.next();
+            annotationModel.addAnnotation(mapEntry.getKey(), mapEntry.getValue());
+        }
     }
 
     /**
@@ -179,20 +225,25 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
      */
     class OccurrencesFinderJob extends Job {
 
-        private ISelection fForcedMarkOccurrencesSelection = null;
-        private final IDocument fDocument;
-        private final ISelection fSelection;
+        private ITextSelection fForcedMarkOccurrencesSelection = null;
+        private final ImpexDocument fDocument;
+        private final ITextSelection fSelection;
         private ISelectionValidator fPostSelectionValidator;
         private boolean fCanceled = false;
         private IProgressMonitor fProgressMonitor;
-        private final List<Position> fPositions;
+        private final OccurrencesFinder finder;
+        private final OccType type;
 
-        public OccurrencesFinderJob(IDocument document, List<Position> positions, ISelection selection,
-                boolean forced) {
+        public OccurrencesFinderJob(OccType type, ImpexDocument document, ITextSelection selection,
+                OccurrencesFinder finder, boolean forced) {
             super("Occurrences Marker"); //$NON-NLS-1$
+            this.type = type;
+            Assert.isNotNull(document);
+            Assert.isNotNull(selection);
+            Assert.isNotNull(finder);
             fDocument = document;
             fSelection = selection;
-            fPositions = positions;
+            this.finder = finder;
 
             if (editor.getSelectionProvider() instanceof ISelectionValidator) {
                 fPostSelectionValidator = (ISelectionValidator) editor.getSelectionProvider();
@@ -221,20 +272,8 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
          */
         @Override
         public IStatus run(IProgressMonitor progressMonitor) {
-
             fProgressMonitor = progressMonitor;
-
             if (isCanceled()) {
-                return Status.CANCEL_STATUS;
-            }
-
-            ISourceViewer sourceViewer = (ISourceViewer) editor.getAdapter(ISourceViewer.class);
-            if (sourceViewer == null) {
-                return Status.CANCEL_STATUS;
-            }
-
-            IDocument document = sourceViewer.getDocument();
-            if (!(document instanceof ImpexDocument)) {
                 return Status.CANCEL_STATUS;
             }
 
@@ -248,8 +287,21 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
                 return Status.CANCEL_STATUS;
             }
 
+            ParseTree parseTree = fDocument.getParseTree();
+            if (parseTree == null) {
+                return Status.CANCEL_STATUS;
+            }
+
+            List<Position> positions = finder.findOccurrences(parseTree);
+            if (positions.isEmpty()) {
+                if (!editor.isStickyOccurrences()) {
+                    removeOccurrenceAnnotations(type);
+                }
+                return Status.CANCEL_STATUS;
+            }
+
             // Add occurrence annotations
-            int length = fPositions.size();
+            int length = positions.size();
             Map<Annotation, Position> annotationMap = new HashMap<Annotation, Position>(length);
             for (int i = 0; i < length; i++) {
 
@@ -258,17 +310,16 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
                 }
 
                 String message;
-                Position position = fPositions.get(i);
+                Position position = positions.get(i);
 
                 // Create & add annotation
                 try {
-                    message = document.get(position.offset, position.length);
+                    message = fDocument.get(position.offset, position.length);
                 } catch (BadLocationException ex) {
                     // Skip this match
                     continue;
                 }
-                String annotationType = i == 0 ? "org.eclipse.jdt.ui.occurrences.write"
-                        : "org.eclipse.jdt.ui.occurrences";
+                String annotationType = i == 0 ? finder.getWriteAnnotationId() : finder.getAnnotationId();
                 annotationMap.put(new Annotation(annotationType, false, message), // $NON-NLS-1$
                         position);
             }
@@ -277,38 +328,16 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
                 return Status.CANCEL_STATUS;
             }
 
-            Object lock = editor.getLockObject((ImpexDocument) document);
+            Object lock = editor.getLockObject(fDocument);
             if (lock == null) {
-                updateAnnotations(annotationModel, annotationMap);
+                updateAnnotations(annotationModel, annotationMap, type);
             } else {
                 synchronized (lock) {
-                    updateAnnotations(annotationModel, annotationMap);
+                    updateAnnotations(annotationModel, annotationMap, type);
                 }
             }
 
             return Status.OK_STATUS;
-        }
-
-        private void updateAnnotations(IAnnotationModel annotationModel, Map<Annotation, Position> annotationMap) {
-            if (annotationModel instanceof IAnnotationModelExtension) {
-                ((IAnnotationModelExtension) annotationModel).replaceAnnotations(fOccurrenceAnnotations, annotationMap);
-            } else {
-                replaceOccurrenceAnnotations(annotationModel, annotationMap, fOccurrenceAnnotations);
-            }
-            fOccurrenceAnnotations = annotationMap.keySet().toArray(new Annotation[annotationMap.keySet().size()]);
-        }
-
-        private void replaceOccurrenceAnnotations(IAnnotationModel annotationModel,
-                Map<Annotation, Position> annotationMap, Annotation[] currentAnnotations) {
-            for (Annotation annotation : currentAnnotations) {
-                annotationModel.removeAnnotation(annotation);
-            }
-
-            Iterator<Map.Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry<Annotation, Position> mapEntry = iter.next();
-                annotationModel.addAnnotation(mapEntry.getKey(), mapEntry.getValue());
-            }
         }
     }
 

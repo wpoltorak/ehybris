@@ -1,6 +1,7 @@
 package com.lambda.plugin.impex.editor.occurrences;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.lambda.impex.ast.ImpexParser.RecordContext;
 
 public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 
+    private static final String FIELD_OCCURRENCES_ANNOTATION = "com.lambda.plugin.impex.fieldOccurrences";
     private static final int NOT_STARTED = 0;
     private static final int PROCESSING = 1;
     private static final int FINISHED = 2;
@@ -31,8 +33,22 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
     }
 
     @Override
+    public String getAnnotationId() {
+        return FIELD_OCCURRENCES_ANNOTATION;
+    }
+
+    @Override
+    public String getWriteAnnotationId() {
+        return FIELD_OCCURRENCES_ANNOTATION;
+    }
+
+    @Override
     protected List<Position> getOccurrences() {
-        return columns.get(index);
+        if (columns == null) {
+            return Collections.<Position> emptyList();
+        }
+        List<Position> list = columns.get(index);
+        return list == null ? Collections.<Position> emptyList() : list;
     }
 
     @Override
@@ -59,6 +75,10 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 
     @Override
     public void enterAttribute(AttributeContext ctx) {
+        if (status != PROCESSING) {
+            return;
+        }
+
         pos++;
         List<Position> column = new ArrayList<>();
         column.add(position(ctx));
@@ -70,6 +90,10 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 
     @Override
     public void enterRecord(RecordContext ctx) {
+        if (status != PROCESSING) {
+            return;
+        }
+
         pos = -1;
     }
 
@@ -89,6 +113,10 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
     }
 
     private void handleField(ParserRuleContext ctx) {
+        if (status != PROCESSING) {
+            return;
+        }
+
         pos++;
 
         List<Position> column = columns.get(pos);

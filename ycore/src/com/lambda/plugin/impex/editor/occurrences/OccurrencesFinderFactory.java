@@ -1,11 +1,6 @@
 package com.lambda.plugin.impex.editor.occurrences;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.Position;
 
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.plugin.YCore;
@@ -38,11 +33,6 @@ public class OccurrencesFinderFactory {
             YCore.logError(e);
         }
 
-        return new OccurrencesFinder() {
-            @Override
-            public List<Position> findOccurrences(ParseTree parseTree) {
-                return Collections.emptyList();
-            }
-        };
+        return null;
     }
 }

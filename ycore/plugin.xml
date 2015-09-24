@@ -368,23 +368,21 @@
  <extension
        point="org.eclipse.ui.editors.markerAnnotationSpecification">
     <specification
-          annotationType="com.lambda.plugin.fieldOccurrences"
+          annotationType="com.lambda.plugin.impex.fieldOccurrences"
           colorPreferenceKey="fieldOccurrenceIndicationColor"
-          colorPreferenceValue="240,216,168"
+          colorPreferenceValue="232,242,254"
           contributesToHeader="false"
           highlightPreferenceKey="fieldOccurrenceIndicationHighlight"
           highlightPreferenceValue="true"
           includeOnPreferencePage="true"
-          isGoToNextNavigationTarget="false"
-          isGoToPreviousNavigationTarget="false"
           label="Impex Field Occurrences"
           overviewRulerPreferenceKey="fieldOccurrenceIndicationOverviewRuler"
           overviewRulerPreferenceValue="false"
-          presentationLayer="4"
-          showInNextPrevDropdownToolbarAction="false"
+          presentationLayer="3"
           textPreferenceKey="fieldOccurrenceIndicationText"
           textPreferenceValue="false"
           textStylePreferenceKey="fieldOccurrenceIndicationTextStyle"
+          textStylePreferenceValue="NONE"
           verticalRulerPreferenceKey="fieldOccurrenceIndicationVerticalRuler"
           verticalRulerPreferenceValue="false">
     </specification>
