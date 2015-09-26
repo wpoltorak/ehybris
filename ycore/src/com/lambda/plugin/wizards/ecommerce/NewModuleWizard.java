@@ -35,10 +35,10 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
 
 import com.lambda.plugin.ExceptionHandler;
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.YImages;
 import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YNature;
-import com.lambda.plugin.YCore;
 import com.lambda.plugin.ui.WorkbenchRunnableAdapter;
 
 public class NewModuleWizard extends Wizard implements IExecutableExtension, INewWizard {

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ydependencies
+Bundle-SymbolicName: com.lambda.ecommerce.ydependencies;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.lambda.ecommerce.dependencies.YDependencies
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ com.lambda.ycore;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

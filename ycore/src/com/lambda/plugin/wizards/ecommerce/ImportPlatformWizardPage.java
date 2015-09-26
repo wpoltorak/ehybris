@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -245,8 +244,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             }
         });
 
-        fWorkingSetGroup = new WorkingSetGroup(composite, null,
-                new String[] { IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE });
+        fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
+                IWorkingSetIDs.RESOURCE });
     }
 
     /**
@@ -355,13 +354,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
                         String extName = path.lastSegment().toString();
                         String projectName = getProjectName(projectDescriptionPath);
-                        root.addExtension(
-                                new PlatformExtension(path, extName, projectName, config.isReferenced(extName)));
+                        root.addExtension(new PlatformExtension(path, extName, projectName, config
+                                .isReferenced(extName)));
                     } else if (!platform.getPlatformLocation().equals(path)) {
                         File[] folders = FileUtils.listFolders(path.toFile());
                         for (File folder : folders) {
-                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()),
-                                    platform);
+                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()), platform);
                         }
                     }
                 } catch (IOException e) {
@@ -555,7 +553,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         IProject project = root.getProject(ext.projectName);
         if (!project.exists()) {
             IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
-            URI locationURI = URIUtil.toURI(ext.path);
+            URI locationURI = URI.create(ext.path.toOSString());
             if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
                 locationURI = null;
             }
@@ -576,8 +574,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         private final String version;
 
         public PlatformRoot(IPlatformInstallation platform, String projectName) {
-            super(platform.getPlatformLocation(),
-                    StringUtils.isEmpty(platform.getName()) ? projectName : platform.getName(), projectName, true);
+            super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
+                    .getName(), projectName, true);
             vendor = platform.getVendor();
             version = platform.getVersion().get();
         }
@@ -648,8 +646,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         }
     }
 
-    private class ExtensionLabelProvider extends LabelProvider
-            implements IColorProvider, DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+    private class ExtensionLabelProvider extends LabelProvider implements IColorProvider,
+            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
         @Override
         public String getText(Object element) {

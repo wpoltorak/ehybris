@@ -8,7 +8,6 @@ import java.text.MessageFormat;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -151,8 +150,8 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
         Control templateControl = fTemplateGroup.createControl(composite);
         templateControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        fWorkingSetGroup = new WorkingSetGroup(composite, null,
-                new String[] { IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE });
+        fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
+                IWorkingSetIDs.RESOURCE });
         setControl(composite);
     }
 
@@ -203,8 +202,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      */
     public IClasspathEntry[] getSourceClasspathEntries() {
         IPath sourceFolderPath = new Path(getProjectName()).makeAbsolute();
-        IPath srcPath = new Path(
-                PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_SRCNAME));
+        IPath srcPath = new Path(PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_SRCNAME));
         if (srcPath.segmentCount() > 0) {
             sourceFolderPath = sourceFolderPath.append(srcPath);
         }
@@ -218,8 +216,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
      */
     public IPath getOutputLocation() {
         IPath outputLocationPath = new Path(getProjectName()).makeAbsolute();
-        IPath binPath = new Path(
-                PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_BINNAME));
+        IPath binPath = new Path(PreferenceConstants.getPreferenceStore().getString(PreferenceConstants.SRCBIN_BINNAME));
         if (binPath.segmentCount() > 0) {
             outputLocationPath = outputLocationPath.append(binPath);
         }
@@ -326,7 +323,7 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             String projectName = getProjectName();
             String packageName = getPackageName();
             String templateName = fTemplateGroup.getTemplate();
-            URI location = URIUtil.toURI(fLocationGroup.getLocation());
+            URI location = URI.create(fLocationGroup.getLocation().toOSString());
             setupExtensionData(platform, projectName, packageName, templateName, new SubProgressMonitor(monitor,
                     IProgressMonitor.UNKNOWN, SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK));
             fCurrProject = createJavaProject(platform, projectName, packageName, location, new SubProgressMonitor(
@@ -787,8 +784,9 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
                 String oldDirectory = new Path(fText.trim()).lastSegment();
                 setLocationText(selectedDirectory);
                 String lastSegment = new Path(selectedDirectory).lastSegment();
-                if (lastSegment != null && (fNamePackageGroup.getName().length() == 0
-                        || fNamePackageGroup.getName().equals(oldDirectory))) {
+                if (lastSegment != null
+                        && (fNamePackageGroup.getName().length() == 0 || fNamePackageGroup.getName().equals(
+                                oldDirectory))) {
                     fNamePackageGroup.setName(lastSegment);
                 }
                 YCore.getDefault().getDialogSettings().put(DIALOGSTORE_LAST_EXTERNAL_LOC, selectedDirectory);

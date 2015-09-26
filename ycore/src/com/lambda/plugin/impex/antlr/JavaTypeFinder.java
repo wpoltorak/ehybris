@@ -1,9 +1,9 @@
 package com.lambda.plugin.impex.antlr;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -123,7 +123,7 @@ public class JavaTypeFinder implements TypeFinder {
         if (typeCache.containsKey(typename)) {
             return typeCache.get(typename);
         }
-        final Set<IType> types = new LinkedHashSet<>();
+        final Set<IType> types = new ConcurrentSkipListSet<>();
         getType(typename, packagename, types, searchType);
         IType type = types.isEmpty() ? null : types.iterator().next();
         typeCache.put(typename, type);

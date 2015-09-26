@@ -1,4 +1,4 @@
-package com.lambda.ycore.views.platform;
+package com.lambda.ecommerce.dependencies.views;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,7 +39,7 @@ import com.lambda.plugin.impex.editor.ColorManager;
  */
 
 public class DependenciesView extends ViewPart {
-    public static final String ID = "com.lambda.ycore.views.platform.DependenciesView";
+    public static final String ID = "com.lambda.ydependencies.views.DependenciesView";
     private Graph graph;
     private int layout = 1;
 

@@ -1,4 +1,4 @@
-package com.lambda.ycore.views.platform.handler;
+package com.lambda.ecommerce.dependencies.views.handler;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -6,7 +6,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.lambda.ycore.views.platform.DependenciesView;
+import com.lambda.ecommerce.dependencies.views.DependenciesView;
 
 public class ChangeLayout extends AbstractHandler {
 
