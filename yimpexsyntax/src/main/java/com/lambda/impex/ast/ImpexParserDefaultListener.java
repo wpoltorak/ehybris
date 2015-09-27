@@ -498,6 +498,7 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
     @Override
     public void enterMacroref(final MacrorefContext ctx) {
         checkMacroReferences(ctx.Macroref());
+        checkConfigMacroReferences(ctx.ConfigMacroref());
     }
 
     private static boolean isJavaClassName(final String text) {
@@ -516,7 +517,18 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
         final Token macroReferenceToken = macroReference.getSymbol();
         if (!currentMacros.containsKey(macroReferenceToken.getText())) {
             context.addProblem(problem(macroReferenceToken, Type.UnknownMacro));
+        }
+    }
+
+    private void checkConfigMacroReferences(final TerminalNode configMacroReference) {
+        if (configMacroReference == null) {
             return;
+        }
+        final Token macroReferenceToken = configMacroReference.getSymbol();
+        //get rid of $config-
+        String text = macroReferenceToken.getText().substring(8);
+        if (!context.containsProperty(text)){
+        	context.addProblem(problem(macroReferenceToken, Type.UnknownConfigMacro, text));
         }
     }
 

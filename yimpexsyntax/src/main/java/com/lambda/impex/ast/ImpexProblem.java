@@ -8,6 +8,8 @@ public class ImpexProblem {
         InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, EmptyMacroValue, SyntaxError,
         /** Referenced macro hasn't been defined in the document */
         UnknownMacro,
+        /** Property name of the config macro 'config-<property name> doesn't exist in project properties or local properties */
+        UnknownConfigMacro,
         /** Evaluated macro reference is invalid - this problem assumes that the origin problem is reported as well */
         InvalidMacroEvaluation,
         /** There is already the same pair for: documentId definition attribute & qualifier */

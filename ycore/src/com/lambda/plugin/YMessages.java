@@ -364,6 +364,7 @@ public final class YMessages extends NLS {
 
     // Impex problems
     public static String Impex_problem_unknownMacro;
+    public static String Impex_problem_unknownConfigMacro;
     public static String Impex_problem_blankMacro;
     public static String Impex_problem_invalidType;
     public static String Impex_problem_invalidSubtype;

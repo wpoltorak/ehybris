@@ -29,6 +29,7 @@ public class AntlrTypeToPartitionTokenMapper {
         map.put(ImpexLexer.Mode, MODE);
         map.put(ImpexLexer.Macrodef, MACRO);
         map.put(ImpexLexer.Macroref, MACRO);
+        map.put(ImpexLexer.ConfigMacroref, MACRO);
         // map.put(ImpexLexer.Field, FIELD);
         map.put(ImpexLexer.Comment, COMMENT);
         map.put(ImpexLexer.BeanShell, BEANSHELL);

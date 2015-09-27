@@ -87,5 +87,6 @@
 		
 		<module>../yrepo</module>
 		<module>../ytest</module>
+		
 	</modules>
 </project>

@@ -144,7 +144,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return tokens.get(tokens.floorKey(offset));
     }
 
-    public List<ImpexProblem> validate() {
+    public List<ImpexProblem> validate(ImpexModel impexModel) {
         long nanoTime = System.nanoTime();
         try {
             System.err.println("===> VALIDATE BEGIN");
@@ -154,7 +154,6 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             parseTree = parser.impex();
 
             final ParseTreeWalker walker = new ParseTreeWalker();
-            ImpexModel impexModel = new DefaultImpexModel();
             ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
             listener.setTypeFinder(typeFinder);
             walker.walk(listener, parseTree);

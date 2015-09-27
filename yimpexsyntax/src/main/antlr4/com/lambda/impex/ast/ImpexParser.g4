@@ -130,5 +130,5 @@ macroValue
 	//|Equals {context.registerMacro($Macrodef, "");}); //if after equals there is no other value except EOF  Lexer produces Equals token rather than ValueAssignment
 	
 macroref
-        : Macroref
+        : Macroref | ConfigMacroref
         ;		

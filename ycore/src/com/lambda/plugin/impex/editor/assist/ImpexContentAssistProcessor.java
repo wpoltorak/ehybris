@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.TypeNameMatch;
-import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
+import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
@@ -43,8 +45,8 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
     public ICompletionProposal[] computeCompletionProposals(final ITextViewer viewer, final int offset) {
         long millis = System.currentTimeMillis();
         final ImpexDocument document = (ImpexDocument) viewer.getDocument();
-        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.LineSeparator, ImpexLexer.Comma, ImpexLexer.Dot,
-                ImpexLexer.DoubleQuote);
+        List<Integer> skipped = Arrays.asList(ImpexLexer.Ws, ImpexLexer.LineSeparator, ImpexLexer.Comma,
+                ImpexLexer.Dot, ImpexLexer.DoubleQuote);
         final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
         try {
             Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensOfOffset(offset, true);
@@ -60,21 +62,19 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                 switch (inspector.getLastToken().getTokenType()) {
                 case ImpexLexer.Mode: {
                     final String qualifier = getQualifier(document, offset);
-                    final TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+                    final SearchRequestor requestor = new SearchRequestor() {
                         @Override
-                        public void acceptTypeNameMatch(final TypeNameMatch match) {
-                            if (match.getSimpleTypeName().endsWith("Model")) {
-                                result.add(
-                                        completionProposalFactory.newTypeProposal(qualifier, offset, match.getType()));
-                            }
+                        public void acceptSearchMatch(SearchMatch match) throws CoreException {
+                            result.add(completionProposalFactory.newTypeProposal(qualifier, offset,
+                                    (IType) match.getElement()));
                         }
                     };
                     // TODO performance of the popup is slow. should it be loaded in a background thread for the first
                     // time
                     // during plugin startup?
-                    typeFinder.searchType(qualifier, null,
-                            SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH, nameMatchRequestor,
-                            JavaTypeFinder.MODEL_SEARCH | JavaTypeFinder.ENUM_SEARCH);
+                    typeFinder.searchType(qualifier, SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH,
+                            requestor, JavaTypeFinder.MODEL_SEARCH | JavaTypeFinder.ENUM_SEARCH,
+                            new NullProgressMonitor());
                     break;
                 }
                 case ImpexLexer.Separator: {

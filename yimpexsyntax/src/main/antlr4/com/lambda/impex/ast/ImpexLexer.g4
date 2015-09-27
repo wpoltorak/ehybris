@@ -4,6 +4,7 @@ tokens {
     Mode,
     Type,
     Separator,
+    ConfigMacroref,
     Macroref,
     SkippedField,
     BooleanAttributeModifier,
@@ -141,6 +142,8 @@ import java.util.*;
                 return "Separator                    ";
             case ImpexLexer.Macroref:
                 return "Macroref                     ";
+            case ImpexLexer.ConfigMacroref:
+                return "ConfigMacroref               ";
             case ImpexLexer.BooleanAttributeModifier:
                 return "BooleanAttributeModifier     ";
             case ImpexLexer.IntAttributeModifier:
@@ -313,6 +316,7 @@ mode field;
 FieldLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 FieldSeparator          : Ws* Separator Ws* -> type(Separator), popMode, pushMode(field);
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
+FieldConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 FieldMacroref           : Macrodef -> type(Macroref);
 FieldLb                 : Lb {handleFieldLb();};
 DocumentIdField         : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTID}?; 
@@ -333,6 +337,7 @@ MacroSeparator          : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 mode macroval;
 MacrovalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n'}? -> type(Ws), channel(HIDDEN);
 MacrovalSeparator		: LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
+MacrovalConfigMacroref  : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 MacrovalMacroref		: Macrodef -> type(Macroref);
 MacrovalLb				: Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
 MacrovalEOF				: Ws* EOF -> type(EOF), popMode, popMode;
@@ -349,7 +354,9 @@ LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
 TLb                 : Lb -> type(Lb), popMode, pushMode(record);
 TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 TIdentifier         : Identifier -> type(Type);
+TConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 TMacroref           : Macrodef -> type(Macroref);
+
 TWs                 : Ws -> type(Ws), channel(HIDDEN);
 
 mode attribute;
@@ -369,6 +376,7 @@ ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 AIdentifier         : Identifier -> type(Identifier);
 ASpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
 ADocumentID         : DocumentID {handleDocumentId();};
+AConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 AMacroref           : Macrodef -> type(Macroref);
 AWs                 : Ws -> type(Ws), channel(HIDDEN);
 
@@ -418,6 +426,7 @@ ModifiervalBracket			: ']' -> popMode, popMode, channel(HIDDEN);
 ModifiervalSingleComma		: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
 //ModifiervalSingleComma	: Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
 ModifiervalComma			: Comma -> type(Comma), popMode, channel(HIDDEN);
+ModifiervalConfigMacroref   : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 ModifiervalMacroref			: Macrodef -> type(Macroref);
 ModifiervalSeparator		: LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifiervalDQuotes			: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);

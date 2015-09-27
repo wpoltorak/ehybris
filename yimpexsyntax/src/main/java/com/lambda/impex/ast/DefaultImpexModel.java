@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.Properties;
 import java.util.TreeMap;
 
 import org.antlr.v4.runtime.RecognitionException;
@@ -25,7 +26,17 @@ public class DefaultImpexModel implements ImpexModel {
 
     private final Map<DocumentIDDescription, Map<Token, TypeDescription>> docIDRef2Type = new HashMap<>();
     private final Map<DocumentIDDescription, TypeDescription> docIDDef2Type = new HashMap<>();
+    
+    private Properties properties;
 
+    public DefaultImpexModel() {
+		properties = new Properties();
+	}
+    
+    public DefaultImpexModel(Properties properties) {
+		this.properties = properties;
+	}
+    
     @Override
     public void addProblem(final RecognitionException e) {
         final ImpexProblem error = new ImpexProblem(Type.GeneralSyntaxError);
@@ -181,5 +192,10 @@ public class DefaultImpexModel implements ImpexModel {
             default:
                 return null;
         }
+    }
+    
+    @Override
+    public boolean containsProperty(String text) {
+    	return properties.containsKey(text);
     }
 }

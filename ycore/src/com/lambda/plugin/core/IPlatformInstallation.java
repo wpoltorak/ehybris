@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Properties;
 
 import org.apache.tools.ant.Project;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -93,4 +94,6 @@ public interface IPlatformInstallation {
     String getDefaultTemplate();
 
     File getTemplatePath(String template);
+
+    Properties loadProjectProperties(IProject project);
 }

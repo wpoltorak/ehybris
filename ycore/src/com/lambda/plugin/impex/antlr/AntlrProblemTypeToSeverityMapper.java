@@ -16,6 +16,7 @@ public class AntlrProblemTypeToSeverityMapper {
         case EmptyMacroValue:
             return getSeverity(store, PreferenceConstants.PROBLEM_MACRO_EMPTY);
         case UnknownMacro:
+        case UnknownConfigMacro:
             return getSeverity(store, PreferenceConstants.PROBLEM_MACRO_UNDEFINED);
         case InvalidType:
             return getSeverity(store, PreferenceConstants.PROBLEM_TYPE_INVALID);
@@ -45,6 +46,8 @@ public class AntlrProblemTypeToSeverityMapper {
             return YMessages.Impex_problem_blankMacro;
         case UnknownMacro:
             return MessageFormat.format(YMessages.Impex_problem_unknownMacro, params);
+        case UnknownConfigMacro:
+            return MessageFormat.format(YMessages.Impex_problem_unknownConfigMacro, params);
         case InvalidType:
             return MessageFormat.format(YMessages.Impex_problem_invalidType, params);
         case InvalidSubtype:

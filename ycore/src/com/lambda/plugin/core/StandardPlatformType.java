@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.taskdefs.MacroInstance;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -35,12 +36,12 @@ public class StandardPlatformType implements IPlatformInstallation {
 
     private final String description;
     private final Version version;
-    private final Properties properties;
+    private final Properties antEnvProperties;
     private final IPath binLocation;
     private Properties extgenProjectProperties;
+    private final Properties properties;
 
-    public StandardPlatformType(String name, long id, String description, String vendor, Version version,
-            IPath rootPath) {
+    public StandardPlatformType(String name, long id, String description, String vendor, Version version, IPath rootPath) {
         this.name = name;
         this.description = description;
         this.vendor = vendor;
@@ -53,14 +54,26 @@ public class StandardPlatformType implements IPlatformInstallation {
         this.tempLocation = rootPath.append("temp");
         this.configLocation = rootPath.append("config");
         this.dataLocation = rootPath.append("data");
+        this.antEnvProperties = loadAntEnvProperties();
         this.properties = loadProperties();
+    }
+
+    private Properties loadAntEnvProperties() {
+        // TODO set up properties page
+        Properties properties = new Properties();
+        properties.setProperty("platformhome", platformLocation.toOSString());
+        return new PropertiesLoader().loadProperties(properties, platformLocation.append("env.properties"));
     }
 
     private Properties loadProperties() {
         // TODO set up properties page
         Properties properties = new Properties();
-        properties.setProperty("platformhome", platformLocation.toOSString());
-        return new PropertiesLoader().loadProperties(properties, platformLocation.append("env.properties"));
+        return new PropertiesLoader().loadProperties(properties, configLocation.append("local.properties"));
+    }
+
+    @Override
+    public Properties loadProjectProperties(IProject project) {
+        return new PropertiesLoader().loadProperties(properties, project.getLocation().append("project.properties"));
     }
 
     @Override
@@ -92,8 +105,8 @@ public class StandardPlatformType implements IPlatformInstallation {
         if (m.find()) {
             String managersuperclassname = m.group(1);
             antProject.setProperty("extension.managersuperclassname", managersuperclassname);
-            antProject.setProperty("extension.managersuperclassimpl",
-                    managersuperclass + "." + managersuperclassname + "Impl");
+            antProject.setProperty("extension.managersuperclassimpl", managersuperclass + "." + managersuperclassname
+                    + "Impl");
         }
 
         m = Pattern.compile("^(.*\\.)jalo(\\..*)$$").matcher(managersuperclass);
@@ -106,8 +119,8 @@ public class StandardPlatformType implements IPlatformInstallation {
             antProject.setProperty("extension.managersuperclassremote", prefix + "session" + suffix + "Remote");
         }
 
-        antProject.setProperty("extgen.directory.tmp",
-                getTempLocation().append("hybris").append("extgen").toOSString());
+        antProject
+                .setProperty("extgen.directory.tmp", getTempLocation().append("hybris").append("extgen").toOSString());
         antProject.setProperty("extension.directory.target", location.toOSString());
         //
         // <!-- in generated extension, disable jspcompile as default value -->
@@ -164,7 +177,7 @@ public class StandardPlatformType implements IPlatformInstallation {
     }
 
     private Properties loadExtgenProjectProperties() {
-        Properties projectProperties = new PropertiesLoader().loadProperties(properties,
+        Properties projectProperties = new PropertiesLoader().loadProperties(antEnvProperties,
                 platformLocation.append("extgen").append("project.properties"));
 
         if (Version.VERSION_5_1.compareTo(version) >= 0) {
@@ -172,8 +185,8 @@ public class StandardPlatformType implements IPlatformInstallation {
             ExtensionsConf extensions = ExtensionsConf.loadAllExtensions(this);
             for (Extension extension : extensions.getLoadedExtensions().values()) {
                 if (extension.isTemplate()) {
-                    projectProperties.put("ext." + extension.getName() + ".path",
-                            extension.getPath().getAbsolutePath());
+                    projectProperties
+                            .put("ext." + extension.getName() + ".path", extension.getPath().getAbsolutePath());
                 }
             }
         }
@@ -232,7 +245,7 @@ public class StandardPlatformType implements IPlatformInstallation {
 
     @Override
     public Properties getProperties() {
-        return properties;
+        return antEnvProperties;
     }
 
     @Override

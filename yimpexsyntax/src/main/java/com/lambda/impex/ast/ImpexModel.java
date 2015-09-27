@@ -43,4 +43,6 @@ public interface ImpexModel {
     void reset();
 
     String getMacroValue(String name, int index);
+
+	boolean containsProperty(String text);
 }

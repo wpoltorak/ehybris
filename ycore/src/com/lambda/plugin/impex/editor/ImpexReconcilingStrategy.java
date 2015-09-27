@@ -1,15 +1,20 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.reconciler.DirtyRegion;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategyExtension;
+import org.eclipse.ui.ide.ResourceUtil;
 
+import com.lambda.impex.ast.DefaultImpexModel;
+import com.lambda.impex.ast.ImpexModel;
 import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.plugin.YCore;
 import com.lambda.plugin.impex.model.IImpexModel;
@@ -52,7 +57,10 @@ public class ImpexReconcilingStrategy implements IReconcilingStrategy, IReconcil
                 return;
             }
             ImpexDocument impexDocument = (ImpexDocument) document;
-            List<ImpexProblem> problems = impexDocument.validate();
+            IProject project = ResourceUtil.getFile(editor.getEditorInput()).getProject();
+            Properties projectProperties = YCore.getDefault().getDefaultPlatform().loadProjectProperties(project);
+            ImpexModel impexModel = new DefaultImpexModel(projectProperties);
+            List<ImpexProblem> problems = impexDocument.validate(impexModel);
             final IImpexModel model = editor.getImpexModel();
             model.updateMarkers(problems);
             // final char[] source = document.get().toCharArray();

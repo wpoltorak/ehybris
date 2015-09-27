@@ -1,15 +1,22 @@
 package com.lambda.plugin.impex.antlr;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -18,9 +25,10 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.core.search.SearchMatch;
+import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.TypeNameMatch;
-import org.eclipse.jdt.core.search.TypeNameMatchRequestor;
+import org.eclipse.jdt.core.search.SearchRequestor;
 
 import com.lambda.impex.ast.TypeDescription;
 import com.lambda.impex.ast.TypeFinder;
@@ -36,7 +44,6 @@ public class JavaTypeFinder implements TypeFinder {
 
     private static final String JAVA_API_TYPE_PREFIX = "java.";
     private static final String MODEL_SUFFIX = "Model";
-    private static final String JALO_SUFFIX = "Jalo";
     private static final String PLATFORM_PROJECT_NAME = "platform";
     private static final String PLATFORM_JALO_PACKAGE = "de.hybris.platform*.jalo*";
     private static final String PLATFORM_ENUM_PACKAGE = "*.enums*";
@@ -48,12 +55,12 @@ public class JavaTypeFinder implements TypeFinder {
             "java.util.Set", };
     private final Map<String, IType> typeCache = new HashMap<>();
     private final JavaFieldCollector fieldCollector = new JavaFieldCollector();
-    private IJavaSearchScope platformScope;
     private IJavaProject project;
     private final Map<String, String> jaloClasses = new HashMap<>();
+    private final Map<String, IJavaSearchScope> scopes = new HashMap<String, IJavaSearchScope>();
 
     {
-        jaloClasses.put("GenericItem", "de.hybris.platform.jalo");
+        jaloClasses.put("GenericItem", "de.hybris.platform.jalo.GenericItem");
     }
 
     public JavaTypeFinder() {
@@ -67,7 +74,7 @@ public class JavaTypeFinder implements TypeFinder {
 
     private IType findTypeBySimpleName(String typename) {
         if (jaloClasses.containsKey(typename)) {
-            return getType(typename, jaloClasses.get(typename), JALO_SEARCH);
+            return getType(jaloClasses.get(typename), JALO_SEARCH);
         }
         return getType(typename, MODEL_SEARCH | ENUM_SEARCH);
     }
@@ -102,51 +109,57 @@ public class JavaTypeFinder implements TypeFinder {
         return typename;
     }
 
-    private static String[] toNameAndPackage(String name) {
+    private static boolean isFullyQualifiedName(String name) {
         int index = name.lastIndexOf('.');
-        if (index < 0) {
-            return new String[] { name };
-        }
-
-        return new String[] { name.substring(index + 1), name.substring(0, index) };
+        return index > 0;
     }
 
     private IType getType(final String typename, int searchType) {
-        // may be a full name including path
-        String[] arr = toNameAndPackage(typename);
-        String classname = arr[0];
-        String packagename = arr.length > 1 ? arr[1] : null;
-        return getType(classname, packagename, searchType);
-    }
-
-    private IType getType(final String typename, final String packagename, int searchType) {
         if (typeCache.containsKey(typename)) {
             return typeCache.get(typename);
         }
-        final Set<IType> types = new ConcurrentSkipListSet<>();
-        getType(typename, packagename, types, searchType);
+
+        if (isFullyQualifiedName(typename)) {
+            IType type = null;
+            try {
+                type = getPlatformProject().findType(typename);
+                typeCache.put(type.getElementName(), type);
+            } catch (JavaModelException e) {
+                YCore.logError(e);
+            }
+            return type;
+        }
+
+        final Set<IType> types = Collections.newSetFromMap(new ConcurrentHashMap<IType, Boolean>());
+        getType(typename, types, searchType);
         IType type = types.isEmpty() ? null : types.iterator().next();
         typeCache.put(typename, type);
         return type;
     }
 
-    private void getType(final String typename, final String packagename, final Set<IType> result, int searchType) {
-        TypeNameMatchRequestor nameMatchRequestor = new TypeNameMatchRequestor() {
+    private void getType(final String typename, final Set<IType> result, int searchType) {
+        final IProgressMonitor monitor = new NullProgressMonitor();
+        SearchRequestor requestor = new SearchRequestor() {
+
             @Override
-            public void acceptTypeNameMatch(final TypeNameMatch match) {
+            public void acceptSearchMatch(SearchMatch match) throws CoreException {
+                IType type = (IType) match.getElement();
                 // TODO thread that feeds the list which is immediately returned
-                System.out.println("found: " + match.getType().getElementName());
-                result.add(match.getType());
+                System.out.println("found: " + type.getElementName());
+                result.add(type);
+                monitor.setCanceled(true);
             }
         };
 
-        System.err.println("entered search" + decode(searchType) + "Type - find '" + typename + "'");
+        System.err.println("entered search " + decode(searchType) + "Type - find '" + typename + "'");
         long millis = System.currentTimeMillis();
         try {
-            searchType(typename, packagename, SearchPattern.R_EXACT_MATCH, nameMatchRequestor, searchType);
+            searchType(typename, SearchPattern.R_EXACT_MATCH, requestor, searchType, monitor);
         } finally {
             millis = System.currentTimeMillis() - millis;
-            System.err.println(String.format("Took %d:%d:%d", TimeUnit.MILLISECONDS.toMinutes(millis),
+            System.err.println(String.format(
+                    "Took %d:%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes(millis),
                     TimeUnit.MILLISECONDS.toSeconds(millis)
                             - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
                     TimeUnit.MILLISECONDS.toMillis(millis)
@@ -155,65 +168,34 @@ public class JavaTypeFinder implements TypeFinder {
 
     }
 
-    private String decode(int searchType) {
-        String txt = "";
-        if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
-            txt += " Jalo ";
-        }
-        if ((searchType & MODEL_SEARCH) == MODEL_SEARCH) {
-            txt += " Model ";
-        }
-        if ((searchType & ENUM_SEARCH) == ENUM_SEARCH) {
-            txt += " Enum ";
-        }
-        return txt;
-    }
-
-    public void searchType(final String typename, final String packagename, int nameSearchPattern,
-            TypeNameMatchRequestor nameMatchRequestor, int searchType) {
-        if (!getPlatformProject().exists()) {
+    public void searchType(final String typename, int matchRule, SearchRequestor requestor, int searchType,
+            IProgressMonitor progressMonitor) {
+        IJavaProject project = getPlatformProject();
+        if (!project.exists()) {
             return;
         }
 
         try {
-            SearchEngine engine = new SearchEngine();
-
-            if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
-                char[] pkgName = packagename != null ? packagename.toCharArray() : PLATFORM_JALO_PACKAGE.toCharArray();
-                int packageSearchPattern = packagename != null ? SearchPattern.R_EXACT_MATCH
-                        : SearchPattern.R_PATTERN_MATCH;
-                int searchFor = IJavaSearchConstants.CLASS;
-                IJavaSearchScope scope = getPlatformScope();
-                engine.searchAllTypeNames(pkgName, packageSearchPattern, typename.toCharArray(), nameSearchPattern,
-                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                        new NullProgressMonitor());
-            }
-
             if ((searchType & MODEL_SEARCH) == MODEL_SEARCH) {
-                int searchFor = IJavaSearchConstants.CLASS;
-                char[] pkgName = packagename != null ? packagename.toCharArray() : PLATFORM_MODEL_PACKAGE.toCharArray();
-                int packageSearchPattern = packagename != null ? SearchPattern.R_EXACT_MATCH
-                        : SearchPattern.R_PATTERN_MATCH;
-                String name = nameSearchPattern == SearchPattern.R_EXACT_MATCH ? ensureSuffix(typename, MODEL_SUFFIX)
+                String tname = matchRule == SearchPattern.R_EXACT_MATCH ? ensureSuffix(typename, MODEL_SUFFIX)
                         : typename;
-                // String typename = packagename != null ? ensure
-                IJavaSearchScope scope = getPlatformScope();
-                engine.searchAllTypeNames(pkgName, packageSearchPattern, name.toCharArray(), nameSearchPattern,
-                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                        new NullProgressMonitor());
+                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(tname, matchRule, requestor,
+                        PLATFORM_MODEL_PACKAGE);
+                finder.run(progressMonitor);
+            }
+            if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
+                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(typename, matchRule, requestor,
+                        PLATFORM_JALO_PACKAGE);
+                finder.run(progressMonitor);
+
             }
             if ((searchType & ENUM_SEARCH) == ENUM_SEARCH) {
-                int searchFor = IJavaSearchConstants.CLASS;
-                char[] pkgName = packagename != null ? packagename.toCharArray() : PLATFORM_ENUM_PACKAGE.toCharArray();
-                int packageSearchPattern = packagename != null ? SearchPattern.R_EXACT_MATCH
-                        : SearchPattern.R_PATTERN_MATCH;
-                IJavaSearchScope scope = getPlatformScope();
-                engine.searchAllTypeNames(pkgName, packageSearchPattern, typename.toCharArray(), nameSearchPattern,
-                        searchFor, scope, nameMatchRequestor, IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
-                        new NullProgressMonitor());
+                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(typename, matchRule, requestor,
+                        PLATFORM_ENUM_PACKAGE);
+                finder.run(progressMonitor);
             }
 
-        } catch (JavaModelException e) {
+        } catch (CoreException e) {
             YCore.logError(e);
         }
     }
@@ -223,10 +205,42 @@ public class JavaTypeFinder implements TypeFinder {
     }
 
     private IJavaSearchScope getPlatformScope() {
-        if (platformScope == null) {
-            platformScope = SearchEngine.createJavaSearchScope(new IJavaElement[] { getPlatformProject() }, false);
+        if (!scopes.containsKey(PLATFORM_PROJECT_NAME)) {
+            IJavaSearchScope platformScope = SearchEngine.createJavaSearchScope(
+                    new IJavaElement[] { getPlatformProject() }, IJavaSearchScope.SOURCES);
+            scopes.put(PLATFORM_PROJECT_NAME, platformScope);
         }
-        return platformScope;
+        return scopes.get(PLATFORM_PROJECT_NAME);
+    }
+
+    private IJavaSearchScope getScope(String scope) throws CoreException {
+        // if (!scopes.containsKey(scope)) {
+        // SearchPattern pattern = SearchPattern.createPattern(scope, IJavaSearchConstants.PACKAGE,
+        // IJavaSearchConstants.DECLARATIONS, SearchPattern.R_PATTERN_MATCH);
+        // final List<IPackageFragment> packages = new ArrayList<>();
+        // SearchRequestor requestor = new SearchRequestor() {
+        // @Override
+        // public void acceptSearchMatch(SearchMatch match) throws CoreException {
+        // IPackageFragment element = (IPackageFragment) match.getElement();
+        // if ("gensrc".equals(element.getParent().getElementName())) {
+        // packages.add(element);
+        // }
+        // // else {
+        // // System.out.println("discarded: " + element.getParent().getElementName() + " - "
+        // // + element.getElementName());
+        // // }
+        // }
+        // };
+        // new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
+        // getPlatformScope(), requestor, new NullProgressMonitor());
+        //
+        // IJavaSearchScope searchScope = SearchEngine.createJavaSearchScope(
+        // packages.toArray(new IJavaElement[packages.size()]), false);
+        // scopes.put(scope, searchScope);
+        // return searchScope;
+        // }
+        // return scopes.get(scope);
+        return getPlatformScope();
     }
 
     private IJavaProject getPlatformProject() {
@@ -248,7 +262,6 @@ public class JavaTypeFinder implements TypeFinder {
             if (primitive.equals(typename)) {
                 return true;
             }
-
         }
         return false;
     }
@@ -264,5 +277,50 @@ public class JavaTypeFinder implements TypeFinder {
             }
         }
         return false;
+    }
+
+    private String decode(int searchType) {
+        String txt = "";
+        if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
+            txt += "Jalo ";
+        }
+        if ((searchType & MODEL_SEARCH) == MODEL_SEARCH) {
+            txt += "Model ";
+        }
+        if ((searchType & ENUM_SEARCH) == ENUM_SEARCH) {
+            txt += "Enum ";
+        }
+        return txt;
+    }
+
+    private class ClassDeclarationsFinderJob extends Job {
+        private final SearchPattern pattern;
+        private final SearchParticipant[] participants;
+        private final IJavaSearchScope scope;
+        private final SearchRequestor requestor;
+
+        public ClassDeclarationsFinderJob(String stringPattern, int matchRule, SearchRequestor requestor,
+                String searchScope) throws CoreException {
+            super("Java Type Search");
+            this.requestor = requestor;
+            this.pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.CLASS,
+                    IJavaSearchConstants.DECLARATIONS, matchRule);
+            this.participants = new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() };
+            this.scope = getScope(searchScope);
+        }
+
+        @Override
+        protected IStatus run(IProgressMonitor monitor) {
+            SearchEngine engine = new SearchEngine();
+            try {
+                engine.search(pattern, participants, scope, requestor, monitor);
+                return Status.OK_STATUS;
+            } catch (CoreException e) {
+                YCore.logError(e);
+                return new Status(Status.ERROR, YCore.PLUGIN_ID, "Find java type returned error", e);
+            } catch (OperationCanceledException e) {
+                return Status.CANCEL_STATUS;
+            }
+        }
     }
 }

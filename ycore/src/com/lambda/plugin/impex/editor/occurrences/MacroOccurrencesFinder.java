@@ -34,6 +34,9 @@ public class MacroOccurrencesFinder extends AbstractOccurrencesFinderAdapter imp
 
     @Override
     public void enterMacroref(MacrorefContext ctx) {
+        if (ctx.Macroref() == null) {
+            return;
+        }
         final Token macrorefToken = ctx.Macroref().getSymbol();
         final Token macrodefToken = name2Macrodef.get(macrorefToken.getText());
 

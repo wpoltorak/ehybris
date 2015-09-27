@@ -60,6 +60,7 @@ public class AntlrTypeToStyleTokenMapper {
         map.put(ImpexLexer.SkippedField, PreferenceConstants.COLOR_SKIPPED_FIELD);
         map.put(ImpexLexer.Macrodef, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Macroref, PreferenceConstants.COLOR_MACRO);
+        map.put(ImpexLexer.ConfigMacroref, PreferenceConstants.COLOR_MACRO);
         map.put(ImpexLexer.Comment, PreferenceConstants.COLOR_COMMENT);
         map.put(ImpexLexer.DocumentID, PreferenceConstants.COLOR_DOCUMENTID);
         map.put(ImpexLexer.DocumentIdField, PreferenceConstants.COLOR_DOCUMENTID_FIELD);
