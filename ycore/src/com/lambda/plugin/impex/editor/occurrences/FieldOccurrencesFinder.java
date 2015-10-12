@@ -98,16 +98,6 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
     }
 
     @Override
-    public void enterDocumentIdField(DocumentIdFieldContext ctx) {
-        handleField(ctx);
-    }
-
-    @Override
-    public void enterDocumentIdRefField(DocumentIdRefFieldContext ctx) {
-        handleField(ctx);
-    }
-
-    @Override
     public void enterField(FieldContext ctx) {
         handleField(ctx);
     }

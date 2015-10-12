@@ -32,6 +32,11 @@ public class PlatformContainer {
     public IPlatformInstallation initializePlatform() {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
         IProject project = root.getProject("platform");
+        
+        if (project.getLocation() == null) {
+        	return null;
+        }
+        
         IPlatformInstallation platform = verifyPlatformLocation(project.getLocation().toFile());
         if (platform != null) {
             setDefaultPlatform(platform);
