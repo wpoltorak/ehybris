@@ -2,6 +2,10 @@ package com.lambda.plugin.core;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -14,9 +18,8 @@ import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.taskdefs.MacroInstance;
 import org.eclipse.ant.core.AntCorePlugin;
 import org.eclipse.ant.core.AntCorePreferences;
-import org.eclipse.ant.core.Property;
-import org.eclipse.ant.core.Task;
-import org.eclipse.ant.core.Type;
+import org.eclipse.ant.core.IAntClasspathEntry;
+import org.eclipse.ant.internal.core.AntClasspathEntry;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -68,8 +71,39 @@ public class StandardPlatformType implements IPlatformInstallation {
 	}
 
 	private void setAntHome(IPath platformLocation) {
-		File[] antHomes = platformLocation.toFile().listFiles(new FileFilter() {
+		File antHome = findAntHome(platformLocation);
+		if (antHome == null) {
+			return;
+		}
+		
+		List<IAntClasspathEntry> entries = findAntHomeEntries(antHome);
+		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
+		prefs.setAntHome(antHome.getAbsolutePath());
+		prefs.setAntHomeClasspathEntries(entries.toArray(new IAntClasspathEntry[entries.size()]));
+		prefs.updatePluginPreferences();
+	}
 
+	private List<IAntClasspathEntry> findAntHomeEntries(File antHome) {
+		String[] names = antHome.list();
+		List<IAntClasspathEntry> entries = new ArrayList<>();
+		if (names != null) {
+			Arrays.sort(names);
+			for (int i = 0; i < names.length; i++) {
+				File file = new File(antHome, names[i]);
+				if (file.isFile() && file.getPath().endsWith(".jar")) { //$NON-NLS-1$
+					try {
+						URL url = new URL("file:" + file.getAbsolutePath()); //$NON-NLS-1$
+						entries.add(new AntClasspathEntry(url));
+					} catch (MalformedURLException e) {
+					}
+				}
+			}
+		}
+		return entries;
+	}
+
+	private File findAntHome(IPath platformLocation) {
+		File[] antHomes = platformLocation.toFile().listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
 				return pathname.isDirectory() && pathname.getName().startsWith("apache-ant-");
@@ -77,13 +111,10 @@ public class StandardPlatformType implements IPlatformInstallation {
 		});
 		
 		if (antHomes.length == 0){
-			return;
+			return null;
 		}
 		
-		String antHome = antHomes[0].getAbsolutePath();
-		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
-		prefs.setAntHome(antHome);
-		prefs.updatePluginPreferences();
+		return antHomes[0];
 	}
 
 	private Properties loadAntEnvProperties() {

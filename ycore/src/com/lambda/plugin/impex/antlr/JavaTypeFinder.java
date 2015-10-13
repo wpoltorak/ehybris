@@ -34,6 +34,7 @@ import com.lambda.impex.ast.TypeDescription;
 import com.lambda.impex.ast.TypeFinder;
 import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.IPlatformInstallation;
+import com.lambda.plugin.utils.StringUtils;
 
 //TODO add synchor
 public class JavaTypeFinder implements TypeFinder {
@@ -115,6 +116,10 @@ public class JavaTypeFinder implements TypeFinder {
     }
 
     private IType getType(final String typename, int searchType) {
+    	if (StringUtils.isEmpty(typename)){
+    		return null;
+    	}
+    	
         if (typeCache.containsKey(typename)) {
             return typeCache.get(typename);
         }
