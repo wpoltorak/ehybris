@@ -21,11 +21,15 @@ import org.eclipse.ant.core.AntCorePreferences;
 import org.eclipse.ant.core.IAntClasspathEntry;
 import org.eclipse.ant.internal.core.AntClasspathEntry;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
+import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.jaxb.extensions.Extension;
 import com.lambda.plugin.core.jaxb.extensions.ExtensionsConf;
 import com.lambda.plugin.utils.StringUtils;
@@ -50,6 +54,7 @@ public class StandardPlatformType implements IPlatformInstallation {
 	private final IPath binLocation;
 	private Properties extgenProjectProperties;
 	private final Properties properties;
+	private final IJavaProject project;
 
 	public StandardPlatformType(String name, long id, String description, String vendor, Version version,
 			IPath rootPath) {
@@ -67,55 +72,13 @@ public class StandardPlatformType implements IPlatformInstallation {
 		this.dataLocation = rootPath.append("data");
 		this.antEnvProperties = loadAntEnvProperties();
 		this.properties = loadProperties();
-		setAntHome(platformLocation);
+		this.project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject("platform");
+		new PlatformAntHomeUpdater().setPlatformAntHome(platformLocation);
 	}
 
-	private void setAntHome(IPath platformLocation) {
-		File antHome = findAntHome(platformLocation);
-		if (antHome == null) {
-			return;
-		}
-		
-		List<IAntClasspathEntry> entries = findAntHomeEntries(antHome);
-		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
-		prefs.setAntHome(antHome.getAbsolutePath());
-		prefs.setAntHomeClasspathEntries(entries.toArray(new IAntClasspathEntry[entries.size()]));
-		prefs.updatePluginPreferences();
-	}
-
-	private List<IAntClasspathEntry> findAntHomeEntries(File antHome) {
-		String[] names = antHome.list();
-		List<IAntClasspathEntry> entries = new ArrayList<>();
-		if (names != null) {
-			Arrays.sort(names);
-			for (int i = 0; i < names.length; i++) {
-				File file = new File(antHome, names[i]);
-				if (file.isFile() && file.getPath().endsWith(".jar")) { //$NON-NLS-1$
-					try {
-						URL url = new URL("file:" + file.getAbsolutePath()); //$NON-NLS-1$
-						entries.add(new AntClasspathEntry(url));
-					} catch (MalformedURLException e) {
-					}
-				}
-			}
-		}
-		return entries;
-	}
-
-	private File findAntHome(IPath platformLocation) {
-		File[] antHomes = platformLocation.toFile().listFiles(new FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isDirectory() && pathname.getName().startsWith("apache-ant-");
-			}
-		});
-		
-		if (antHomes.length == 0){
-			return null;
-		}
-		
-		return antHomes[0];
-	}
+    public IJavaProject getProject() {
+        return project;
+    }
 
 	private Properties loadAntEnvProperties() {
 		// TODO set up properties page

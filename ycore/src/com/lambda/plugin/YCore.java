@@ -33,6 +33,7 @@ import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 import com.lambda.plugin.core.IPlatformInstallation;
+import com.lambda.plugin.core.PlatformAntHomeUpdater;
 import com.lambda.plugin.core.PlatformContainer;
 import com.lambda.plugin.impex.editor.ColorManager;
 import com.lambda.plugin.impex.editor.problems.ProblemsPropertyChangeListener;
@@ -65,7 +66,7 @@ public class YCore extends AbstractUIPlugin {
     private IYNatureManager natureManager;
     private PlatformContainer platformContainer;
     private ProblemsPropertyChangeListener problemsPropertyChangeListener;
-
+    private PlatformAntHomeUpdater antHomeUpdater = new PlatformAntHomeUpdater();
     private IJavaSearchScope scope;
 
     /**
@@ -86,7 +87,7 @@ public class YCore extends AbstractUIPlugin {
         plugin = this;
         problemsPropertyChangeListener = new ProblemsPropertyChangeListener(getPreferenceStore());
         getPreferenceStore().addPropertyChangeListener(problemsPropertyChangeListener);
-
+        antHomeUpdater.register();
     }
 
     /*
@@ -100,6 +101,7 @@ public class YCore extends AbstractUIPlugin {
             getPlatformContainer().dispose();
             ColorManager.getDefault().dispose();
             getPreferenceStore().removePropertyChangeListener(problemsPropertyChangeListener);
+            antHomeUpdater.unregister();
             plugin = null;
         } finally {
             super.stop(context);

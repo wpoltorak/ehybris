@@ -251,9 +251,7 @@ public class JavaTypeFinder implements TypeFinder {
     private IJavaProject getPlatformProject() {
         if (project == null) {
             IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
-            String name = platform != null ? platform.getPlatformLocation().lastSegment().toString()
-                    : PLATFORM_PROJECT_NAME;
-            project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
+            project = platform != null ? platform.getProject() : JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(PLATFORM_PROJECT_NAME);
         }
         return project;
     }

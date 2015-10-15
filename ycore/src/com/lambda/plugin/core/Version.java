@@ -16,7 +16,7 @@ public class Version implements Comparable<Version> {
         if (version == null) {
             throw new IllegalArgumentException("Version can not be null");
         }
-        if (!version.matches("[0-9]+(\\.[0-9]+)*")) {
+        if (!version.matches("[0-9]+(\\.[0-9]+)*(\\-M[0-9]{0,3})?")) {
             throw new IllegalArgumentException("Invalid version format");
         }
         this.version = version;
@@ -27,8 +27,8 @@ public class Version implements Comparable<Version> {
         if (that == null) {
             return 1;
         }
-        String[] thisParts = this.get().split("\\.");
-        String[] thatParts = that.get().split("\\.");
+        String[] thisParts = this.get().replaceAll("(\\-M[0-9]{0,3})?", "").split("\\.");
+        String[] thatParts = that.get().replaceAll("(\\-M[0-9]{0,3})?", "").split("\\.");
         int length = Math.max(thisParts.length, thatParts.length);
         for (int i = 0; i < length; i++) {
             int thisPart = i < thisParts.length ? Integer.parseInt(thisParts[i]) : 0;

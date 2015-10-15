@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.core.IJavaProject;
 
 public interface IPlatformInstallation {
 
@@ -96,4 +97,6 @@ public interface IPlatformInstallation {
     File getTemplatePath(String template);
 
     Properties loadProjectProperties(IProject project);
+
+	IJavaProject getProject();
 }
