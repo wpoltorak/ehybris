@@ -73,7 +73,6 @@ public class StandardPlatformType implements IPlatformInstallation {
 		this.antEnvProperties = loadAntEnvProperties();
 		this.properties = loadProperties();
 		this.project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject("platform");
-		new PlatformAntHomeUpdater().setPlatformAntHome(platformLocation);
 	}
 
     public IJavaProject getProject() {

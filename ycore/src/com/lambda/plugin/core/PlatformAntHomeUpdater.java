@@ -29,7 +29,8 @@ public class PlatformAntHomeUpdater implements IResourceChangeListener {
 
 	public void register() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.addResourceChangeListener(this, IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_CHANGE);
+		workspace.addResourceChangeListener(this,
+				IResourceChangeEvent.PRE_CLOSE | IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_CHANGE);
 	}
 
 	public void unregister() {
@@ -40,32 +41,43 @@ public class PlatformAntHomeUpdater implements IResourceChangeListener {
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		final IPlatformInstallation platform = YCore.getDefault().getDefaultPlatform();
-		final IResource res = event.getResource();
-		
+
 		switch (event.getType()) {
-		case IResourceChangeEvent.PRE_CLOSE:
 		case IResourceChangeEvent.PRE_DELETE:
-			if (platform == null || !res.equals(platform.getProject())){
+			if (platform == null || !event.getResource().equals(platform.getProject().getProject())) {
 				return;
 			}
 			setDefaultAntHome();
 			break;
 		case IResourceChangeEvent.POST_CHANGE:
 			try {
-				event.getDelta().accept(new IResourceDeltaVisitor() {
-				    public boolean visit(IResourceDelta delta) throws CoreException {
-				        if (delta.getKind() == IResourceDelta.OPEN){
-				            final IResource resource = delta.getResource();
-							if (platform == null || !res.equals(platform.getProject())){
+				IResourceDelta rootDelta = event.getDelta();
+//				IResourceDelta delta = rootDelta.findMember(platform.getProject().getPath());
+//				if (delta == null) {
+//					return;
+//				}
+				rootDelta.accept(new IResourceDeltaVisitor() {
+					public boolean visit(IResourceDelta delta) throws CoreException {
+						final IResource resource = delta.getResource();
+						if ((resource.getType() & IResource.PROJECT) != 0 && (delta.getKind() == IResourceDelta.CHANGED
+								&& (isEvent(delta, IResourceDelta.OPEN)) || delta.getKind() == IResourceDelta.ADDED)) {
+							if (platform == null || !resource.equals(platform.getProject().getProject())) {
 								return false;
 							}
-							//TODO zronic open
-//		    			res.isC
-							
-				           //do your stuff and check the project is opened or closed
-				        }
-				        return false;
-				    }
+
+							if (resource.getProject().isOpen()) {
+								setPlatformAntHome(platform);
+							} else {
+								setDefaultAntHome();
+							}
+							return false;
+						}
+						return delta.getResource().getType() == IResource.ROOT;
+					}
+
+					private boolean isEvent(IResourceDelta delta, int type) {
+						return (delta.getFlags() & type) != 0;
+					}
 				});
 			} catch (CoreException e) {
 				YCore.logError(e);
@@ -80,18 +92,16 @@ public class PlatformAntHomeUpdater implements IResourceChangeListener {
 		prefs.updatePluginPreferences();
 	}
 
-	public void setPlatformAntHome(IPath platformLocation) {
-		File antHome = findAntHome(platformLocation);
+	public void setPlatformAntHome(IPlatformInstallation platform) {
+		File antHome = findAntHome(platform.getPlatformLocation());
 		if (antHome == null) {
 			return;
 		}
 
-		List<IAntClasspathEntry> entries = findAntHomeEntries(new File(antHome,
-				"lib"));
+		List<IAntClasspathEntry> entries = findAntHomeEntries(new File(antHome, "lib"));
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 		prefs.setAntHome(antHome.getAbsolutePath());
-		prefs.setAntHomeClasspathEntries(entries
-				.toArray(new IAntClasspathEntry[entries.size()]));
+		prefs.setAntHomeClasspathEntries(entries.toArray(new IAntClasspathEntry[entries.size()]));
 		prefs.updatePluginPreferences();
 	}
 
@@ -118,8 +128,7 @@ public class PlatformAntHomeUpdater implements IResourceChangeListener {
 		File[] antHomes = platformLocation.toFile().listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
-				return pathname.isDirectory()
-						&& pathname.getName().startsWith("apache-ant-");
+				return pathname.isDirectory() && pathname.getName().startsWith("apache-ant-");
 			}
 		});
 
