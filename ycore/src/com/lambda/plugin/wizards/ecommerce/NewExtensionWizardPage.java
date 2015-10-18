@@ -49,6 +49,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -1176,5 +1177,15 @@ public class NewExtensionWizardPage extends AbstractWizardPage {
             return file.canWrite();
         }
     }
+
+	@Override
+	public void handleEvent(Event event) {
+	}
+	
+    
+	@Override
+	protected boolean allowNewContainerName() {
+		return true;
+	}
 
 }

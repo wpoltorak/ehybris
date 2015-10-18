@@ -23,6 +23,9 @@
             icon="icons/obj16/hybris.png"
             id="com.lambda.plugin.wizards.ecommerce.ImportPlatformWizard"
             name="%wizard.name">
+         <description>
+            %wizard.description
+         </description>
       </wizard>
    </extension>
    <extension
@@ -64,7 +67,7 @@
             hasPages="true"
             icon="icons/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewExtensionWizard"
-            name="%wizard.name.1"
+            name="%wizard.name.0"
             project="true">
          <description>
             %wizard.description.0
@@ -76,7 +79,7 @@
             hasPages="true"
             icon="icons/etool16/newfunctest_wiz.png"
             id="com.lambda.plugin.wizards.ecommerce.NewModuleWizard"
-            name="%wizard.name.2"
+            name="%wizard.name.1"
             project="true">
          <description>
             %wizard.description.1
@@ -87,7 +90,7 @@
             class="com.lambda.plugin.wizards.impex.ImpexNewWizard"
             icon="icons/obj16/impex.gif"
             id="com.lambda.plugin.wizards.impex.ImpexNewWizard"
-            name="%wizard.name.3">
+            name="%wizard.name.2">
          <description>
             %wizard.description.2
          </description>
@@ -122,14 +125,6 @@
             id="com.lambda.plugin.preferences.YPreferencePage"
             name="%page.name">
       </page>
-      <!--
-      <page
-            category="com.lambda.plugin.preferences.YPreferencePage"
-            class="com.lambda.plugin.preferences.PlatformPreferencePage"
-            id="com.lambda.plugin.preferences.PlatformPreferencePage"
-            name="Installation">
-      </page>
-      -->
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
             class="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
@@ -198,9 +193,9 @@
          <command
                categoryId="org.eclipse.ui.category.textEditor"
                defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
-               description="%command.description.6"
+               description="%command.description.toggleMarkOccurrences"
                id="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
-               name="%command.name.6">
+               name="%command.name.toggleMarkOccurrences">
             <state
                   class="org.eclipse.ui.handlers.RegistryToggleState"
                   id="org.eclipse.ui.commands.toggleState">
@@ -208,9 +203,9 @@
          </command>
                   <command
                categoryId="org.eclipse.ui.category.textEditor"
-               description="%command.description.7"
+               description="%command.description.toggleLineComment"
                id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
-               name="%command.name.7">
+               name="%command.name.toggleLineComment">
          </command>
                   <command
                         id="com.lambda.ycore.views.platform.ChangeLayout"
@@ -257,11 +252,6 @@
                </reference>
             </enabledWhen>
          </handler>
-         <handler
-               class="com.lambda.ycore.views.platform.handler.ChangeLayout"
-               commandId="com.lambda.ycore.views.platform.ChangeLayout">
-         </handler>
-         
       </extension>
       <extension
             point="org.eclipse.ui.editors">
@@ -336,7 +326,7 @@
  <extension
        point="org.eclipse.ui.editors.annotationTypes">
     <type
-          name="com.lambda.plugin.fieldOccurrences">
+          name="com.lambda.plugin.impex.fieldOccurrences">
     </type>
  </extension>
  <extension

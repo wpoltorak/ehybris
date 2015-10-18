@@ -8,47 +8,59 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
+import com.lambda.plugin.YMessages;
+
 public class ImportPlatformWizard extends AbstractWizard implements IExecutableExtension, IImportWizard {
 
-    private IConfigurationElement config;
-    private ImportPlatformWizardPage page;
+	private static final String ECOMMERCE_PLATFORM_PROJECT_SECTION = "EcommercePlatformProjectImportWizard";//$NON-NLS-1$
 
-    public ImportPlatformWizard() {
-        setNeedsProgressMonitor(true);
-    }
+	@SuppressWarnings("unused")
+	private IConfigurationElement config;
+	private ImportPlatformWizardPage page;
 
-    public void init(IWorkbench workbench, IStructuredSelection selection) {
+	public ImportPlatformWizard() {
+		setNeedsProgressMonitor(true);
+		setWindowTitle(YMessages.ImportPlatformWizard_title);
+	}
 
-    }
+	@Override
+	protected String getSettingsSection() {
+		return ECOMMERCE_PLATFORM_PROJECT_SECTION;
+	}
+	
+	public void init(IWorkbench workbench, IStructuredSelection selection) {
 
-    public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
-            throws CoreException {
-        this.config = config;
-    }
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.eclipse.jface.wizard.Wizard#addPages()
-     */
-    @Override
-    public void addPages() {
-        page = new ImportPlatformWizardPage();
-        addPage(page);
-    }
+	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+			throws CoreException {
+		this.config = config;
+	}
 
-    @Override
-    public boolean performFinish() {
-        if (!page.isPageComplete()) {
-            return false;
-        }
-        final boolean res = doPerformFinish();
-        return res;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.wizard.Wizard#addPages()
+	 */
+	@Override
+	public void addPages() {
+		page = new ImportPlatformWizardPage();
+		addPage(page);
+	}
 
-    @Override
-    protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
-        page.createExtensions(monitor);
-    }
+	@Override
+	public boolean performFinish() {
+		if (!page.isPageComplete()) {
+			return false;
+		}
+		page.saveWidgetValues();
+		final boolean res = doPerformFinish();
+		return res;
+	}
+
+	@Override
+	protected void finishPage(IProgressMonitor monitor) throws InterruptedException, CoreException {
+		page.createExtensions(monitor);
+	}
 
 }

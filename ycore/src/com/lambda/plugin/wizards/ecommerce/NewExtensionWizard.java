@@ -27,7 +27,9 @@ import com.lambda.plugin.YCore;
 
 public class NewExtensionWizard extends AbstractWizard implements IExecutableExtension, INewWizard {
 
-    private final NewExtensionWizardPage wizardPage;
+    private static final String ECOMMERCE_NEW_EXTENSION_PROJECT_SECTION = "EcommerceExtensionProjectWizard";//$NON-NLS-1$
+
+	private final NewExtensionWizardPage wizardPage;
 
     private IConfigurationElement fConfigElement;
     private IWorkbench fWorkbench;
@@ -36,10 +38,15 @@ public class NewExtensionWizard extends AbstractWizard implements IExecutableExt
     public NewExtensionWizard() {
         setDefaultPageImageDescriptor(YImages.DESC_NEW_FUNCTEST_PRJ_WIZ);
         setDialogSettings(YCore.getDefault().getDialogSettings());
-        setWindowTitle(YMessages.NewExtensionProject_title);
+        setWindowTitle(YMessages.NewExtensionWizard_title);
         setNeedsProgressMonitor(true);
 
         wizardPage = new NewExtensionWizardPage();
+    }
+    
+    @Override
+    protected String getSettingsSection() {
+    	return ECOMMERCE_NEW_EXTENSION_PROJECT_SECTION;
     }
 
     protected void openResource(final IFile resource) {

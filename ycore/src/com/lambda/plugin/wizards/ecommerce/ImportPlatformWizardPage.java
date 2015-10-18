@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -41,6 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +50,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IWorkingSet;
@@ -63,8 +66,10 @@ import com.lambda.plugin.utils.StringUtils;
 
 public class ImportPlatformWizardPage extends AbstractWizardPage {
 
+	private final static String STORE_DIRECTORIES = "ImportPlatformWizardPage.STORE_DIRECTORIES";//$NON-NLS-1$
     private static final String PAGE_NAME = "ImportPlatformWizardPage";//$NON-NLS-1$
-
+    private static String previouslySelectedPath = "";
+    
     private Combo rootDirectoryCombo;
     private WorkingSetGroup fWorkingSetGroup;
     private CheckboxTreeViewer projectTreeViewer;
@@ -102,18 +107,22 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         browseButton.setText(YMessages.ImportPlatformPage_browse);
         browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         browseButton.addSelectionListener(new SelectionAdapter() {
-            @Override
+        
+
+			@Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.NONE);
                 dialog.setText(YMessages.ImportPlatformPage_selectPlatformRootFolder);
                 String path = rootDirectoryCombo.getText();
                 if (path.length() == 0) {
-                    path = ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
-                }
+                	path = previouslySelectedPath.length() > 0 ? previouslySelectedPath : ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
+           		}
+       
                 dialog.setFilterPath(path);
 
                 String result = dialog.open();
                 if (result != null) {
+                	previouslySelectedPath = result;
                     rootDirectoryCombo.setText(result);
                     scanProjects();
                 }
@@ -246,8 +255,10 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
                 IWorkingSetIDs.RESOURCE });
+        restoreWidgetValues();
     }
 
+    
     /**
      * Returns the working sets to which the new project should be added.
      * 
@@ -476,6 +487,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     private boolean parentUnchecked(PlatformExtension ext) {
         return ext.parent != null && projectTreeViewer.getChecked(ext.parent) == false;
     }
+    
 
     boolean createExtensions(IProgressMonitor monitor) throws CoreException {
         if (monitor == null) {
@@ -702,4 +714,30 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
             return null;
         }
     }
+
+    
+	@Override
+	protected void saveWidgetValues() {
+		IDialogSettings settings = getDialogSettings();
+		if (settings != null) {
+			saveInHistory(settings, STORE_DIRECTORIES, rootDirectoryCombo.getText());
+		}
+	}
+	
+	@Override
+	protected void restoreWidgetValues() {
+		IDialogSettings settings = getDialogSettings();
+		if (settings != null) {
+			restoreFromHistory(settings, STORE_DIRECTORIES, rootDirectoryCombo);
+		}
+	}
+    
+	@Override
+	public void handleEvent(Event event) {
+	}
+	
+	@Override
+	protected boolean allowNewContainerName() {
+		return true;
+	}
 }

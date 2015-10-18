@@ -12,7 +12,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
@@ -157,25 +156,6 @@ public class YCore extends AbstractUIPlugin {
             }
         }
         return projects;
-    }
-
-    /**
-     * 
-     * @return functional test existing in workspace
-     * @throws CoreException
-     * @throws InvocationTargetException
-     * @throws InterruptedException
-     */
-    public List<IJavaProject> getFunctestProjects()
-            throws CoreException, InvocationTargetException, InterruptedException {
-        final IJavaModel javaModel = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
-        final List<IJavaProject> functestProjects = new ArrayList<IJavaProject>();
-        for (final IJavaProject project : javaModel.getJavaProjects()) {
-            if (project.getProject().isOpen() && project.getProject().hasNature(YNature.NATURE_ID)) {
-                functestProjects.add(project);
-            }
-        }
-        return functestProjects;
     }
 
     public static void log(final IStatus status) {
