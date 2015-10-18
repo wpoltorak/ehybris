@@ -52,7 +52,7 @@ public class PlatformContainer {
     }
 
     public IPlatformInstallation verifyPlatformLocation(File installLocation) {
-        if (!installLocation.isDirectory()) {
+        if (installLocation == null || !installLocation.isDirectory()) {
             return null;
         }
         IPath platformLocation = new Path(installLocation.getAbsolutePath());

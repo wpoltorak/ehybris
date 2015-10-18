@@ -15,6 +15,9 @@ public class StringUtils {
         return str == null || str.isEmpty();
     }
 
+    public static boolean isBlank(String str) {
+        return str == null || str.trim().isEmpty();
+    }
     /**
      * Checks if a String is not empty ("") and not <code>null</code>.
      * 

@@ -39,8 +39,11 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -101,7 +104,30 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         rootDirectoryCombo = new Combo(platformComposite, SWT.NONE);
         rootDirectoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        rootDirectoryCombo.setFocus();
+//        rootDirectoryCombo.setFocus();
+        rootDirectoryCombo.addTraverseListener(new TraverseListener() {
+			@Override
+			public void keyTraversed(TraverseEvent e) {
+				if (e.detail == SWT.TRAVERSE_RETURN) {
+					e.doit = false;
+					scanProjects();
+				}
+			}
+		});
+
+        rootDirectoryCombo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(org.eclipse.swt.events.FocusEvent e) {
+				scanProjects();
+			}
+		});
+
+        rootDirectoryCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scanProjects();
+			}
+		});
 
         final Button browseButton = new Button(platformComposite, SWT.NONE);
         browseButton.setText(YMessages.ImportPlatformPage_browse);
@@ -310,9 +336,9 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         projectTreeViewer.setInput(null);
 
         final String text = rootDirectoryCombo.getText();
-        if (StringUtils.isEmpty(text)) {
+        if (StringUtils.isBlank(text)) {
             setPageComplete(false);
-            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
+//            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
             return;
         }
         final IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
