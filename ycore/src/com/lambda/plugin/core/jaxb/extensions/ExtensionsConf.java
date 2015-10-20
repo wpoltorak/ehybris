@@ -212,6 +212,11 @@ public class ExtensionsConf {
     public boolean isReferenced(String extension) {
         return loadedExtensions.containsKey(extension);
     }
+    
+    public boolean isCustom(String extension) {
+    	Extension ext = loadedExtensions.get(extension);
+    	return ext != null ? ext.isCustom() : false;
+    }
 
     public Map<String, Extension> getLoadedExtensions() {
         return loadedExtensions;

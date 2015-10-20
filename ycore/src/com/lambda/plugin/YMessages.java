@@ -75,6 +75,7 @@ public final class YMessages extends NLS {
     public static String ImportPlatformPage_platformRootFolder;
     public static String ImportPlatformPage_browse;
     public static String ImportPlatformPage_selectPlatformRootFolder;
+    public static String ImportPlatformPage_setSourcesReadOnly;
     public static String ImportPlatformPage_error_ExtensionAlreadyImported;
     public static String ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
     public static String ImportPlatformPage_error_ExtensionNotExistsInFS;

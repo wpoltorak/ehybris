@@ -13,7 +13,9 @@ import java.util.TreeSet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourceAttributes;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -21,10 +23,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.workingsets.IWorkingSetIDs;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
@@ -45,7 +51,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -70,13 +75,15 @@ import com.lambda.plugin.utils.StringUtils;
 public class ImportPlatformWizardPage extends AbstractWizardPage {
 
 	private final static String STORE_DIRECTORIES = "ImportPlatformWizardPage.STORE_DIRECTORIES";//$NON-NLS-1$
+	private final static String SET_SOURCES_READONLY = "ImportPlatformWizardPage.MAKE_SOURCES_READONLY";//$NON-NLS-1$
     private static final String PAGE_NAME = "ImportPlatformWizardPage";//$NON-NLS-1$
     private static String previouslySelectedPath = "";
     
+    private Button setReadOnlyCheck;
     private Combo rootDirectoryCombo;
     private WorkingSetGroup fWorkingSetGroup;
     private CheckboxTreeViewer projectTreeViewer;
-
+    
     protected ImportPlatformWizardPage() {
         super(PAGE_NAME);
         setTitle(YMessages.ImportPlatformPage_title);
@@ -85,15 +92,47 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     }
 
     @Override
-    @SuppressWarnings("restriction")
     public void createControl(Composite parent) {
         final Composite composite = new Composite(parent, SWT.NULL);
         composite.setFont(parent.getFont());
         composite.setLayout(initGridLayout(new GridLayout(1, false), true));
         composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
         setControl(composite);
+        createPlatformTreeGroup(composite);
+        createCheckGroup(composite);
+        createWorkingSetGroup(composite);
+        restoreWidgetValues();
+    }
 
-        Composite platformComposite = new Composite(composite, SWT.NONE);
+	private void createCheckGroup(Composite composite) {
+		Composite comp = new Composite(composite, SWT.NONE);
+        comp.setFont(composite.getFont());
+        comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        comp.setLayout(new GridLayout(3, false));
+		
+        setReadOnlyCheck = new Button(composite, SWT.CHECK);
+        setReadOnlyCheck.setText(YMessages.ImportPlatformPage_setSourcesReadOnly);
+
+        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+        gd.horizontalSpan = 2;
+        setReadOnlyCheck.setLayoutData(gd);
+        setReadOnlyCheck.setEnabled(true);
+        setReadOnlyCheck.setSelection(true);
+        
+        addFiller(composite);
+	}
+
+	private void addFiller(Composite composite) {
+        PixelConverter pixelConverter = new PixelConverter(composite);
+
+        Label filler = new Label(composite, SWT.LEFT);
+        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+        gd.horizontalSpan = 2;
+        gd.heightHint = pixelConverter.convertHeightInCharsToPixels(1) / 2;
+        filler.setLayoutData(gd);
+    }
+	private void createPlatformTreeGroup(final Composite composite) {
+		Composite platformComposite = new Composite(composite, SWT.NONE);
         platformComposite.setFont(composite.getFont());
         platformComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         platformComposite.setLayout(new GridLayout(3, false));
@@ -278,11 +317,13 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                 scanProjects();
             }
         });
+	}
 
-        fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
+	@SuppressWarnings("restriction")
+	private void createWorkingSetGroup(final Composite composite) {
+		fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
                 IWorkingSetIDs.RESOURCE });
-        restoreWidgetValues();
-    }
+	}
 
     
     /**
@@ -392,7 +433,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                         String extName = path.lastSegment().toString();
                         String projectName = getProjectName(projectDescriptionPath);
                         root.addExtension(new PlatformExtension(path, extName, projectName, config
-                                .isReferenced(extName)));
+                                .isReferenced(extName), config.isCustom(extName)));
                     } else if (!platform.getPlatformLocation().equals(path)) {
                         File[] folders = FileUtils.listFolders(path.toFile());
                         for (File folder : folders) {
@@ -519,10 +560,12 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
         }
+        final boolean[] setReadOnly = new boolean[1];
         final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
         Display.getDefault().syncExec(new Runnable() {
             @Override
             public void run() {
+            	setReadOnly[0] = setReadOnlyCheck.getSelection();
                 Object[] elements = projectTreeViewer.getCheckedElements();
                 for (int i = 0; i < elements.length; i++) {
                     Object element = elements[i];
@@ -544,9 +587,9 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                     if (extension instanceof PlatformConfig) {
                         createConfig(root, (PlatformConfig) extension, submonitor);
                     } else if (extension instanceof PlatformRoot) {
-                        createPlatform(root, (PlatformRoot) extension, submonitor);
+                        createPlatform(root, (PlatformRoot) extension, setReadOnly[0], submonitor);
                     } else {
-                        createExtension(root, extension, submonitor);
+                        createExtension(root, extension, setReadOnly[0], submonitor);
                     }
                 } finally {
                     submonitor.done();
@@ -558,8 +601,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         }
     }
 
-    private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, IProgressMonitor monitor) throws CoreException {
-        doCreateExtension(root, ext, monitor);
+    private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, boolean setReadOnly, IProgressMonitor monitor) throws CoreException {
+        doCreateExtension(root, ext, setReadOnly, monitor);
         IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
                 .verifyPlatformLocation(ext.path.toFile());
         if (platform != null) {
@@ -567,9 +610,9 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         }
     }
 
-    private void createExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+    private void createExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly, IProgressMonitor monitor)
             throws CoreException {
-        doCreateExtension(root, ext, monitor);
+        doCreateExtension(root, ext, setReadOnly, monitor);
     }
 
     private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
@@ -578,12 +621,28 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         JavaCore.create(project);
     }
 
-    private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+    private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly, IProgressMonitor monitor)
             throws CoreException {
         IProject project = createProject(root, ext, monitor);
         YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
         YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
-        JavaCore.create(project);
+        IJavaProject javaProject = JavaCore.create(project);
+        if (setReadOnly && !ext.custom){
+        	IClasspathEntry[] entries = javaProject.getRawClasspath();
+        	for (IClasspathEntry entry : entries) {
+				if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE){
+					root.findMember(entry.getPath()).accept(new IResourceVisitor() {
+						@Override
+						public boolean visit(IResource resource) throws CoreException {
+							ResourceAttributes attributes = resource.getResourceAttributes();
+							attributes.setReadOnly(true);
+							resource.setResourceAttributes(attributes);
+							return true;
+						}
+					});
+				}
+			}
+        }
     }
 
     private IProject createProject(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
@@ -613,7 +672,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
         public PlatformRoot(IPlatformInstallation platform, String projectName) {
             super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
-                    .getName(), projectName, true);
+                    .getName(), projectName, true, false);
             vendor = platform.getVendor();
             version = platform.getVersion().get();
         }
@@ -631,7 +690,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
     private class PlatformConfig extends PlatformExtension {
 
         private PlatformConfig(IPath path, String name, String projectName) {
-            super(path, name, projectName, true);
+            super(path, name, projectName, true, true);
         }
 
         @Override
@@ -648,6 +707,8 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
         protected final String name;
         protected final String projectName;
         protected final boolean referenced;
+        protected PlatformExtension parent;
+        protected final boolean custom;
         protected final TreeSet<PlatformExtension> children = new TreeSet<PlatformExtension>(
                 new Comparator<PlatformExtension>() {
                     @Override
@@ -661,13 +722,13 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
                         return o1.name.compareTo(o2.name);
                     }
                 });
-        protected PlatformExtension parent;
 
-        private PlatformExtension(IPath path, String name, String projectName, boolean referenced) {
+        private PlatformExtension(IPath path, String name, String projectName, boolean referenced, boolean custom) {
             this.path = path;
             this.name = name;
             this.projectName = projectName;
             this.referenced = referenced;
+            this.custom = custom;
         }
 
         private void addExtension(PlatformExtension extension) {
@@ -747,6 +808,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 		IDialogSettings settings = getDialogSettings();
 		if (settings != null) {
 			saveInHistory(settings, STORE_DIRECTORIES, rootDirectoryCombo.getText());
+			saveInHistory(settings, SET_SOURCES_READONLY, setReadOnlyCheck.getSelection());
 		}
 	}
 	
@@ -755,6 +817,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 		IDialogSettings settings = getDialogSettings();
 		if (settings != null) {
 			restoreFromHistory(settings, STORE_DIRECTORIES, rootDirectoryCombo);
+			restoreFromHistory(settings, SET_SOURCES_READONLY, setReadOnlyCheck);
 		}
 	}
     

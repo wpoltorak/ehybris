@@ -3,6 +3,7 @@ package com.lambda.plugin.wizards.ecommerce;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.ui.dialogs.WizardDataTransferPage;
 
@@ -33,7 +34,11 @@ public abstract class AbstractWizardPage extends WizardDataTransferPage {
 		sourceNames = addToHistory(sourceNames, value);
 		settings.put(key, sourceNames);
 	}
-	
+
+	protected void saveInHistory(IDialogSettings settings, String key, boolean value) {
+		settings.put(key, value);
+	}
+
 	protected void restoreFromHistory(IDialogSettings settings, String key, Combo combo) {
 		String[] sourceNames = settings.getArray(key);
 		if (sourceNames == null) {
@@ -45,5 +50,9 @@ public abstract class AbstractWizardPage extends WizardDataTransferPage {
 		}
 	}
 
+	protected void restoreFromHistory(IDialogSettings settings, String key, Button check) {
+		boolean selection = settings.getBoolean(key);
+		check.setSelection(selection);
+	}
 
 }
