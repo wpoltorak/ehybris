@@ -1,7 +1,10 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -35,7 +38,7 @@ import com.lambda.plugin.impex.model.LexerTokenRegion;
 public class ImpexDocument extends DocumentWrapper implements IDocumentListener {
 
     private static JavaTypeFinder typeFinder = new JavaTypeFinder();
-    private NavigableMap<Integer, ILexerTokenRegion> tokens = null;
+    private NavigableMap<Integer, ILexerTokenRegion> tokens = new TreeMap<>();
     private NavigableMap<Integer, IRegion> blocks = null;
     private ImpexModel impexModel;
     private final Lexer lexer;
@@ -46,7 +49,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         String text = this.get();
         this.lexer = createLexer(tokenSource, text);
         this.blocks = new TreeMap<>();
-        setTokens(createTokens(text, blocks));
+        createTokens(text, blocks);
         delegate.addPrenotifiedDocumentListener(new IDocumentListener() {
 
             @Override
@@ -64,11 +67,6 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         delegate.addDocumentListener(this);
     }
 
-    private void setTokens(NavigableMap<Integer, ILexerTokenRegion> tokens) {
-        // printRegions("Tokens: ", tokens.values());
-        this.tokens = tokens;
-    }
-
     private void setBlocks(NavigableMap<Integer, IRegion> blocks) {
         // printRegions("Blocks: ", blocks.values());
         this.blocks = blocks;
@@ -76,8 +74,18 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
 
     private void printRegions(String info, Collection<? extends IRegion> collection) {
         System.out.println(info);
-        for (IRegion region : collection) {
-            System.out.println("next: " + (region.getOffset() + region.getLength()) + ", " + region);
+        IRegion last = null;
+        for (IRegion elem : collection) {
+        	  if (last != null) {
+                  if (last.getOffset() + last.getLength() != elem.getOffset()) {
+                	  System.err.println("next: " + (elem.getOffset() + elem.getLength()) + ", " + elem);
+                  } else {
+                	  System.out.println("next: " + (elem.getOffset() + elem.getLength()) + ", " + elem);
+                  }
+              } else {
+            	  System.out.println("next: " + (elem.getOffset() + elem.getLength()) + ", " + elem);
+              }
+              last = elem;
         }
 
     }
@@ -86,32 +94,51 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return tokens.values();
     }
 
-    public IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
-        int lineOffset = 0;
-        int lineLength = 0;
-        int first = offset;
-        // get last EOF token of length 0
-        int length = getToken(tokens.lastKey().intValue()).getOffset();
-        // rewind to first line of all the 'line separated' lines and calculate offset & line lengths
-        do {
-            IRegion line = getLineInformationOfOffset(first);
-            boolean isLast = line.getOffset() + line.getLength() == length;
-            lineOffset = line.getOffset();
-            lineLength += line.getLength() + (isLast ? 0 : 1);
-            first = lineOffset - 1;
-        } while (includeSeparatedLines && first > 0 && getToken(first).getTokenType() != ImpexLexer.Lb);
-        // select last token of current line
-        ILexerTokenRegion last = getToken(lineOffset + lineLength);
-        // forward to all the next 'line separated' lines and calculate their lengths
-        while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
-            IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
-            boolean isLast = line.getOffset() + line.getLength() == length;
-            lineLength += line.getLength() + 1;
-            last = getToken(lineOffset + lineLength - (isLast ? 0 : 1));
-        }
-        return new Region(lineOffset, lineLength);
-    }
+//    private IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
+//        int lineOffset = 0;
+//        int lineLength = 0;
+//        int first = offset;
+//        // get last EOF token of length 0
+//        int length = getToken(tokens.lastKey().intValue()).getOffset();
+//        // rewind to first line of all the 'line separated' lines and calculate offset & line lengths
+//        do {
+//            IRegion line = getLineInformationOfOffset(first);
+//            boolean isLast = line.getOffset() + line.getLength() == length;
+//            lineOffset = line.getOffset();
+//            lineLength += line.getLength() + (isLast ? 0 : 1);
+//            first = lineOffset - 1;
+//        } while (includeSeparatedLines && first > 0 && getToken(first).getTokenType() != ImpexLexer.Lb);
+//        // select last token of current line
+//        ILexerTokenRegion last = getToken(lineOffset + lineLength);
+//        // forward to all the next 'line separated' lines and calculate their lengths
+//        while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
+//            IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
+//            boolean isLast = line.getOffset() + line.getLength() == length;
+//            lineLength += line.getLength() + 1;
+//            last = getToken(lineOffset + lineLength - (isLast ? 0 : 1));
+//        }
+//        return new Region(lineOffset, lineLength);
+//    }
 
+    private IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
+        int lineBeginOffset = 0;
+        int lineEndOffset = tokens.lastKey(); //last EOF token has 0 length
+        NavigableMap<Integer, ILexerTokenRegion> descendingTokens = tokens.subMap(0, true, tokens.floorKey(offset), false).descendingMap();
+        for (ILexerTokenRegion region : descendingTokens.values()) {
+        	if (region.getTokenType() == ImpexLexer.Lb){
+        		lineBeginOffset = region.getOffset() + region.getLength();
+        		break;
+        	}
+		}
+        NavigableMap<Integer, ILexerTokenRegion> ascendingTokens = tokens.subMap(tokens.floorKey(offset), true, tokens.lastKey(), false);
+        for (ILexerTokenRegion region : ascendingTokens.values()) {
+        	if (region.getTokenType() == ImpexLexer.Lb){
+        		lineEndOffset = region.getOffset() + region.getLength();
+        		break;
+        	}
+		}
+        return new Region(lineBeginOffset, lineEndOffset - lineBeginOffset);
+    }
     /**
      * Returns all the line tokens. <br>
      * Takes into account LineSeparator
@@ -163,6 +190,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             System.err.println("===> VALIDATE END: took "
                     + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");
         }
+//    	return Collections.EMPTY_LIST;
     }
 
     public ImpexModel getModel() {
@@ -175,16 +203,11 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
 
     protected IRegion computeDamageRegion(final DocumentEvent e) {
         // empty document -> no dirty region
-        if (e.getDocument().getLength() == 0) {
-            setBlocks(new TreeMap<Integer, IRegion>());
-            setTokens(createTokens(e.fDocument.get(), blocks));
-            return new Region(0, 0);
-        }
-
         // previously empty -> full document dirty
-        if (tokens.isEmpty()) {
+        if (tokens.isEmpty() || e.getDocument().getLength() == 0) {
             setBlocks(new TreeMap<Integer, IRegion>());
-            setTokens(createTokens(e.fDocument.get(), blocks));
+            tokens.clear();
+            createTokens(e.fDocument.get(), blocks);
             return new Region(0, e.getDocument().getLength());
         }
 
@@ -193,37 +216,56 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             IRegion changeRegion = computeDamageRegion(e, lengthDelta);
             NavigableMap<Integer, IRegion> blocks = getUnchangedBlocks(changeRegion);
             String text = get(changeRegion.getOffset(), changeRegion.getLength());
-            System.out.println("Text: '" + text + "'");
-            NavigableMap<Integer, ILexerTokenRegion> tempTokens = getUnchangedTokens(changeRegion);
-            SortedMap<Integer, ILexerTokenRegion> tempTokens2 = tokens.subMap(
-                    tokens.floorKey(changeRegion.getOffset() + changeRegion.getLength() - lengthDelta), true,
-                    tokens.lastKey(), true);
-            tempTokens.putAll(createTokens(text, blocks, changeRegion.getOffset(), tempTokens2.isEmpty()));
+//            printRegions("Tokens: ", tokens.values());
+//            System.out.println("Text: '" + text + "'");
+            removeTokens(lengthDelta, changeRegion); // remove existing tokens within the change region - they will be regenerated 
+//            printRegions("Tokens after clean: ", tokens.values());
+			shiftTokens(changeRegion, lengthDelta, blocks); //update positions of tokens that are after change region
+            createTokens(text, blocks, changeRegion.getOffset()); // regenerate tokens within change region to reflect changes in text
+//            printRegions("Tokens after create: ", tokens.values()); 
+//            System.out.println("unchanged + newly created");
+//            verifyTokens(tokens);
 
-            int blockOffset = -1;
-            for (ILexerTokenRegion token : tempTokens2.values()) {
-                LexerTokenRegion newToken = createTokenInfo(token, lengthDelta);
-                if (newToken.isBlockStart() || newToken.isEndOfFile()) {
-                    if (blockOffset > -1) {
-                        blocks.put(blockOffset, new Region(blockOffset, newToken.getOffset() - blockOffset));
-                    }
-                    blockOffset = newToken.getOffset();
-                }
-                tempTokens.put(newToken.getOffset(), newToken);
-            }
-
-            verifyTokens(tempTokens);
-            setTokens(tempTokens);
+			
+//			printRegions("Tokens after shift: ", tokens.values());
+//            System.out.println("unchanged + newly created + shifted");
+//            verifyTokens(tokens);
             setBlocks(blocks);
             return changeRegion;
         } catch (BadLocationException ex) {
             setBlocks(new TreeMap<Integer, IRegion>());
-            setTokens(createTokens(e.fDocument.get(), blocks));
+            tokens.clear();
+            createTokens(e.fDocument.get(), blocks);
             return new Region(0, e.getDocument().getLength());
         }
     }
 
-    @SuppressWarnings("unused")
+	private void removeTokens(int lengthDelta, IRegion changeRegion) {
+		NavigableMap<Integer, ILexerTokenRegion> subMap = tokens.subMap(changeRegion.getOffset(), true, tokens.floorKey(changeRegion.getOffset() + changeRegion.getLength() - lengthDelta), false);
+		subMap.clear();
+	}
+
+	private void shiftTokens(IRegion changeRegion, int lengthDelta, NavigableMap<Integer, IRegion> blocks) {
+		int blockOffset = -1;
+		Map<Integer,  ILexerTokenRegion> shiftedTokens = new TreeMap<>();
+        Integer firstTokenToShift = tokens.floorKey(changeRegion.getOffset() + changeRegion.getLength() - lengthDelta);
+		NavigableMap<Integer, ILexerTokenRegion> tailToShift = tokens.subMap(firstTokenToShift, true, tokens.lastKey(), true);
+		for (Iterator<Entry<Integer, ILexerTokenRegion>> it = tailToShift.entrySet().iterator(); it.hasNext();) {
+			Entry<Integer, ILexerTokenRegion> entry = it.next();
+			ILexerTokenRegion token = entry.getValue();
+			it.remove();
+		    LexerTokenRegion newToken = createTokenInfo(token, lengthDelta);
+		    if (newToken.isBlockStart() || newToken.isEndOfFile()) {
+		        if (blockOffset > -1) {
+		            blocks.put(blockOffset, new Region(blockOffset, newToken.getOffset() - blockOffset));
+		        }
+		        blockOffset = newToken.getOffset();
+		    }
+			shiftedTokens.put(newToken.getOffset(), newToken);
+		}
+		tokens.putAll(shiftedTokens);
+	}
+
     private void verifyTokens(NavigableMap<Integer, ILexerTokenRegion> tempTokens) {
         ILexerTokenRegion last = null;
         for (ILexerTokenRegion elem : tempTokens.values()) {
@@ -237,15 +279,6 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             }
             last = elem;
         }
-    }
-
-    private NavigableMap<Integer, ILexerTokenRegion> getUnchangedTokens(IRegion changeRegion) {
-        Integer last = changeRegion.getOffset() == 0 ? null : tokens.floorKey(changeRegion.getOffset() - 1);
-        if (last == null) {
-            return new TreeMap<>();
-        }
-
-        return new TreeMap<>(tokens.subMap(tokens.firstKey(), true, last, true));
     }
 
     /**
@@ -277,18 +310,18 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return new Region(offset, length);
     }
 
-    private TreeMap<Integer, ILexerTokenRegion> createTokens(String text, SortedMap<Integer, IRegion> blocks) {
-        return createTokens(text, blocks, 0, true);
+    private void createTokens(String text, SortedMap<Integer, IRegion> blocks) {
+        createTokens(text, blocks, 0);
     }
 
-    private TreeMap<Integer, ILexerTokenRegion> createTokens(String text, SortedMap<Integer, IRegion> blocks,
-            int shift, boolean includeEOF) {
-        TreeMap<Integer, ILexerTokenRegion> tokens = new TreeMap<>();
+    private void createTokens(String text, SortedMap<Integer, IRegion> blocks,
+            int shift) {
         lexer.setInputStream(new ANTLRInputStream(text));
         LexerTokenRegion tokenInfo = null;
         int blockOffset = -1;
         do {
-            tokenInfo = createTokenInfo(lexer.nextToken(), shift);
+            Token nextToken = lexer.nextToken();
+			tokenInfo = createTokenInfo(nextToken, shift);
             // System.out.println(tokenInfo);
             if (tokenInfo.isBlockStart() || tokenInfo.isEndOfFile()) {
                 if (blockOffset > -1) {
@@ -301,12 +334,11 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
                 }
                 blockOffset = tokenInfo.getOffset();
             }
-            if (!tokenInfo.isEndOfFile() || includeEOF) {
+            if (!tokenInfo.isEndOfFile() || tokens.higherKey(tokenInfo.getOffset()) == null) {
                 tokens.put(tokenInfo.getOffset(), tokenInfo);
             }
         } while (tokenInfo.getTokenType() != Token.EOF);
         // printRegions("Blocks: ", blocks.values());
-        return tokens;
     }
 
     public IRegion getBlockOrLine(int offset) throws BadLocationException {

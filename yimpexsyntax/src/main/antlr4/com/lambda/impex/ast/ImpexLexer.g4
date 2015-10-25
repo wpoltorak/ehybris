@@ -311,6 +311,7 @@ RecordMacrodef            : Macrodef -> type(Macrodef), pushMode(macro);
 RecordLineSeparator       : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 RecordLb                  : Lb -> type(Lb), channel(HIDDEN);
 RecordWs                  : Ws -> type(Ws), channel(HIDDEN);
+RecordError               : Error -> type(Error);
 
 mode field;
 FieldLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
@@ -326,13 +327,14 @@ FieldMulti              : ~[\r\n";\t\\ $&] ~[\r\n";$&]* ~[\r\n";\t\\ $&] {column
 Field                   : ~[\r\n";] { handleField();};
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?
+FieldError              : Error -> type(Error);
 
 mode macro;
 MacroEquals             : '=' -> pushMode(macroval), type(Equals);
 MacroWs                 : Ws+ -> type(Ws), channel(HIDDEN);
 MacroSeparator          : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 //ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
-
+MacroError              : Error -> type(Error);
 
 mode macroval;
 MacrovalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n'}? -> type(Ws), channel(HIDDEN);
@@ -343,7 +345,7 @@ MacrovalLb				: Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
 MacrovalEOF				: Ws* EOF -> type(EOF), popMode, popMode;
 MacrovalMulti			: ~[\r\n\t\\ $] ~[\r\n$]* ~[\r\n\t\\ $] -> type(Macroval);
 Macroval				: ~[\r\n];
-
+MaceovalError           : Error -> type(Error);
 
 
 mode type;
@@ -356,8 +358,8 @@ TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 TIdentifier         : Identifier -> type(Type);
 TConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 TMacroref           : Macrodef -> type(Macroref);
-
 TWs                 : Ws -> type(Ws), channel(HIDDEN);
+TError              : Error -> type(Error);
 
 mode attribute;
 AComma              : Comma -> type(Comma);
@@ -379,7 +381,7 @@ ADocumentID         : DocumentID {handleDocumentId();};
 AConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
 AMacroref           : Macrodef -> type(Macroref);
 AWs                 : Ws -> type(Ws), channel(HIDDEN);
-
+AError              : Error -> type(Error);
 
 mode modifier;
 //Type modifiers
@@ -414,9 +416,9 @@ ModifierComma			: Comma -> type(Comma), channel(HIDDEN);
 ModifierLineSeparator   : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifierWs              : Ws -> type(Ws), channel(HIDDEN);
 ModifierUnknown			: ~[\r\n\[\],;=] -> type(UnknownModifier);
-
 //ErrorModifierval    : ~[= \t]~[,\r\n\]] -> type(Modifierval);
 //ModifierComma       : Ws* Comma Ws* (LineSeparator Ws*)* -> type(Comma), channel(HIDDEN);
+ModifierError           : Error -> type(Error);
 
 mode modifierval;
 ModifiervalLb				: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
@@ -434,6 +436,7 @@ ModifiervalDQuote			: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval)
 ModifiervalQuoted			: '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
 ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ $] ~[\r\n\[\],;\'$]* ~[\r\n\[\],;\'\t\\ $] -> type(Modifierval);
 Modifierval					: ~[\r\n\[\],;\'];
+ModifiervalError            : Error -> type(Error);
 
 /*
 /work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast

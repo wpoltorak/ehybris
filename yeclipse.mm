@@ -11,7 +11,9 @@
 <node CREATED="1418760612182" ID="ID_476149783" MODIFIED="1418760639264" TEXT="types">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1418760620576" ID="ID_503084576" MODIFIED="1418760626439" TEXT="document ids"/>
+<node CREATED="1418760620576" ID="ID_503084576" MODIFIED="1445373113001" TEXT="document ids">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 <node CREATED="1346848575942" ID="ID_1268190906" MODIFIED="1346848582387" TEXT="Vertical Ruler">
 <node CREATED="1348727094721" ID="ID_402431221" MODIFIED="1348727141914" TEXT="Highligh current line / block"/>
@@ -81,12 +83,18 @@
 </node>
 <node CREATED="1346848898742" ID="ID_1107966173" MODIFIED="1346848902076" TEXT="Formatter"/>
 <node CREATED="1346848916414" ID="ID_703898185" MODIFIED="1346848940870" TEXT="Locales"/>
-<node CREATED="1348466894943" ID="ID_1423437111" MODIFIED="1348466908256" TEXT="Mark Occurrences"/>
+<node CREATED="1348466894943" ID="ID_1423437111" MODIFIED="1445373148171" TEXT="Mark Occurrences">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 <node CREATED="1346848667174" ID="ID_1663480399" MODIFIED="1346848766382" TEXT="Rename in file (Alt+Shift+R)"/>
-<node CREATED="1346848847014" ID="ID_461177215" MODIFIED="1346848856244" TEXT="Toggle line comment"/>
+<node CREATED="1346848847014" ID="ID_461177215" MODIFIED="1445373153032" TEXT="Toggle line comment">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1346848857294" ID="ID_1455376426" MODIFIED="1348467316053" TEXT="Toggle mark occurrences">
-<node CREATED="1348173976168" ID="ID_1893692198" MODIFIED="1348173991819" TEXT="Preferences - separate page"/>
+<node CREATED="1348173976168" ID="ID_1893692198" MODIFIED="1445373157917" TEXT="Preferences - separate page">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1348173996014" ID="ID_1852213542" MODIFIED="1348174011752" TEXT="Mark entities"/>
 <node CREATED="1348174013020" ID="ID_1593524753" MODIFIED="1348174023344" TEXT="Mark column names"/>
 <node CREATED="1348174037813" ID="ID_117525857" MODIFIED="1418760711228" TEXT="Mark table names">
@@ -126,7 +134,7 @@
 <icon BUILTIN="button_ok"/>
 <node CREATED="1351808179836" ID="ID_462671740" MODIFIED="1351808181622" TEXT="owner( Principal.uid | AbstractOrder.code )"/>
 </node>
-<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1418760556609" TEXT="line continuation">
+<node CREATED="1352230922161" ID="ID_287935472" MODIFIED="1445373183725" TEXT="line continuation">
 <icon BUILTIN="help"/>
 <node CREATED="1356592161083" ID="ID_550461144" MODIFIED="1356592176798" TEXT="inside makro value"/>
 <node CREATED="1356592182749" ID="ID_525888285" MODIFIED="1356592192118" TEXT="inside unquoted fields"/>
@@ -159,7 +167,9 @@
 <icon BUILTIN="button_ok"/>
 <node CREATED="1356591927296" ID="ID_1192297929" MODIFIED="1356591943054" TEXT="tak, moze byc i jest ewaluowane"/>
 </node>
-<node CREATED="1355610884024" ID="ID_866605607" MODIFIED="1355610907677" TEXT="documentID - co z duplikatami? kt&#xf3;ra definicja jest wi&#x105;&#x17c;&#x105;ca? ostatnia?"/>
+<node CREATED="1355610884024" ID="ID_866605607" MODIFIED="1445373205243" TEXT="documentID - co z duplikatami? kt&#xf3;ra definicja jest wi&#x105;&#x17c;&#x105;ca? ostatnia?">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1351973658004" ID="ID_1544749550" MODIFIED="1351973673752" TEXT="modifier: trzeba wspierac dateformat pattern"/>
 <node CREATED="1352230321794" ID="ID_1320699397" MODIFIED="1354457126585" TEXT="special atrrib - modifiery r&#xf3;&#x17c;ne, nie tylko translator">
 <icon BUILTIN="button_ok"/>
@@ -262,8 +272,12 @@
 <node CREATED="1380601682034" ID="ID_255926243" MODIFIED="1413571522409" TEXT="odpadnie wowczas synchronizacja workspace z defaultowa platforma">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1380601710095" ID="ID_999417815" MODIFIED="1380601730911" TEXT="wystarczy sorawdzac ktore projekty juz sa w workspace i powiadomic o nich na stronie importu"/>
-<node CREATED="1380601732114" ID="ID_1249393862" MODIFIED="1380601780449" TEXT="importowac te projeky ktore beda includowane sa zaincludowane w  platformie"/>
+<node CREATED="1380601710095" ID="ID_999417815" MODIFIED="1445373259103" TEXT="wystarczy sorawdzac ktore projekty juz sa w workspace i powiadomic o nich na stronie importu">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1380601732114" ID="ID_1249393862" MODIFIED="1445373267355" TEXT="importowac te projeky ktore beda includowane sa zaincludowane w  platformie">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1380601780957" ID="ID_1509205543" MODIFIED="1380601815277" TEXT="dac opcje aktualizacji extensions.xml jesli ktos zechce zaimportowac mniej z nich"/>
 <node CREATED="1380601816173" ID="ID_930004690" MODIFIED="1380601840137" TEXT="te ktore juz sa w workspace ale nie maja sznurka do platformy zazanczyc szara ikonka"/>
 </node>
@@ -281,14 +295,17 @@
 </node>
 <node CREATED="1348056027927" ID="ID_1733339547" MODIFIED="1348056034158" TEXT="web-services"/>
 <node CREATED="1348056058335" ID="ID_1902756151" MODIFIED="1348056065126" TEXT="solr support"/>
-<node CREATED="1346848676270" FOLDED="true" ID="ID_1297282800" MODIFIED="1380567232052" TEXT="Search">
+<node CREATED="1346848676270" ID="ID_1297282800" MODIFIED="1445373340627" TEXT="Search">
 <node CREATED="1346848681734" ID="ID_672886063" MODIFIED="1346848686517" TEXT="In impex files">
 <node CREATED="1346848695126" ID="ID_876828632" MODIFIED="1346848697772" TEXT="text"/>
 <node CREATED="1346848698766" ID="ID_1629853423" MODIFIED="1346848701068" TEXT="references"/>
 </node>
 </node>
-<node CREATED="1380567232771" FOLDED="true" ID="ID_1455706380" MODIFIED="1381261577869" TEXT="lock for hybris specific files?">
-<node CREATED="1380567252781" ID="ID_1953495747" MODIFIED="1380567257343" TEXT="setting in preferences"/>
+<node CREATED="1380567232771" ID="ID_1455706380" MODIFIED="1445373300866" TEXT="lock for hybris specific files?">
+<node CREATED="1380567252781" ID="ID_1953495747" MODIFIED="1445373334448" TEXT="podczas importu">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1445373320467" ID="ID_466489530" MODIFIED="1445373330402" TEXT="setting w preferences"/>
 </node>
 <node CREATED="1381261581518" ID="ID_505314414" MODIFIED="1381261584021" TEXT="utils">
 <node CREATED="1381261585564" ID="ID_555047049" MODIFIED="1381261588061" TEXT="synchronize with reprository">
