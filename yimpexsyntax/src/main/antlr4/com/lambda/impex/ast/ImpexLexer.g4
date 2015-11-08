@@ -33,6 +33,7 @@ import java.util.Map.Entry;
     private boolean insideQuotedAttribute = false;
     private List<Integer> columnTypes = new ArrayList<>();
     private int columnIndex = -1;
+    private int offset;
     private boolean isDocumentIdReference;
     private NavigableMap<Integer, String> macroDefinitionsMap = new TreeMap<>();
     private CommonToken cachedToken = null;
@@ -40,6 +41,7 @@ import java.util.Map.Entry;
     
     public void setup(String text, int offset, int length, int delta) {
     	setInputStream(new ANTLRInputStream(text));
+    	setOffset(offset);
     	updateMacroDefinitions(offset, length, delta);
     }
     
@@ -62,6 +64,9 @@ import java.util.Map.Entry;
 		macroDefinitionsMap.putAll(shiftedMacroDefinitions);
 	}
     
+    private void setOffset(int offset) {
+    	this.offset = offset;
+    }
     private boolean isCached(Token token) {
     	return cachedToken != null && cachedToken == token;
     }
@@ -134,11 +139,12 @@ import java.util.Map.Entry;
 	    
 	    switch (token.getType()) {
 	    	case Macrodef:{
-	    		macroDefinitionsMap.put(token.getStartIndex(), token.getText());
+	    		macroDefinitionsMap.put(offset + token.getStartIndex(), token.getText());
 	    		break;
 	    	} case Macroref:
 	    		boolean inclusive = !macroDefinitionInTheSameLine(token);
-		    	NavigableMap<Integer, String> macroDefinitions = macroDefinitionsMap.headMap(token.getStartIndex(), inclusive);
+	    		int index = offset + token.getStartIndex() - token.getCharPositionInLine(); //beginning of the line 
+		    	NavigableMap<Integer, String> macroDefinitions = macroDefinitionsMap.headMap(index, inclusive);
 		    	if (macroDefinitions.containsValue(token.getText())){
 		    		//clear cached token to break nextToken loop.
 		    		cachedToken = null;
@@ -154,12 +160,14 @@ import java.util.Map.Entry;
 	    }
 	}
 	
+	private void startIndex(Token token) {
+	}
 	private boolean macroDefinitionInTheSameLine(Token token){
-   		Entry<Integer, String> lower = macroDefinitionsMap.lowerEntry(token.getStartIndex());
+   		Entry<Integer, String> lower = macroDefinitionsMap.lowerEntry(offset + token.getStartIndex());
 		if (lower == null) {
 			return false;
 		}
-		return lower.getKey().intValue() == token.getStartIndex() - token.getCharPositionInLine() && lower.getValue().equals(token.getText());
+		return lower.getKey().intValue() == offset + token.getStartIndex() - token.getCharPositionInLine() && lower.getValue().equals(token.getText());
 	}
   
 	@Override
