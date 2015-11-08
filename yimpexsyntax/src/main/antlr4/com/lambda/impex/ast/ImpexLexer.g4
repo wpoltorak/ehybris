@@ -20,6 +20,7 @@ tokens {
 }
 @header{
 import java.util.*;
+import java.util.Map.Entry;
 }
 @members{
 	private static final int FIELD_SKIPPED = 0;
@@ -33,74 +34,135 @@ import java.util.*;
     private List<Integer> columnTypes = new ArrayList<>();
     private int columnIndex = -1;
     private boolean isDocumentIdReference;
-    private Set<String> macroDefinitions = new HashSet<>();
+    private NavigableMap<Integer, String> macroDefinitionsMap = new TreeMap<>();
     private CommonToken cachedToken = null;
     private final Deque<Token> pendingTokens = new ArrayDeque<>();
     
-	    @Override
-	    public Token nextToken() {
-	    	cachedToken = null;
-	        Token pending = pendingTokens.pollFirst();
-	        if (pending != null) {
-	            return pending;
-	        }
-	        Token next = null;
-	        do {
-	        	next = super.nextToken();
-	        } while (cachedToken != null && next == cachedToken);
-	        
-	        if (cachedToken != null) {
-		        pendingTokens.addLast(next);
-	        	return cachedToken;
-	        }
-//	        pending = pendingTokens.pollFirst();
-//	        if (pending != null) {
-//	            pendingTokens.addLast(next);
-//	            return pending;
-//	        }
+    public void setup(String text, int offset, int length, int delta) {
+    	setInputStream(new ANTLRInputStream(text));
+    	updateMacroDefinitions(offset, length, delta);
+    }
+    
+    private void updateMacroDefinitions(int offset, int length, int delta) {
+		Integer firstMacroDefinitionToShift = macroDefinitionsMap.floorKey(offset + length - delta);
+		if (firstMacroDefinitionToShift == null) {
+			return;
+		}
 
-	        return next;
+		NavigableMap<Integer, String> subMap = macroDefinitionsMap.subMap(offset, true, firstMacroDefinitionToShift, false);
+		subMap.clear();
+		
+		NavigableMap<Integer, String> tailToShift = macroDefinitionsMap.subMap(firstMacroDefinitionToShift, true, macroDefinitionsMap.lastKey(), true);
+		Map<Integer,  String> shiftedMacroDefinitions = new HashMap<>();
+		for (Iterator<Entry<Integer, String>> it = tailToShift.entrySet().iterator(); it.hasNext();) {
+			Entry<Integer, String> entry = it.next();
+			shiftedMacroDefinitions.put(entry.getKey() + delta, entry.getValue());
+			it.remove();
+		}
+		macroDefinitionsMap.putAll(shiftedMacroDefinitions);
+	}
+    
+    private boolean isCached(Token token) {
+    	return cachedToken != null && cachedToken == token;
+    }
+    
+    public NavigableMap<Integer, String> getMacroDefinitionsMap(){
+    	return macroDefinitionsMap;
+    }
+    
+    public void setMacroDefinitionsMap(NavigableMap<Integer, String> macroDefinitionsMap){
+    	this.macroDefinitionsMap = macroDefinitionsMap;
+    }
+    
+    @Override
+    public Token nextToken() {
+    	cachedToken = null;
+        Token pending = pendingTokens.pollFirst();
+        if (pending != null) {
+            return pending;
+        }
+        Token next = null;
+        do {
+        	next = super.nextToken();
+        } while (cachedToken != null && next == cachedToken);
+        
+        pending = pendingTokens.pollFirst();
+        if (pending != null) {
+	    	// if cached it will be added in emit()
+	    	if (!isCached(next)){
+	        	pendingTokens.addLast(next);
+	        }
+            return pending;
+        }
+
+        return next;
+    }
+	    
+    @Override
+    public Token emit() {
+    	if (cachedToken != null && getType() == cachedToken.getType()) {
+    		cachedToken.setText(cachedToken.getText() + getText());
+    		cachedToken.setStopIndex(getCharIndex() - 1);
+			emit(cachedToken);
+	    	return cachedToken;
+    	}
+    	return super.emit();
+    }
+	    
+	    
+    @Override
+	public void emit(Token token) {
+    	super.emit(token);
+    	
+    	if ( LexerATNSimulator.debug ) System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
+
+		if (cachedToken != null && cachedToken != token){	
+			pendingTokens.addLast(cachedToken);
+			cachedToken = null;
+		}
+
+	    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
+	        return;
+	    }
+    
+	    lastTokenType = token.getType();
+	    
+	    if (_mode == attribute && lastTokenType == DoubleQuote) {
+	        insideQuotedAttribute = !insideQuotedAttribute;
+	        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
 	    }
 	    
-	    @Override
-	    public Token emit() {
-	    	if (cachedToken != null && getType() == cachedToken.getType()) {
-	    		
-	    		cachedToken.setText(cachedToken.getText() + getText());
-	    		cachedToken.setStopIndex(getCharIndex() - 1);
-				super.emit(cachedToken);
-		    	return cachedToken;
-	    	}
-	    	return super.emit();
+	    switch (token.getType()) {
+	    	case Macrodef:{
+	    		macroDefinitionsMap.put(token.getStartIndex(), token.getText());
+	    		break;
+	    	} case Macroref:
+	    		boolean inclusive = !macroDefinitionInTheSameLine(token);
+		    	NavigableMap<Integer, String> macroDefinitions = macroDefinitionsMap.headMap(token.getStartIndex(), inclusive);
+		    	if (macroDefinitions.containsValue(token.getText())){
+		    		//clear cached token to break nextToken loop.
+		    		cachedToken = null;
+		    	} else {
+					cachedToken = (CommonToken)token;
+				}
+		    	break;
+	    	case Macroval:
+	    	case Field:
+	    	case Modifierval:
+	    		cachedToken = (CommonToken)token;
+	    		break;
 	    }
-	    
-	    
-	    @Override
-		public void emit(Token token) {
-	    	super.emit(token);
-	    
-	    	if ( LexerATNSimulator.debug ) System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
-	    
-		    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
-		        return;
-		    }
-	    
-		    lastTokenType = token.getType();
-		    
-		    if (_mode == attribute && lastTokenType == DoubleQuote) {
-		        insideQuotedAttribute = !insideQuotedAttribute;
-		        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
-		    }
-		    
-		    if (lastTokenType == Macrodef){
-				macroDefinitions.add(token.getText());
-		    }
-		    if (lastTokenType == Macroref){
-				cachedToken = (CommonToken)token;
-			} 
-	    }
+	}
+	
+	private boolean macroDefinitionInTheSameLine(Token token){
+   		Entry<Integer, String> lower = macroDefinitionsMap.lowerEntry(token.getStartIndex());
+		if (lower == null) {
+			return false;
+		}
+		return lower.getKey().intValue() == token.getStartIndex() - token.getCharPositionInLine() && lower.getValue().equals(token.getText());
+	}
   
-      @Override
+	@Override
     public void mode(final int m) {
         super.mode(m);
         if ( LexerATNSimulator.debug ) System.out.println("Enter mode: " + getModeNames()[m]);
@@ -141,7 +203,7 @@ import java.util.*;
         return super.popMode();
     }
     
-    private void handleField(boolean popMode) {
+    private void handleField() {
    		if (columnIndex >= columnTypes.size()) {
    			if ( LexerATNSimulator.debug ) System.out.println("handle field - index too large: " + columnIndex + " >= " + columnTypes.size());
 			setType(SkippedField);
@@ -164,9 +226,18 @@ import java.util.*;
 				if ( LexerATNSimulator.debug ) System.out.println("handle field - default");
 				setType(Field);
 		}
-		if (popmode){
-			popMode();
-		}
+    }
+    
+    private boolean isDocumentIdDefinition() {
+    	return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTID;
+    }
+
+    private boolean isDocumentIdReference() {
+    	return columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF;
+    }
+
+    private boolean isMacroReference() {
+    	return cachedToken != null && cachedToken.getType() == Macroref;
     }
     
     private void handleDocumentId() {
@@ -174,45 +245,11 @@ import java.util.*;
     	isDocumentIdReference = lastTokenType == LParenthesis;
     }
     
-    private void handleFieldLb(boolean calledFromMacroref) {
+    private void handleFieldLb() {
     	setType(Lb);
     	popMode();
     	columnIndex = -1;
-    	if (calledFromMacroref) {
-    		popMode();
-    	}
     }
-    
-	    private void handleMacrorefLb() {
-	    	setType(Lb);
-	    	switch (_modeStack.get(_modeStack.size() - 1)){
-	    	case field:
-	    		popMode();
-	    		handleFieldLb();
-	    		break;
-	    	case macroval:
-	    		popMode();
-	    		popMode();
-	    		popMode();
-	    		setChannel(HIDDEN);
-	    		break;
-	    	case type:
-	    	case attribute:
-	    		if (insideQuotedAttribute){
-	    			setChannel(HIDDEN);
-	    		}else {
-	    			popMode();
-	    			popMode();
-	    			pushMode(record);
-	    		}
-	    		break;
-	    	case modifierval:
-	    		if (insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')){
-	    			setChannel(HIDDEN);
-	    		}
-	    		break;
-	    	}
-	    }
     
     public static String readType(final Token token) {
         switch (token.getType()) { 
@@ -325,6 +362,7 @@ LineSeparator       : '\\' Ws* Lb -> channel(HIDDEN);
 
 Separator           : ';';
 
+fragment MacrorefPrefix : '$' ~[ \t\r\n];
 fragment DocumentIDQualifier : [a-zA-Z0-9_\\-\\.](LineSeparator* [a-zA-Z0-9_\\-\\.])*;
 DocumentID          : '&' LineSeparator* Identifier;
 SpecialAttribute    : '@' LineSeparator* Identifier;
@@ -359,51 +397,33 @@ FieldLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 FieldSeparator          : Ws* Separator Ws* -> type(Separator), popMode, pushMode(field);
 FieldQuoted             : '"' (~'"'|'"''"')* '"';
 FieldConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
-FieldMacroref           : '$' ~[ \t\r\n] -> type(Macroref), pushMode(fieldmacroref);
-FieldLb                 : Lb {handleFieldLb(false);};
-DocumentIdField         : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTID}?; 
-DocumentIdRefField      : DocumentIDQualifier {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF}?;
-FieldCommaSkipped       : Ws* Comma Ws* {columnIndex < columnTypes.size() && columnTypes.get(columnIndex) == FIELD_DOCUMENTIDREF}? -> channel(HIDDEN);
-FieldMulti              : ~[\r\n";\t\\ $&] ~[\r\n";$&]* ~[\r\n";\t\\ $&] {columnIndex >= columnTypes.size() || columnTypes.get(columnIndex) <= FIELD_DEFAULT}? { handleField(false);};
-Field                   : ~[\r\n";] { handleField(false);};
+FieldMacrorefPrefix     : MacrorefPrefix -> type(Macroref);
+FieldMacroref           : ~[ \t\r\n;$] {isMacroReference()}? -> type(Macroref);
+FieldLb                 : Lb {handleFieldLb();};
+DocumentIdField         : DocumentIDQualifier {isDocumentIdDefinition()}?; 
+DocumentIdRefField      : DocumentIDQualifier {isDocumentIdReference()}?;
+FieldCommaSkipped       : Ws* Comma Ws* {isDocumentIdReference()}? -> channel(HIDDEN);
+Field                   : ~[\r\n";] { handleField();};
 //FieldEOF                : Ws* EOF -> type(EOF), popMode;
 //todo field z bialymi znakami tuz przed eof -> handling jak u modifierval?
 FieldError              : Error -> type(Error);
 
-mode fieldmacroref;
-FieldMacrorefLineSeparator       : LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
-FieldMacrorefSeparator       : Ws* Separator Ws* -> type(Separator), popMode, popMode, pushMode(field);
-FieldMacrorefValue           : ~[ \t\r\n] -> type(Macroref);
-FieldMacrorefWs              : Ws -> { handleField(true);};
-FieldMacrorefLb				: Lb {handleFieldLb(true);};
-FieldMacrorefError           : Error -> type(Error);
-
 mode macro;
-MacroEquals             : '=' -> pushMode(macroval), type(Equals);
+MacroEquals             : Ws* '=' Ws* -> pushMode(macroval), type(Equals);
 MacroWs                 : Ws+ -> type(Ws), channel(HIDDEN);
 MacroSeparator          : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 //ErrorMacroval           : ~[= \t]~[\r\n]* -> type(Macroval); //to match in case of errors
 MacroError              : Error -> type(Error);
 
 mode macroval;
-MacrovalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n'}? -> type(Ws), channel(HIDDEN);
-MacrovalSeparator		: LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
+MacrovalLineSeparator	: LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
 MacrovalConfigMacroref  : '$' C O N F I G (LineSeparator* ~[ \t\r\n])+ -> type(ConfigMacroref);
-MacrovalMacroref		: '$' ~[ \t\r\n] -> type(Macroref), pushMode(macrovalmacroref);
-MacrovalLb				: Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
+MacrovalMacrorefPrefix	: MacrorefPrefix -> type(Macroref);
+MacrovalMacroref        : ~[ \t\r\n$] {isMacroReference()}? -> type(Macroref);
+MacrovalLb				: Ws* Lb -> type(Lb), popMode, popMode, channel(HIDDEN);
 MacrovalEOF				: Ws* EOF -> type(EOF), popMode, popMode;
-MacrovalMulti			: ~[\r\n\t\\ $] ~[\r\n$]* ~[\r\n\t\\ $] -> type(Macroval);
 Macroval				: ~[\r\n];
 MacrovalError           : Error -> type(Error);
-
-
-mode macrovalmacroref;
-MacrovalMacrorefSeparator       : LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
-MacrovalMacrorefValue           : ~[ \t\r\n] -> type(Macroref);
-MacrovalMacrorefWs              : Ws+ {lastTokenType == Equals || _input.LA(1) == '\r' || _input.LA(1) == '\n'}? -> type(Ws), popMode, channel(HIDDEN);
-MacrovalMacrorefLb				: Lb -> type(Lb), popMode, popMode, popMode, channel(HIDDEN);
-MacrovalMacrorefEOF				: Ws* EOF -> type(EOF), popMode, popMode, popMode;
-MacrovalMacrorefError           : Error -> type(Error);
 
 mode type;
 TSeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
@@ -412,19 +432,12 @@ TQuote              : Quote -> type(Quote);
 LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
 TLb                 : Lb -> type(Lb), popMode, pushMode(record);
 TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-TIdentifier         : Identifier -> type(Type);
+TIdentifier         : Identifier {cachedToken == null}? -> type(Type);
 TConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
-TMacroref           : '$' ~[ \t\r\n] -> type(Macroref), pushMode(typemacroref);
+TMacrorefPrefix     : MacrorefPrefix -> type(Macroref);
+TMacroref           : ~[ \t\r\n\[;$] {isMacroReference()}? -> type(Macroref);
 TWs                 : Ws -> type(Ws), channel(HIDDEN);
 TError              : Error -> type(Error);
-
-mode typemacroref;
-TypeMacrorefSeparator  : Separator -> type(Separator), popMode, popMode, pushMode(attribute);
-TypeMacrorefLBracket   : '[' -> popMode, pushMode(modifier), channel(HIDDEN);
-TypeMacrorefSeparator  : LineSeparator+ -> type(LineSeparator), channel(HIDDEN);
-TypeMacrorefValue      : ~[ \t\r\n] -> type(Macroref);
-TypeMacrorefWs         : Ws+ -> type(Ws), popMode;
-TypeMacrorefError      : Error -> type(Error);
 
 mode attribute;
 AComma              : Comma -> type(Comma);
@@ -440,22 +453,14 @@ AOr                 : Or -> type(Or);
 AHiddenLb           : Lb {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
 ALb                 : Lb -> type(Lb), popMode, pushMode(record);
 ALineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-AIdentifier         : Identifier -> type(Identifier);
+AIdentifier         : Identifier {cachedToken == null}? -> type(Identifier);
 ASpecialAttribute   : SpecialAttribute -> type(SpecialAttribute);
 ADocumentID         : DocumentID {handleDocumentId();};
 AConfigMacroref     : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
-AMacroref           : '$' ~[ \t\r\n] -> type(Macroref), pushMode(macroref);
+AMacrorefPrefix     : MacrorefPrefix -> type(Macroref);
+AMacroref           : ~[ \t\r\n\[;$] {isMacroReference()}? -> type(Macroref);
 AWs                 : Ws -> type(Ws), channel(HIDDEN);
 AError              : Error -> type(Error);
-
-mode attributemacroref;
-AttributeMacrorefSeparator  : Separator -> type(Separator), popMode, popMode, pushMode(attribute);
-AttributeMacrorefLBracket   : '[' -> popMode, pushMode(modifier), channel(HIDDEN);
-AttributeMacrorefSeparator  : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-AttributeMacrorefValue      : ~[ \t\r\n] -> type(Macroref);
-AttributeMacrorefLb         : Lb -> type(Lb), popMode, popMode, pushMode(record);
-AttributeMacrorefWs         : Ws -> type(Ws), popMode, channel(HIDDEN);
-AttributeMacrorefError      : Error -> type(Error);
 
 mode modifier;
 //Type modifiers
@@ -503,23 +508,14 @@ ModifiervalSingleComma		: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
 //ModifiervalSingleComma	: Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
 ModifiervalComma			: Comma -> type(Comma), popMode, channel(HIDDEN);
 ModifiervalConfigMacroref   : '$' C O N F I G (LineSeparator* [a-zA-Z0-9_\\-])+ -> type(ConfigMacroref);
-ModifiervalMacroref			: '$' ~[ \t\r\n] -> type(Macroref), pushMode(modifiervalmacroref);
+ModifiervalMacrorefPrefix	: MacrorefPrefix -> type(Macroref);
+ModifiervalMacroref         : ~[ \t\r\n\],$] {isMacroReference()}? -> type(Macroref);
 ModifiervalSeparator		: LineSeparator -> type(LineSeparator), channel(HIDDEN);
 ModifiervalDQuotes			: {insideQuotedAttribute}? DoubleQuote DoubleQuote -> type(Modifierval);
 ModifiervalDQuote			: {!insideQuotedAttribute}? DoubleQuote -> type(Modifierval);
 ModifiervalQuoted			: '\''(~[\r\n\'] |'\'' '\'')* '\'' -> type(Modifierval);
-ModifiervalMulti			: ~[\r\n\[\],;\'\t\\ $] ~[\r\n\[\],;\'$]* ~[\r\n\[\],;\'\t\\ $] -> type(Modifierval);
 Modifierval					: ~[\r\n\[\],;\'];
 ModifiervalError            : Error -> type(Error);
-
-mode modifiervalmacroref;
-ModifiervalMacrorefSeparator  : Separator -> type(Separator), popMode, popMode, pushMode(attribute);
-ModifiervalMacrorefLBracket   : '[' -> popMode, pushMode(modifier), channel(HIDDEN);
-ModifiervalMacrorefSeparator  : LineSeparator -> type(LineSeparator), channel(HIDDEN);
-ModifiervalMacrorefValue      : ~[ \t\r\n] -> type(Macroref);
-ModifiervalMacrorefLb         : Lb -> type(Lb), popMode, popMode, pushMode(record);
-ModifiervalMacrorefWs         : Ws -> type(Ws), popMode, channel(HIDDEN);
-ModifiervalMacrorefError      : Error -> type(Error);
 
 /*
 /work/projects/yeclipse/ImpexAST/src/main/java/com/lambda/impex/ast

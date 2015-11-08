@@ -117,8 +117,6 @@ public class LexerTokenRegion extends Region implements ILexerTokenRegion {
             return "FieldQuoted                  ";
         case ImpexLexer.Field:
             return "Field                        ";
-        case ImpexLexer.FieldMulti:
-            return "FieldMulti                   ";
         case ImpexLexer.FieldCommaSkipped:
             return "FieldCommaSkipped            ";
         case ImpexLexer.SkippedField:

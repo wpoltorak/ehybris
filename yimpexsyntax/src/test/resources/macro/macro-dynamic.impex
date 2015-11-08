@@ -1,0 +1,4 @@
+$name = wojtek
+$macro = ha $macroha$nameha
+UPDATE User;name[default=$namex]
+;Anja$namez;

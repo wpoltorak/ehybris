@@ -63,6 +63,15 @@ public class ImpexLexerTest extends AbstractLexerTest {
         tokens = init("/common/blank-multiline.impex");
 
     }
+    
+    @Test
+    public void testMacroDynamic() throws Exception {
+        final List<Token> tokens = init("/macro/macro-dynamic.impex");
+        
+        System.out.println(tokens);
+        
+    }
+
 
     @Test
     public void testMacroDuplicate() throws Exception {

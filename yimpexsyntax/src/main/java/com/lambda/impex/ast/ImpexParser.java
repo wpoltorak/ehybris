@@ -25,9 +25,8 @@ public class ImpexParser extends Parser {
 		RParenthesis=22, Equals=23, Or=24, LineSeparator=25, DocumentID=26, SpecialAttribute=27, 
 		Identifier=28, Macrodef=29, UserRights=30, BeanShell=31, Comment=32, Lb=33, 
 		Ws=34, Error=35, FieldQuoted=36, FieldLb=37, DocumentIdField=38, DocumentIdRefField=39, 
-		FieldCommaSkipped=40, FieldMulti=41, Field=42, Macroval=43, LBracket=44, 
-		ABracket=45, ADocumentID=46, ModifierBracket=47, ModifiervalBracket=48, 
-		Modifierval=49;
+		FieldCommaSkipped=40, Field=41, Macroval=42, LBracket=43, ABracket=44, 
+		ADocumentID=45, ModifierBracket=46, ModifiervalBracket=47, Modifierval=48;
 	public static final int
 		RULE_impex = 0, RULE_block = 1, RULE_header = 2, RULE_quote = 3, RULE_headerModifierAssignment = 4, 
 		RULE_headerModifier = 5, RULE_record = 6, RULE_field = 7, RULE_documentIdField = 8, 
@@ -51,8 +50,7 @@ public class ImpexParser extends Parser {
 		null, null, null, "';'", null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, "','", "'.'", "'\"'", "'''", "'('", "')'", 
 		"'='", "'|'", null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		"']'"
+		null, null, null, null, null, null, null, null, null, null, null, "']'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "Mode", "Type", "Separator", "ConfigMacroref", "Macroref", "SkippedField", 
@@ -63,8 +61,8 @@ public class ImpexParser extends Parser {
 		"RParenthesis", "Equals", "Or", "LineSeparator", "DocumentID", "SpecialAttribute", 
 		"Identifier", "Macrodef", "UserRights", "BeanShell", "Comment", "Lb", 
 		"Ws", "Error", "FieldQuoted", "FieldLb", "DocumentIdField", "DocumentIdRefField", 
-		"FieldCommaSkipped", "FieldMulti", "Field", "Macroval", "LBracket", "ABracket", 
-		"ADocumentID", "ModifierBracket", "ModifiervalBracket", "Modifierval"
+		"FieldCommaSkipped", "Field", "Macroval", "LBracket", "ABracket", "ADocumentID", 
+		"ModifierBracket", "ModifiervalBracket", "Modifierval"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -2102,7 +2100,7 @@ public class ImpexParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\63\u0117\4\2\t\2"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\62\u0117\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2145,7 +2143,7 @@ public class ImpexParser extends Parser {
 		"\60\31\2m\13\3\2\2\2no\t\3\2\2o\r\3\2\2\2pr\7\4\2\2qp\3\2\2\2qr\3\2\2"+
 		"\2ru\3\2\2\2st\7\5\2\2tv\5\20\t\2us\3\2\2\2vw\3\2\2\2wu\3\2\2\2wx\3\2"+
 		"\2\2xz\3\2\2\2y{\7#\2\2zy\3\2\2\2z{\3\2\2\2{\17\3\2\2\2|\u0082\7&\2\2"+
-		"}\u0082\7,\2\2~\u0082\58\35\2\177\u0082\7\b\2\2\u0080\u0082\5\24\13\2"+
+		"}\u0082\7+\2\2~\u0082\58\35\2\177\u0082\7\b\2\2\u0080\u0082\5\24\13\2"+
 		"\u0081|\3\2\2\2\u0081}\3\2\2\2\u0081~\3\2\2\2\u0081\177\3\2\2\2\u0081"+
 		"\u0080\3\2\2\2\u0082\u0085\3\2\2\2\u0083\u0081\3\2\2\2\u0083\u0084\3\2"+
 		"\2\2\u0084\u0088\3\2\2\2\u0085\u0083\3\2\2\2\u0086\u0088\5\22\n\2\u0087"+
@@ -2189,12 +2187,12 @@ public class ImpexParser extends Parser {
 		"\u00ee\3\2\2\2\u00f6+\3\2\2\2\u00f7\u00f8\t\5\2\2\u00f8-\3\2\2\2\u00f9"+
 		"\u00fc\7\22\2\2\u00fa\u00fc\58\35\2\u00fb\u00f9\3\2\2\2\u00fb\u00fa\3"+
 		"\2\2\2\u00fc\u00fd\3\2\2\2\u00fd\u00fb\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe"+
-		"/\3\2\2\2\u00ff\u0102\7\63\2\2\u0100\u0102\58\35\2\u0101\u00ff\3\2\2\2"+
+		"/\3\2\2\2\u00ff\u0102\7\62\2\2\u0100\u0102\58\35\2\u0101\u00ff\3\2\2\2"+
 		"\u0101\u0100\3\2\2\2\u0102\u0103\3\2\2\2\u0103\u0101\3\2\2\2\u0103\u0104"+
 		"\3\2\2\2\u0104\61\3\2\2\2\u0105\u0108\7\4\2\2\u0106\u0108\58\35\2\u0107"+
 		"\u0105\3\2\2\2\u0107\u0106\3\2\2\2\u0108\63\3\2\2\2\u0109\u010a\7\37\2"+
 		"\2\u010a\u010b\7\31\2\2\u010b\u010c\5\66\34\2\u010c\65\3\2\2\2\u010d\u0110"+
-		"\7-\2\2\u010e\u0110\58\35\2\u010f\u010d\3\2\2\2\u010f\u010e\3\2\2\2\u0110"+
+		"\7,\2\2\u010e\u0110\58\35\2\u010f\u010d\3\2\2\2\u010f\u010e\3\2\2\2\u0110"+
 		"\u0113\3\2\2\2\u0111\u010f\3\2\2\2\u0111\u0112\3\2\2\2\u0112\67\3\2\2"+
 		"\2\u0113\u0111\3\2\2\2\u0114\u0115\t\6\2\2\u01159\3\2\2\2)>@EGQS[bfqw"+
 		"z\u0081\u0083\u0087\u0093\u009e\u00a5\u00ae\u00b7\u00bc\u00c1\u00ca\u00d4"+

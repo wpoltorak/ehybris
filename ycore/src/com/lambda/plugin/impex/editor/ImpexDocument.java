@@ -1,6 +1,7 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -41,7 +41,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     private NavigableMap<Integer, ILexerTokenRegion> tokens = new TreeMap<>();
     private NavigableMap<Integer, IRegion> blocks = null;
     private ImpexModel impexModel;
-    private final Lexer lexer;
+    private final ImpexLexer lexer;
     private ParseTree parseTree;
 
     public ImpexDocument(IDocument delegate, TokenSourceProvider tokenSource) {
@@ -221,7 +221,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
             removeTokens(lengthDelta, changeRegion); // remove existing tokens within the change region - they will be regenerated 
 //            printRegions("Tokens after clean: ", tokens.values());
 			shiftTokens(changeRegion, lengthDelta, blocks); //update positions of tokens that are after change region
-            createTokens(text, blocks, changeRegion.getOffset()); // regenerate tokens within change region to reflect changes in text
+            createTokens(text, blocks, changeRegion.getOffset(), changeRegion.getLength(), lengthDelta); // regenerate tokens within change region to reflect changes in text
 //            printRegions("Tokens after create: ", tokens.values()); 
 //            System.out.println("unchanged + newly created");
 //            verifyTokens(tokens);
@@ -247,7 +247,7 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
 
 	private void shiftTokens(IRegion changeRegion, int lengthDelta, NavigableMap<Integer, IRegion> blocks) {
 		int blockOffset = -1;
-		Map<Integer,  ILexerTokenRegion> shiftedTokens = new TreeMap<>();
+		Map<Integer,  ILexerTokenRegion> shiftedTokens = new HashMap<>();
         Integer firstTokenToShift = tokens.floorKey(changeRegion.getOffset() + changeRegion.getLength() - lengthDelta);
 		NavigableMap<Integer, ILexerTokenRegion> tailToShift = tokens.subMap(firstTokenToShift, true, tokens.lastKey(), true);
 		for (Iterator<Entry<Integer, ILexerTokenRegion>> it = tailToShift.entrySet().iterator(); it.hasNext();) {
@@ -311,17 +311,17 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     }
 
     private void createTokens(String text, SortedMap<Integer, IRegion> blocks) {
-        createTokens(text, blocks, 0);
+        createTokens(text, blocks, 0, 0, 0);
     }
 
     private void createTokens(String text, SortedMap<Integer, IRegion> blocks,
-            int shift) {
-        lexer.setInputStream(new ANTLRInputStream(text));
+            int offset, int length, int delta) {
+    	lexer.setup(text, offset, length, delta);
         LexerTokenRegion tokenInfo = null;
         int blockOffset = -1;
         do {
             Token nextToken = lexer.nextToken();
-			tokenInfo = createTokenInfo(nextToken, shift);
+			tokenInfo = createTokenInfo(nextToken, offset);
             // System.out.println(tokenInfo);
             if (tokenInfo.isBlockStart() || tokenInfo.isEndOfFile()) {
                 if (blockOffset > -1) {
@@ -362,8 +362,8 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return block;
     }
 
-    private LexerTokenRegion createTokenInfo(Token token, int shift) {
-        return new LexerTokenRegion(token.getStartIndex() + shift, token.getStopIndex() - token.getStartIndex() + 1,
+    private LexerTokenRegion createTokenInfo(Token token, int offset) {
+        return new LexerTokenRegion(token.getStartIndex() + offset, token.getStopIndex() - token.getStartIndex() + 1,
                 token.getType());
     }
 
@@ -371,8 +371,8 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return new LexerTokenRegion(token.getOffset() + shift, token.getLength(), token.getTokenType());
     }
 
-    protected Lexer createLexer(TokenSourceProvider tokenSource, String text) {
-        Lexer source = tokenSource.get();
+    protected ImpexLexer createLexer(TokenSourceProvider tokenSource, String text) {
+        ImpexLexer source = tokenSource.get();
         source.removeErrorListeners();
         impexModel = new DefaultImpexModel();
         source.addErrorListener(new ImpexParserDefaultErrorListener(impexModel));
