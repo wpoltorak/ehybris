@@ -342,7 +342,7 @@
           label="Impex Field Occurrences"
           overviewRulerPreferenceKey="fieldOccurrenceIndicationOverviewRuler"
           overviewRulerPreferenceValue="false"
-          presentationLayer="3"
+          presentationLayer="2"
           textPreferenceKey="fieldOccurrenceIndicationText"
           textPreferenceValue="false"
           textStylePreferenceKey="fieldOccurrenceIndicationTextStyle"
