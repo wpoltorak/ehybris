@@ -184,20 +184,20 @@ public class JavaTypeFinder implements TypeFinder {
             if ((searchType & MODEL_SEARCH) == MODEL_SEARCH) {
                 String tname = matchRule == SearchPattern.R_EXACT_MATCH ? ensureSuffix(typename, MODEL_SUFFIX)
                         : typename;
-                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(tname, matchRule, requestor,
+                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(tname, matchRule, requestor,
                         PLATFORM_MODEL_PACKAGE);
-                finder.run(progressMonitor);
+                finder.schedule();
             }
             if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
-                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(typename, matchRule, requestor,
+                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
                         PLATFORM_JALO_PACKAGE);
-                finder.run(progressMonitor);
+                finder.schedule();
 
             }
             if ((searchType & ENUM_SEARCH) == ENUM_SEARCH) {
-                ClassDeclarationsFinderJob finder = new ClassDeclarationsFinderJob(typename, matchRule, requestor,
-                        PLATFORM_ENUM_PACKAGE);
-                finder.run(progressMonitor);
+                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
+                        PLATFORM_ENUM_PACKAGE, IJavaSearchConstants.CLASS_AND_ENUM);
+                finder.schedule();
             }
 
         } catch (CoreException e) {
@@ -296,17 +296,22 @@ public class JavaTypeFinder implements TypeFinder {
         return txt;
     }
 
-    private class ClassDeclarationsFinderJob extends Job {
+    private class TypeDeclarationsFinderJob extends Job {
         private final SearchPattern pattern;
         private final SearchParticipant[] participants;
         private final IJavaSearchScope scope;
         private final SearchRequestor requestor;
-
-        public ClassDeclarationsFinderJob(String stringPattern, int matchRule, SearchRequestor requestor,
+        
+        public TypeDeclarationsFinderJob(String stringPattern, int matchRule, SearchRequestor requestor,
                 String searchScope) throws CoreException {
+        	this(stringPattern, matchRule, requestor, searchScope, IJavaSearchConstants.CLASS);
+        }
+        
+        public TypeDeclarationsFinderJob(String stringPattern, int matchRule, SearchRequestor requestor,
+                String searchScope, int searchFor) throws CoreException {
             super("Java Type Search");
             this.requestor = requestor;
-            this.pattern = SearchPattern.createPattern(stringPattern, IJavaSearchConstants.CLASS,
+            this.pattern = SearchPattern.createPattern(stringPattern, searchFor,
                     IJavaSearchConstants.DECLARATIONS, matchRule);
             this.participants = new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() };
             this.scope = getScope(searchScope);
