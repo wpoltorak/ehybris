@@ -1,7 +1,6 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,8 +12,10 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -25,7 +26,9 @@ import org.eclipse.jface.text.Region;
 import com.lambda.impex.ast.DefaultImpexModel;
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.impex.ast.ImpexModel;
+import com.lambda.impex.ast.ImpexParser;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
+import com.lambda.impex.ast.ImpexParserDefaultListener;
 import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.plugin.impex.antlr.JavaTypeFinder;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
@@ -91,32 +94,6 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
         return tokens.values();
     }
 
-//    private IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
-//        int lineOffset = 0;
-//        int lineLength = 0;
-//        int first = offset;
-//        // get last EOF token of length 0
-//        int length = getToken(tokens.lastKey().intValue()).getOffset();
-//        // rewind to first line of all the 'line separated' lines and calculate offset & line lengths
-//        do {
-//            IRegion line = getLineInformationOfOffset(first);
-//            boolean isLast = line.getOffset() + line.getLength() == length;
-//            lineOffset = line.getOffset();
-//            lineLength += line.getLength() + (isLast ? 0 : 1);
-//            first = lineOffset - 1;
-//        } while (includeSeparatedLines && first > 0 && getToken(first).getTokenType() != ImpexLexer.Lb);
-//        // select last token of current line
-//        ILexerTokenRegion last = getToken(lineOffset + lineLength);
-//        // forward to all the next 'line separated' lines and calculate their lengths
-//        while (includeSeparatedLines && (last.getTokenType() != ImpexLexer.Lb && last.getTokenType() != ImpexLexer.EOF)) {
-//            IRegion line = getLineInformationOfOffset(lineOffset + lineLength + 1);
-//            boolean isLast = line.getOffset() + line.getLength() == length;
-//            lineLength += line.getLength() + 1;
-//            last = getToken(lineOffset + lineLength - (isLast ? 0 : 1));
-//        }
-//        return new Region(lineOffset, lineLength);
-//    }
-
     private IRegion getLineInformationOfOffset(int offset, boolean includeSeparatedLines) throws BadLocationException {
         int lineBeginOffset = 0;
         int lineEndOffset = tokens.lastKey(); //last EOF token has 0 length
@@ -171,19 +148,19 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     public List<ImpexProblem> validate(ImpexModel impexModel) {
         long nanoTime = System.nanoTime();
         try {
-//            System.err.println("===> VALIDATE BEGIN");
-//            char[] source = get().toCharArray();
-//            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
-//            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
-//            parseTree = parser.impex();
-//
-//            final ParseTreeWalker walker = new ParseTreeWalker();
-//            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
-//            listener.setTypeFinder(typeFinder);
-//            walker.walk(listener, parseTree);
-//            this.impexModel = impexModel;
-//            return impexModel.getProblems();
-            return Collections.EMPTY_LIST;
+            System.err.println("===> VALIDATE BEGIN");
+            char[] source = get().toCharArray();
+            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
+            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
+            parseTree = parser.impex();
+
+            final ParseTreeWalker walker = new ParseTreeWalker();
+            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
+            listener.setTypeFinder(typeFinder);
+            walker.walk(listener, parseTree);
+            this.impexModel = impexModel;
+            return impexModel.getProblems();
+//            return Collections.EMPTY_LIST;
         } finally {
             System.err.println("===> VALIDATE END: took "
                     + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");
