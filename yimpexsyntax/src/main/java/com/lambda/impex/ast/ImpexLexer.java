@@ -142,48 +142,24 @@ public class ImpexLexer extends Lexer {
 	    private int columnIndex = -1;
 	    private int offset;
 	    private boolean isDocumentIdReference;
-	    private NavigableMap<Integer, String> macroDefinitionsMap = new TreeMap<>();
+
+		private MacroDefinitions macroDefinitions = new MacroDefinitions();
+	    private boolean clearCachedDefinitions;
+	    
 	    private CommonToken cachedToken = null;
 	    private final Deque<Token> pendingTokens = new ArrayDeque<>();
 	    
 	    public void setup(String text, int offset, int length, int delta) {
 	    	setInputStream(new ANTLRInputStream(text));
 	    	setOffset(offset);
-	    	updateMacroDefinitions(offset, length, delta);
+	    	macroDefinitions.update(offset, length, delta);
 	    }
-	    
-	    private void updateMacroDefinitions(int offset, int length, int delta) {
-			Integer firstMacroDefinitionToShift = macroDefinitionsMap.floorKey(offset + length - delta);
-			if (firstMacroDefinitionToShift == null) {
-				return;
-			}
-
-			NavigableMap<Integer, String> subMap = macroDefinitionsMap.subMap(offset, true, firstMacroDefinitionToShift, false);
-			subMap.clear();
-			
-			NavigableMap<Integer, String> tailToShift = macroDefinitionsMap.subMap(firstMacroDefinitionToShift, true, macroDefinitionsMap.lastKey(), true);
-			Map<Integer,  String> shiftedMacroDefinitions = new HashMap<>();
-			for (Iterator<Entry<Integer, String>> it = tailToShift.entrySet().iterator(); it.hasNext();) {
-				Entry<Integer, String> entry = it.next();
-				shiftedMacroDefinitions.put(entry.getKey() + delta, entry.getValue());
-				it.remove();
-			}
-			macroDefinitionsMap.putAll(shiftedMacroDefinitions);
-		}
 	    
 	    private void setOffset(int offset) {
 	    	this.offset = offset;
 	    }
 	    private boolean isCached(Token token) {
 	    	return cachedToken != null && cachedToken == token;
-	    }
-	    
-	    public NavigableMap<Integer, String> getMacroDefinitionsMap(){
-	    	return macroDefinitionsMap;
-	    }
-	    
-	    public void setMacroDefinitionsMap(NavigableMap<Integer, String> macroDefinitionsMap){
-	    	this.macroDefinitionsMap = macroDefinitionsMap;
 	    }
 	    
 	    @Override
@@ -228,55 +204,55 @@ public class ImpexLexer extends Lexer {
 	    	
 	    	if ( LexerATNSimulator.debug ) System.out.println(token.getStartIndex() + ":" + token.getStopIndex() + ", " + readChannel(token) + ", " + readType(token) + " '" + token.getText() + "'");
 
-			if (cachedToken != null && cachedToken != token){	
+			if (cachedToken != null && cachedToken != token) {
 				pendingTokens.addLast(cachedToken);
 				cachedToken = null;
+				macroDefinitions.nextToken();
 			}
-
+		
+			switch (token.getType()) {
+				case Lb:
+					if (clearCachedDefinitions){
+						macroDefinitions.clear();
+						clearCachedDefinitions = false;
+					}
+				break;
+			}
+		
 		    if (token.getChannel() == Token.HIDDEN_CHANNEL) {
 		        return;
 		    }
 	    
 		    lastTokenType = token.getType();
 		    
-		    if (_mode == attribute && lastTokenType == DoubleQuote) {
-		        insideQuotedAttribute = !insideQuotedAttribute;
-		        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
-		    }
-		    
 		    switch (token.getType()) {
-		    	case Macrodef:{
-		    		macroDefinitionsMap.put(offset + token.getStartIndex(), token.getText());
+		    	case Macroval:
+		    	case Field:
+		    	case Modifierval:
+		    		cachedToken = (CommonToken)token;
 		    		break;
-		    	} case Macroref:
-		    		boolean inclusive = !macroDefinitionInTheSameLine(token);
-		    		int index = offset + token.getStartIndex() - token.getCharPositionInLine(); //beginning of the line 
-			    	NavigableMap<Integer, String> macroDefinitions = macroDefinitionsMap.headMap(index, inclusive);
-			    	if (macroDefinitions.containsValue(token.getText())){
+				case Macroref:{
+				//TODO more performance improvement with startswith getter for map view macroDefinitions 
+			    	if (macroDefinitions.isReferenced(token)){
 			    		//clear cached token to break nextToken loop.
 			    		cachedToken = null;
 			    	} else {
 						cachedToken = (CommonToken)token;
 					}
 			    	break;
-		    	case Macroval:
-		    	case Field:
-		    	case Modifierval:
-		    		cachedToken = (CommonToken)token;
+		    	} case Macrodef:{
+		    		macroDefinitions.macrodef(token);
+		    		clearCachedDefinitions = true; // clear when next line break occurs
+		    		break;
+		    	} case DoubleQuote:
+		    		if (_mode == attribute){
+				        insideQuotedAttribute = !insideQuotedAttribute;
+				        if ( LexerATNSimulator.debug ) System.out.println((insideQuotedAttribute ? "BEGIN" : "END") + " inside quoted attribute");
+		    		}
 		    		break;
 		    }
 		}
 		
-		private void startIndex(Token token) {
-		}
-		private boolean macroDefinitionInTheSameLine(Token token){
-	   		Entry<Integer, String> lower = macroDefinitionsMap.lowerEntry(offset + token.getStartIndex());
-			if (lower == null) {
-				return false;
-			}
-			return lower.getKey().intValue() == offset + token.getStartIndex() - token.getCharPositionInLine() && lower.getValue().equals(token.getText());
-		}
-	  
 		@Override
 	    public void mode(final int m) {
 	        super.mode(m);

@@ -1,6 +1,7 @@
 package com.lambda.plugin.impex.editor;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,10 +13,8 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -26,9 +25,7 @@ import org.eclipse.jface.text.Region;
 import com.lambda.impex.ast.DefaultImpexModel;
 import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.impex.ast.ImpexModel;
-import com.lambda.impex.ast.ImpexParser;
 import com.lambda.impex.ast.ImpexParserDefaultErrorListener;
-import com.lambda.impex.ast.ImpexParserDefaultListener;
 import com.lambda.impex.ast.ImpexProblem;
 import com.lambda.plugin.impex.antlr.JavaTypeFinder;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
@@ -174,18 +171,19 @@ public class ImpexDocument extends DocumentWrapper implements IDocumentListener 
     public List<ImpexProblem> validate(ImpexModel impexModel) {
         long nanoTime = System.nanoTime();
         try {
-            System.err.println("===> VALIDATE BEGIN");
-            char[] source = get().toCharArray();
-            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
-            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
-            parseTree = parser.impex();
-
-            final ParseTreeWalker walker = new ParseTreeWalker();
-            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
-            listener.setTypeFinder(typeFinder);
-            walker.walk(listener, parseTree);
-            this.impexModel = impexModel;
-            return impexModel.getProblems();
+//            System.err.println("===> VALIDATE BEGIN");
+//            char[] source = get().toCharArray();
+//            final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(source, source.length));
+//            ImpexParser parser = new ImpexParser(new CommonTokenStream(lexer));
+//            parseTree = parser.impex();
+//
+//            final ParseTreeWalker walker = new ParseTreeWalker();
+//            ImpexParserDefaultListener listener = new ImpexParserDefaultListener(impexModel);
+//            listener.setTypeFinder(typeFinder);
+//            walker.walk(listener, parseTree);
+//            this.impexModel = impexModel;
+//            return impexModel.getProblems();
+            return Collections.EMPTY_LIST;
         } finally {
             System.err.println("===> VALIDATE END: took "
                     + TimeUnit.SECONDS.convert(System.nanoTime() - nanoTime, TimeUnit.NANOSECONDS) + " seconds");

@@ -8,6 +8,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.ITextDoubleClickStrategy;
+import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposalSorter;
@@ -94,6 +95,11 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
                 // return new DefaultInformationControl(parent, presenter);
             }
         };
+    }
+    
+    @Override
+    public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
+    	return super.getTextHover(sourceViewer, contentType);
     }
 
     @Override

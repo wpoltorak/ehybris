@@ -179,28 +179,42 @@ public class JavaTypeFinder implements TypeFinder {
         if (!project.exists()) {
             return;
         }
-
         try {
+        	TypeDeclarationsFinderJob mFinder = null;
+        	TypeDeclarationsFinderJob eFinder = null;
+        	TypeDeclarationsFinderJob jFinder = null;
             if ((searchType & MODEL_SEARCH) == MODEL_SEARCH) {
                 String tname = matchRule == SearchPattern.R_EXACT_MATCH ? ensureSuffix(typename, MODEL_SUFFIX)
                         : typename;
-                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(tname, matchRule, requestor,
+                mFinder = new TypeDeclarationsFinderJob(tname, matchRule, requestor,
                         PLATFORM_MODEL_PACKAGE);
-                finder.schedule();
+                mFinder.setPriority(Job.SHORT);
+                mFinder.schedule();
             }
             if ((searchType & JALO_SEARCH) == JALO_SEARCH) {
-                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
+                jFinder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
                         PLATFORM_JALO_PACKAGE);
-                finder.schedule();
-
+                jFinder.setPriority(Job.SHORT);
+                jFinder.schedule();
             }
             if ((searchType & ENUM_SEARCH) == ENUM_SEARCH) {
-                TypeDeclarationsFinderJob finder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
+            	eFinder = new TypeDeclarationsFinderJob(typename, matchRule, requestor,
                         PLATFORM_ENUM_PACKAGE, IJavaSearchConstants.CLASS_AND_ENUM);
-                finder.schedule();
+                eFinder.setPriority(Job.SHORT);
+                eFinder.schedule();
+            }
+            
+            if (mFinder != null) {
+            	mFinder.join();
+            }
+            if (jFinder != null) {
+            	jFinder.join();
+            }
+            if (eFinder != null) {
+            	eFinder.join();
             }
 
-        } catch (CoreException e) {
+        } catch (CoreException | InterruptedException e) {
             YCore.logError(e);
         }
     }
