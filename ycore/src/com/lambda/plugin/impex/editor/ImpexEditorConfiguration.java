@@ -99,7 +99,7 @@ public class ImpexEditorConfiguration extends TextSourceViewerConfiguration {
     
     @Override
     public ITextHover getTextHover(ISourceViewer sourceViewer, String contentType) {
-    	return super.getTextHover(sourceViewer, contentType);
+    	return new ImpexHover();
     }
 
     @Override

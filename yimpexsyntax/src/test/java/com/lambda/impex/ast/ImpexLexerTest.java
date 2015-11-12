@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.junit.Test;
 
@@ -67,13 +68,25 @@ public class ImpexLexerTest extends AbstractLexerTest {
     @Test
     public void testMacroDynamic() throws Exception {
         final List<Token> tokens = init("/macro/macro-dynamic.impex");
-        
         System.out.println(tokens);
-        
-    }
+//        MacroDefinitions map = new MacroDefinitions();
+//        map.macrodef(token(1, "$catalogVersion"));
+//        map.macrodef(token(15, "$catalog"));
+//        map.macrodef(token(12, "$matalog"));
+//        map.macrodef(token(24, "$macro"));
+//        
+//        boolean referenced = map.isReferenced(token(56, "$12345"));
+//        System.out.println(referenced);
+;    }
 
 
-    @Test
+    private Token token(int i, String string) {
+    	CommonToken token = new CommonToken (0, string);
+    	token.setStartIndex(i);
+		return token;
+	}
+
+	@Test
     public void testMacroDuplicate() throws Exception {
         final List<Token> tokens = init("/macro/macro-duplicate.impex");
         int index = -1;
