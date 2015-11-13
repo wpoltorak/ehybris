@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -18,9 +19,7 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 
 import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.impex.ast.ImpexParser.AttributeContext;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
-import com.lambda.impex.ast.ImpexParser.FieldContext;
 import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.ImpexContext;
 import com.lambda.impex.ast.ImpexParser.RecordContext;
@@ -38,9 +37,11 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 
 			switch (region.getTokenType()) {
 			case ImpexLexer.Field:
+			case ImpexLexer.FieldQuoted:
 			case ImpexLexer.SkippedField:
 			case ImpexLexer.DocumentIdField:
 			case ImpexLexer.DocumentIdRefField:
+			case ImpexLexer.Separator:
 				ImpexDocument document = (ImpexDocument) textViewer.getDocument();
 				ParseTree parseTree = document.getParseTree();
 				if (parseTree != null) {
@@ -71,12 +72,16 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			return null;
 		}
 		tooltip = tooltip.trim();
-		
-		if (StringUtils.isEmpty(tooltip)){
+
+		if (StringUtils.isEmpty(tooltip)) {
 			return "<empty attribute>";
 		}
-		
-		if (tooltip.charAt(tooltip.length() - 1) == ';'){
+
+		if (tooltip.charAt(0) == ';') {
+			tooltip = tooltip.substring(1).trim();
+		}
+
+		if (tooltip.charAt(tooltip.length() - 1) == ';') {
 			tooltip = tooltip.substring(0, tooltip.length() - 1).trim();
 		}
 		return tooltip;
@@ -110,7 +115,6 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 		private static final int PROCESSING = 1;
 		private static final int FINISHED = 2;
 		private int status = NOT_STARTED;
-		private int pos;
 		protected int index;
 		protected Map<Integer, Region> columns;
 		private int offset;
@@ -128,7 +132,6 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 		public void enterBlock(BlockContext ctx) {
 			if (status == NOT_STARTED && offset >= startIndex(ctx) && offset < stopIndex(ctx)) {
 				status = PROCESSING;
-				pos = -1;
 				index = -1;
 				columns = new HashMap<>();
 			}
@@ -142,7 +145,7 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 		}
 
 		@Override
-		public void exitHeader(HeaderContext ctx) {
+		public void enterHeader(HeaderContext ctx) {
 			if (status != PROCESSING) {
 				return;
 			}
@@ -151,29 +154,12 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			if (separators.isEmpty()) {
 				return;
 			}
+
 			for (int i = 1; i < separators.size(); i++) {
-				TerminalNode node = separators.get(i);
-				IRegion region = columns.get(i - 1);
-				if (region != null) {
-					columns.put(i - 1,
-							new Region(region.getOffset(), node.getSymbol().getStartIndex() - region.getOffset() + 1));
-				}
+				Token stop = separators.get(i).getSymbol();
+				Token start = separators.get(i - 1).getSymbol();
+				columns.put(i - 1, new Region(start.getStopIndex(), stop.getStartIndex() - start.getStopIndex() + 1));
 			}
-			for (TerminalNode separator : separators) {
-
-			}
-		}
-
-		@Override
-		public void enterAttribute(AttributeContext ctx) {
-			if (status != PROCESSING) {
-				return;
-			}
-			pos++;
-			int start = startIndex(ctx);
-			int stop = stopIndex(ctx);
-			columns.put(pos, new Region(start, stop - start + 2));
-			checkIndex(ctx);
 		}
 
 		@Override
@@ -181,34 +167,27 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			if (status != PROCESSING) {
 				return;
 			}
-			pos = -1;
-		}
-
-		@Override
-		public void enterField(FieldContext ctx) {
-			if (status != PROCESSING) {
-				return;
-			}
-			pos++;
-			checkIndex(ctx);
-		}
-
-		private void checkIndex(ParserRuleContext ctx) {
-			if (status == PROCESSING && offset >= startIndex(ctx) && offset < stopIndex(ctx)) {
-				index = pos;
+			List<TerminalNode> separators = ctx.Separator();
+			for (int i = 1; i < separators.size(); i++) {
+				Token stop = separators.get(i).getSymbol();
+				Token start = separators.get(i - 1).getSymbol();
+				if (offset >= start.getStopIndex() && offset < stop.getStartIndex()) {
+					index = i - 1;
+				}
 			}
 		}
+		
+		protected int stopIndex(final ParserRuleContext ctx) {
+			return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+		}
+
+		protected int startIndex(final ParserRuleContext ctx) {
+			return ctx.getStart().getStartIndex();
+		}
+
 
 		public IRegion getTextRegion() {
 			return columns.get(index);
 		}
-	}
-
-	protected int stopIndex(final ParserRuleContext ctx) {
-		return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
-	}
-
-	protected int startIndex(final ParserRuleContext ctx) {
-		return ctx.getStart().getStartIndex();
 	}
 }
