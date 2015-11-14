@@ -53,8 +53,8 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.model.WorkbenchViewerComparator;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 
-import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YCore;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.impex.antlr.TokenSourceProvider;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexDocumentParticipant;
@@ -67,18 +67,19 @@ public class SyntaxColoringPreferencePage extends PreferencePage implements IWor
             { YMessages.ImpexEditorPreferencePage_macros, PreferenceConstants.COLOR_MACRO },
             { YMessages.ImpexEditorPreferencePage_modes, PreferenceConstants.COLOR_MODE },
             { YMessages.ImpexEditorPreferencePage_types, PreferenceConstants.COLOR_TYPE },
-            { YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_ATTRIBUTE },
+            //{ YMessages.ImpexEditorPreferencePage_attributes, PreferenceConstants.COLOR_ATTRIBUTE },
             { YMessages.ImpexEditorPreferencePage_specialAttributes, PreferenceConstants.COLOR_SPECIAL_ATTRIBUTE },
-            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_HEADER_MODIFIER },
+            { YMessages.ImpexEditorPreferencePage_typeModifiers, PreferenceConstants.COLOR_TYPE_MODIFIER },
             { YMessages.ImpexEditorPreferencePage_attributeModifiers, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER },
-            { YMessages.ImpexEditorPreferencePage_strings, PreferenceConstants.COLOR_STRING },
+            //{ YMessages.ImpexEditorPreferencePage_strings, PreferenceConstants.COLOR_STRING },
             { YMessages.ImpexEditorPreferencePage_brackets, PreferenceConstants.COLOR_BRACKETS },
             { YMessages.ImpexEditorPreferencePage_beanshell, PreferenceConstants.COLOR_BEANSHELL },
             { YMessages.ImpexEditorPreferencePage_userrights, PreferenceConstants.COLOR_USERRIGHTS },
             { YMessages.ImpexEditorPreferencePage_documentIDs, PreferenceConstants.COLOR_DOCUMENTID },
             { YMessages.ImpexEditorPreferencePage_documentIdFields, PreferenceConstants.COLOR_DOCUMENTID_FIELD },
             { YMessages.ImpexEditorPreferencePage_skippedFields, PreferenceConstants.COLOR_SKIPPED_FIELD },
-            { YMessages.ImpexEditorPreferencePage_others, PreferenceConstants.COLOR_OTHERS }, };
+            //{ YMessages.ImpexEditorPreferencePage_others, PreferenceConstants.COLOR_OTHERS }, 
+            };
 
     private ColorFieldEditor syntaxForegroundColorEditor;
     private TableViewer colorListViewer;

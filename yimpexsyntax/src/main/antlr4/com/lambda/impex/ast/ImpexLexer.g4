@@ -6,6 +6,7 @@ tokens {
     Separator,
     ConfigMacroref,
     Macroref,
+    Bracket,
     SkippedField,
     BooleanAttributeModifier,
     IntAttributeModifier,
@@ -275,11 +276,8 @@ import java.util.Map.Entry;
             case ImpexLexer.FieldQuoted:                   return "FieldQuoted                  ";
             case ImpexLexer.Field:                         return "Field                        ";
             case ImpexLexer.Macroval:                      return "Macroval                     ";
-            case ImpexLexer.LBracket:                      return "LBracket                     ";
-            case ImpexLexer.ABracket:                      return "ABracket                     ";
-            case ImpexLexer.ModifierBracket:               return "ModifierBracket              ";
+            case ImpexLexer.Bracket:                       return "Bracket                      ";
             case ImpexLexer.UnknownModifier:               return "UnknownModifier              ";
-            case ImpexLexer.ModifiervalBracket:            return "ModifiervalBracket           ";
             case ImpexLexer.Modifierval:                   return "Modifierval                  ";
         }
         return "?                            ";
@@ -413,7 +411,7 @@ mode type;
 TSeparator          : Separator -> type(Separator), popMode, pushMode(attribute);
 TDoubleQuote        : DoubleQuote -> type(DoubleQuote);
 TQuote              : Quote -> type(Quote);
-LBracket            : '[' -> pushMode(modifier), channel(HIDDEN);
+TBracket            : '[' -> type(Bracket), pushMode(modifier), channel(HIDDEN);
 TLb                 : Lb -> type(Lb), popMode, pushMode(record);
 TLineSeparator      : LineSeparator -> type(LineSeparator), channel(HIDDEN);
 TIdentifier         : Identifier {cachedToken == null}? -> type(Type);
@@ -429,7 +427,7 @@ ASeparator          : Separator -> type(Separator), popMode, pushMode(attribute)
 ADot                : Dot -> type(Dot);
 ADoubleQuote        : DoubleQuote -> type(DoubleQuote);
 AQuote              : Quote -> type(Quote);
-ABracket            : '[' -> pushMode(modifier), channel(HIDDEN);
+ABracket            : '[' -> type(Bracket), pushMode(modifier), channel(HIDDEN);
 ALParenthesis       : LParenthesis -> type(LParenthesis);
 ARParenthesis       : RParenthesis -> type(RParenthesis);
 AEquals             : Equals -> type(Equals);
@@ -472,7 +470,7 @@ Translator          : T R A N S L A T O R -> type(ClassAttributeModifier);
 Unique              : U N I Q U E -> type(BooleanAttributeModifier);
 Virtual             : V I R T U A L -> type(BooleanAttributeModifier);
 
-ModifierBracket    : ']' -> popMode, channel(HIDDEN);
+ModifierBracket         : ']' -> type(Bracket), popMode, channel(HIDDEN);
 ModifierLb				: Lb+ {insideQuotedAttribute}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
 ModifierEquals          : '=' -> pushMode(modifierval), type(Equals);
 ModifierComma			: Comma -> type(Comma), channel(HIDDEN);
@@ -487,7 +485,7 @@ mode modifierval;
 ModifiervalLb				: Lb+ {insideQuotedAttribute && (lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']'))}? -> type(Lb), channel(HIDDEN); //if inside quoted attribute line breaks are not relevant
 ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ']' || (_input.LA(1) == ',' && _input.LA(2) != ']')}? -> type(Ws), channel(HIDDEN);
 //ModifiervalWs				: Ws+ {lastTokenType == Equals || _input.LA(1) == ',' || _input.LA(1) == ']' }? -> type(Ws), channel(HIDDEN);
-ModifiervalBracket			: ']' -> popMode, popMode, channel(HIDDEN);
+ModifiervalBracket			: ']' -> type(Bracket), popMode, popMode, channel(HIDDEN);
 ModifiervalSingleComma		: Comma {_input.LA(1) == ']'}? -> type(Modifierval);
 //ModifiervalSingleComma	: Comma {lastTokenType == Equals && (_input.LA(1) == ',' || _input.LA(1) == ']' )}? -> type(Modifierval);
 ModifiervalComma			: Comma -> type(Comma), popMode, channel(HIDDEN);

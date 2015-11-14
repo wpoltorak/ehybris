@@ -50,7 +50,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_TYPE, new RGB(0, 0, 0), SWT.BOLD);
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_MODE, new RGB(127, 0, 85), SWT.BOLD);
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_ATTRIBUTE, new RGB(0, 0, 255), SWT.NONE);
-        saveDefaultTokenStyle(store, PreferenceConstants.COLOR_HEADER_MODIFIER, new RGB(0, 0, 155), SWT.NONE);
+        saveDefaultTokenStyle(store, PreferenceConstants.COLOR_TYPE_MODIFIER, new RGB(0, 0, 155), SWT.NONE);
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER, new RGB(0, 0, 155), SWT.NONE);
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_STRING, new RGB(42, 0, 255), SWT.NONE);
         saveDefaultTokenStyle(store, PreferenceConstants.COLOR_BRACKETS, new RGB(0, 0, 0), SWT.NONE);

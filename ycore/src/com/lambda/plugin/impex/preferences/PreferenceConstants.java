@@ -34,7 +34,7 @@ public class PreferenceConstants {
     /**
      * Preference key for color of type modifier in impex editor
      */
-    public static final String COLOR_HEADER_MODIFIER = IMPEX_SYNTAX_COLORING + "_type_modifier";
+    public static final String COLOR_TYPE_MODIFIER = IMPEX_SYNTAX_COLORING + "_type_modifier";
 
     /**
      * Preference key for color of attribute in impex editor

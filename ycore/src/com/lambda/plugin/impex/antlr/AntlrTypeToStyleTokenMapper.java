@@ -72,11 +72,14 @@ public class AntlrTypeToStyleTokenMapper {
         map.put(ImpexLexer.IntAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
         map.put(ImpexLexer.NumberFormatAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
         map.put(ImpexLexer.TextAttributeModifier, PreferenceConstants.COLOR_ATTRIBUTE_MODIFIER);
-        map.put(ImpexLexer.TextHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
-        map.put(ImpexLexer.BooleanHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
-        map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_HEADER_MODIFIER);
+        map.put(ImpexLexer.TextHeaderModifier, PreferenceConstants.COLOR_TYPE_MODIFIER);
+        map.put(ImpexLexer.BooleanHeaderModifier, PreferenceConstants.COLOR_TYPE_MODIFIER);
+        map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_TYPE_MODIFIER);
+        map.put(ImpexLexer.ClassHeaderModifier, PreferenceConstants.COLOR_TYPE_MODIFIER);
         map.put(ImpexLexer.BeanShell, PreferenceConstants.COLOR_BEANSHELL);
         map.put(ImpexLexer.UserRights, PreferenceConstants.COLOR_USERRIGHTS);
+        map.put(ImpexLexer.Bracket, PreferenceConstants.COLOR_BRACKETS);
+        
         return map;
     }
 
