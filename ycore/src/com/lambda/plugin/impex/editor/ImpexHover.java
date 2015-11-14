@@ -41,6 +41,7 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			case ImpexLexer.SkippedField:
 			case ImpexLexer.DocumentIdField:
 			case ImpexLexer.DocumentIdRefField:
+			case ImpexLexer.Macroref:
 			case ImpexLexer.Separator:
 				ImpexDocument document = (ImpexDocument) textViewer.getDocument();
 				ParseTree parseTree = document.getParseTree();
@@ -151,14 +152,12 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			}
 
 			List<TerminalNode> separators = ctx.Separator();
-			if (separators.isEmpty()) {
-				return;
-			}
-
-			for (int i = 1; i < separators.size(); i++) {
-				Token stop = separators.get(i).getSymbol();
-				Token start = separators.get(i - 1).getSymbol();
-				columns.put(i - 1, new Region(start.getStopIndex(), stop.getStartIndex() - start.getStopIndex() + 1));
+			for (int i = 0; i < separators.size(); i++) {
+				Token start = separators.get(i).getSymbol();
+				Token stop = (i+1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
+				int startIndex = startIndex(start);
+				int stopIndex = stopIndex(stop);
+				columns.put(i, new Region(startIndex, stopIndex - startIndex + 1));
 			}
 		}
 
@@ -167,25 +166,44 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 			if (status != PROCESSING) {
 				return;
 			}
+
 			List<TerminalNode> separators = ctx.Separator();
-			for (int i = 1; i < separators.size(); i++) {
-				Token stop = separators.get(i).getSymbol();
-				Token start = separators.get(i - 1).getSymbol();
-				if (offset >= start.getStopIndex() && offset < stop.getStartIndex()) {
-					index = i - 1;
+			for (int i = 0; i < separators.size(); i++) {
+				Token start = separators.get(i).getSymbol();
+				Token stop = (i + 1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
+				int startIndex = startIndex(start);
+				int stopIndex = stopIndex(stop);
+				if (offset >= startIndex && offset < stopIndex) {
+					index = i;
 				}
 			}
 		}
-		
-		protected int stopIndex(final ParserRuleContext ctx) {
-			return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+
+		private int startIndex(Token token) {
+			return token.getStopIndex();
 		}
 
-		protected int startIndex(final ParserRuleContext ctx) {
-			return ctx.getStart().getStartIndex();
+		private int stopIndex(Token token) {
+			switch (token.getType()) {
+			case ImpexLexer.Separator:
+			case ImpexLexer.Lb:
+				return token.getStartIndex();
+
+			}
+			// if last line then EOF - last token in this case is an attribute -
+			// need stop index
+			return token.getStopIndex();
 		}
 
 
+	    protected int stopIndex(final ParserRuleContext ctx) {
+	        return ctx.getStop() != null ? ctx.getStop().getStopIndex() : ctx.getStart().getStopIndex();
+	    }
+
+	    protected int startIndex(final ParserRuleContext ctx) {
+	        return ctx.getStart().getStartIndex();
+	    }
+	    
 		public IRegion getTextRegion() {
 			return columns.get(index);
 		}

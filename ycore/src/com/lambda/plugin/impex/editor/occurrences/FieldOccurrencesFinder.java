@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.jface.text.Position;
 
+import com.lambda.impex.ast.ImpexLexer;
 import com.lambda.impex.ast.ImpexParser.BlockContext;
 import com.lambda.impex.ast.ImpexParser.HeaderContext;
 import com.lambda.impex.ast.ImpexParser.ImpexContext;
@@ -76,18 +77,16 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 		}
 
 		List<TerminalNode> separators = ctx.Separator();
-		if (separators.isEmpty()) {
-			return;
-		}
-
-		for (int i = 1; i < separators.size(); i++) {
-			Token stop = separators.get(i).getSymbol();
-			Token start = separators.get(i - 1).getSymbol();
+		for (int i = 0; i < separators.size(); i++) {
+			Token start = separators.get(i).getSymbol();
+			Token stop = (i+1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
+			int startIndex = startIndex(start);
+			int stopIndex = stopIndex(stop);
 			ArrayList<Position> positions = new ArrayList<Position>();
-			positions.add(new Position(start.getStopIndex(), stop.getStartIndex() - start.getStopIndex() + 1));
-			columns.put(i - 1, positions);
-			if (offset >= start.getStopIndex() && offset < stop.getStartIndex()) {
-				index = i - 1;
+			positions.add(new Position(startIndex, stopIndex - startIndex + 1));
+			columns.put(i, positions);
+			if (offset >= startIndex && offset < stopIndex) {
+				index = i;
 			}
 		}
 	}
@@ -97,17 +96,36 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 		if (status != PROCESSING) {
 			return;
 		}
+
 		List<TerminalNode> separators = ctx.Separator();
-		for (int i = 1; i < separators.size(); i++) {
-			Token stop = separators.get(i).getSymbol();
-			Token start = separators.get(i - 1).getSymbol();
-			List<Position> positions = columns.get(i-1); 
+		for (int i = 0; i < separators.size(); i++) {
+			Token start = separators.get(i).getSymbol();
+			Token stop = (i+1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
+			List<Position> positions = columns.get(i);
+			int startIndex = startIndex(start);
+			int stopIndex = stopIndex(stop);
 			if (positions != null) {
-				positions.add(new Position(start.getStopIndex(), stop.getStartIndex() - start.getStopIndex() + 1));
+				positions.add(new Position(startIndex, stopIndex - startIndex + 1));
 			}
-			if (offset >= start.getStopIndex() && offset < stop.getStartIndex()) {
-				index = i - 1;
+			if (offset >= startIndex && offset < stopIndex) {
+				index = i;
 			}
 		}
 	}
+
+	private int startIndex(Token token) {
+		return token.getStopIndex();
+	}
+	
+	private int stopIndex(Token token) {
+		switch(token.getType()){
+		case ImpexLexer.Separator:
+		case ImpexLexer.Lb:
+			return token.getStartIndex();
+			
+		}
+		//if last line then EOF - last token in this case is an attribute - need stop index
+		return token.getStopIndex();
+	}
+
 }
