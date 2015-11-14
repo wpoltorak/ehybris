@@ -208,4 +208,10 @@ public class PreferenceConstants {
      * Type of Document ID reference attribute is incompatible with type of Document ID attribute
      */
     public static final String PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY = "_invalid_documentid_type_hierarchy";
+    
+    /**
+     * Custom type or attribute modifier
+     */
+    public static final String PROBLEM_MODIFIER_CUSTOM = IMPEX_PROBLEM + "_custom_modifier";
+
 }

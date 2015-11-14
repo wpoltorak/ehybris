@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.text.BadLocationException;
@@ -137,7 +136,7 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
         }
 
         fOccurrencesFinderJob = new OccurrencesFinderJob(OccType.Occurrence, document, selection, finder, force);
-        fOccurrencesFinderJob.run(new NullProgressMonitor());
+        fOccurrencesFinderJob.schedule();
     }
 
     public void updateHighlighting(ITextSelection selection, IImpexModel model, boolean force) {
@@ -160,7 +159,7 @@ public class OccurrenceFinderSelectionChangedListener implements ISelectionChang
 
         FieldOccurrencesFinder finder = new FieldOccurrencesFinder(selection.getOffset());
         fHighlightingJob = new OccurrencesFinderJob(OccType.Highlight, document, selection, finder, force);
-        fHighlightingJob.run(new NullProgressMonitor());
+        fHighlightingJob.schedule();
     }
 
     private void removeOccurrenceAnnotations(OccType type) {

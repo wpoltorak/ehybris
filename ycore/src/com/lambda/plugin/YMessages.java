@@ -60,6 +60,7 @@ public final class YMessages extends NLS {
     public static String ImpexEditorPreferencePage_ignore;
     public static String ImpexEditorPreferencePage_problem_emptyMacro;
     public static String ImpexEditorPreferencePage_problem_undefinedMacro;
+    public static String ImpexEditorPreferencePage_problem_customModifier;
     public static String ImpexEditorPreferencePage_problem_fieldWithoutHeaderAttribute;
     // public static String ImpexEditorPreferencePage_problem_invalidType;
     // public static String ImpexEditorPreferencePage_problem_invalidSubtype;

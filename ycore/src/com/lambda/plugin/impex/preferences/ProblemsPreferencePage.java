@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YCore;
+import com.lambda.plugin.YMessages;
 
 public class ProblemsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -33,6 +33,8 @@ public class ProblemsPreferencePage extends PreferencePage implements IWorkbench
             { YMessages.ImpexEditorPreferencePage_problem_undefinedMacro, PreferenceConstants.PROBLEM_MACRO_UNDEFINED },
             { YMessages.ImpexEditorPreferencePage_problem_fieldWithoutHeaderAttribute,
                     PreferenceConstants.PROBLEM_FIELD_WITHOUT_HEADER_ATTRIBUTE },
+            { YMessages.ImpexEditorPreferencePage_problem_customModifier, PreferenceConstants.PROBLEM_MODIFIER_CUSTOM },
+            
     // { YMessages.ImpexEditorPreferencePage_problem_invalidType, PreferenceConstants.PROBLEM_TYPE_INVALID },
     // { YMessages.ImpexEditorPreferencePage_problem_invalidSubtype, PreferenceConstants.PROBLEM_SUBTYPE_INVALID },
     // { YMessages.ImpexEditorPreferencePage_problem_missingSubtype, PreferenceConstants.PROBLEM_SUBTYPE_MISSING },
