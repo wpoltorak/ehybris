@@ -34,8 +34,8 @@ public class AntlrProblemTypeToSeverityMapper {
             return getSeverity(store, PreferenceConstants.PROBLEM_DOCUMENTID_INVALID);
         case InvalidDocumentIDTypeHierarchy:
             return getSeverity(store, PreferenceConstants.PROBLEM_DOCUMENTID_INVALID_TYPE_HIERARCHY);
-        case InvalidAttributeModifier:
-        case InvalidHeaderModifier:
+        case UnknownAttributeModifier:
+        case UnknownHeaderModifier:
         	return getSeverity(store, PreferenceConstants.PROBLEM_MODIFIER_CUSTOM);
         default:
             return IMarker.SEVERITY_ERROR;

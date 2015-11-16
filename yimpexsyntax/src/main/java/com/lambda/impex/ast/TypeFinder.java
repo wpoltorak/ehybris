@@ -14,4 +14,12 @@ public interface TypeFinder {
      * @return
      */
     TypeDescription findBySimpleName(String name);
+
+	Object findDecoratorType(String fullName);
+
+	Object findTranslatorType(String fullName);
+	
+	Object findSpecialTranslatorType(String fullName);
+
+	Object findProcessorType(String fullName);
 }

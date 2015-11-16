@@ -4,8 +4,16 @@ public class ImpexProblem {
     public static final String SEPARATOR = "<%>";
 
     public enum Type {
-        InvalidAttributeModifier, InvalidHeaderModifier, InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
+        InvalidBoolean, InvalidDate, InvalidClassname, InvalidPosition, InvalidMode,
         InvalidLang, InvalidNumberFormat, InvalidDateFormat, General, GeneralSyntaxError, EmptyMacroValue, SyntaxError,
+        /** Header modifier is unknown (custom) */
+        UnknownHeaderModifier,
+        /** Attribute modifier is unknown (custom) */
+        UnknownAttributeModifier,
+        /** Header modifier doesn't have value */
+        InvalidHeaderModifier,
+        /** Attribute modifier doesn't have value */
+        InvalidAttributeModifier,
         /** Referenced macro hasn't been defined in the document */
         UnknownMacro,
         /** Property name of the config macro 'config-<property name> doesn't exist in project properties or local properties */

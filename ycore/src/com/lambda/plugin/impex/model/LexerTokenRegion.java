@@ -127,16 +127,10 @@ public class LexerTokenRegion extends Region implements ILexerTokenRegion {
             return "DocumentIdRefField           ";
         case ImpexLexer.Macroval:
             return "Macroval                     ";
-        case ImpexLexer.LBracket:
-            return "LBracket                     ";
-        case ImpexLexer.ABracket:
-            return "ABracket                     ";
-        case ImpexLexer.ModifierBracket:
-            return "ModifierBracket              ";
+        case ImpexLexer.Bracket:
+            return "Bracket                      ";
         case ImpexLexer.UnknownModifier:
             return "UnknownModifier              ";
-        case ImpexLexer.ModifiervalBracket:
-            return "ModifiervalBracket           ";
         case ImpexLexer.Modifierval:
             return "Modifierval                  ";
         case ImpexLexer.EOF:

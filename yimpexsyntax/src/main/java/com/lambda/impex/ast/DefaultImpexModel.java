@@ -22,7 +22,7 @@ public class DefaultImpexModel implements ImpexModel {
 
     private final List<ImpexProblem> problems = new ArrayList<>();
 
-    private final Map<Integer, TypeDescription> offset2Type = new HashMap<>();
+    private final Map<Integer, Object> offset2Type = new HashMap<>();
 
     private final Map<DocumentIDDescription, Map<Token, TypeDescription>> docIDRef2Type = new HashMap<>();
     private final Map<DocumentIDDescription, TypeDescription> docIDDef2Type = new HashMap<>();
@@ -95,7 +95,8 @@ public class DefaultImpexModel implements ImpexModel {
         addNavigableMapValue(macros, macrodefText, Integer.valueOf(macroDefiniton.getStartIndex()), macroValue.getText());
     }
 
-    public String getMacroValue(final String name, final int index) {
+    @Override
+	public String getMacroValue(final String name, final int index) {
         final NavigableMap<Integer, String> map = macros.get(name);
         if (map == null) {
             return null;
@@ -120,7 +121,8 @@ public class DefaultImpexModel implements ImpexModel {
         addMapValue(docIDRef2Type, documentIDDescription, symbol, type);
     }
 
-    public void checkDocumentIDs() {
+    @Override
+	public void checkDocumentIDs() {
         for (final Entry<DocumentIDDescription, Map<Token, TypeDescription>> entry : docIDRef2Type.entrySet()) {
             final DocumentIDDescription docid = entry.getKey();
             final TypeDescription type = docIDDef2Type.get(docid);
@@ -156,8 +158,8 @@ public class DefaultImpexModel implements ImpexModel {
     }
 
     @Override
-    public void addType(final TypeDescription type, final Token token) {
-        offset2Type.put(token.getStartIndex(), type);
+    public void addType(int offset, Object type) {
+        offset2Type.put(offset, type);
     }
 
     @Override
@@ -165,11 +167,13 @@ public class DefaultImpexModel implements ImpexModel {
         return !problems.isEmpty();
     }
 
-    public List<ImpexProblem> getProblems() {
+    @Override
+	public List<ImpexProblem> getProblems() {
         return problems;
     }
 
-    public Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
+    @Override
+	public Map<String, List<SimpleImmutableEntry<Integer, String>>> getMacros() {
         //        return macros;
         return null;
     }
@@ -187,8 +191,9 @@ public class DefaultImpexModel implements ImpexModel {
     public Object getHyperlinkElement(final int tokenType, final int offset) {
         switch (tokenType) {
             case ImpexLexer.Type:
-                final TypeDescription type = offset2Type.get(offset);
-                return type != null ? type.getTarget() : null;
+            case ImpexLexer.ClassAttributeModifier:
+            case ImpexLexer.ClassHeaderModifier:
+            	return offset2Type.get(offset);
             default:
                 return null;
         }

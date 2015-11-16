@@ -30,7 +30,7 @@ public interface ImpexModel {
 
     void addDocumentIDReferenceQualifier(final DocumentIDDescription documentIDDescription, TypeDescription type, final Token symbol);
 
-    void addType(final TypeDescription type, final Token token);
+    void addType(int offset, final Object type);
 
     List<ImpexProblem> getProblems();
 

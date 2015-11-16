@@ -78,6 +78,8 @@ public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
         Object hyperlinkElement = model.getHyperlinkElement(token.getTokenType(), token.getOffset());
         if (hyperlinkElement instanceof IType) {
             return (IType) hyperlinkElement;
+        } else {
+        	
         }
         return null;
     }

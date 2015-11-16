@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchPattern;
@@ -73,8 +72,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
                     // time
                     // during plugin startup?
                     typeFinder.searchType(qualifier, SearchPattern.R_PREFIX_MATCH | SearchPattern.R_CAMELCASE_MATCH,
-                            requestor, JavaTypeFinder.MODEL_SEARCH | JavaTypeFinder.ENUM_SEARCH,
-                            new NullProgressMonitor());
+                            requestor, JavaTypeFinder.MODEL_SEARCH | JavaTypeFinder.ENUM_SEARCH);
                     break;
                 }
                 case ImpexLexer.Separator: {
