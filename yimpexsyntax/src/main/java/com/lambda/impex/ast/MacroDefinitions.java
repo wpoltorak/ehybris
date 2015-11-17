@@ -14,7 +14,7 @@ import java.util.TreeSet;
 import org.antlr.v4.runtime.Token;
 
 public class MacroDefinitions {
-
+	public static int index = 0;
 	private NavigableMap<Integer, String> macroDefinitionsMap = new TreeMap<>();
 	private SortedSet<String> cachedMacroDefinitions;
 	private SortedSet<String> currentMacroDefinitions;
@@ -30,6 +30,7 @@ public class MacroDefinitions {
 			return false;
 		}
 		boolean contains = defs.contains(text);
+		System.out.println((index++) + " " + contains + " " + defs.size() + " " + text);
 //		if (!contains) {
 //			defs.remove(defs.iterator().next());
 //		}
@@ -58,7 +59,11 @@ public class MacroDefinitions {
 				}
 			});
 			Collection<String> values = macroDefinitionsMap.headMap(index, false).values();
-			cachedMacroDefinitions.addAll(values);
+			for (String value : values) {
+				if (value.startsWith(token.getText())){
+					cachedMacroDefinitions.add(value);
+				}
+			}
 		}
 		return cachedMacroDefinitions;
 	}
@@ -82,6 +87,7 @@ public class MacroDefinitions {
 
 	void update(int offset, int length, int delta) {
 		print();
+		index = 0;
 		this.offset = offset;
 		Integer firstMacroDefinitionToShift = macroDefinitionsMap.floorKey(offset + length - delta);
 		if (firstMacroDefinitionToShift == null || firstMacroDefinitionToShift < offset) {

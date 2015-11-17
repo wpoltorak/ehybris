@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.jface.text.Position;
@@ -75,20 +76,8 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 		if (status != PROCESSING) {
 			return;
 		}
-
-		List<TerminalNode> separators = ctx.Separator();
-		for (int i = 0; i < separators.size(); i++) {
-			Token start = separators.get(i).getSymbol();
-			Token stop = (i+1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
-			int startIndex = startIndex(start);
-			int stopIndex = stopIndex(stop);
-			ArrayList<Position> positions = new ArrayList<Position>();
-			positions.add(new Position(startIndex, stopIndex - startIndex + 1));
-			columns.put(i, positions);
-			if (offset >= startIndex && offset < stopIndex) {
-				index = i;
-			}
-		}
+		
+		handleSeparators(ctx, ctx.Separator());
 	}
 
 	@Override
@@ -97,17 +86,22 @@ public class FieldOccurrencesFinder extends AbstractOccurrencesFinderAdapter {
 			return;
 		}
 
-		List<TerminalNode> separators = ctx.Separator();
+		handleSeparators(ctx, ctx.Separator());
+	}
+
+	private void handleSeparators(ParserRuleContext ctx, List<TerminalNode> separators) {
 		for (int i = 0; i < separators.size(); i++) {
 			Token start = separators.get(i).getSymbol();
 			Token stop = (i+1 >= separators.size()) ? ctx.getStop() : separators.get(i + 1).getSymbol();
-			List<Position> positions = columns.get(i);
 			int startIndex = startIndex(start);
 			int stopIndex = stopIndex(stop);
-			if (positions != null) {
-				positions.add(new Position(startIndex, stopIndex - startIndex + 1));
-			}
-			if (offset >= startIndex && offset < stopIndex) {
+			List<Position> positions = columns.get(i);
+			if (positions == null) {
+				positions = new ArrayList<Position>();
+				columns.put(i, positions);
+			} 
+			positions.add(new Position(startIndex, stopIndex - startIndex + 1));
+			if (offset > startIndex && offset <= stopIndex) {
 				index = i;
 			}
 		}
