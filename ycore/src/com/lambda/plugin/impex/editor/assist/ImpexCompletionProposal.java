@@ -9,6 +9,8 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
+import com.lambda.plugin.YCore;
+
 public class ImpexCompletionProposal implements ICompletionProposal, ICompletionProposalExtension6 {
 
     private final String value;
@@ -29,8 +31,8 @@ public class ImpexCompletionProposal implements ICompletionProposal, ICompletion
     public void apply(IDocument document) {
         try {
             document.replace(replacementOffset, cursorPosition - replacementOffset, value);
-        } catch (BadLocationException x) {
-            // ignore
+        } catch (BadLocationException e) {
+            YCore.logError(e);
         }
     }
 

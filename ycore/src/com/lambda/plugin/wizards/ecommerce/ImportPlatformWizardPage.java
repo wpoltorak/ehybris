@@ -76,75 +76,76 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 
 	private final static String STORE_DIRECTORIES = "ImportPlatformWizardPage.STORE_DIRECTORIES";//$NON-NLS-1$
 	private final static String SET_SOURCES_READONLY = "ImportPlatformWizardPage.MAKE_SOURCES_READONLY";//$NON-NLS-1$
-    private static final String PAGE_NAME = "ImportPlatformWizardPage";//$NON-NLS-1$
-    private static String previouslySelectedPath = "";
-    
-    private Button setReadOnlyCheck;
-    private Combo rootDirectoryCombo;
-    private WorkingSetGroup fWorkingSetGroup;
-    private CheckboxTreeViewer projectTreeViewer;
-    
-    protected ImportPlatformWizardPage() {
-        super(PAGE_NAME);
-        setTitle(YMessages.ImportPlatformPage_title);
-        setDescription(YMessages.ImportPlatformPage_description);
-        setPageComplete(false);
-    }
+	private static final String PAGE_NAME = "ImportPlatformWizardPage";//$NON-NLS-1$
+	private static String previouslySelectedPath = "";
 
-    @Override
-    public void createControl(Composite parent) {
-        final Composite composite = new Composite(parent, SWT.NULL);
-        composite.setFont(parent.getFont());
-        composite.setLayout(initGridLayout(new GridLayout(1, false), true));
-        composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-        setControl(composite);
-        createPlatformTreeGroup(composite);
-        createCheckGroup(composite);
-        createWorkingSetGroup(composite);
-        restoreWidgetValues();
-    }
+	private Button setReadOnlyCheck;
+	private Combo rootDirectoryCombo;
+	private WorkingSetGroup fWorkingSetGroup;
+	private CheckboxTreeViewer projectTreeViewer;
+
+	protected ImportPlatformWizardPage() {
+		super(PAGE_NAME);
+		setTitle(YMessages.ImportPlatformPage_title);
+		setDescription(YMessages.ImportPlatformPage_description);
+		setPageComplete(false);
+	}
+
+	@Override
+	public void createControl(Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NULL);
+		composite.setFont(parent.getFont());
+		composite.setLayout(initGridLayout(new GridLayout(1, false), true));
+		composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+		setControl(composite);
+		createPlatformTreeGroup(composite);
+		createCheckGroup(composite);
+		createWorkingSetGroup(composite);
+		restoreWidgetValues();
+	}
 
 	private void createCheckGroup(Composite composite) {
 		Composite comp = new Composite(composite, SWT.NONE);
-        comp.setFont(composite.getFont());
-        comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        comp.setLayout(new GridLayout(3, false));
-		
-        setReadOnlyCheck = new Button(composite, SWT.CHECK);
-        setReadOnlyCheck.setText(YMessages.ImportPlatformPage_setSourcesReadOnly);
+		comp.setFont(composite.getFont());
+		comp.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		comp.setLayout(new GridLayout(3, false));
 
-        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-        gd.horizontalSpan = 2;
-        setReadOnlyCheck.setLayoutData(gd);
-        setReadOnlyCheck.setEnabled(true);
-        setReadOnlyCheck.setSelection(true);
-        
-        addFiller(composite);
+		setReadOnlyCheck = new Button(composite, SWT.CHECK);
+		setReadOnlyCheck.setText(YMessages.ImportPlatformPage_setSourcesReadOnly);
+
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gd.horizontalSpan = 2;
+		setReadOnlyCheck.setLayoutData(gd);
+		setReadOnlyCheck.setEnabled(true);
+		setReadOnlyCheck.setSelection(true);
+
+		addFiller(composite);
 	}
 
 	private void addFiller(Composite composite) {
-        PixelConverter pixelConverter = new PixelConverter(composite);
+		PixelConverter pixelConverter = new PixelConverter(composite);
 
-        Label filler = new Label(composite, SWT.LEFT);
-        GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
-        gd.horizontalSpan = 2;
-        gd.heightHint = pixelConverter.convertHeightInCharsToPixels(1) / 2;
-        filler.setLayoutData(gd);
-    }
+		Label filler = new Label(composite, SWT.LEFT);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+		gd.horizontalSpan = 2;
+		gd.heightHint = pixelConverter.convertHeightInCharsToPixels(1) / 2;
+		filler.setLayoutData(gd);
+	}
+
 	private void createPlatformTreeGroup(final Composite composite) {
 		Composite platformComposite = new Composite(composite, SWT.NONE);
-        platformComposite.setFont(composite.getFont());
-        platformComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        platformComposite.setLayout(new GridLayout(3, false));
+		platformComposite.setFont(composite.getFont());
+		platformComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		platformComposite.setLayout(new GridLayout(3, false));
 
-        final Label selectRootDirectoryLabel = new Label(platformComposite, SWT.NONE);
-        selectRootDirectoryLabel.setText(YMessages.ImportPlatformPage_platformRootFolder);
-        selectRootDirectoryLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		final Label selectRootDirectoryLabel = new Label(platformComposite, SWT.NONE);
+		selectRootDirectoryLabel.setText(YMessages.ImportPlatformPage_platformRootFolder);
+		selectRootDirectoryLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        rootDirectoryCombo = new Combo(platformComposite, SWT.NONE);
-        rootDirectoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-//        rootDirectoryCombo.setFocus();
-        rootDirectoryCombo.addTraverseListener(new TraverseListener() {
+		rootDirectoryCombo = new Combo(platformComposite, SWT.NONE);
+		rootDirectoryCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		// rootDirectoryCombo.setFocus();
+		rootDirectoryCombo.addTraverseListener(new TraverseListener() {
 			@Override
 			public void keyTraversed(TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_RETURN) {
@@ -154,483 +155,488 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 			}
 		});
 
-        rootDirectoryCombo.addFocusListener(new FocusAdapter() {
+		rootDirectoryCombo.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(org.eclipse.swt.events.FocusEvent e) {
 				scanProjects();
 			}
 		});
 
-        rootDirectoryCombo.addSelectionListener(new SelectionAdapter() {
+		rootDirectoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				scanProjects();
 			}
 		});
 
-        final Button browseButton = new Button(platformComposite, SWT.NONE);
-        browseButton.setText(YMessages.ImportPlatformPage_browse);
-        browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
-        browseButton.addSelectionListener(new SelectionAdapter() {
-        
+		final Button browseButton = new Button(platformComposite, SWT.NONE);
+		browseButton.setText(YMessages.ImportPlatformPage_browse);
+		browseButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+		browseButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.NONE);
-                dialog.setText(YMessages.ImportPlatformPage_selectPlatformRootFolder);
-                String path = rootDirectoryCombo.getText();
-                if (path.length() == 0) {
-                	path = previouslySelectedPath.length() > 0 ? previouslySelectedPath : ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
-           		}
-       
-                dialog.setFilterPath(path);
+			public void widgetSelected(SelectionEvent e) {
+				DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.NONE);
+				dialog.setText(YMessages.ImportPlatformPage_selectPlatformRootFolder);
+				String path = rootDirectoryCombo.getText();
+				if (path.length() == 0) {
+					path = previouslySelectedPath.length() > 0 ? previouslySelectedPath
+							: ResourcesPlugin.getWorkspace().getRoot().getLocation().toPortableString();
+				}
 
-                String result = dialog.open();
-                if (result != null) {
-                	previouslySelectedPath = result;
-                    rootDirectoryCombo.setText(result);
-                    scanProjects();
-                }
-            }
-        });
+				dialog.setFilterPath(path);
 
-        final Label projectsLabel = new Label(platformComposite, SWT.NONE);
-        projectsLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
-        projectsLabel.setText(YMessages.ImportPlatformPage_projects);
+				String result = dialog.open();
+				if (result != null) {
+					previouslySelectedPath = result;
+					rootDirectoryCombo.setText(result);
+					scanProjects();
+				}
+			}
+		});
 
-        projectTreeViewer = new CheckboxTreeViewer(platformComposite, SWT.BORDER);
+		final Label projectsLabel = new Label(platformComposite, SWT.NONE);
+		projectsLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1));
+		projectsLabel.setText(YMessages.ImportPlatformPage_projects);
 
-        projectTreeViewer.addCheckStateListener(new ICheckStateListener() {
-            @Override
-            public void checkStateChanged(CheckStateChangedEvent event) {
-                updateCheckedState();
-                setPageComplete();
-            }
-        });
+		projectTreeViewer = new CheckboxTreeViewer(platformComposite, SWT.BORDER);
 
-        projectTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		projectTreeViewer.addCheckStateListener(new ICheckStateListener() {
+			@Override
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				updateCheckedState();
+				setPageComplete();
+			}
+		});
 
-            @Override
-            public void selectionChanged(SelectionChangedEvent event) {
-                IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-                if (selection.getFirstElement() != null) {
-                    String errorMsg = validateExtension((PlatformExtension) selection.getFirstElement());
-                    setMessage(errorMsg, IMessageProvider.WARNING);
-                } else {
-                    // TODO if on current selection, shall show any existing general errors if existing..
-                    // setMessage(loadingErrorMessage, IMessageProvider.WARNING);
-                }
-            }
-        });
+		projectTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-        projectTreeViewer.setContentProvider(new ITreeContentProvider() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				if (selection.getFirstElement() != null) {
+					String errorMsg = validateExtension((PlatformExtension) selection.getFirstElement());
+					setMessage(errorMsg, IMessageProvider.WARNING);
+				} else {
+					// TODO if on current selection, shall show any existing
+					// general errors if existing..
+					// setMessage(loadingErrorMessage,
+					// IMessageProvider.WARNING);
+				}
+			}
+		});
 
-            @Override
-            public Object[] getElements(Object element) {
-                if (element instanceof List) {
-                    @SuppressWarnings("unchecked")
-                    List<PlatformExtension> projects = (List<PlatformExtension>) element;
-                    return projects.toArray(new PlatformExtension[projects.size()]);
-                } else if (element instanceof PlatformExtension) {
-                    return new PlatformExtension[] { (PlatformExtension) element };
-                }
-                return new Object[0];
-            }
+		projectTreeViewer.setContentProvider(new ITreeContentProvider() {
 
-            @Override
-            public Object[] getChildren(Object parentElement) {
-                if (parentElement instanceof List) {
-                    @SuppressWarnings("unchecked")
-                    List<PlatformExtension> projects = (List<PlatformExtension>) parentElement;
-                    return projects.toArray(new PlatformExtension[projects.size()]);
-                } else if (parentElement instanceof PlatformExtension) {
-                    PlatformExtension ext = (PlatformExtension) parentElement;
-                    return ext.children.toArray(new PlatformExtension[ext.children.size()]);
-                }
-                return new Object[0];
-            }
+			@Override
+			public Object[] getElements(Object element) {
+				if (element instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<PlatformExtension> projects = (List<PlatformExtension>) element;
+					return projects.toArray(new PlatformExtension[projects.size()]);
+				} else if (element instanceof PlatformExtension) {
+					return new PlatformExtension[] { (PlatformExtension) element };
+				}
+				return new Object[0];
+			}
 
-            @Override
-            public Object getParent(Object element) {
-                return ((PlatformExtension) element).parent;
-            }
+			@Override
+			public Object[] getChildren(Object parentElement) {
+				if (parentElement instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<PlatformExtension> projects = (List<PlatformExtension>) parentElement;
+					return projects.toArray(new PlatformExtension[projects.size()]);
+				} else if (parentElement instanceof PlatformExtension) {
+					PlatformExtension ext = (PlatformExtension) parentElement;
+					return ext.children.toArray(new PlatformExtension[ext.children.size()]);
+				}
+				return new Object[0];
+			}
 
-            @Override
-            public boolean hasChildren(Object parentElement) {
-                if (parentElement instanceof List) {
-                    List<?> projects = (List<?>) parentElement;
-                    return !projects.isEmpty();
-                } else if (parentElement instanceof PlatformExtension) {
-                    PlatformExtension ext = (PlatformExtension) parentElement;
-                    return !ext.children.isEmpty();
-                }
-                return false;
-            }
+			@Override
+			public Object getParent(Object element) {
+				return ((PlatformExtension) element).parent;
+			}
 
-            @Override
-            public void dispose() {
-            }
+			@Override
+			public boolean hasChildren(Object parentElement) {
+				if (parentElement instanceof List) {
+					List<?> projects = (List<?>) parentElement;
+					return !projects.isEmpty();
+				} else if (parentElement instanceof PlatformExtension) {
+					PlatformExtension ext = (PlatformExtension) parentElement;
+					return !ext.children.isEmpty();
+				}
+				return false;
+			}
 
-            @Override
-            public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-            }
-        });
+			@Override
+			public void dispose() {
+			}
 
-        projectTreeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(new ExtensionLabelProvider()));
+			@Override
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			}
+		});
 
-        final Tree projectTree = projectTreeViewer.getTree();
-        GridData projectTreeData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3);
-        projectTreeData.heightHint = 250;
-        projectTreeData.widthHint = 500;
-        projectTree.setLayoutData(projectTreeData);
+		projectTreeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(new ExtensionLabelProvider()));
 
-        final Button selectAllButton = new Button(platformComposite, SWT.NONE);
-        selectAllButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
-        selectAllButton.setText(YMessages.ImportPlatformPage_selectAll);
-        selectAllButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                projectTreeViewer.expandAll();
-                setAllChecked(true);
-                setPageComplete();
-            }
-        });
+		final Tree projectTree = projectTreeViewer.getTree();
+		GridData projectTreeData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3);
+		projectTreeData.heightHint = 250;
+		projectTreeData.widthHint = 500;
+		projectTree.setLayoutData(projectTreeData);
 
-        final Button deselectAllButton = new Button(platformComposite, SWT.NONE);
-        deselectAllButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
-        deselectAllButton.setText(YMessages.ImportPlatformPage_deselectAll);
-        deselectAllButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setAllChecked(false);
-                setPageComplete(false);
-            }
+		final Button selectAllButton = new Button(platformComposite, SWT.NONE);
+		selectAllButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
+		selectAllButton.setText(YMessages.ImportPlatformPage_selectAll);
+		selectAllButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				projectTreeViewer.expandAll();
+				setAllChecked(true);
+				setPageComplete();
+			}
+		});
 
-        });
+		final Button deselectAllButton = new Button(platformComposite, SWT.NONE);
+		deselectAllButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
+		deselectAllButton.setText(YMessages.ImportPlatformPage_deselectAll);
+		deselectAllButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setAllChecked(false);
+				setPageComplete(false);
+			}
 
-        final Button refreshButton = new Button(platformComposite, SWT.NONE);
-        refreshButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true));
-        refreshButton.setText(YMessages.ImportPlatformPage_refresh);
-        refreshButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                scanProjects();
-            }
-        });
+		});
+
+		final Button refreshButton = new Button(platformComposite, SWT.NONE);
+		refreshButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, true));
+		refreshButton.setText(YMessages.ImportPlatformPage_refresh);
+		refreshButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scanProjects();
+			}
+		});
 	}
 
 	@SuppressWarnings("restriction")
 	private void createWorkingSetGroup(final Composite composite) {
-		fWorkingSetGroup = new WorkingSetGroup(composite, null, new String[] { IWorkingSetIDs.JAVA,
-                IWorkingSetIDs.RESOURCE });
+		fWorkingSetGroup = new WorkingSetGroup(composite, null,
+				new String[] { IWorkingSetIDs.JAVA, IWorkingSetIDs.RESOURCE });
 	}
 
-    
-    /**
-     * Returns the working sets to which the new project should be added.
-     * 
-     * @return the selected working sets to which the new project should be added
-     */
-    public IWorkingSet[] getWorkingSets() {
-        return fWorkingSetGroup.getSelectedWorkingSets();
-    }
+	/**
+	 * Returns the working sets to which the new project should be added.
+	 * 
+	 * @return the selected working sets to which the new project should be
+	 *         added
+	 */
+	public IWorkingSet[] getWorkingSets() {
+		return fWorkingSetGroup.getSelectedWorkingSets();
+	}
 
-    private String validateExtension(PlatformExtension ext) {
-        if (ext.projectName == null) {
-            return YMessages.ImportPlatformPage_error_ExtensionNotExistsInFS;
-        }
+	private String validateExtension(PlatformExtension ext) {
+		if (ext.projectName == null) {
+			return YMessages.ImportPlatformPage_error_ExtensionNotExistsInFS;
+		}
 
-        IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(ext.projectName);
-        if (project.exists()) {
-            if (project.getFullPath().equals(ext.path)) {
-                if (ext instanceof PlatformRoot) {
-                    return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
-                } else if (ext instanceof PlatformConfig) {
-                    return YMessages.ImportPlatformPage_error_PlatformConfigAlreadyImported;
-                }
-                return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
-            } else {
-                IPlatformInstallation existingPlatform = YCore.getDefault().getPlatformContainer().getDefaultPlatform();
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(ext.projectName);
+		if (project.exists()) {
+			if (project.getFullPath().equals(ext.path)) {
+				if (ext instanceof PlatformRoot) {
+					return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
+				} else if (ext instanceof PlatformConfig) {
+					return YMessages.ImportPlatformPage_error_PlatformConfigAlreadyImported;
+				}
+				return YMessages.ImportPlatformPage_error_ExtensionAlreadyImported;
+			} else {
+				IPlatformInstallation existingPlatform = YCore.getDefault().getPlatformContainer().getDefaultPlatform();
 
-                if (existingPlatform != null && project.getFullPath().equals(existingPlatform.getPlatformLocation())) {
-                    return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
-                }
-                return YMessages.ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
-            }
-        }
-        return null;
-    }
+				if (existingPlatform != null && project.getFullPath().equals(existingPlatform.getPlatformLocation())) {
+					return YMessages.ImportPlatformPage_error_PlatformAlreadyImported;
+				}
+				return YMessages.ImportPlatformPage_error_ProjectAlreadyExistsInWorkspace;
+			}
+		}
+		return null;
+	}
 
-    private String getProjectName(IPath project) {
-        try {
-            IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(project);
-            if (description != null) {
-                return description.getName();
-            }
-        } catch (CoreException e) {
-            YCore.logError(e);
-        }
-        return null;
-    }
+	private String getProjectName(IPath project) {
+		try {
+			IProjectDescription description = ResourcesPlugin.getWorkspace().loadProjectDescription(project);
+			if (description != null) {
+				return description.getName();
+			}
+		} catch (CoreException e) {
+			YCore.logError(e);
+		}
+		return null;
+	}
 
-    private void scanProjects() {
-        projectTreeViewer.setInput(null);
+	private void scanProjects() {
+		projectTreeViewer.setInput(null);
 
-        final String text = rootDirectoryCombo.getText();
-        if (StringUtils.isBlank(text)) {
-            setPageComplete(false);
-//            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
-            return;
-        }
-        final IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
-                .verifyPlatformLocation(lookupPlatform(text));
+		final String text = rootDirectoryCombo.getText();
+		if (StringUtils.isBlank(text)) {
+			setPageComplete(false);
+			// setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
+			return;
+		}
+		final IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
+				.verifyPlatformLocation(lookupPlatform(text));
 
-        if (platform == null) {
-            setPageComplete(false);
-            setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
-            return;
-        }
-        String platformProjectName = getProjectName(platform.getPlatformLocation().append(".project"));
-        final PlatformExtension root = new PlatformRoot(platform, platformProjectName);
+		if (platform == null) {
+			setPageComplete(false);
+			setErrorMessage(YMessages.ImportPlatformPage_error_InvalidPlatformDirectory);
+			return;
+		}
+		String platformProjectName = getProjectName(platform.getPlatformLocation().append(".project"));
+		final PlatformExtension root = new PlatformRoot(platform, platformProjectName);
 
-        String configProjectName = getProjectName(platform.getConfigLocation().append(".project"));
-        if (configProjectName == null) {
-            setPageComplete(false);
-            setErrorMessage(YMessages.ImportPlatformPage_error_MissingPlatformConfig);
-            return;
-        }
+		String configProjectName = getProjectName(platform.getConfigLocation().append(".project"));
+		if (configProjectName == null) {
+			setPageComplete(false);
+			setErrorMessage(YMessages.ImportPlatformPage_error_MissingPlatformConfig);
+			return;
+		}
 
-        root.addExtension(new PlatformConfig(platform.getConfigLocation(), configProjectName, configProjectName));
+		root.addExtension(new PlatformConfig(platform.getConfigLocation(), configProjectName, configProjectName));
 
-        IRunnableWithProgress runnable = new IRunnableWithProgress() {
-            @Override
-            public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                try {
-                    monitor.beginTask("Searching for extensions", IProgressMonitor.UNKNOWN);
-                    ExtensionsConf config = ExtensionsConf.loadExtensions(platform);
-                    List<String> visitedFolders = new ArrayList<String>();
-                    scanDirectory(monitor, config, visitedFolders, platform.getBinLocation(), platform);
+		IRunnableWithProgress runnable = new IRunnableWithProgress() {
+			@Override
+			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+				try {
+					monitor.beginTask("Searching for extensions", IProgressMonitor.UNKNOWN);
+					ExtensionsConf config = ExtensionsConf.loadExtensions(platform);
+					List<String> visitedFolders = new ArrayList<String>();
+					scanDirectory(monitor, config, visitedFolders, platform.getBinLocation(), platform);
 
-                } finally {
-                    monitor.done();
-                }
-            }
+				} finally {
+					monitor.done();
+				}
+			}
 
-            private void scanDirectory(IProgressMonitor monitor, ExtensionsConf config, List<String> visitedFolders,
-                    IPath path, IPlatformInstallation platform) throws InterruptedException {
-                try {
-                    if (monitor.isCanceled()) {
-                        throw new InterruptedException("User cancelled extension scanning");
-                    }
-                    String canonicalPath = path.toFile().getCanonicalPath();
-                    monitor.subTask(canonicalPath);
-                    if (!visitedFolders.add(canonicalPath)) {
-                        return;
-                    }
-                    IPath projectDescriptionPath = path.append(".project");
-                    File extInfo = path.append("extensioninfo.xml").toFile();
-                    if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
-                        String extName = path.lastSegment().toString();
-                        String projectName = getProjectName(projectDescriptionPath);
-                        root.addExtension(new PlatformExtension(path, extName, projectName, config
-                                .isReferenced(extName), config.isCustom(extName)));
-                    } else if (!platform.getPlatformLocation().equals(path)) {
-                        File[] folders = FileUtils.listFolders(path.toFile());
-                        for (File folder : folders) {
-                            scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()), platform);
-                        }
-                    }
-                } catch (IOException e) {
-                    // TODO error handling + testing
-                    YCore.logError(e);
-                } finally {
-                    monitor.worked(1);
-                }
+			private void scanDirectory(IProgressMonitor monitor, ExtensionsConf config, List<String> visitedFolders,
+					IPath path, IPlatformInstallation platform) throws InterruptedException {
+				try {
+					if (monitor.isCanceled()) {
+						throw new InterruptedException("User cancelled extension scanning");
+					}
+					String canonicalPath = path.toFile().getCanonicalPath();
+					monitor.subTask(canonicalPath);
+					if (!visitedFolders.add(canonicalPath)) {
+						return;
+					}
+					IPath projectDescriptionPath = path.append(".project");
+					File extInfo = path.append("extensioninfo.xml").toFile();
+					if (projectDescriptionPath.toFile().exists() && extInfo.exists()) {
+						String extName = path.lastSegment().toString();
+						String projectName = getProjectName(projectDescriptionPath);
+						root.addExtension(new PlatformExtension(path, extName, projectName,
+								config.isReferenced(extName), config.isCustom(extName)));
+					} else if (!platform.getPlatformLocation().equals(path)) {
+						File[] folders = FileUtils.listFolders(path.toFile());
+						for (File folder : folders) {
+							scanDirectory(monitor, config, visitedFolders, new Path(folder.getAbsolutePath()),
+									platform);
+						}
+					}
+				} catch (IOException e) {
+					// TODO error handling + testing
+					YCore.logError(e);
+				} finally {
+					monitor.worked(1);
+				}
 
-            }
-        };
+			}
+		};
 
-        try {
-            getContainer().run(true, true, runnable);
-        } catch (Exception e) {
-            YCore.logError(e);
-        }
+		try {
+			getContainer().run(true, true, runnable);
+		} catch (Exception e) {
+			YCore.logError(e);
+		}
 
-        projectTreeViewer.setInput(Collections.singletonList(root));
-        projectTreeViewer.expandAll();
+		projectTreeViewer.setInput(Collections.singletonList(root));
+		projectTreeViewer.expandAll();
 
-        checkPlatformAndReferencedExtensions();
-        setPageComplete();
-        setErrorMessage(null);
-        setMessage(null);
-    }
+		checkPlatformAndReferencedExtensions();
+		setPageComplete();
+		setErrorMessage(null);
+		setMessage(null);
+	}
 
-    private File lookupPlatform(String pathString) {
-        File file = new File(pathString);
-        if (file.isFile()) {
-            file = file.getParentFile();
-        }
-        if (!file.isDirectory()) {
-            return null;
-        }
+	private File lookupPlatform(String pathString) {
+		File file = new File(pathString);
+		if (file.isFile()) {
+			file = file.getParentFile();
+		}
+		if (!file.isDirectory()) {
+			return null;
+		}
 
-        IPath path = Path.fromOSString(file.getAbsolutePath()).removeTrailingSeparator();
+		IPath path = Path.fromOSString(file.getAbsolutePath()).removeTrailingSeparator();
 
-        return lookupPlatform(path);
-    }
+		return lookupPlatform(path);
+	}
 
-    private File lookupPlatform(IPath path) {
-        switch (path.lastSegment()) {
-        case "platform":
-            return path.toFile();
-        case "bin":
-            return lookupPlatform(path.append("platform"));
-        case "hybris":
-            return lookupPlatform(path.append("bin").append("platform"));
-        default:
-            if (path.append("hybris").toFile().exists()) {
-                return lookupPlatform(path.append("hybris").append("bin").append("platform"));
-            }
-        }
-        return null;
-    }
+	private File lookupPlatform(IPath path) {
+		switch (path.lastSegment()) {
+		case "platform":
+			return path.toFile();
+		case "bin":
+			return lookupPlatform(path.append("platform"));
+		case "hybris":
+			return lookupPlatform(path.append("bin").append("platform"));
+		default:
+			if (path.append("hybris").toFile().exists()) {
+				return lookupPlatform(path.append("hybris").append("bin").append("platform"));
+			}
+		}
+		return null;
+	}
 
-    private void setPageComplete() {
-        Object[] elements = projectTreeViewer.getCheckedElements();
-        for (Object element : elements) {
-            if (element instanceof PlatformRoot) {
-                setPageComplete(true);
-                return;
-            }
-        }
-        setPageComplete(false);
-    }
+	private void setPageComplete() {
+		Object[] elements = projectTreeViewer.getCheckedElements();
+		for (Object element : elements) {
+			if (element instanceof PlatformRoot) {
+				setPageComplete(true);
+				return;
+			}
+		}
+		setPageComplete(false);
+	}
 
-    private void setAllChecked(boolean checked) {
-        @SuppressWarnings("unchecked")
-        List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
-        if (input != null) {
-            for (PlatformRoot root : input) {
-                projectTreeViewer.setChecked(root, checked);
-                for (PlatformExtension ext : root.children) {
-                    projectTreeViewer.setChecked(ext, checked);
-                }
-                updateCheckedState();
-            }
-            updateCheckedState();
-        }
-    }
+	private void setAllChecked(boolean checked) {
+		@SuppressWarnings("unchecked")
+		List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
+		if (input != null) {
+			for (PlatformRoot root : input) {
+				projectTreeViewer.setChecked(root, checked);
+				for (PlatformExtension ext : root.children) {
+					projectTreeViewer.setChecked(ext, checked);
+				}
+				updateCheckedState();
+			}
+			updateCheckedState();
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    private void checkPlatformAndReferencedExtensions() {
-        // TODO inaczej sprawdzenie, instanceof?
-        List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
-        if (input != null) {
-            for (PlatformRoot root : input) {
-                projectTreeViewer.setChecked(root, true);
-                for (PlatformExtension ext : root.children) {
-                    projectTreeViewer.setChecked(ext, ext.referenced);
-                }
-            }
-            updateCheckedState();
-        }
-    }
+	@SuppressWarnings("unchecked")
+	private void checkPlatformAndReferencedExtensions() {
+		// TODO inaczej sprawdzenie, instanceof?
+		List<PlatformRoot> input = (List<PlatformRoot>) projectTreeViewer.getInput();
+		if (input != null) {
+			for (PlatformRoot root : input) {
+				projectTreeViewer.setChecked(root, true);
+				for (PlatformExtension ext : root.children) {
+					projectTreeViewer.setChecked(ext, ext.referenced);
+				}
+			}
+			updateCheckedState();
+		}
+	}
 
-    private void updateCheckedState() {
+	private void updateCheckedState() {
 
-        Object[] elements = projectTreeViewer.getCheckedElements();
-        for (int i = 0; i < elements.length; i++) {
-            Object element = elements[i];
-            if (element instanceof PlatformExtension) {
-                PlatformExtension ext = (PlatformExtension) element;
-                if (parentUnchecked(ext) || validateExtension(ext) != null) {
-                    projectTreeViewer.setChecked(ext, false);
-                }
-            }
-        }
-        projectTreeViewer.refresh();
-    }
+		Object[] elements = projectTreeViewer.getCheckedElements();
+		for (int i = 0; i < elements.length; i++) {
+			Object element = elements[i];
+			if (element instanceof PlatformExtension) {
+				PlatformExtension ext = (PlatformExtension) element;
+				if (parentUnchecked(ext) || validateExtension(ext) != null) {
+					projectTreeViewer.setChecked(ext, false);
+				}
+			}
+		}
+		projectTreeViewer.refresh();
+	}
 
-    private boolean parentUnchecked(PlatformExtension ext) {
-        return ext.parent != null && projectTreeViewer.getChecked(ext.parent) == false;
-    }
-    
+	private boolean parentUnchecked(PlatformExtension ext) {
+		return ext.parent != null && projectTreeViewer.getChecked(ext.parent) == false;
+	}
 
-    boolean createExtensions(IProgressMonitor monitor) throws CoreException {
-        if (monitor == null) {
-            monitor = new NullProgressMonitor();
-        }
-        final boolean[] setReadOnly = new boolean[1];
-        final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
-        Display.getDefault().syncExec(new Runnable() {
-            @Override
-            public void run() {
-            	setReadOnly[0] = setReadOnlyCheck.getSelection();
-                Object[] elements = projectTreeViewer.getCheckedElements();
-                for (int i = 0; i < elements.length; i++) {
-                    Object element = elements[i];
-                    if (element instanceof PlatformExtension) {
-                        extensions.add((PlatformExtension) element);
-                    }
-                }
-            }
-        });
+	boolean createExtensions(IProgressMonitor monitor) throws CoreException {
+		if (monitor == null) {
+			monitor = new NullProgressMonitor();
+		}
+		final boolean[] setReadOnly = new boolean[1];
+		final List<PlatformExtension> extensions = new ArrayList<PlatformExtension>();
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				setReadOnly[0] = setReadOnlyCheck.getSelection();
+				Object[] elements = projectTreeViewer.getCheckedElements();
+				for (int i = 0; i < elements.length; i++) {
+					Object element = elements[i];
+					if (element instanceof PlatformExtension) {
+						extensions.add((PlatformExtension) element);
+					}
+				}
+			}
+		});
 
-        try {
-            monitor.beginTask("Importing eCommerce platform...", extensions.size());
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-            for (PlatformExtension extension : extensions) {
-                SubProgressMonitor submonitor = new SubProgressMonitor(monitor, 1,
-                        SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
-                try {
-                    submonitor.subTask("importing " + extension.projectName);
-                    if (extension instanceof PlatformConfig) {
-                        createConfig(root, (PlatformConfig) extension, submonitor);
-                    } else if (extension instanceof PlatformRoot) {
-                        createPlatform(root, (PlatformRoot) extension, setReadOnly[0], submonitor);
-                    } else {
-                        createExtension(root, extension, setReadOnly[0], submonitor);
-                    }
-                } finally {
-                    submonitor.done();
-                }
-            }
-            return true;
-        } finally {
-            monitor.done();
-        }
-    }
+		try {
+			monitor.beginTask("Importing eCommerce platform...", extensions.size());
+			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+			for (PlatformExtension extension : extensions) {
+				SubProgressMonitor submonitor = new SubProgressMonitor(monitor, 1,
+						SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
+				try {
+					submonitor.subTask("importing " + extension.projectName);
+					if (extension instanceof PlatformConfig) {
+						createConfig(root, (PlatformConfig) extension, submonitor);
+					} else if (extension instanceof PlatformRoot) {
+						createPlatform(root, (PlatformRoot) extension, setReadOnly[0], submonitor);
+					} else {
+						createExtension(root, extension, setReadOnly[0], submonitor);
+					}
+				} finally {
+					submonitor.done();
+				}
+			}
+			return true;
+		} finally {
+			monitor.done();
+		}
+	}
 
-    private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, boolean setReadOnly, IProgressMonitor monitor) throws CoreException {
-        doCreateExtension(root, ext, setReadOnly, monitor);
-        IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
-                .verifyPlatformLocation(ext.path.toFile());
-        if (platform != null) {
-            YCore.getDefault().getPlatformContainer().setDefaultPlatform(platform);
-        }
-    }
+	private void createPlatform(IWorkspaceRoot root, PlatformRoot ext, boolean setReadOnly, IProgressMonitor monitor)
+			throws CoreException {
+		doCreateExtension(root, ext, setReadOnly, monitor);
+		IPlatformInstallation platform = YCore.getDefault().getPlatformContainer()
+				.verifyPlatformLocation(ext.path.toFile());
+		if (platform != null) {
+			YCore.getDefault().getPlatformContainer().setDefaultPlatform(platform);
+		}
+	}
 
-    private void createExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly, IProgressMonitor monitor)
-            throws CoreException {
-        doCreateExtension(root, ext, setReadOnly, monitor);
-    }
+	private void createExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly,
+			IProgressMonitor monitor) throws CoreException {
+		doCreateExtension(root, ext, setReadOnly, monitor);
+	}
 
-    private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
-        IProject project = createProject(root, ext, monitor);
-        YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        JavaCore.create(project);
-    }
+	private void createConfig(IWorkspaceRoot root, PlatformConfig ext, IProgressMonitor monitor) throws CoreException {
+		IProject project = createProject(root, ext, monitor);
+		YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+		JavaCore.create(project);
+	}
 
-    private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly, IProgressMonitor monitor)
-            throws CoreException {
-        IProject project = createProject(root, ext, monitor);
-        YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
-        YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
-        IJavaProject javaProject = JavaCore.create(project);
-        if (setReadOnly && !ext.custom){
-        	IClasspathEntry[] entries = javaProject.getRawClasspath();
-        	for (IClasspathEntry entry : entries) {
-				if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE){
+	private void doCreateExtension(IWorkspaceRoot root, PlatformExtension ext, boolean setReadOnly,
+			IProgressMonitor monitor) throws CoreException {
+		IProject project = createProject(root, ext, monitor);
+		YCore.getDefault().getNatureManager().addNature(JavaCore.NATURE_ID, project, monitor);
+		YCore.getDefault().getNatureManager().addNature(YNature.NATURE_ID, project, monitor);
+		IJavaProject javaProject = JavaCore.create(project);
+		if (setReadOnly && !ext.custom) {
+			IClasspathEntry[] entries = javaProject.getRawClasspath();
+			for (IClasspathEntry entry : entries) {
+				if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE
+						&& entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
+						&& !"gensrc".equals(entry.getPath().lastSegment())) {
 					root.findMember(entry.getPath()).accept(new IResourceVisitor() {
 						@Override
 						public boolean visit(IResource resource) throws CoreException {
@@ -642,167 +648,171 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 					});
 				}
 			}
-        }
-    }
+		}
+	}
 
-    private IProject createProject(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
-            throws CoreException {
-        IProject project = root.getProject(ext.projectName);
-        if (!project.exists()) {
-            IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
-            URI locationURI = URI.create(ext.path.toOSString());
-            if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
-                locationURI = null;
-            }
-            desc.setLocationURI(locationURI);
-            project.create(desc, monitor);
-        } else {
-            project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-        }
-        if (!project.isOpen()) {
-            project.open(monitor);
-        }
-        return project;
-    }
+	private IProject createProject(IWorkspaceRoot root, PlatformExtension ext, IProgressMonitor monitor)
+			throws CoreException {
+		IProject project = root.getProject(ext.projectName);
+		if (!project.exists()) {
+			IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
+			URI locationURI = URI.create(ext.path.toOSString());
+			if (locationURI != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(locationURI)) {
+				locationURI = null;
+			}
+			desc.setLocationURI(locationURI);
+			project.create(desc, monitor);
+		} else {
+			project.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+		}
+		if (!project.isOpen()) {
+			project.open(monitor);
+		}
+		return project;
+	}
 
-    private class PlatformRoot extends PlatformExtension {
+	private class PlatformRoot extends PlatformExtension {
 
-        private final String vendor;
-        private final String version;
+		private final String vendor;
+		private final String version;
 
-        public PlatformRoot(IPlatformInstallation platform, String projectName) {
-            super(platform.getPlatformLocation(), StringUtils.isEmpty(platform.getName()) ? projectName : platform
-                    .getName(), projectName, true, false);
-            vendor = platform.getVendor();
-            version = platform.getVersion().get();
-        }
+		public PlatformRoot(IPlatformInstallation platform, String projectName) {
+			super(platform.getPlatformLocation(),
+					StringUtils.isEmpty(platform.getName()) ? projectName : platform.getName(), projectName, true,
+					false);
+			vendor = platform.getVendor();
+			version = platform.getVersion().get();
+		}
 
-        @Override
-        protected StyledString styledText() {
-            StyledString ss = new StyledString();
-            ss.append(name);
-            ss.append(" - "); //$NON-NLS-1$
-            ss.append(vendor + " " + version, StyledString.DECORATIONS_STYLER); // $NON-NLS-2$ //$NON-NLS-3$
-            return ss;
-        }
-    }
+		@Override
+		protected StyledString styledText() {
+			StyledString ss = new StyledString();
+			ss.append(name);
+			ss.append(" - "); //$NON-NLS-1$
+			ss.append(vendor + " " + version, StyledString.DECORATIONS_STYLER); // $NON-NLS-2$
+																				// //$NON-NLS-3$
+			return ss;
+		}
+	}
 
-    private class PlatformConfig extends PlatformExtension {
+	private class PlatformConfig extends PlatformExtension {
 
-        private PlatformConfig(IPath path, String name, String projectName) {
-            super(path, name, projectName, true, true);
-        }
+		private PlatformConfig(IPath path, String name, String projectName) {
+			super(path, name, projectName, true, true);
+		}
 
-        @Override
-        protected StyledString styledText() {
-            StyledString ss = new StyledString();
-            ss.append(name);
-            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.COUNTER_STYLER); // $NON-NLS-1$
-            return ss;
-        }
-    }
+		@Override
+		protected StyledString styledText() {
+			StyledString ss = new StyledString();
+			ss.append(name);
+			ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.COUNTER_STYLER); // $NON-NLS-1$
+			return ss;
+		}
+	}
 
-    private class PlatformExtension {
-        protected final IPath path;
-        protected final String name;
-        protected final String projectName;
-        protected final boolean referenced;
-        protected PlatformExtension parent;
-        protected final boolean custom;
-        protected final TreeSet<PlatformExtension> children = new TreeSet<PlatformExtension>(
-                new Comparator<PlatformExtension>() {
-                    @Override
-                    public int compare(PlatformExtension o1, PlatformExtension o2) {
-                        if (o1.parent == null) {
-                            return 1;
-                        }
-                        if (o1 instanceof PlatformConfig) {
-                            return 1;
-                        }
-                        return o1.name.compareTo(o2.name);
-                    }
-                });
+	private class PlatformExtension {
+		protected final IPath path;
+		protected final String name;
+		protected final String projectName;
+		protected final boolean referenced;
+		protected PlatformExtension parent;
+		protected final boolean custom;
+		protected final TreeSet<PlatformExtension> children = new TreeSet<PlatformExtension>(
+				new Comparator<PlatformExtension>() {
+					@Override
+					public int compare(PlatformExtension o1, PlatformExtension o2) {
+						if (o1.parent == null) {
+							return 1;
+						}
+						if (o1 instanceof PlatformConfig) {
+							return 1;
+						}
+						return o1.name.compareTo(o2.name);
+					}
+				});
 
-        private PlatformExtension(IPath path, String name, String projectName, boolean referenced, boolean custom) {
-            this.path = path;
-            this.name = name;
-            this.projectName = projectName;
-            this.referenced = referenced;
-            this.custom = custom;
-        }
+		private PlatformExtension(IPath path, String name, String projectName, boolean referenced, boolean custom) {
+			this.path = path;
+			this.name = name;
+			this.projectName = projectName;
+			this.referenced = referenced;
+			this.custom = custom;
+		}
 
-        private void addExtension(PlatformExtension extension) {
-            extension.parent = this;
-            children.add(extension);
-        }
+		private void addExtension(PlatformExtension extension) {
+			extension.parent = this;
+			children.add(extension);
+		}
 
-        protected StyledString styledText() {
-            StyledString ss = new StyledString();
-            ss.append(name);
-            ss.append(" - "); //$NON-NLS-1$
-            ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.QUALIFIER_STYLER);
-            return ss;
-        }
-    }
+		protected StyledString styledText() {
+			StyledString ss = new StyledString();
+			ss.append(name);
+			ss.append(" - "); //$NON-NLS-1$
+			ss.append(path.makeRelativeTo(parent.path.removeLastSegments(1)).toString(), StyledString.QUALIFIER_STYLER);
+			return ss;
+		}
+	}
 
-    private class ExtensionLabelProvider extends LabelProvider implements IColorProvider,
-            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+	private class ExtensionLabelProvider extends LabelProvider
+			implements IColorProvider, DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
-        @Override
-        public String getText(Object element) {
-            if (element instanceof PlatformExtension) {
-                PlatformExtension info = (PlatformExtension) element;
-                return info.name;
-            }
-            return super.getText(element);
-        }
+		@Override
+		public String getText(Object element) {
+			if (element instanceof PlatformExtension) {
+				PlatformExtension info = (PlatformExtension) element;
+				return info.name;
+			}
+			return super.getText(element);
+		}
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IColorProvider#getBackground(java.lang.Object)
-         */
-        @Override
-        public Color getForeground(Object element) {
-            if (element instanceof PlatformExtension) {
-                PlatformExtension ext = (PlatformExtension) element;
-                // if (isWorkspaceFolder(ext)) {
-                // return Display.getDefault().getSystemColor(SWT.COLOR_RED);
-                // } else
-                if (parentUnchecked(ext) || validateExtension(ext) != null) {
-                    return Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
-                }
-            }
-            return null;
-        }
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.IColorProvider#getBackground(java.lang.
+		 * Object)
+		 */
+		@Override
+		public Color getForeground(Object element) {
+			if (element instanceof PlatformExtension) {
+				PlatformExtension ext = (PlatformExtension) element;
+				// if (isWorkspaceFolder(ext)) {
+				// return Display.getDefault().getSystemColor(SWT.COLOR_RED);
+				// } else
+				if (parentUnchecked(ext) || validateExtension(ext) != null) {
+					return Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
+				}
+			}
+			return null;
+		}
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see org.eclipse.jface.viewers.IColorProvider#getForeground(java.lang.Object)
-         */
-        @Override
-        public Color getBackground(Object element) {
-            return null;
-        }
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.IColorProvider#getForeground(java.lang.
+		 * Object)
+		 */
+		@Override
+		public Color getBackground(Object element) {
+			return null;
+		}
 
-        /*
-         * (non-Javadoc)
-         * 
-         * @see
-         * org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider#getStyledText(java.lang.
-         * Object)
-         */
-        @Override
-        public StyledString getStyledText(Object element) {
-            if (element instanceof PlatformExtension) {
-                return ((PlatformExtension) element).styledText();
-            }
-            return null;
-        }
-    }
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.
+		 * IStyledLabelProvider#getStyledText(java.lang. Object)
+		 */
+		@Override
+		public StyledString getStyledText(Object element) {
+			if (element instanceof PlatformExtension) {
+				return ((PlatformExtension) element).styledText();
+			}
+			return null;
+		}
+	}
 
-    
 	@Override
 	protected void saveWidgetValues() {
 		IDialogSettings settings = getDialogSettings();
@@ -811,7 +821,7 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 			saveInHistory(settings, SET_SOURCES_READONLY, setReadOnlyCheck.getSelection());
 		}
 	}
-	
+
 	@Override
 	protected void restoreWidgetValues() {
 		IDialogSettings settings = getDialogSettings();
@@ -820,11 +830,11 @@ public class ImportPlatformWizardPage extends AbstractWizardPage {
 			restoreFromHistory(settings, SET_SOURCES_READONLY, setReadOnlyCheck);
 		}
 	}
-    
+
 	@Override
 	public void handleEvent(Event event) {
 	}
-	
+
 	@Override
 	protected boolean allowNewContainerName() {
 		return true;
