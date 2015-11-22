@@ -15,13 +15,10 @@ import java.util.Set;
 //import com.lambda.impex.ast.tree.*;
 import java.util.regex.Pattern;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.lambda.impex.ast.ImpexParser.AttributeContext;
@@ -165,31 +162,31 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 
 	@Override
 	public void enterMacrorefAttribute(final MacrorefAttributeContext ctx) {
-		final String text = resolveMacroreference(ctx.macroref());
-		final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
-		lexer.removeErrorListeners();
-		lexer.pushMode(ImpexLexer.attribute);
-		final CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-		final ImpexParser parser = new ImpexParser(tokens);
-		parser.removeErrorListeners();
-		final AttributeContext attribute = parser.attribute();
-		final DefaultImpexModel model = new DefaultImpexModel();
-		final ImpexParserDefaultListener listener = new ImpexParserDefaultListener(model);
-		listener.typeDescription = typeDescription;
-		listener.typeFinder = typeFinder;
-
-		final ParseTreeWalker walker = new ParseTreeWalker();
-		walker.walk(listener, attribute);
-		if (model.hasProblems()) {
-			for (final ImpexProblem problem : model.getProblems()) {
-				context.addProblem(
-						problem(ctx.macroref(), ImpexProblem.Type.InvalidMacroEvaluation, getText(ctx.macroref())));
-				System.out.println();
-			}
-
-		}
-		currentColumnDescription = listener.getColumnDescription();
+//		final String text = resolveMacroreference(ctx.macroref());
+//		final ImpexLexer lexer = new ImpexLexer(new ANTLRInputStream(text));
+//		lexer.removeErrorListeners();
+//		lexer.pushMode(ImpexLexer.attribute);
+//		final CommonTokenStream tokens = new CommonTokenStream(lexer);
+//
+//		final ImpexParser parser = new ImpexParser(tokens);
+//		parser.removeErrorListeners();
+//		final AttributeContext attribute = parser.attribute();
+//		final DefaultImpexModel model = new DefaultImpexModel();
+//		final ImpexParserDefaultListener listener = new ImpexParserDefaultListener(model);
+//		listener.typeDescription = typeDescription;
+//		listener.typeFinder = typeFinder;
+//
+//		final ParseTreeWalker walker = new ParseTreeWalker();
+//		walker.walk(listener, attribute);
+//		if (model.hasProblems()) {
+//			for (final ImpexProblem problem : model.getProblems()) {
+//				context.addProblem(
+//						problem(ctx.macroref(), ImpexProblem.Type.InvalidMacroEvaluation, getText(ctx.macroref())));
+//				System.out.println();
+//			}
+//
+//		}
+//		currentColumnDescription = listener.getColumnDescription();
 	}
 
 	@Override

@@ -1,12 +1,6 @@
 package com.lambda.plugin.core;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,10 +10,6 @@ import java.util.regex.Pattern;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.taskdefs.MacroInstance;
-import org.eclipse.ant.core.AntCorePlugin;
-import org.eclipse.ant.core.AntCorePreferences;
-import org.eclipse.ant.core.IAntClasspathEntry;
-import org.eclipse.ant.internal.core.AntClasspathEntry;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -29,7 +19,6 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-import com.lambda.plugin.YCore;
 import com.lambda.plugin.core.jaxb.extensions.Extension;
 import com.lambda.plugin.core.jaxb.extensions.ExtensionsConf;
 import com.lambda.plugin.utils.StringUtils;
@@ -75,7 +64,8 @@ public class StandardPlatformType implements IPlatformInstallation {
 		this.project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject("platform");
 	}
 
-    public IJavaProject getProject() {
+    @Override
+	public IJavaProject getProject() {
         return project;
     }
 

@@ -71,6 +71,9 @@ public class AntlrProblemTypeToSeverityMapper {
             return MessageFormat.format(YMessages.Impex_problem_invalidAttributeModifier, params);
         case InvalidHeaderModifier:
             return MessageFormat.format(YMessages.Impex_problem_invalidHeaderModifier, params);
+        case UnknownAttributeModifier:
+        case UnknownHeaderModifier:
+        	return MessageFormat.format(YMessages.Impex_problem_customModifier, params);
         case InvalidBoolean:
             return YMessages.Impex_problem_invalidBoolean;
         case InvalidMode:

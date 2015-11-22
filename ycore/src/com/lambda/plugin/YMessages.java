@@ -163,6 +163,7 @@ public final class YMessages extends NLS {
     public static String Impex_problem_invalidAttribute;
     public static String Impex_problem_invalidAttributeModifier;
     public static String Impex_problem_invalidHeaderModifier;
+    public static String Impex_problem_customModifier;
     public static String Impex_problem_fieldWithoutHeaderAttribute;
     public static String Impex_problem_duplicateDocumentId;
     public static String Impex_problem_invalidDocumentId;
