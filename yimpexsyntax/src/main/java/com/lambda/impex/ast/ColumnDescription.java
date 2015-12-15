@@ -24,4 +24,8 @@ public interface ColumnDescription {
 
     void setType(TypeDescription returnType);
 
+	void setMacroref(String text);
+	
+	String getMacroref();
+
 }

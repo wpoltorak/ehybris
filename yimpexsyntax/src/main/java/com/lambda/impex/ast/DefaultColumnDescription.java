@@ -13,6 +13,7 @@ public class DefaultColumnDescription implements ColumnDescription {
     private String refRegex;
     private final List<ColumnDescription> children = new ArrayList<>();
     private TypeDescription type;
+	private String macroref;
 
     public DefaultColumnDescription() {
         this.type = null;
@@ -31,13 +32,15 @@ public class DefaultColumnDescription implements ColumnDescription {
         this.parent.addChild(this);
     }
 
-    public void addChild(final ColumnDescription columnDescription) {
+    @Override
+	public void addChild(final ColumnDescription columnDescription) {
         children.add(columnDescription);
     }
 
     //DocumentID, Integer, String, Boolean, Text, PK, Long, Complex
 
-    public List<ColumnDescription> getChildren() {
+    @Override
+	public List<ColumnDescription> getChildren() {
         return children;
     }
 
@@ -56,27 +59,42 @@ public class DefaultColumnDescription implements ColumnDescription {
         this.type = type;
     }
 
-    public ColumnDescription getParent() {
+    @Override
+	public ColumnDescription getParent() {
         return parent;
     }
 
-    public boolean hasParent() {
+    @Override
+	public boolean hasParent() {
         return parent != null;
     }
 
-    public boolean isEmpty() {
-        return owner == null;
+    @Override
+	public boolean isEmpty() {
+        return owner == null && macroref == null;
     }
 
     private Pattern getRegex() {
         return Pattern.compile(refRegex);
     }
 
-    public String getDocumentID() {
+    @Override
+	public String getDocumentID() {
         return documentID;
     }
 
-    public void setDocumentID(final String documentID) {
+    @Override
+	public void setDocumentID(final String documentID) {
         this.documentID = documentID;
+    }
+    
+    @Override
+    public String getMacroref() {
+    	return macroref;
+    }
+    
+    @Override
+    public void setMacroref(String macroref) {
+		this.macroref = macroref;
     }
 }

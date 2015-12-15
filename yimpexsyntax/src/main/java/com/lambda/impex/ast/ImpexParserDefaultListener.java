@@ -187,6 +187,8 @@ public class ImpexParserDefaultListener extends ImpexParserBaseListener {
 //
 //		}
 //		currentColumnDescription = listener.getColumnDescription();
+		currentColumnDescription = new DefaultColumnDescription();
+		currentColumnDescription.setMacroref(ctx.macroref().getText());
 	}
 
 	@Override
