@@ -35,7 +35,7 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 		if (hoverRegion instanceof ILexerTokenRegion) {
 			ILexerTokenRegion region = (ILexerTokenRegion) hoverRegion;
 
-			switch (region.getTokenType()) {
+			switch (region.getType()) {
 			case ImpexLexer.Field:
 			case ImpexLexer.FieldQuoted:
 			case ImpexLexer.SkippedField:
@@ -205,7 +205,7 @@ public class ImpexHover implements ITextHover, ITextHoverExtension, ITextHoverEx
 	    }
 	    
 		public IRegion getTextRegion() {
-			return columns.get(index);
+			return columns != null ? columns.get(index) : null;
 		}
 	}
 }
