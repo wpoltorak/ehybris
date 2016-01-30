@@ -138,6 +138,7 @@ public class ImpexLexer extends Lexer {
 	    private List<Integer> columnTypes = new ArrayList<>();
 	    private int columnIndex = -1;
 	    private int offset;
+	    private int lineOffset;
 	    private boolean isDocumentIdReference;
 
 		private MacroDefinitions macroDefinitions = new MacroDefinitions();
@@ -146,17 +147,20 @@ public class ImpexLexer extends Lexer {
 	    private CommonToken cachedToken = null;
 	    private final Deque<Token> pendingTokens = new ArrayDeque<>();
 	    
-	    public void setup(String text, int offset, int length, int delta) {
+	    public void setup(String text, int offset, int lineOffset, int length, int delta) {
 	    	setInputStream(new ANTLRInputStream(text));
-	    	setOffset(offset);
+	    	this.offset = offset;
+	    	this.lineOffset = lineOffset;
 	    	macroDefinitions.update(offset, length, delta);
 	    }
 	    
-	    private void setOffset(int offset) {
-	    	this.offset = offset;
-	    }
 	    private boolean isCached(Token token) {
 	    	return cachedToken != null && cachedToken == token;
+	    }
+	    
+	    @Override
+	    public int getLine() {
+	    	return lineOffset + super.getLine();
 	    }
 	    
 	    @Override
@@ -185,13 +189,19 @@ public class ImpexLexer extends Lexer {
 		    
 	    @Override
 	    public Token emit() {
-	    	if (cachedToken != null && getType() == cachedToken.getType()) {
+	    	int stopIndex = /*offset + */getCharIndex() - 1;
+			if (cachedToken != null && getType() == cachedToken.getType()) {
 	    		cachedToken.setText(cachedToken.getText() + getText());
-	    		cachedToken.setStopIndex(getCharIndex() - 1);
+	    		cachedToken.setStopIndex(stopIndex);
 				emit(cachedToken);
 		    	return cachedToken;
 	    	}
-	    	return super.emit();
+	    	int startIndex = /*offset + */this._tokenStartCharIndex;
+			CommonToken t = CommonTokenFactory.DEFAULT.create(this._tokenFactorySourcePair, this._type, this._text, this._channel, startIndex, stopIndex, this._tokenStartLine, this._tokenStartCharPositionInLine);
+	    	t.setStartIndex(startIndex);
+	    	t.setStopIndex(stopIndex);
+			emit(t);
+	    	return t;
 	    }
 		    
 		    
@@ -226,11 +236,16 @@ public class ImpexLexer extends Lexer {
 		    	case Macroval:
 		    	case Field:
 		    	case Modifierval:
+		    	case UnknownModifier:
 		    		cachedToken = (CommonToken)token;
 		    		break;
 				case Macroref:{
 				//TODO more performance improvement with startswith getter for map view macroDefinitions 
 			    	if (macroDefinitions.isReferenced(token)){
+			    		//set text now to make sure that since this point the text stays the same 
+			    		String text = ((CommonToken)token).getText();
+			    		((CommonToken)token).setText(text);
+			    	
 			    		//clear cached token to break nextToken loop.
 			    		cachedToken = null;
 			    	} else {
@@ -238,6 +253,9 @@ public class ImpexLexer extends Lexer {
 					}
 			    	break;
 		    	} case Macrodef:{
+			    	//set text now to make sure that since this point the text stays the same 
+		    		String text = ((CommonToken)token).getText();
+			    	((CommonToken)token).setText(text);
 		    		macroDefinitions.macrodef(token);
 		    		clearCachedDefinitions = true; // clear when next line break occurs
 		    		break;

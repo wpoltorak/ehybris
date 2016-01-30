@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/impexast-0.0.1-SNAPSHOT.jar" sourcepath="/yimpexsyntax"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr4-4.5.1-1.jar" sourcepath="/home/kasia/.m2/repository/org/antlr/antlr4/4.5.1-1/antlr4-4.5.1-1-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="lib/impexast-0.0.1-SNAPSHOT-jar-with-dependencies.jar" sourcepath="/yimpexsyntax"/>
 	<classpathentry kind="src" path="src/"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

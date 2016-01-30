@@ -75,7 +75,7 @@ public class JavaElementHyperlinkDetector extends AbstractHyperlinkDetector {
     }
 
     private IJavaElement element(ImpexModel model, ILexerTokenRegion token) {
-        Object hyperlinkElement = model.getHyperlinkElement(token.getTokenType(), token.getOffset());
+        Object hyperlinkElement = model.getHyperlinkElement(token.getType(), token.getOffset());
         if (hyperlinkElement instanceof IType) {
             return (IType) hyperlinkElement;
         } else {

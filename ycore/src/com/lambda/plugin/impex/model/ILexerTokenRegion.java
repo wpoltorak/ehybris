@@ -1,13 +1,14 @@
 package com.lambda.plugin.impex.model;
 
+import org.antlr.v4.runtime.Token;
 import org.eclipse.jface.text.IRegion;
 
-public interface ILexerTokenRegion extends IRegion {
+public interface ILexerTokenRegion extends IRegion, Token {
 
     /**
-     * Return ANTLR token type
+     * Return ANTLR token
      * 
      * @return
      */
-    int getTokenType();
+    Token getToken();
 }

@@ -22,8 +22,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 import com.lambda.impex.ast.ImpexLexer;
-import com.lambda.plugin.YMessages;
 import com.lambda.plugin.YCore;
+import com.lambda.plugin.YMessages;
 import com.lambda.plugin.impex.editor.ImpexDocument;
 import com.lambda.plugin.impex.editor.ImpexEditor;
 import com.lambda.plugin.impex.model.ILexerTokenRegion;
@@ -40,7 +40,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
             final ImpexDocument document = (ImpexDocument) impexEditor.getDocumentProvider().getDocument(
                     impexEditor.getEditorInput());
             if (document != null) {
-                operationTarget = (ITextOperationTarget) activeEditor.getAdapter(ITextOperationTarget.class);
+                operationTarget = activeEditor.getAdapter(ITextOperationTarget.class);
                 if (operationTarget != null && operationTarget.canDoOperation(ITextOperationTarget.PREFIX)
                         && operationTarget.canDoOperation(ITextOperationTarget.STRIP_PREFIX)) {
                     toggleComment(impexEditor, document);
@@ -134,7 +134,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
             // start work
             monitor.beginTask(YMessages.ImpexToggleComment_progress, this.selectionEndLine - this.selectionStartLine);
             try {
-                Iterable<ILexerTokenRegion>[] lines = getLines(document);
+                Iterable<? extends ILexerTokenRegion>[] lines = getLines(document);
                 ITextOperationTarget textOperationTarget = (ITextOperationTarget) editor
                         .getAdapter(ITextOperationTarget.class);
                 // gather information about positions of existing comments in each line
@@ -152,20 +152,20 @@ public class ToggleLineCommentAction extends AbstractHandler {
             monitor.done();
         }
 
-        private Iterable<ILexerTokenRegion>[] getLines(final ImpexDocument document) throws BadLocationException {
+        private Iterable<? extends ILexerTokenRegion>[] getLines(final ImpexDocument document) throws BadLocationException {
             @SuppressWarnings("unchecked")
-            Iterable<ILexerTokenRegion>[] lines = new Iterable[selectionEndLine - selectionStartLine + 1];
+            Iterable<? extends ILexerTokenRegion>[] lines = new Iterable[selectionEndLine - selectionStartLine + 1];
             for (int i = selectionStartLine, j = 0; i <= selectionEndLine; i++, j++) {
                 lines[j] = document.getLineTokens(i, false);
             }
             return lines;
         }
 
-        private boolean checkExistingComments(Iterable<ILexerTokenRegion>[] lines, LineInformation[] lineInformation)
+        private boolean checkExistingComments(Iterable<? extends ILexerTokenRegion>[] lines, LineInformation[] lineInformation)
                 throws BadLocationException {
             boolean comment = false;
             for (int i = 0; i < lines.length; i++) {
-                Iterator<ILexerTokenRegion> lineTokens = lines[i].iterator();
+                Iterator<? extends ILexerTokenRegion> lineTokens = lines[i].iterator();
                 LineInformation li = new LineInformation();
                 lineInformation[i] = li;
                 comment |= checkExistingCommentInLine(skipped, li, i, lineTokens);
@@ -174,7 +174,7 @@ public class ToggleLineCommentAction extends AbstractHandler {
         }
 
         private boolean checkExistingCommentInLine(List<Integer> skipped, LineInformation li, int line,
-                Iterator<ILexerTokenRegion> lineTokens) {
+                Iterator<? extends ILexerTokenRegion> lineTokens) {
             while (lineTokens.hasNext()) {
                 ILexerTokenRegion token = lineTokens.next();
                 // store first token offset- this is the beginning of the line
@@ -182,8 +182,8 @@ public class ToggleLineCommentAction extends AbstractHandler {
                     li.lineOffset = token.getOffset();
                 }
 
-                if (!skipped.contains(token.getTokenType())) {
-                    if (ImpexLexer.Comment == token.getTokenType()) {
+                if (!skipped.contains(token.getType())) {
+                    if (ImpexLexer.Comment == token.getType()) {
                         // store comment offset if such exists
                         li.prefixOffset = token.getOffset();
                         return false;

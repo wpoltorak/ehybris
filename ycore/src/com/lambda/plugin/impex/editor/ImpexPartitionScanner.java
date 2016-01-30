@@ -59,11 +59,11 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
 
         this.currentPartitionOffset = nextToken.getOffset();
         this.currentPartitionLength = nextToken.getLength();
-        String partitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
+        String partitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getType());
 
         while (tokenIterator.hasNext()) {
             nextToken = tokenIterator.next();
-            String nextPartitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getTokenType());
+            String nextPartitionType = AntlrTypeToPartitionTokenMapper.partitionType(nextToken.getType());
             currentPartitionLength = nextToken.getOffset() - currentPartitionOffset;
             if (!partitionType.equals(nextPartitionType) || !IDocument.DEFAULT_CONTENT_TYPE.equals(partitionType)) {
                 return new Token(partitionType);
@@ -93,12 +93,12 @@ public class ImpexPartitionScanner implements IPartitionTokenScanner {
         private static final int OK = 1;
         private static final int END = 2;
 
-        private final Iterator<ILexerTokenRegion> delegate;
+        private final Iterator<? extends ILexerTokenRegion> delegate;
         private final Region overlapRegion;
         private ILexerTokenRegion next;
         private int status = INIT;
 
-        public RangedIterator(Iterable<ILexerTokenRegion> iterable, Region overlapRegion) {
+        public RangedIterator(Iterable<? extends ILexerTokenRegion> iterable, Region overlapRegion) {
             this.delegate = iterable.iterator();
             this.overlapRegion = overlapRegion;
         }

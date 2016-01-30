@@ -48,7 +48,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 				ImpexLexer.DoubleQuote);
 		final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 		try {
-			Iterable<ILexerTokenRegion> lineTokens = document.getLineTokensOfOffset(offset, true);
+			Iterable<? extends ILexerTokenRegion> lineTokens = document.getLineTokensOfOffset(offset, true);
 			ActivationTokenInspector inspector = new ActivationTokenInspector(lineTokens, offset, skipped);
 			// the beginning of the line - suggest mode
 			if (inspector.getLastToken() == null) {
@@ -57,8 +57,8 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 			}
 
 			// header content assist
-			if (inspector.getFirstToken().getTokenType() == ImpexLexer.Mode) {
-				switch (inspector.getLastToken().getTokenType()) {
+			if (inspector.getFirstToken().getType() == ImpexLexer.Mode) {
+				switch (inspector.getLastToken().getType()) {
 				case ImpexLexer.Mode:
 				case ImpexLexer.Type: {
 					final String qualifier = getQualifier(document, offset);
@@ -177,7 +177,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 	 * 
 	 */
 	private class ActivationTokenInspector {
-		private final Iterator<ILexerTokenRegion> delegate;
+		private final Iterator<? extends ILexerTokenRegion> delegate;
 		private final int offset;
 		private ILexerTokenRegion previousToken;
 		private ILexerTokenRegion token;
@@ -185,7 +185,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 		private ILexerTokenRegion firstToken;
 		private final List<Integer> skipped;
 
-		public ActivationTokenInspector(Iterable<ILexerTokenRegion> iterable, int offset, List<Integer> skipped) {
+		public ActivationTokenInspector(Iterable<? extends ILexerTokenRegion> iterable, int offset, List<Integer> skipped) {
 			this.offset = offset;
 			this.skipped = skipped;
 			this.delegate = iterable.iterator();
@@ -215,7 +215,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 				ILexerTokenRegion candidate = delegate.next();
 
 				if (candidate.getOffset() <= offset && candidate.getOffset() + candidate.getLength() >= offset) {
-					if (!skipped.contains(candidate.getTokenType())) {
+					if (!skipped.contains(candidate.getType())) {
 						if (candidate.getOffset() + candidate.getLength() == offset) {
 							previousToken = candidate;
 						} else {
@@ -227,7 +227,7 @@ public class ImpexContentAssistProcessor implements IContentAssistProcessor {
 						firstToken = candidate;
 					}
 				} else {
-					if (!skipped.contains(candidate.getTokenType())) {
+					if (!skipped.contains(candidate.getType())) {
 						if (seekNext) {
 							nextToken = candidate;
 							break;

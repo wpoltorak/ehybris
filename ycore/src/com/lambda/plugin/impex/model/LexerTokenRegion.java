@@ -1,49 +1,101 @@
 package com.lambda.plugin.impex.model;
 
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenSource;
 import org.eclipse.jface.text.Region;
 
 import com.lambda.impex.ast.ImpexLexer;
 
 public class LexerTokenRegion extends Region implements ILexerTokenRegion {
 
-    private final int tokenType;
+	private Token token;
 
-    public LexerTokenRegion(int offset, int length, int tokenType) {
-        super(offset, length);
-        this.tokenType = tokenType;
+    public LexerTokenRegion(Token token) {
+        super(token.getStartIndex(), token.getStopIndex() - token.getStartIndex() + 1);
+        this.token = token;
     }
 
     @Override
-    public int getTokenType() {
-        return tokenType;
-    }
+	public int getChannel() {
+		return token.getChannel();
+	}
 
+	@Override
+	public int getCharPositionInLine() {
+		return token.getCharPositionInLine();
+	}
+
+	@Override
+	public CharStream getInputStream() {
+		return token.getInputStream();
+	}
+
+	@Override
+	public int getLine() {
+		return token.getLine();
+	}
+
+	@Override
+	public int getStartIndex() {
+		return token.getStartIndex();
+	}
+
+	@Override
+	public int getStopIndex() {
+		return token.getStopIndex();
+	}
+
+	@Override
+	public String getText() {
+		return token.getText();
+	}
+
+	@Override
+	public int getTokenIndex() {
+		return token.getTokenIndex();
+	}
+
+	@Override
+	public TokenSource getTokenSource() {
+		return token.getTokenSource();
+	}
+
+	@Override
+	public int getType() {
+		return token.getType();
+	}
+
+    @Override
+    public Token getToken() {
+    	return token;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o instanceof ILexerTokenRegion) {
             ILexerTokenRegion r = (ILexerTokenRegion) o;
-            return r.getTokenType() == tokenType && super.equals(o);
+            return r.getType() == getType() && super.equals(o);
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode() | (tokenType << 8);
+        return super.hashCode() | (getType() << 8);
     }
 
     @Override
     public String toString() {
-        return super.toString() + ", type: " + readType(tokenType); //$NON-NLS-2$;
+        return super.toString() + ", type: " + readType(getType()); //$NON-NLS-2$;
     }
 
     public boolean isBlockStart() {
-        return tokenType == ImpexLexer.Mode;
+        return getType() == ImpexLexer.Mode;
     }
 
     public boolean isEndOfFile() {
-        return tokenType == Token.EOF;
+        return getType() == Token.EOF;
     }
 
     // TODO remove at some point

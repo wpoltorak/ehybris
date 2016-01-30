@@ -19,7 +19,7 @@ public class OccurrencesFinderFactory {
     OccurrencesFinder createOccurrencesFinder() {
         try {
             ILexerTokenRegion token = document.getToken(offset);
-            switch (token.getTokenType()) {
+            switch (token.getType()) {
             case ImpexLexer.Type:
                 return new TypeOccurrencesFinder(token.getOffset());
             case ImpexLexer.Macrodef:

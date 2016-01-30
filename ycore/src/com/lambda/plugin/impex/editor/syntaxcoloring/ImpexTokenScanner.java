@@ -39,7 +39,7 @@ public class ImpexTokenScanner implements ITokenScanner {
         }
         nextToken = tokenIterator.next();
 
-        return tokenMapper.getToken(nextToken.getTokenType());
+        return tokenMapper.getToken(nextToken.getType());
     }
 
     @Override
@@ -58,12 +58,12 @@ public class ImpexTokenScanner implements ITokenScanner {
         private static final int OK = 1;
         private static final int END = 2;
 
-        private final Iterator<ILexerTokenRegion> delegate;
+        private final Iterator<? extends ILexerTokenRegion> delegate;
         private final Region overlapRegion;
         private ILexerTokenRegion next;
         private int status = INIT;
 
-        public RangedIterator(Iterable<ILexerTokenRegion> iterable, Region overlapRegion) {
+        public RangedIterator(Iterable<? extends ILexerTokenRegion> iterable, Region overlapRegion) {
             this.delegate = iterable.iterator();
             this.overlapRegion = overlapRegion;
         }

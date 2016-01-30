@@ -59,8 +59,9 @@ public class MacroDefinitions {
 				}
 			});
 			Collection<String> values = macroDefinitionsMap.headMap(index, false).values();
+			String text = token.getText();
 			for (String value : values) {
-				if (value.startsWith(token.getText())){
+				if (value.startsWith(text)){
 					cachedMacroDefinitions.add(value);
 				}
 			}
