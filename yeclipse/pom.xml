@@ -84,7 +84,7 @@
 	<modules>
 		<module>../yfeature</module>
 		<module>../ycore</module>
-		
+		<module>../yimpexeditor</module>
 		<module>../yrepo</module>
 		<module>../ytest</module>
 		

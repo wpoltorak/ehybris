@@ -1,10 +1,9 @@
-package com.lambda.plugin;
+package com.lambda.plugin.impex;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -12,12 +11,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -31,44 +24,29 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
-import com.lambda.plugin.core.IPlatformInstallation;
-import com.lambda.plugin.core.PlatformAntHomeUpdater;
-import com.lambda.plugin.core.PlatformContainer;
-import com.lambda.plugin.nature.IYNatureManager;
-import com.lambda.plugin.nature.YNatureManager;
-import com.lambda.plugin.template.ITemplateManager;
-import com.lambda.plugin.template.TemplateManager;
+import com.lambda.plugin.impex.editor.ColorManager;
+import com.lambda.plugin.impex.editor.problems.ProblemsPropertyChangeListener;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class YCore extends AbstractUIPlugin {
+public class YImpex extends AbstractUIPlugin {
 
     private static final String HISTORY_DIR_NAME = "history";
     // The plug-in ID
-    public static final String PLUGIN_ID = "com.lambda.ycore";
+    public static final String PLUGIN_ID = "com.lambda.yimpex";
 
     public static final String LOGGER_NAME = "lambda";
 
     // The shared instance
-    private static YCore plugin;
-    private static Object fPlatformTypeLock = new Object();
-
-    // private ImageDescriptorRegistry imageDescriptorRegistry;
-
-    private TemplateManager templateManager;
-
+    private static YImpex plugin;
     private IPreferenceStore fCombinedPreferenceStore;
-
-    private IYNatureManager natureManager;
-    private PlatformContainer platformContainer;
-    private PlatformAntHomeUpdater antHomeUpdater = new PlatformAntHomeUpdater();
-    private IJavaSearchScope scope;
+    private ProblemsPropertyChangeListener problemsPropertyChangeListener;
 
     /**
      * The constructor
      */
-    public YCore() {
+    public YImpex() {
     }
 
     /*
@@ -79,9 +57,9 @@ public class YCore extends AbstractUIPlugin {
     @Override
     public void start(final BundleContext context) throws Exception {
         super.start(context);
-        initplatformInstallation();
         plugin = this;
-        antHomeUpdater.register();
+        problemsPropertyChangeListener = new ProblemsPropertyChangeListener(getPreferenceStore());
+        getPreferenceStore().addPropertyChangeListener(problemsPropertyChangeListener);
     }
 
     /*
@@ -92,8 +70,8 @@ public class YCore extends AbstractUIPlugin {
     @Override
     public void stop(final BundleContext context) throws Exception {
         try {
-            getPlatformContainer().dispose();
-            antHomeUpdater.unregister();
+            ColorManager.getDefault().dispose();
+            getPreferenceStore().removePropertyChangeListener(problemsPropertyChangeListener);
             plugin = null;
         } finally {
             super.stop(context);
@@ -105,7 +83,7 @@ public class YCore extends AbstractUIPlugin {
      * 
      * @return the shared instance
      */
-    public static YCore getDefault() {
+    public static YImpex getDefault() {
         return plugin;
     }
 
@@ -115,13 +93,6 @@ public class YCore extends AbstractUIPlugin {
             return null;
         }
         return window.getActivePage();
-    }
-
-    public IYNatureManager getNatureManager() {
-        if (natureManager == null) {
-            natureManager = new YNatureManager();
-        }
-        return natureManager;
     }
 
     public static File getHistoryDirectory() throws IllegalStateException {
@@ -176,7 +147,7 @@ public class YCore extends AbstractUIPlugin {
     }
 
     public static IWorkbenchPart getActivePart() {
-        final IWorkbenchWindow activeWindow = YCore.getActiveWorkbenchWindow();
+        final IWorkbenchWindow activeWindow = YImpex.getActiveWorkbenchWindow();
         if (activeWindow != null) {
             final IWorkbenchPage activePage = activeWindow.getActivePage();
             if (activePage != null) {
@@ -220,13 +191,6 @@ public class YCore extends AbstractUIPlugin {
         return imageDescriptor;
     }
 
-    public ITemplateManager getTemplateManager() {
-        if (templateManager == null) {
-            templateManager = new TemplateManager();
-        }
-        return templateManager;
-    }
-
     /**
      * Returns a combined preference store.<br/>
      * The store is read only
@@ -247,48 +211,4 @@ public class YCore extends AbstractUIPlugin {
     public IPreferenceStore getPreferenceStore() {
         return super.getPreferenceStore();
     }
-
-    private void initplatformInstallation() {
-        synchronized (fPlatformTypeLock) {
-            getPlatformContainer().initializePlatform();
-        }
-    }
-
-    public IPlatformInstallation getDefaultPlatform() {
-        return getPlatformContainer().getDefaultPlatform();
-    }
-
-    public PlatformContainer getPlatformContainer() {
-        if (platformContainer == null) {
-            platformContainer = new PlatformContainer();
-        }
-        return platformContainer;
-    }
-
-    public IJavaSearchScope extensibleItemHierarchyScope() throws JavaModelException {
-        if (scope == null) {
-            long millis = System.currentTimeMillis();
-            System.err.println("entered extensibleItemHierarchyScope");
-            try {
-                String name = YCore.getDefault().getDefaultPlatform().getPlatformLocation().lastSegment().toString();
-                IJavaProject project = JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProject(name);
-                IType type = project.findType("de.hybris.platform.core.model.ItemModel");
-                scope = SearchEngine.createStrictHierarchyScope(project, type, true, true, null);
-            } finally {
-                millis = System.currentTimeMillis() - millis;
-                // int seconds = (int) (millis / 1000) % 60 ;
-                // int minutes = (int) ((millis / (1000*60)) % 60);
-                // millis = millis % 60;
-                // System.err.println("Took " + " millis (" + + ")");
-                System.err.println(String.format("Took %d:%d:%d", TimeUnit.MILLISECONDS.toMinutes(millis),
-                        TimeUnit.MILLISECONDS.toSeconds(millis)
-                                - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)),
-                        TimeUnit.MILLISECONDS.toMillis(millis)
-                                - TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(millis))));
-            }
-            // type.newTypeHierarchy(new NullProgressMonitor()).getAllSubtypes(type);
-        }
-        return scope;
-    }
-
 }
