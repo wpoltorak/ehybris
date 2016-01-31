@@ -35,5 +35,33 @@
        </view>
     </perspectiveExtension>
  </extension>
+ <extension
+       point="org.eclipse.ui.menus">
+    <menuContribution
+          locationURI="menu:org.eclipse.ui.main.menu">
+       <menu
+             id="com.lambda.plugin.menu"
+             label="%menu.label"
+             tooltip="%menu.tooltip">
+       </menu>
+    </menuContribution>
+    <menuContribution
+          allPopups="false"
+          locationURI="toolbar:com.lambda.ycore.views.platform.DependenciesView">
+       <command
+             commandId="com.lambda.ycore.views.platform.ChangeLayout"
+             icon="icons/obj16/hybris.png"
+             label="Change Layout"
+             style="push">
+       </command>
+    </menuContribution>
+ </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+    <command
+          id="com.lambda.ycore.views.platform.ChangeLayout"
+          name="Change  Layout">
+    </command>
+ </extension>
 
 </plugin>
