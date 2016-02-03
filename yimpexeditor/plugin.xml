@@ -9,9 +9,9 @@
       </category>
       <wizard
             category="com.lambda.plugin.wizard"
-            class="com.lambda.plugin.wizards.impex.ImpexNewWizard"
+            class="com.lambda.ecommerce.impex.wizards.ImpexNewWizard"
             icon="icons/obj16/impex.gif"
-            id="com.lambda.plugin.wizards.impex.ImpexNewWizard"
+            id="com.lambda.ecommerce.impex.wizards.ImpexNewWizard"
             name="%wizard.name.2">
          <description>
             %wizard.description.2
@@ -22,26 +22,26 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="com.lambda.plugin.preferences.YPreferencePage"
-            class="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            id="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.ecommerce.impex.preferences.ImpexPreferencePage"
+            id="com.lambda.ecommerce.impex.preferences.ImpexPreferencePage"
             name="%page.name.0">
       </page>
       <page
-            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            class="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
-            id="com.lambda.plugin.impex.preferences.SyntaxColoringPreferencePage"
+            category="com.lambda.ecommerce.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.ecommerce.impex.preferences.SyntaxColoringPreferencePage"
+            id="com.lambda.ecommerce.impex.preferences.SyntaxColoringPreferencePage"
             name="%page.name.2">
       </page>
       <page
-            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            class="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
-            id="com.lambda.plugin.impex.preferences.MarkOccurrencesPreferencePage"
+            category="com.lambda.ecommerce.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.ecommerce.impex.preferences.MarkOccurrencesPreferencePage"
+            id="com.lambda.ecommerce.impex.preferences.MarkOccurrencesPreferencePage"
             name="%page.name.3">
       </page>
       <page
-            category="com.lambda.plugin.impex.preferences.ImpexPreferencePage"
-            class="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
-            id="com.lambda.plugin.impex.preferences.ProblemsPreferencePage"
+            category="com.lambda.ecommerce.impex.preferences.ImpexPreferencePage"
+            class="com.lambda.ecommerce.impex.preferences.ProblemsPreferencePage"
+            id="com.lambda.ecommerce.impex.preferences.ProblemsPreferencePage"
             name="%page.name.4">
       </page>
    </extension>
@@ -50,7 +50,7 @@
          name="%extension.name.0"
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="com.lambda.plugin.impex.preferences.PreferenceInitializer">
+            class="com.lambda.ecommerce.impex.preferences.PreferenceInitializer">
       </initializer>
    </extension>
    <!-- to support Java actions like Open Type from impex editor -->
@@ -59,7 +59,7 @@
       <actionSetPartAssociation
             targetID="org.eclipse.jdt.ui.JavaActionSet">
          <part
-               id="com.lambda.plugin.impex.editor.ImpexEditor">
+               id="com.lambda.ecommerce.impex.editor.ImpexEditor">
          </part>
       </actionSetPartAssociation>
    </extension>
@@ -71,13 +71,13 @@
                   replace="M2+M3">
             </sequenceModifier>
          <key
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
+               commandId="com.lambda.ecommerce.impex.editor.actions.ToggleLineComment"
                contextId="org.eclipse.ui.contexts.window"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                sequence="M1+/">
          </key>
          <key
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
+               commandId="com.lambda.ecommerce.impex.editor.actions.ToggleMarkOccurrences"
                contextId="org.eclipse.ui.contexts.window"
                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
                sequence="M2+M3+O">
@@ -87,9 +87,9 @@
             point="org.eclipse.ui.commands">
          <command
                categoryId="org.eclipse.ui.category.textEditor"
-               defaultHandler="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrencesAction"
+               defaultHandler="com.lambda.ecommerce.impex.editor.actions.ToggleMarkOccurrencesAction"
                description="%command.description.toggleMarkOccurrences"
-               id="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
+               id="com.lambda.ecommerce.impex.editor.actions.ToggleMarkOccurrences"
                name="%command.name.toggleMarkOccurrences">
             <state
                   class="org.eclipse.ui.handlers.RegistryToggleState"
@@ -99,14 +99,14 @@
                   <command
                categoryId="org.eclipse.ui.category.textEditor"
                description="%command.description.toggleLineComment"
-               id="com.lambda.plugin.impex.editor.actions.ToggleLineComment"
+               id="com.lambda.ecommerce.impex.editor.actions.ToggleLineComment"
                name="%command.name.toggleLineComment">
          </command>
        </extension>
       <extension
             point="org.eclipse.ui.commandImages">
          <image
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleMarkOccurrences"
+               commandId="com.lambda.ecommerce.impex.editor.actions.ToggleMarkOccurrences"
                disabledIcon="icons/dlcl16/mark_occurrences.gif"
                icon="icons/elcl16/mark_occurrences.gif">
          </image>
@@ -125,8 +125,8 @@
       <extension
             point="org.eclipse.ui.handlers">
          <handler
-               class="com.lambda.plugin.impex.editor.actions.ToggleLineCommentAction"
-               commandId="com.lambda.plugin.impex.editor.actions.ToggleLineComment">
+               class="com.lambda.ecommerce.impex.editor.actions.ToggleLineCommentAction"
+               commandId="com.lambda.ecommerce.impex.editor.actions.ToggleLineComment">
             <enabledWhen>
                <reference
                      definitionId="inImpexEditor">
@@ -137,14 +137,14 @@
       <extension
             point="org.eclipse.ui.editors">
          <editor
-               class="com.lambda.plugin.impex.editor.ImpexEditor"
-               contributorClass="com.lambda.plugin.impex.editor.actions.ImpexEditorActionContributor"
+               class="com.lambda.ecommerce.impex.editor.ImpexEditor"
+               contributorClass="com.lambda.ecommerce.impex.editor.actions.ImpexEditorActionContributor"
                extensions="impex"
                icon="icons/obj16/impex.gif"
-               id="com.lambda.plugin.impex.editor.ImpexEditor"
+               id="com.lambda.ecommerce.impex.editor.ImpexEditor"
                name="%editor.name">
             <contentTypeBinding
-                  contentTypeId="com.lambda.plugin.impexFile">
+                  contentTypeId="com.lambda.ecommerce.impexFile">
             </contentTypeBinding>
          </editor>
       </extension>
@@ -155,7 +155,7 @@
             <with
                   variable="activeEditorId">
                <equals
-                     value="com.lambda.plugin.impex.editor.ImpexEditor">
+                     value="com.lambda.ecommerce.impex.editor.ImpexEditor">
                </equals>
             </with>
          </definition>
@@ -172,7 +172,7 @@
        point="org.eclipse.core.contenttype.contentTypes">
     <content-type
           file-extensions="impex"
-          id="com.lambda.plugin.impexFile"
+          id="com.lambda.ecommerce.impexFile"
           name="%content-type.name"
           priority="normal">
     </content-type>
@@ -182,32 +182,32 @@
        point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectors">
     <hyperlinkDetector
           activate="true"
-          class="com.lambda.plugin.impex.ui.JavaElementHyperlinkDetector"
-          id="com.lambda.plugin.impex.ui.JavaElementHyperlinkDetector"
+          class="com.lambda.ecommerce.impex.ui.JavaElementHyperlinkDetector"
+          id="com.lambda.ecommerce.impex.ui.JavaElementHyperlinkDetector"
           name="%JavaElementHyperlinkDetector"
-          targetId="com.lambda.plugin.impex.ui.impexCode">
+          targetId="com.lambda.ecommerce.impex.ui.impexCode">
     </hyperlinkDetector>
  </extension>
  <extension
        point="org.eclipse.ui.workbench.texteditor.hyperlinkDetectorTargets">
     <target
-          id="com.lambda.plugin.impex.ui.impexCode"
+          id="com.lambda.ecommerce.impex.ui.impexCode"
           name="%ImpexEditorHyperlinkTarget">
        <context
-             type="com.lambda.plugin.impex.editor.ImpexEditor">
+             type="com.lambda.ecommerce.impex.editor.ImpexEditor">
        </context>
     </target>
  </extension>
  <extension
        point="org.eclipse.ui.editors.annotationTypes">
     <type
-          name="com.lambda.plugin.impex.fieldOccurrences">
+          name="com.lambda.ecommerce.impex.fieldOccurrences">
     </type>
  </extension>
  <extension
        point="org.eclipse.ui.editors.markerAnnotationSpecification">
     <specification
-          annotationType="com.lambda.plugin.impex.fieldOccurrences"
+          annotationType="com.lambda.ecommerce.impex.fieldOccurrences"
           colorPreferenceKey="fieldOccurrenceIndicationColor"
           colorPreferenceValue="232,242,254"
           contributesToHeader="false"
